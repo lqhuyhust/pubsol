@@ -8,9 +8,9 @@
  * 
  */
 
-namespace App\plugins\facts4me\controllers;
+namespace App\plugins\setting\controllers;
 
-use App\plugins\facts4me\controllers\Admin;
+use App\plugins\setting\controllers\Admin;
 
 class User extends Admin
 {

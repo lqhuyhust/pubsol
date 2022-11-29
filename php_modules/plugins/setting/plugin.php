@@ -18,44 +18,45 @@ use SPT\File;
 
 class plugin extends PluginAbstract
 { 
+    
     public function register()
     {
         return [
             'viewmodels' => [
                 'alias' => [
-                    'App\plugins\facts4me\viewmodels\HomeVM' => 'HomeVM',
-                    // 'App\plugins\facts4me\viewmodels\AdminVM' => 'AdminVM',
-                    // 'App\plugins\facts4me\viewmodels\TopicVM' => 'TopicVM',
-                    // 'App\plugins\facts4me\viewmodels\SubTopVM' => 'SubTopVM',
-                    // 'App\plugins\facts4me\viewmodels\UserVM' => 'UserVM',
-                    'App\plugins\facts4me\viewmodels\AdminUsersVM' => 'AdminUsersVM',
-                    'App\plugins\facts4me\viewmodels\PaymentVM' => 'PaymentVM',
-                    // 'App\plugins\facts4me\viewmodels\SubjectVM' => 'SubjectVM',
-                    'App\plugins\facts4me\viewmodels\WidgetsVM' => 'WidgetsVM',
-                    'App\plugins\facts4me\viewmodels\StripeVM' => 'StripeVM',
-                    'App\plugins\facts4me\viewmodels\AdminTopicsVM' => 'AdminTopicsVM',
-                    'App\plugins\facts4me\viewmodels\AdminTopicVM' => 'AdminTopicVM',
-                    'App\plugins\facts4me\viewmodels\AdminPostsVM' => 'AdminPostsVM',
-                    'App\plugins\facts4me\viewmodels\AdminPostVM' => 'AdminPostVM',
-                    'App\plugins\facts4me\viewmodels\AdminUserVM' => 'AdminUserVM',
-                    'App\plugins\facts4me\viewmodels\AdminSubjectsVM' => 'AdminSubjectsVM',
-                    'App\plugins\facts4me\viewmodels\AdminSubjectVM' => 'AdminSubjectVM',
-                    'App\plugins\facts4me\viewmodels\AdminSettingVM' => 'AdminSettingVM',
-                    'App\plugins\facts4me\viewmodels\AdminEmailsVM' => 'AdminEmailsVM',
-                    'App\plugins\facts4me\viewmodels\AdminEmailVM' => 'AdminEmailVM',
-                    'App\plugins\facts4me\viewmodels\AdminTransactionsVM' => 'AdminTransactionsVM',
-                    'App\plugins\facts4me\viewmodels\AdminTransactionVM' => 'AdminTransactionVM',
+                    'App\plugins\setting\viewmodels\HomeVM' => 'HomeVM',
+                    // 'App\plugins\setting\viewmodels\AdminVM' => 'AdminVM',
+                    // 'App\plugins\setting\viewmodels\TopicVM' => 'TopicVM',
+                    // 'App\plugins\setting\viewmodels\SubTopVM' => 'SubTopVM',
+                    // 'App\plugins\setting\viewmodels\UserVM' => 'UserVM',
+                    'App\plugins\setting\viewmodels\AdminUsersVM' => 'AdminUsersVM',
+                    'App\plugins\setting\viewmodels\PaymentVM' => 'PaymentVM',
+                    // 'App\plugins\setting\viewmodels\SubjectVM' => 'SubjectVM',
+                    'App\plugins\setting\viewmodels\WidgetsVM' => 'WidgetsVM',
+                    'App\plugins\setting\viewmodels\StripeVM' => 'StripeVM',
+                    'App\plugins\setting\viewmodels\AdminTopicsVM' => 'AdminTopicsVM',
+                    'App\plugins\setting\viewmodels\AdminTopicVM' => 'AdminTopicVM',
+                    'App\plugins\setting\viewmodels\AdminPostsVM' => 'AdminPostsVM',
+                    'App\plugins\setting\viewmodels\AdminPostVM' => 'AdminPostVM',
+                    'App\plugins\setting\viewmodels\AdminUserVM' => 'AdminUserVM',
+                    'App\plugins\setting\viewmodels\AdminSubjectsVM' => 'AdminSubjectsVM',
+                    'App\plugins\setting\viewmodels\AdminSubjectVM' => 'AdminSubjectVM',
+                    'App\plugins\setting\viewmodels\AdminSettingVM' => 'AdminSettingVM',
+                    'App\plugins\setting\viewmodels\AdminEmailsVM' => 'AdminEmailsVM',
+                    'App\plugins\setting\viewmodels\AdminEmailVM' => 'AdminEmailVM',
+                    'App\plugins\setting\viewmodels\AdminTransactionsVM' => 'AdminTransactionsVM',
+                    'App\plugins\setting\viewmodels\AdminTransactionVM' => 'AdminTransactionVM',
                 ],
             ],
             'models' => [
                 'alias' => [
-                    'App\plugins\facts4me\models\PaymentModel' => 'PaymentModel',
-                    'App\plugins\facts4me\models\EmailModel' => 'EmailModel',
-                    'App\plugins\facts4me\models\UserModel' => 'UserModel',
-                    'App\plugins\facts4me\models\TopicModel' => 'TopicModel',
-                    'App\plugins\facts4me\models\SubjectModel' => 'SubjectModel',
-                    'App\plugins\facts4me\models\HelperModel' => 'HelperModel',
-                    'App\plugins\facts4me\models\OptionModel' => 'OptionModel',
+                    'App\plugins\setting\models\PaymentModel' => 'PaymentModel',
+                    'App\plugins\setting\models\EmailModel' => 'EmailModel',
+                    'App\plugins\setting\models\UserModel' => 'UserModel',
+                    'App\plugins\setting\models\TopicModel' => 'TopicModel',
+                    'App\plugins\setting\models\SubjectModel' => 'SubjectModel',
+                    'App\plugins\setting\models\HelperModel' => 'HelperModel',
+                    'App\plugins\setting\models\OptionModel' => 'OptionModel',
                 ],
             ],
             'entity' => [],
@@ -81,8 +82,8 @@ class plugin extends PluginAbstract
 
     public function loadEntity(Container $container)
     {
-        $path = AppIns::path('plugin'). 'facts4me/entities';
-        $namespace = 'App\plugins\facts4me\entities';
+        $path = AppIns::path('plugin'). 'setting/entities';
+        $namespace = 'App\plugins\setting\entities';
         $inners = Loader::findClass($path, $namespace);
         foreach($inners as $class)
         {
