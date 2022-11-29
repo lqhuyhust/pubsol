@@ -10,4 +10,11 @@ return [
     'defaultEndpoint' => [
         'fnc' => 'start.home.home'
     ],
+    'db' => [
+        'host' => '',
+        'username' => '',
+        'password' => '',
+        'database' => '',
+        'prefix' => '',
+    ],
 ];
