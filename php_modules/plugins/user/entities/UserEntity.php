@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\starter\entities;
+namespace App\plugins\user\entities;
 
 use SPT\User\SPT\UserEntity as Entity;
 

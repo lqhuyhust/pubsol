@@ -12,7 +12,7 @@ namespace App\plugins\user\controllers;
 
 use SPT\MVC\JDIContainer\MVController;
 
-class User extends MVController 
+class User extends Admin 
 {
     public function gate()
     {
