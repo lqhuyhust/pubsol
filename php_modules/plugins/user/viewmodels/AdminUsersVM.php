@@ -141,7 +141,11 @@ class AdminUsersVM extends ViewModel
                 'default' => 'name asc',
                 'options' => [
                     ['text' => 'Name ascending', 'value' => 'name asc'],
-                    ['text' => 'Name descending', 'value' => 'name desc']
+                    ['text' => 'Name descending', 'value' => 'name desc'],
+                    ['text' => 'Email ascending', 'value' => 'email asc'],
+                    ['text' => 'Email descending', 'value' => 'email desc'],
+                    ['text' => 'Username ascending', 'value' => 'username asc'],
+                    ['text' => 'Username descending', 'value' => 'username desc'],
                 ],
                 'showLabel' => false
             ]
