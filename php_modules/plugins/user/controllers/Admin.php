@@ -14,10 +14,16 @@ use SPT\MVC\JDIContainer\MVController;
 
 class Admin extends MVController 
 {
-    public function home()
+    public function isLoggedIn()
     {
-        // write your code here
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'home');
+        if( !$this->user->get('id') )
+        {
+            $this->app->redirect(
+                $this->router->url(
+                    'admin/login'
+                )
+            );
+        }
     }
+
 }
