@@ -1,3 +1,7 @@
+<form class="hidden" method="POST" id="form_delete">
+    <input type="hidden" value="<?php echo $this->token ?>" name="token">
+    <input type="hidden" value="DELETE" name="_method">
+</form>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
@@ -10,16 +14,37 @@
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {
-        $('#limit').on("change", function (e) {
-            $('#filter_form').submit()
+        $("#select_all").click( function(){
+            $('.checkbox-item').prop('checked', this.checked);
         });
         $(".button_delete_item").click(function() {
-            var id = $(this).data('id_remove');
-            var result = confirm("Are you sure you want to delete this user id: "+ id +"?");
-            console.log(id);
+            var id = $(this).data('id');
+            var result = confirm("You are going to delete 1 record(s). Are you sure ?");
             if (result) {
-                $('#form_delete_' + id).submit();
+                $('#form_delete').attr('action', '<?php echo $this->link_form;?>/' + id);
+                $('#form_delete').submit();
             }
+            else
+            {
+                return false;
+            }
+        });
+        $('#delete_selected').click(function(){
+            var count = 0;
+            $('input[name="ids[]"]:checked').each(function() {
+                count++;
+            });
+            var result = confirm("You are going to delete " + count + " record(s). Are you sure ?");
+            if (result) {
+                $('#formList').submit();
+            }
+            else
+            {
+                return false;
+            }
+        });
+        $('#limit').on("change", function (e) {
+            $('#filter_form').submit()
         });
     });
 </script>

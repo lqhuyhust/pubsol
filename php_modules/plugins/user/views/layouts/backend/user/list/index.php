@@ -9,24 +9,30 @@
                         <div class="row align-items-center">
 								<?php echo $this->render('backend.user.list.filter');?>
 							</div>
-							<table id="datatables-buttons" class="table table-striped border-top border-1" style="width:100%">
-								<thead>
-									<tr>
-										<th style="width: 40px;">#</th>
-										<th>User Name</th>
-										<th>Name</th>
-										<th>Email</th>
-										<th>Status</th>
-										<th>Created At</th>
-										<th>Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php while($this->list->hasRow()) $this->render('backend.user.list.row'); ?> 
-								</tbody>
-							<?php
-							?>
-							</table>
+							<form action="<?php echo $this->link_list ?>" method="POST" id="formList">
+								<input type="hidden" value="<?php echo $this->token ?>" name="token">
+            					<input type="hidden" value="DELETE" name="_method">
+								<table id="datatables-buttons" class="table table-striped border-top border-1" style="width:100%">
+									<thead>
+										<tr>
+											<th width="10px">
+												<input type="checkbox" id="select_all">
+											</th>
+											<th>User Name</th>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Status</th>
+											<th>Created At</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php while($this->list->hasRow()) $this->render('backend.user.list.row'); ?> 
+									</tbody>
+								<?php
+								?>
+								</table>
+							</form>
 							<div class="row g-3 align-items-center">
 								<?php echo $this->render('pagination'); ?>
 							</div>
