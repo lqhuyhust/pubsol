@@ -11,9 +11,6 @@
 namespace App\libraries; 
 
 use SPT\App\JDIContainer\CMSApp; 
-use SPT\User\Instance as UserIns;
-use App\plugins\setting\libraries\User;
-use App\plugins\setting\entities\UserEntity;
 
 class appPlg extends CMSApp
 {
@@ -24,11 +21,6 @@ class appPlg extends CMSApp
 
     public function prepareUser()
     {
-        $user = new UserIns( new User());
-        $user->init([
-            'session' => $this->session,
-            'entity' => new UserEntity($this->query)
-        ]);
-        $this->getContainer()->share('user', $user, true);
+        // write your code here
     }
 }
