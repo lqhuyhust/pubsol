@@ -26,8 +26,8 @@ class AdminUserVM extends ViewModel
 
     public function login()
     {
-        $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_login', $this->router->url('admin/login'), true);
+        $this->set('url', $this->router->url(), true);
+        $this->set('link_login', $this->router->url('admin/login'), true);
     }
 
     public function form()
@@ -39,11 +39,12 @@ class AdminUserVM extends ViewModel
         $data = $id ? $this->UserEntity->findByPK($id) : [];
         $form = new Form($this->getFormFields(), $data);
 
-        $this->view->set('form', $form, true);
-        $this->view->set('data', $data, true);
-        $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_list', $this->router->url('admin/users'));
-        $this->view->set('link_form', $this->router->url('admin/user'));
+        $this->set('form', $form, true);
+        $this->set('data', $data, true);
+        $this->set('title_page', $data ? 'New User' : 'Update User', true);
+        $this->set('url', $this->router->url(), true);
+        $this->set('link_list', $this->router->url('admin/users'));
+        $this->set('link_form', $this->router->url('admin/user'));
     }
 
     public function getFormFields()
@@ -73,16 +74,14 @@ class AdminUserVM extends ViewModel
                 'showLabel' => false,
                 'formClass' => 'form-control'
             ],
-            'confirm_password' => ['password',
-                'showLabel' => false,
-                'formClass' => 'form-control'
-            ],
             'status' => ['option',
+                'showLabel' => false,
                 'type' => 'radio',
                 'formClass' => '',
+                'default' => 1,
                 'options' => [
-                    ['text'=>'Yes', 'value'=>1],
-                    ['text'=>'No', 'value'=>0]
+                    ['text'=>'Active', 'value'=>1],
+                    ['text'=>'Inactive', 'value'=>0]
                 ]
             ],
             'token' => ['hidden',

@@ -71,6 +71,7 @@ class AdminUsersVM extends ViewModel
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('admin/users'), true);
+        $this->set('title_page', 'User Manager', true);
         $this->set('link_form', $this->router->url('admin/user'), true);
         $this->set('token', $this->app->getToken(), true);
     }
@@ -120,12 +121,12 @@ class AdminUsersVM extends ViewModel
                 'placeholder' => 'Search..'
             ],
             'status' => ['option',
-                'default' => '',
+                'default' => '1',
                 'formClass' => 'form-select',
                 'options' => [
                     ['text' => '--', 'value' => ''],
-                    ['text' => 'Blocked', 'value' => '1'],
-                    ['text' => 'Active', 'value' => '0']
+                    ['text' => 'Inactive', 'value' => '0'],
+                    ['text' => 'Active', 'value' => '1']
                 ],
                 'showLabel' => false
             ],
@@ -135,13 +136,11 @@ class AdminUsersVM extends ViewModel
                 'options' => [ 5, 10, 20, 50],
                 'showLabel' => false
             ],
-            'sort' => ['hidden',
+            'sort' => ['option',
                 'formClass' => 'form-select',
                 'default' => 'name asc',
                 'options' => [
                     ['text' => 'Name ascending', 'value' => 'name asc'],
-                    ['text' => 'Status ascending', 'value' => 'status asc'],
-                    ['text' => 'Status descending', 'value' => 'status desc'],
                     ['text' => 'Name descending', 'value' => 'name desc']
                 ],
                 'showLabel' => false

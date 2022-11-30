@@ -2,8 +2,8 @@
 	<main class="content p-0 ">
 		<div class="container-fluid p-0">
 			<div class="row justify-content-center mx-auto">
-				<div class="col-12 pt-3">
-					<div class="card">
+				<div class="col-12 p-0">
+					<div class="card border-0 shadow-none">
 						<div class="card-body">
 						<?php echo $this->render('message');?>
                         <div class="row align-items-center">
