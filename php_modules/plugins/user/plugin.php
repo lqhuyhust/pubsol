@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\starter;
+namespace App\plugins\user;
 
 use SPT\Plugin\CMS as PluginAbstract;
 
@@ -20,7 +20,7 @@ class plugin extends PluginAbstract
             // write your code here
             'viewmodels' => [
                 'alias' => [
-                    'App\plugins\starter\viewmodels\HomeVM' => 'HomeVM',
+                    'App\plugins\user\viewmodels\UserVM' => 'UserVM',
                 ],
             ],
         ];
