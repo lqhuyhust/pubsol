@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\facts4me\viewmodels;
+namespace App\plugins\setting\viewmodels;
 
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\View\Gui\Form;

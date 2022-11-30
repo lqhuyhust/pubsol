@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\facts4me\models;
+namespace App\plugins\setting\models;
 
 use SPT\JDIContainer\Base; 
 

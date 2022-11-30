@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\facts4me\entities;
+namespace App\plugins\setting\entities;
 
 use SPT\Storage\DB\Entity;
 

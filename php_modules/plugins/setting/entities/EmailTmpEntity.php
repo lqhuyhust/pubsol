@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\facts4me\entities;
+namespace App\plugins\setting\entities;
 
 use SPT\Storage\DB\Entity;
 
@@ -16,9 +16,10 @@ class EmailTmpEntity extends Entity
 {
     protected $table = '#__email_tmp'; //table name
     protected $pk = 'id'; //primary key
-
+    
     public function getFields()
     {
+        
         return [
             // write your code here
             'id' => [
