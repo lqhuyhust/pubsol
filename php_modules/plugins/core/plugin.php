@@ -24,6 +24,7 @@ class plugin extends PluginAbstract
                 'alias' => [
                     'App\plugins\core\viewmodels\MessageVM' => 'MessageVM',
                     'App\plugins\core\viewmodels\WidgetsVM' => 'WidgetsVM',
+                    'App\plugins\core\viewmodels\PaginationVM' => 'PaginationVM',
                 ],
             ],
         ];
