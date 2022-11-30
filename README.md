@@ -1,6 +1,6 @@
-# Facts4Me
+# SDM
 
-Mike's project
+Joomaio Team project
 
 A base PHP site need to convert into SPT site
 
