@@ -64,4 +64,13 @@ class UserEntity extends Entity
                 ],
         ];
     }
+
+    public function togglePublishment( $id, $action)
+    {
+        $item = $this->findByPK($id);
+        $status = $action == 'active' ? 1 : 0;
+        return $this->db->table( $this->table )->update([
+            'status' => $status,
+        ], ['id' => $id ]);
+    }
 }
