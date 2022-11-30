@@ -2,7 +2,7 @@
 
 return [ 
     'sitepath' => '',
-    'plugins' => ['starter'],
+    'plugins' => ['starter', 'user'],
     'theme' => 'sdm',
     'secrect' => 'sid',
     'endpoints' => [
