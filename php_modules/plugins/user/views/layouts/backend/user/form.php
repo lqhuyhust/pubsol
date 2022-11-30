@@ -5,13 +5,13 @@
             <form action="<?php echo $this->link_form . '/' . $this->id ?>" method="post">
                 <div class="row g-3 align-items-center">
                     <div class="row">
-                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
+                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
                             <label class="form-label fw-bold">Name:</label>
                             <?php $this->field('name'); ?>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
+                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                             <label class="form-label fw-bold">User Name:</label>
                             <?php $this->field('username'); ?>
                         </div>
@@ -20,6 +20,12 @@
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                             <label class="form-label fw-bold">Password:</label>
                             <?php $this->field('password'); ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
+                            <label class="form-label fw-bold">Confirm Password:</label>
+                            <?php $this->field('confirm_password'); ?>
                         </div>
                     </div>
                     <div class="row">

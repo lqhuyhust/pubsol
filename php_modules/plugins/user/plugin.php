@@ -14,12 +14,18 @@ use SPT\App\Instance as AppIns;
 use SPT\Plugin\CMS as PluginAbstract;
 use SPT\Support\Loader;
 use Joomla\DI\Container;
+use SPT\Middleware\Dispatcher as MW;
+use App\plugins\user\middlewares\Permission;
+use App\plugins\user\middlewares\Validation;
 use SPT\File;
 
 class plugin extends PluginAbstract
 { 
     public function register()
     {
+        $Validation = new Validation('plugins\user\middlewares\validation');
+        MW::register('validation', $Validation);
+
         return [
             // write your code here
             'viewmodels' => [

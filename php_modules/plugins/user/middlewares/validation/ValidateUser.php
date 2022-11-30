@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\users\middlewares\validation;
+namespace App\plugins\user\middlewares\validation;
 
 use SPT\Middleware\Script;
 use SPT\App\Instance as AppIns;

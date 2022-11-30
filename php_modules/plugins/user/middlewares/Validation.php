@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\users\middlewares;
+namespace App\plugins\user\middlewares;
 
 use SPT\Middleware\Loader; 
 use SPT\App\Instance as AppIns;

@@ -37,6 +37,10 @@ class AdminUserVM extends ViewModel
         $this->set('id', $id, true);
 
         $data = $id ? $this->UserEntity->findByPK($id) : [];
+        if ($data)
+        {
+            $data['password'] = '';
+        }
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);
@@ -59,18 +63,24 @@ class AdminUserVM extends ViewModel
                 'required' => 'required'
             ],
             'username' => ['text',
-                'placeholder' => 'Enter user name',
+                'placeholder' => 'Enter User Name',
                 'showLabel' => false,
                 'formClass' => 'form-control',
                 'required' => 'required',
             ],
             'email' => ['email',
                 'formClass' => 'form-control',
-                'placeholder' => 'Enter Name',
+                'placeholder' => 'Enter Email',
                 'showLabel' => false,
                 // 'required' => 'required'
             ],
             'password' => ['password',
+                'placeholder' => 'Enter Password',
+                'showLabel' => false,
+                'formClass' => 'form-control'
+            ],
+            'confirm_password' => ['password',
+                'placeholder' => 'Enter Confirm Password',
                 'showLabel' => false,
                 'formClass' => 'form-control'
             ],

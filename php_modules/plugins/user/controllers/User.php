@@ -11,6 +11,7 @@
 namespace App\plugins\user\controllers;
 
 use SPT\MVC\JDIContainer\MVController;
+use SPT\Middleware\Dispatcher as MW;
 
 class User extends Admin 
 {
@@ -107,7 +108,7 @@ class User extends Admin
         if (!$try)
         {
             $msg = $this->session->get('validate', '');
-            $this->session->set(['flashMsg' => $msg]);
+            $this->session->set('flashMsg', $msg);
             $this->app->redirect(
                 $this->router->url('admin/user/0')
             );
@@ -116,7 +117,7 @@ class User extends Admin
         //check confirm password
         if($this->request->post->get('password', '') != $this->request->post->get('confirm_password', ''))
         {
-            $this->session->set(['flashMsg' => 'Error: Confirm Password Failed']);
+            $this->session->set('flashMsg', 'Error: Confirm Password Failed');
             $this->app->redirect(
                 $this->router->url('admin/user/0')
             );
