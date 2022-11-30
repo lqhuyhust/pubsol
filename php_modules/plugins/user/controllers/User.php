@@ -8,11 +8,11 @@
  * 
  */
 
-namespace App\plugins\starter\controllers;
+namespace App\plugins\user\controllers;
 
 use SPT\MVC\JDIContainer\MVController;
 
-class Home extends MVController 
+class User extends MVController 
 {
     public function gate()
     {

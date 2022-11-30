@@ -10,7 +10,11 @@
 
 namespace App\plugins\user;
 
+use SPT\App\Instance as AppIns;
 use SPT\Plugin\CMS as PluginAbstract;
+use SPT\Support\Loader;
+use Joomla\DI\Container;
+use SPT\File;
 
 class plugin extends PluginAbstract
 { 
