@@ -1,7 +1,6 @@
 <?php defined( 'APP_PATH' ) or die('');
 
 $this->theme->prepareAssets([
-    'jquery',
     'bootstrap-css',
     'style-css',
     'js-bootstrap'
