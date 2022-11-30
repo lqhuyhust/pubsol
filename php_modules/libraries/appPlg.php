@@ -18,9 +18,4 @@ class appPlg extends CMSApp
     {
         return 'App\\'. $extra;
     }
-
-    public function prepareUser()
-    {
-        // write your code here
-    }
 }

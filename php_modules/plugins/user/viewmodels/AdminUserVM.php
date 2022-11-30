@@ -7,11 +7,11 @@
  * @description: Just a basic viewmodel
  * 
  */
-namespace App\plugins\starter\viewmodels; 
+namespace App\plugins\user\viewmodels; 
 
 use SPT\View\VM\JDIContainer\ViewModel; 
 
-class HomeVM extends ViewModel
+class AdminUserVM extends ViewModel
 {
     protected $alias = '';
     protected $layouts = [

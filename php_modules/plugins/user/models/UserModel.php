@@ -12,7 +12,7 @@ namespace App\plugins\starter\models;
 
 use SPT\JDIContainer\Base; 
 
-class StarterModel extends Base 
+class UserModel extends Base 
 { 
     // Write your code here
 }
