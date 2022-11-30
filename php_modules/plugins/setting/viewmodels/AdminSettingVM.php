@@ -68,6 +68,12 @@ class AdminSettingVM extends ViewModel
                 'label' => 'Email Host:',
                 'formClass' => 'form-control',
             ],
+            'email_port' => [
+                'text',
+                'showLabel' => false,
+                'label' => 'Email Port:',
+                'formClass' => 'form-control',
+            ],
             'email_username' => [
                 'email',
                 'showLabel' => false,

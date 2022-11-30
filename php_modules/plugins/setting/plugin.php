@@ -29,12 +29,6 @@ class plugin extends PluginAbstract
             ],
             'models' => [
                 'alias' => [
-                    'App\plugins\setting\models\PaymentModel' => 'PaymentModel',
-                    'App\plugins\setting\models\EmailModel' => 'EmailModel',
-                    'App\plugins\setting\models\UserModel' => 'UserModel',
-                    'App\plugins\setting\models\TopicModel' => 'TopicModel',
-                    'App\plugins\setting\models\SubjectModel' => 'SubjectModel',
-                    'App\plugins\setting\models\HelperModel' => 'HelperModel',
                     'App\plugins\setting\models\OptionModel' => 'OptionModel',
                 ],
             ],
@@ -47,10 +41,10 @@ class plugin extends PluginAbstract
     public function getInfo()
     {
         return [
-            'name' => 'fact4me',
+            'name' => 'sdm',
             'author' => 'Dev Joomaio',
             'version' =>  '0.1',
-            'description' => 'Fact4me'
+            'description' => 'SDM'
         ];
     }
 
