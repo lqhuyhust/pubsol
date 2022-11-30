@@ -10,13 +10,12 @@
 
 namespace App\plugins\setting\controllers;
 
-use App\plugins\setting\controllers\Admin;
+use SPT\MVC\JDIContainer\MVController;
 
-class Setting extends Admin
+class Setting extends MVController
 {
     public function form()
     {
-        // $this->isAdmin();
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.setting.form');
         $this->app->set('page', 'backend');
@@ -24,8 +23,6 @@ class Setting extends Admin
 
     public function save()
     {
-        // $this->isAdmin();
-        // $this->validateToken();
 
         $fields = $this->AdminSettingVM->getFormFields();
         $try = true;
