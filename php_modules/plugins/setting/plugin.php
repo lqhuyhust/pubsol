@@ -24,28 +24,7 @@ class plugin extends PluginAbstract
         return [
             'viewmodels' => [
                 'alias' => [
-                    // 'App\plugins\setting\viewmodels\HomeVM' => 'HomeVM',
-                    // 'App\plugins\setting\viewmodels\AdminVM' => 'AdminVM',
-                    // 'App\plugins\setting\viewmodels\TopicVM' => 'TopicVM',
-                    // 'App\plugins\setting\viewmodels\SubTopVM' => 'SubTopVM',
-                    // 'App\plugins\setting\viewmodels\UserVM' => 'UserVM',
-                    // 'App\plugins\setting\viewmodels\AdminUsersVM' => 'AdminUsersVM',
-                    // 'App\plugins\setting\viewmodels\PaymentVM' => 'PaymentVM',
-                    // 'App\plugins\setting\viewmodels\SubjectVM' => 'SubjectVM',
-                    // 'App\plugins\setting\viewmodels\WidgetsVM' => 'WidgetsVM',
-                    // 'App\plugins\setting\viewmodels\StripeVM' => 'StripeVM',
-                    // 'App\plugins\setting\viewmodels\AdminTopicsVM' => 'AdminTopicsVM',
-                    // 'App\plugins\setting\viewmodels\AdminTopicVM' => 'AdminTopicVM',
-                    // 'App\plugins\setting\viewmodels\AdminPostsVM' => 'AdminPostsVM',
-                    // 'App\plugins\setting\viewmodels\AdminPostVM' => 'AdminPostVM',
-                    // 'App\plugins\setting\viewmodels\AdminUserVM' => 'AdminUserVM',
-                    // 'App\plugins\setting\viewmodels\AdminSubjectsVM' => 'AdminSubjectsVM',
-                    // 'App\plugins\setting\viewmodels\AdminSubjectVM' => 'AdminSubjectVM',
                     'App\plugins\setting\viewmodels\AdminSettingVM' => 'AdminSettingVM',
-                    // 'App\plugins\setting\viewmodels\AdminEmailsVM' => 'AdminEmailsVM',
-                    // 'App\plugins\setting\viewmodels\AdminEmailVM' => 'AdminEmailVM',
-                    // 'App\plugins\setting\viewmodels\AdminTransactionsVM' => 'AdminTransactionsVM',
-                    // 'App\plugins\setting\viewmodels\AdminTransactionVM' => 'AdminTransactionVM',
                 ],
             ],
             'models' => [
