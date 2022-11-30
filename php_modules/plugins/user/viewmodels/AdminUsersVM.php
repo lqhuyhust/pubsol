@@ -9,7 +9,10 @@
  */
 namespace App\plugins\user\viewmodels; 
 
-use SPT\View\VM\JDIContainer\ViewModel; 
+use SPT\View\Gui\Form;
+use SPT\View\Gui\Listing;
+use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Util;
 
 class AdminUsersVM extends ViewModel
 {
@@ -30,7 +33,6 @@ class AdminUsersVM extends ViewModel
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
-        $filter_group  = $filter->getField('group')->value;
         $page   = $this->request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -49,19 +51,10 @@ class AdminUsersVM extends ViewModel
         }
 
         $start  = ($page-1) * $limit;
-
-        $groups = $this->GroupEntity->list( 0, 0, [], "name ASC");
         $sort = $sort ? $sort : 'id DESC';
 
         $result = $this->UserEntity->list( $start, $limit, $where, $sort);
         $total = $this->UserEntity->getListTotal();
-
-        
-
-        foreach( $result as $key => &$value )
-        {
-            $result[$key]['groups'] = $this->UserEntity->getGroups($value['id']);
-        }
 
         if (!$result)
         {

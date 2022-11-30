@@ -1,6 +1,9 @@
-<?php defined( 'APP_PATH' ) or die('');
+<?php defined('APP_PATH') or die('');
 $this->theme->prepareAssets([
+    'jquery',
     'bootstrap-css',
+    'admin-css',
+    'js-bootstrap'
 ]);
 
 ?>
@@ -12,37 +15,25 @@ $this->theme->prepareAssets([
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SDM</title>
 
-  <?php $this->theme->echo('css', $this->url) ?> 
-  <?php $this->theme->echo('topJs', $this->url) ?>
-  <?php $this->theme->echo('inlineCss', $this->url) ?>
+    <?php $this->theme->echo('css', $this->url) ?>
+    <?php $this->theme->echo('topJs', $this->url) ?>
+    <?php $this->theme->echo('inlineCss', $this->url) ?>
 </head>
 
-<body class="hold-transition sidebar-mini">
-<!-- Site wrapper -->
-<div class="wrapper">
-  <!-- Navbar -->
-  <?php  echo $this->render('widgets.sidebar'); ?>
-  <!-- /.navbar -->
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
+    <div class="wrapper">
+        <?php echo $this->render('widgets.backend.sidebar'); ?>
+        <div class="main">
+            <?php echo $this->render('widgets.backend.header'); ?>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper m-0">
-        <!-- Main content -->
-        <?php echo $this->theme->getBody(); ?>
-        
-        <!-- /.content -->
+            <main class="content p-0">
+                <?php echo $this->theme->getBody(); ?>
+            </main>
+
+        </div>
     </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-<?php $this->theme->echo('js', $this->url) ?> 
-<?php $this->theme->echo('inlineJs', $this->url) ?>
+    <?php $this->theme->echo('js', $this->url) ?>
+    <?php $this->theme->echo('inlineJs', $this->url) ?>
 </body>
 
 </html>
