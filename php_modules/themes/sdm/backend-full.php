@@ -1,6 +1,7 @@
 <?php defined( 'APP_PATH' ) or die('');
 $this->theme->prepareAssets([
     'jquery',
+    'fontawesome-css',
     'bootstrap-css',
     'admin-css',
     'js-bootstrap'

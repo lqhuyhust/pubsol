@@ -8,7 +8,7 @@ return [
     'endpoints' => [
     ],
     'defaultEndpoint' => [
-        'fnc' => 'user.admin.login'
+        'fnc' => 'user.user.list'
     ],
     'db' => [
         'host' => '',

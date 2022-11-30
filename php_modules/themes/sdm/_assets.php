@@ -6,6 +6,9 @@ return [
     'bootstrap-css' => [
         ['__domain__/assets/css/bootstrap5.min.css', '' , 'bootstrap-css'],
     ],
+    'fontawesome-css' => [
+        ['__domain__/assets/font/fontawesome/css/fontawesome.min.css', '' , 'fontawesome-css'],
+    ],
     'style-css' => [
         ['__domain__/assets/css/style.css', '' , 'style-css'],
     ],

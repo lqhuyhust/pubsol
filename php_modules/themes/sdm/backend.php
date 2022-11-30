@@ -2,6 +2,7 @@
 $this->theme->prepareAssets([
     'jquery',
     'bootstrap-css',
+    'fontawesome-css',
     'admin-css',
     'js-bootstrap'
 ]);

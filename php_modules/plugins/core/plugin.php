@@ -23,6 +23,7 @@ class plugin extends PluginAbstract
             'viewmodels' => [
                 'alias' => [
                     'App\plugins\core\viewmodels\MessageVM' => 'MessageVM',
+                    'App\plugins\core\viewmodels\WidgetsVM' => 'WidgetsVM',
                 ],
             ],
         ];
