@@ -23,8 +23,9 @@ class plugin extends PluginAbstract
             'viewmodels' => [
                 'alias' => [
                     'App\plugins\core\viewmodels\MessageVM' => 'MessageVM',
-                    'App\plugins\core\viewmodels\WidgetsVM' => 'WidgetsVM',
+                    'App\plugins\core\viewmodels\SideBarVM' => 'SideBarVM',
                     'App\plugins\core\viewmodels\PaginationVM' => 'PaginationVM',
+                    'App\plugins\core\viewmodels\DemoVM' => 'DemoVM',
                 ],
             ],
         ];
