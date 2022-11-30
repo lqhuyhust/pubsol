@@ -2,77 +2,74 @@
 /**
  * SPT software - ViewModel
  * 
- * @project: https://github.com/smpleader/spt-boilerplate
+ * @project: https://github.com/smpleader/spt
  * @author: Pham Minh - smpleader
- * @description: Just a basic viewmodel
+ * @description: A simple View Model
  * 
  */
-namespace App\plugins\user\viewmodels; 
+
+namespace App\plugins\users\viewmodels; 
 
 use SPT\View\VM\JDIContainer\ViewModel; 
+use SPT\View\Gui\Form;
 
-class AdminUserVM extends ViewModel
+class GroupVM extends ViewModel
 {
-    protected $alias = 'AdminUserVM';
+    protected $alias = 'AdminGroupVM';
     protected $layouts = [
-        'layouts.backend.user' => [
-            'login',
-            'form'
-        ]
+        'layouts.backend.userGroup.form'
     ];
-
-    public function login()
-    {
-        $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_login', $this->router->url('admin/login'), true);
-    }
 
     public function form()
     {
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
+        $this->view->set('id', $id, true);
 
-        $data = $id ? $this->UserEntity->findByPK($id) : [];
+        $data = $id ? $this->GroupEntity->findByPK($id) : [];
+        if ($data['access'])
+        {
+            $data['access'] = (array) json_decode($data['access']);
+        }
         $form = new Form($this->getFormFields(), $data);
+
+        $save_form = $id ? $this->router->url('admin/userGroupUpdateSave/'. $id) : $this->router->url('admin/userGroupAddSave');
 
         $this->view->set('form', $form, true);
         $this->view->set('data', $data, true);
         $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_list', $this->router->url('admin/users'));
-        $this->view->set('link_form', $this->router->url('admin/user'));
+        $this->view->set('link_user_group_list', $this->router->url('admin/userGroups'));
+        $this->view->set('link_user_group_form', $save_form);
     }
 
     public function getFormFields()
     {
+        $key_access = $this->UserModel->getRightAccess();
+        $option = [];
+        foreach ($key_access as $key)
+        {
+            $option[] = [
+                'text' => $key,
+                'value' => $key,
+            ];
+        }
         $fields = [
             'id' => ['hidden'],
-            'name' => [
-                'text',
-                'placeholder' => 'Enter Name',
+            'name' => ['text',
                 'showLabel' => false,
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
-            'username' => ['text',
-                'placeholder' => 'Enter user name',
-                'showLabel' => false,
+            'description' => ['textarea',
                 'formClass' => 'form-control',
-                'required' => 'required',
+                'placeholder' => ''
             ],
-            'email' => ['email',
-                'formClass' => 'form-control',
-                'placeholder' => 'Enter Name',
+            'access' => ['option',
                 'showLabel' => false,
-                // 'required' => 'required'
-            ],
-            'password' => ['password',
-                'showLabel' => false,
-                'formClass' => 'form-control'
-            ],
-            'confirm_password' => ['password',
-                'showLabel' => false,
-                'formClass' => 'form-control'
+                'placeholder' => 'Select Right Access',
+                'type' => 'multiselect',
+                'formClass' => 'form-select',
+                'options' => $option
             ],
             'status' => ['option',
                 'type' => 'radio',
@@ -96,8 +93,6 @@ class AdminUserVM extends ViewModel
         }
         else
         {
-            $fields['password']['required'] = 'required';
-            $fields['confirm_password']['required'] = 'required';
             $fields['modified_at'] = ['hidden'];
             $fields['modified_by'] = ['hidden'];
             $fields['created_at'] = ['hidden'];

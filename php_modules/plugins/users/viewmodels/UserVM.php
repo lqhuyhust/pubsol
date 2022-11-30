@@ -2,16 +2,18 @@
 /**
  * SPT software - ViewModel
  * 
- * @project: https://github.com/smpleader/spt-boilerplate
+ * @project: https://github.com/smpleader/spt
  * @author: Pham Minh - smpleader
- * @description: Just a basic viewmodel
+ * @description: A simple View Model
  * 
  */
-namespace App\plugins\user\viewmodels; 
+
+namespace App\plugins\users\viewmodels; 
 
 use SPT\View\VM\JDIContainer\ViewModel; 
+use SPT\View\Gui\Form;
 
-class AdminUserVM extends ViewModel
+class UserVM extends ViewModel
 {
     protected $alias = 'AdminUserVM';
     protected $layouts = [
@@ -34,17 +36,48 @@ class AdminUserVM extends ViewModel
         $this->set('id', $id, true);
 
         $data = $id ? $this->UserEntity->findByPK($id) : [];
+
+        if ($data)
+        {
+            $groups = $this->UserEntity->getGroups($data['id']);
+            foreach ($groups as $group)
+            {
+                $data['groups'][] = $group['group_id'];
+            }
+
+
+            if (!file_exists(MEDIA_PATH. $data['avatar']) || !$data['avatar'])
+            {
+                $data['avatar'] = 'users/dummyUser.png';
+            }
+        }
+
         $form = new Form($this->getFormFields(), $data);
+
+        $field = $form->getField('password');
+        $field->value = '';
+
+        $save_form = $id ? $this->router->url('admin/userUpdateSave/'. $id) : $this->router->url('admin/userAddSave');
 
         $this->view->set('form', $form, true);
         $this->view->set('data', $data, true);
         $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_list', $this->router->url('admin/users'));
-        $this->view->set('link_form', $this->router->url('admin/user'));
+        $this->view->set('link_user_list', $this->router->url('admin/users'));
+        $this->view->set('link_user_form_save', $save_form);
     }
 
     public function getFormFields()
     {
+        $groups = $this->GroupEntity->list(0, 0);
+        $options = [];
+        foreach ($groups as $group)
+        {
+            $options[] = [
+                'text' => $group['name'],
+                'value' => $group['id'],
+            ];
+        }
+
         $fields = [
             'id' => ['hidden'],
             'name' => [
@@ -73,6 +106,12 @@ class AdminUserVM extends ViewModel
             'confirm_password' => ['password',
                 'showLabel' => false,
                 'formClass' => 'form-control'
+            ],
+            'groups' => ['option',
+                'options' => $options,
+                'type' => 'multiselect',
+                'showLabel' => false,
+                'formClass' => 'form-select',
             ],
             'status' => ['option',
                 'type' => 'radio',
