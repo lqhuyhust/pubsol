@@ -16,6 +16,7 @@ class Setting extends MVController
 {
     public function form()
     {
+        $this->isLoggedIn();
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.setting.form');
         $this->app->set('page', 'backend');
@@ -23,7 +24,7 @@ class Setting extends MVController
 
     public function save()
     {
-
+        $this->isLoggedIn();
         $fields = $this->AdminSettingVM->getFormFields();
         $try = true;
         foreach ($fields as $key => $value)
@@ -35,5 +36,17 @@ class Setting extends MVController
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
         $this->app->redirect( $this->router->url('admin/setting'));
+    }
+
+    public function isLoggedIn()
+    {
+        if( !$this->user->get('id') )
+        {
+            $this->app->redirect(
+                $this->router->url(
+                    'admin/login'
+                )
+            );
+        }
     }
 }
