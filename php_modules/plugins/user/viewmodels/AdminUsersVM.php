@@ -47,7 +47,7 @@ class AdminUsersVM extends ViewModel
         }
         if(is_numeric($status))
         {
-            $where[] = '`block`='. $status;
+            $where[] = '`status`='. $status;
         }
 
         $start  = ($page-1) * $limit;
