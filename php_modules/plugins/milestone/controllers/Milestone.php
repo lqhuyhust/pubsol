@@ -11,7 +11,6 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\MVC\JDIContainer\MVController;
-use SPT\Middleware\Dispatcher as MW;
 
 class Milestone extends Admin 
 {
@@ -22,15 +21,14 @@ class Milestone extends Admin
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
-        $existUser = $this->UserEntity->findByPK($id);
-        if(!empty($id) && !$existUser) 
+        $exist = $this->MilestoneEntity->findByPK($id);
+        if(!empty($id) && !$exist) 
         {
-            $this->session->set('flashMsg', "Invalid user");
+            $this->session->set('flashMsg', "Invalid Milestone");
             $this->app->redirect(
-                $this->router->url('admin/users')
+                $this->router->url('admin/milestones')
             );
         }
-
         $this->app->set('layout', 'backend.milestone.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');

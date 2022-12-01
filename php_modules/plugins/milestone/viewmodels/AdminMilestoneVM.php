@@ -18,17 +18,10 @@ class AdminMilestoneVM extends ViewModel
 {
     protected $alias = 'AdminMilestoneVM';
     protected $layouts = [
-        'layouts.backend.user' => [
-            'login',
+        'layouts.backend.milestone' => [
             'form'
         ]
     ];
-
-    public function login()
-    {
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_login', $this->router->url('admin/login'), true);
-    }
 
     public function form()
     {
@@ -36,53 +29,43 @@ class AdminMilestoneVM extends ViewModel
         $id = (int) $urlVars['id'];
         $this->set('id', $id, true);
 
-        $data = $id ? $this->UserEntity->findByPK($id) : [];
-        if ($data)
-        {
-            $data['password'] = '';
-        }
+        $data = $id ? $this->MilestoneEntity->findByPK($id) : [];
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'New User' : 'Update User', true);
+        $this->set('title_page', $data ? 'New Milestone' : 'Edit Milestone', true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/users'));
-        $this->set('link_form', $this->router->url('admin/user'));
+        $this->set('link_list', $this->router->url('admin/milestones'));
+        $this->set('link_form', $this->router->url('admin/milestone'));
     }
 
     public function getFormFields()
     {
         $fields = [
             'id' => ['hidden'],
-            'name' => [
+            'title' => [
                 'text',
-                'placeholder' => 'Enter Name',
+                'placeholder' => 'Enter Title',
                 'showLabel' => false,
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
-            'username' => ['text',
-                'placeholder' => 'Enter User Name',
+            'note' => ['texarea',
+                'placeholder' => 'Enter Note',
                 'showLabel' => false,
                 'formClass' => 'form-control',
                 'required' => 'required',
             ],
-            'email' => ['email',
+            'start_date' => ['date',
+                'showLabel' => false,
                 'formClass' => 'form-control',
-                'placeholder' => 'Enter Email',
-                'showLabel' => false,
-                // 'required' => 'required'
+                'required' => 'required',
             ],
-            'password' => ['password',
-                'placeholder' => 'Enter Password',
+            'end_date' => ['date',
                 'showLabel' => false,
-                'formClass' => 'form-control'
-            ],
-            'confirm_password' => ['password',
-                'placeholder' => 'Enter Confirm Password',
-                'showLabel' => false,
-                'formClass' => 'form-control'
+                'formClass' => 'form-control',
+                'required' => 'required',
             ],
             'status' => ['option',
                 'showLabel' => false,
@@ -90,8 +73,8 @@ class AdminMilestoneVM extends ViewModel
                 'formClass' => '',
                 'default' => 1,
                 'options' => [
-                    ['text'=>'Active', 'value'=>1],
-                    ['text'=>'Inactive', 'value'=>0]
+                    ['text'=>'Show', 'value'=>1],
+                    ['text'=>'Hide', 'value'=>0]
                 ]
             ],
             'token' => ['hidden',
@@ -108,8 +91,6 @@ class AdminMilestoneVM extends ViewModel
         }
         else
         {
-            $fields['password']['required'] = 'required';
-            $fields['confirm_password']['required'] = 'required';
             $fields['modified_at'] = ['hidden'];
             $fields['modified_by'] = ['hidden'];
             $fields['created_at'] = ['hidden'];

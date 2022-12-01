@@ -6,35 +6,28 @@
                 <div class="row g-3 align-items-center">
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
-                            <label class="form-label fw-bold">Name:</label>
-                            <?php $this->field('name'); ?>
+                            <label class="form-label fw-bold">Title:</label>
+                            <?php $this->field('title'); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">User Name:</label>
-                            <?php $this->field('username'); ?>
+                            <label class="form-label fw-bold">Note:</label>
+                            <?php $this->field('note'); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">Password:</label>
-                            <?php $this->field('password'); ?>
+                            <label class="form-label fw-bold">Start Date:</label>
+                            <?php $this->field('start_date'); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">Confirm Password:</label>
-                            <?php $this->field('confirm_password'); ?>
+                            <label class="form-label fw-bold">End Date:</label>
+                            <?php $this->field('end_date'); ?>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold" for="inputEmail4">Email:</label>
-                            <?php $this->field('email'); ?>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                             <label class="form-label fw-bold">Status:</label>
