@@ -8,11 +8,11 @@
  * 
  */
 
-namespace App\plugins\starter\models;
+namespace App\plugins\milestone\models;
 
 use SPT\JDIContainer\Base; 
 
-class UserModel extends Base 
+class MilestoneModel extends Base 
 { 
     // Write your code here
 }
