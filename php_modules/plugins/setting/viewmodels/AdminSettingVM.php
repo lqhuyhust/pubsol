@@ -47,20 +47,6 @@ class AdminSettingVM extends ViewModel
 
     public function getFormFields()
     {
-        $email_tmps = $this->EmailTmpEntity->list(0, 0);
-        $options = [
-            [
-                'text' => 'Select email template',
-                'value' => '',
-            ],
-        ];
-        foreach ($email_tmps as $item)
-        {
-            $options[] = [
-                'text' => $item['e_name'],
-                'value' => $item['id'],
-            ];
-        }
         $fields = [
             'email_host' => [
                 'text',
