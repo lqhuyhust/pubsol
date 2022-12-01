@@ -121,40 +121,32 @@ class Milestone extends Admin
         }
         if(is_numeric($ids) && $ids)
         {
-            $password = $this->request->post->get('password', '');
-            $repassword = $this->request->post->get('confirm_password', '');
-            if($password) {
-                $user['password'] = $this->request->post->get('password', '');
-            }
-            if($password == $repassword) 
+            $title = $this->request->post->get('title', '');
+            $note = $this->request->post->get('note', '');
+            $findOne = $this->MilestoneEntity->findOne(['title = "'. $title. '"', 'id <> '. $ids]);
+            if ($findOne)
             {
-                $user = [
-                    'name' => $this->request->post->get('name', '', 'string'),
-                    'username' => $this->request->post->get('username', '' , 'string'),
-                    'email' => $this->request->post->get('email', '', 'string'),
-                    'status' => $this->request->post->get('status', '') == "" ? 0 : 1,
-                    'modified_by' => $this->user->get('id'),
-                    'modified_at' => date('Y-m-d H:i:s'),
-                    'id' => $ids,
-                ];
-            }
-            else
-            {
-                $this->session->set('flashMsg', 'Error: Confirm Password Failed');
+                $this->session->set('flashMsg', 'Error: Title is already in use! ');
                 $this->app->redirect(
-                    $this->router->url('admin/user/'.$ids)
+                    $this->router->url('admin/milestone/'. $ids)
                 );
             }
 
-            $passwrd =  $this->request->post->get('password','');
-            if($passwrd) $user['password'] = md5($passwrd);
-            
-            $try = $this->UserEntity->update( $user );
+            $try = $this->UserEntity->update([
+                'title' => $title,
+                'note' => $note,
+                'start_date' => $this->request->post->get('start_date', '' , 'string'),
+                'end_date' => $this->request->post->get('end_date', '', 'string'),
+                'status' => $this->request->post->get('status', '') == "" ? 0 : 1,
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s'),
+                'id' => $ids,
+            ]);
 
             if($try) 
             {
                 $this->app->redirect(
-                    $this->router->url('admin/users'), 'Edit Successfully'
+                    $this->router->url('admin/milestones'), 'Edit Successfully'
                 );
             }
             else
@@ -162,7 +154,7 @@ class Milestone extends Admin
                 $msg = 'Error: Save Failed';
                 $this->session->set('flashMsg', $msg);
                 $this->app->redirect(
-                    $this->router->url('admin/user/'. $ids)
+                    $this->router->url('admin/milestone/'. $ids)
                 );
             }
         }
@@ -170,39 +162,23 @@ class Milestone extends Admin
 
     public function delete()
     {
-        $userID = $this->validateID();
+        $ids = $this->validateID();
         
         $count = 0;
-        if( is_array($userID))
+        if( is_array($ids))
         {
-            foreach($userID as $id)
+            foreach($ids as $id)
             {
-                if( $id == $this->user->get('id') )
-                {
-                    $this->session->set('flashMsg', 'Error: You can\'t delete yourself.');
-                    $this->app->redirect(
-                        $this->router->url('admin/users'),
-                    );
-                }
-
                 //Delete file in source
-                if( $this->UserEntity->remove( $id ) )
+                if( $this->MilestoneEntity->remove( $id ) )
                 {
                     $count++;
                 }
             }
         }
-        elseif( is_numeric($userID) )
+        elseif( is_numeric($ids) )
         {
-            if( $userID === $this->user->get('id') )
-            {
-                $this->session->set('flashMsg', 'Error: You can\'t delete yourself.');
-                $this->app->redirect(
-                    $this->router->url()
-                );
-            }
-            //Delete file in source
-            if( $this->UserEntity->remove($userID ) )
+            if( $this->MilestoneEntity->remove($ids ) )
             {
                 $count++;
             }
@@ -211,7 +187,7 @@ class Milestone extends Admin
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         $this->app->redirect(
-            $this->router->url('admin/users'), 
+            $this->router->url('admin/milestones'), 
         );
     }
 
@@ -227,9 +203,9 @@ class Milestone extends Admin
             $ids = $this->request->post->get('ids', [], 'array');
             if(count($ids)) return $ids;
 
-            $this->session->set( 'Invalid user');
+            $this->session->set( 'Invalid Milestone');
             $this->app->redirect(
-                $this->router->url('admin/users'),
+                $this->router->url('admin/milestones'),
             );
         }
 
