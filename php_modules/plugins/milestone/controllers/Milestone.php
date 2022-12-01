@@ -13,55 +13,8 @@ namespace App\plugins\milestone\controllers;
 use SPT\MVC\JDIContainer\MVController;
 use SPT\Middleware\Dispatcher as MW;
 
-class User extends Admin 
+class Milestone extends Admin 
 {
-    public function gate()
-    {
-        if( $this->user->get('id') )
-        {
-            $this->app->redirect(
-                $this->router->url('admin/users')
-            );
-        }
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.user.login');
-        $this->app->set('page', 'backend-full');
-    }
-
-    public function login()
-    {
-        $result = $this->user->login(
-            $this->request->post->get('username', '', 'string'),
-            $this->request->post->get('password', '', 'string')
-        );
-
-        if ( $result )
-        {
-            if($result['status'] != 1) 
-            {
-                $this->session->set('flashMsg', 'Error: User has been block');
-                $this->user->logout();
-                $this->app->redirect(
-                    $this->router->url('admin/login')
-                );
-            }
-            else
-            {
-                $this->session->set('flashMsg', 'Hello!!!');
-                $this->app->redirect(
-                    $this->router->url('admin/users')
-                );
-            }
-        }
-        else
-        {
-            $this->session->set('flashMsg', 'Username and Password invalid.');
-            $this->app->redirect(
-                $this->router->url('admin/login')
-            );
-        }
-    }
-
     public function detail()
     {
         $this->isLoggedIn();
@@ -88,7 +41,7 @@ class User extends Admin
         $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.user.list');
+        $this->app->set('layout', 'backend.milestone.list');
     }
 
     public function logout()
