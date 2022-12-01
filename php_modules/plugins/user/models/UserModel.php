@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\starter\models;
+namespace App\plugins\user\models;
 
 use SPT\JDIContainer\Base; 
 
