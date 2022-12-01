@@ -16,9 +16,9 @@ use SPT\Util;
 
 class AdminUsersVM extends ViewModel
 {
-    protected $alias = 'AdminUsersVM';
+    protected $alias = 'AdminMilestonesVM';
     protected $layouts = [
-        'layouts.backend.user' => [
+        'layouts.backend.milestone' => [
             'list',
             'list.row',
             'list.filter'
@@ -41,13 +41,12 @@ class AdminUsersVM extends ViewModel
 
         if( !empty($search) )
         {
-            $where[] = "(`username` LIKE '%".$search."%' ".
-                "OR `name` LIKE '%".$search."%' ".
-                "OR `email` LIKE '%".$search."%' )";
+            $where[] = "(`title` LIKE '%".$search."%' ".
+                "OR `note` LIKE '%".$search."%' )";
         }
         if(is_numeric($status))
         {
-            $where[] = '`block`='. $status;
+            $where[] = '`status`='. $status;
         }
 
         $start  = ($page-1) * $limit;
