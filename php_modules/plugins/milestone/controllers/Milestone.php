@@ -31,7 +31,7 @@ class Milestone extends Admin
             );
         }
 
-        $this->app->set('layout', 'backend.user.form');
+        $this->app->set('layout', 'backend.milestone.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
     }
@@ -42,16 +42,6 @@ class Milestone extends Admin
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.milestone.list');
-    }
-
-    public function logout()
-    {
-        $this->user->logout();
-
-        $this->session->set('flashMsg', 'Bye Bye');
-        $this->app->redirect(
-            $this->router->url('admin/login')
-        );
     }
 
     public function add()

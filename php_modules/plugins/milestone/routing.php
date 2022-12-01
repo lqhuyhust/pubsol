@@ -2,34 +2,23 @@
 
 return [
     'admin' => [
-        'login' => [
-            'fnc' => [
-                'get' => 'user.user.gate',
-                'post' => 'user.user.login',
-            ]
-        ],
-        'logout' =>'user.user.logout',
-
         // Endpoint User
-        'users'=>[
+        'milestones'=>[
             'fnc' => [
-                'get' => 'user.user.list',
-                'post' => 'user.user.list',
-                'put' => 'user.user.update',
-                'delete' => 'user.user.delete'
+                'get' => 'milestone.user.list',
+                'post' => 'milestone.milestone.list',
+                'put' => 'milestone.milestone.update',
+                'delete' => 'milestone.milestone.delete'
             ],
         ],
-        'user' => [
+        'milestone' => [
             'fnc' => [
-                'get' => 'user.user.detail',
-                'post' => 'user.user.add',
-                'put' => 'user.user.update',
-                'delete' => 'user.user.delete'
+                'get' => 'milestone.milestone.detail',
+                'post' => 'milestone.milestone.add',
+                'put' => 'milestone.milestone.update',
+                'delete' => 'milestone.milestone.delete'
             ],
             'parameters' => ['id'],
         ],
-    ],
-    '/admin' => [
-        'fnc' => 'user.user.list',
     ],
 ];

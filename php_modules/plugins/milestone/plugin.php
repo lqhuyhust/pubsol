@@ -23,13 +23,13 @@ class plugin extends PluginAbstract
             // write your code here
             'viewmodels' => [
                 'alias' => [
-                    'App\plugins\milestone\viewmodels\AdminUsersVM' => 'AdminUsersVM',
-                    'App\plugins\milestone\viewmodels\AdminUserVM' => 'AdminUserVM',
+                    'App\plugins\milestone\viewmodels\AdminMilestonesVM' => 'AdminMilestonesVM',
+                    'App\plugins\milestone\viewmodels\AdminMilestoneVM' => 'AdminMilestoneVM',
                 ],
             ],
             'models' => [
                 'alias' => [
-                    'App\plugins\milestone\models\UserModel' => 'UserModel',
+                    'App\plugins\milestone\models\MilestoneModel' => 'MilestoneModel',
                 ],
             ],
             'entity' => [],
