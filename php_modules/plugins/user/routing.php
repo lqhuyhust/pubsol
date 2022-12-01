@@ -29,7 +29,4 @@ return [
             'parameters' => ['id'],
         ],
     ],
-    '/admin' => [
-        'fnc' => 'user.user.list',
-    ],
 ];
