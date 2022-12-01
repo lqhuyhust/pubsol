@@ -14,18 +14,11 @@ use SPT\App\Instance as AppIns;
 use SPT\Plugin\CMS as PluginAbstract;
 use SPT\Support\Loader;
 use Joomla\DI\Container;
-use SPT\Middleware\Dispatcher as MW;
-use App\plugins\milestone\middlewares\Permission;
-use App\plugins\milestone\middlewares\Validation;
-use SPT\File;
 
 class plugin extends PluginAbstract
 { 
     public function register()
     {
-        $Validation = new Validation('plugins\milestone\middlewares\validation');
-        MW::register('validation', $Validation);
-
         return [
             // write your code here
             'viewmodels' => [
@@ -47,10 +40,10 @@ class plugin extends PluginAbstract
     public function getInfo()
     {
         return [
-            'name' => 'user',
+            'name' => 'milestone',
             'author' => 'Pham Minh',
             'version' =>  '0.1',
-            'description' => 'User Plugin'
+            'description' => 'Milestone Plugin'
         ];
     }
 
@@ -61,7 +54,7 @@ class plugin extends PluginAbstract
 
     public function loadEntity(Container $container)
     {
-        $path = AppIns::path('plugin'). 'user/entities';
+        $path = AppIns::path('plugin'). 'milestone/entities';
         $namespace = 'App\plugins\milestone\entities';
         $inners = Loader::findClass($path, $namespace);
         foreach($inners as $class)
