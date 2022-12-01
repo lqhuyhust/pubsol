@@ -15,6 +15,7 @@
             $menu = [];
             $menu = array_merge($menu, [
                 [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', ''],
+                [['milestones', 'milestone',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
                 [['setting', 'setting',], 'setting', 'Setting', '<i class="fa-solid fa-gear"></i>', ''],
             ]);
             $menu = array_merge($menu, 
