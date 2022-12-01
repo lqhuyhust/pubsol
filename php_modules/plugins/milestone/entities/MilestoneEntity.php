@@ -14,7 +14,7 @@ use SPT\User\SPT\UserEntity as Entity;
 
 class UserEntity extends Entity
 {
-    protected $table = '#__users';
+    protected $table = '#__milestones';
     protected $pk = 'id';
 
     public function getFields()
@@ -26,22 +26,21 @@ class UserEntity extends Entity
                     'option' => 'unsigned',
                     'extra' => 'auto_increment',
                 ],
-                'name' => [
-                    'type' => 'varchar',
-                    'limit' => 100,
-                ],
-                'username' => [
-                    'type' => 'varchar',
-                    'limit' => 100,
-                ],
-                'password' => [
-                    // 'validate' => ['md5'],
+                'title' => [
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
-                'email' => [
-                    'type' => 'varchar',
-                    'limit' => 255,
+                'start_date' => [
+                    'type' => 'datetime',
+                    'null' => 'YES',
+                ],
+                'end_date' => [
+                    'type' => 'datetime',
+                    'null' => 'YES',
+                ],
+                'note' => [
+                    'type' => 'text',
+                    'null' => 'YES',
                 ],
                 'status' => [
                     'type' => 'tinyint',
@@ -65,10 +64,9 @@ class UserEntity extends Entity
         ];
     }
 
-    public function togglePublishment( $id, $action)
+    public function toggleStatus( $id, $action)
     {
         $item = $this->findByPK($id);
-        $status = $action == 'active' ? 1 : 0;
         return $this->db->table( $this->table )->update([
             'status' => $status,
         ], ['id' => $id ]);

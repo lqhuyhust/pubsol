@@ -47,31 +47,32 @@ class Milestone extends Admin
     public function add()
     {
         $this->isLoggedIn();
-        $try = MW::fire('validation', ['ValidateUser'], []);
-        if (!$try)
+
+        //check title sprint
+        $title = $this->request->post->get('title', '', 'string');
+        $note = $this->request->post->get('note', '', 'string');
+        if (!$title)
         {
-            $msg = $this->session->get('validate', '');
-            $this->session->set('flashMsg', $msg);
+            $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
             $this->app->redirect(
-                $this->router->url('admin/user/0')
+                $this->router->url('admin/milestone/0')
             );
         }
 
-        //check confirm password
-        if($this->request->post->get('password', '') != $this->request->post->get('confirm_password', ''))
+        $findOne = $this->MilestoneEntity->findOne(['title = "'. $title. '"']);
+        if ($findOne)
         {
-            $this->session->set('flashMsg', 'Error: Confirm Password Failed');
+            $this->session->set('flashMsg', 'Error: Title is already in use! ');
             $this->app->redirect(
-                $this->router->url('admin/user/0')
+                $this->router->url('admin/milestone/0')
             );
         }
-
         // TODO: validate new add
-        $newId =  $this->UserEntity->add([
-            'name' => $this->request->post->get('name', '', 'string'),
-            'username' => $this->request->post->get('username', '' , 'string'),
-            'email' => $this->request->post->get('email', '' , 'string'),
-            'password' => md5($this->request->post->get('password', '')),
+        $newId =  $this->Milestone->add([
+            'title' => $title,
+            'note' => $note,
+            'start_date' => $this->request->post->get('start_date', '' , 'string'),
+            'end_date' => $this->request->post->get('end_date', '', 'string'),
             'status' => $this->request->post->get('status', '') == "" ? 0 : 1,
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -81,17 +82,17 @@ class Milestone extends Admin
 
         if( !$newId )
         {
-            $msg = 'Error: Save Failed';
+            $msg = 'Error: Create Failed!';
             $this->session->set('flashMsg', $msg);
             $this->app->redirect(
-                $this->router->url('admin/user/0')
+                $this->router->url('admin/milestone/0')
             );
         }
         else
         {
-            $this->session->set('flashMsg', 'Save Successfully');
+            $this->session->set('flashMsg', 'Create Success!');
             $this->app->redirect(
-                $this->router->url('admin/users')
+                $this->router->url('admin/milestones')
             );
         }
     }
@@ -106,39 +107,20 @@ class Milestone extends Admin
         {
             // publishment
             $count = 0; 
-            $action = $this->request->post->get('published', '', 'string');
-        
-            if (in_array($this->user->get('id'), $ids) && $action == 'unactive')
-            {
-                $this->session->set('flashMsg', 'Error: You cannot unactivate your account');
-                $this->app->redirect(
-                    $this->router->url('admin/users') 
-                );
-            }
+            $action = $this->request->post->get('status', 0, 'string');
 
             foreach($ids as $id)
             {
-                $toggle = $this->UserEntity->togglePublishment($id, $action);
+                $toggle = $this->MilestoneEntity->toggleStatus($id, $action);
                 $count++;
             }
             $this->session->set('flashMsg', $count.' changed record(s)');
             $this->app->redirect(
-                $this->router->url('admin/users')
+                $this->router->url('admin/milestones')
             );
         }
         if(is_numeric($ids) && $ids)
         {
-
-            $try = MW::fire('validation', ['ValidateUser'], []);
-            if (!$try)
-            {
-                $msg = $this->session->get('validate', '');
-                $this->session->set('flashMsg', $msg);
-                $this->app->redirect(
-                    $this->router->url('admin/user/'. $ids)
-                );
-            }
-
             $password = $this->request->post->get('password', '');
             $repassword = $this->request->post->get('confirm_password', '');
             if($password) {
