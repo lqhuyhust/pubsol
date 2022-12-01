@@ -30,11 +30,16 @@ class AdminMilestoneVM extends ViewModel
         $this->set('id', $id, true);
 
         $data = $id ? $this->MilestoneEntity->findByPK($id) : [];
+        if ($data)
+        {
+            $data['start_date'] = $data['start_date'] ? date('Y-m-d', strtotime($data['start_date'])) : '';
+            $data['end_date'] = $data['end_date'] ? date('Y-m-d', strtotime($data['end_date'])) : '';
+        }
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'New Milestone' : 'Edit Milestone', true);
+        $this->set('title_page', $data ? 'Edit Milestone' : 'New Milestone', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('admin/milestones'));
         $this->set('link_form', $this->router->url('admin/milestone'));
@@ -51,7 +56,7 @@ class AdminMilestoneVM extends ViewModel
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
-            'note' => ['texarea',
+            'note' => ['textarea',
                 'placeholder' => 'Enter Note',
                 'showLabel' => false,
                 'formClass' => 'form-control',

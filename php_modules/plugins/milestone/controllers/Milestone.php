@@ -66,12 +66,12 @@ class Milestone extends Admin
             );
         }
         // TODO: validate new add
-        $newId =  $this->Milestone->add([
+        $newId =  $this->MilestoneEntity->add([
             'title' => $title,
             'note' => $note,
             'start_date' => $this->request->post->get('start_date', '' , 'string'),
             'end_date' => $this->request->post->get('end_date', '', 'string'),
-            'status' => $this->request->post->get('status', '') == "" ? 0 : 1,
+            'status' => $this->request->post->get('status', ''),
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
@@ -130,17 +130,17 @@ class Milestone extends Admin
                 );
             }
 
-            $try = $this->UserEntity->update([
+            $try = $this->MilestoneEntity->update([
                 'title' => $title,
                 'note' => $note,
                 'start_date' => $this->request->post->get('start_date', '' , 'string'),
                 'end_date' => $this->request->post->get('end_date', '', 'string'),
-                'status' => $this->request->post->get('status', '') == "" ? 0 : 1,
+                'status' => $this->request->post->get('status', ''),
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,
             ]);
-
+            
             if($try) 
             {
                 $this->app->redirect(
