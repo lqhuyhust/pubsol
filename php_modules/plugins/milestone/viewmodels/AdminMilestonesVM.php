@@ -14,7 +14,7 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminUsersVM extends ViewModel
+class AdminMilestonesVM extends ViewModel
 {
     protected $alias = 'AdminMilestonesVM';
     protected $layouts = [
@@ -50,16 +50,15 @@ class AdminUsersVM extends ViewModel
         }
 
         $start  = ($page-1) * $limit;
-        $sort = $sort ? $sort : 'id DESC';
+        $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->UserEntity->list( $start, $limit, $where, $sort);
-        $total = $this->UserEntity->getListTotal();
-
+        $result = $this->MilestoneEntity->list( $start, $limit, $where, $sort);
+        $total = $this->MilestoneEntity->getListTotal();
         if (!$result)
         {
             $result = [];
             $total = 0;
-            $this->session->set('flashMsg', 'Not Found User');
+            $this->session->set('flashMsg', 'Not Found Milestone');
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
@@ -69,9 +68,9 @@ class AdminUsersVM extends ViewModel
         $this->set('sort', $sort, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/users'), true);
-        $this->set('title_page', 'User Manager', true);
-        $this->set('link_form', $this->router->url('admin/user'), true);
+        $this->set('link_list', $this->router->url('admin/milestones'), true);
+        $this->set('title_page', 'Milestone Manager', true);
+        $this->set('link_form', $this->router->url('admin/milestone'), true);
         $this->set('token', $this->app->getToken(), true);
     }
 
@@ -79,10 +78,8 @@ class AdminUsersVM extends ViewModel
     {
         return [
             'num' => '#',
-            'name' => 'Name',
-            'username' => 'User name',
-            'emal' => 'Email',
-            'block' => 'Is block',
+            'title' => 'Title',
+            'status' => 'Status',
             'created_at' => 'Created at',
             'col_last' => ' ',
         ];
@@ -93,10 +90,10 @@ class AdminUsersVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'users.search'),
-                'status' => $this->state('status', '','', 'post', 'users.status'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'users.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'users.sort')
+                'search' => $this->state('search', '', '', 'post', 'milestone.search'),
+                'status' => $this->state('status', '','', 'post', 'milestone.status'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'milestone.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'milestone.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
@@ -124,8 +121,8 @@ class AdminUsersVM extends ViewModel
                 'formClass' => 'form-select',
                 'options' => [
                     ['text' => '--', 'value' => ''],
-                    ['text' => 'Inactive', 'value' => '0'],
-                    ['text' => 'Active', 'value' => '1']
+                    ['text' => 'Show', 'value' => '1'],
+                    ['text' => 'Hide', 'value' => '0'],
                 ],
                 'showLabel' => false
             ],
@@ -137,14 +134,10 @@ class AdminUsersVM extends ViewModel
             ],
             'sort' => ['option',
                 'formClass' => 'form-select',
-                'default' => 'name asc',
+                'default' => 'title asc',
                 'options' => [
-                    ['text' => 'Name ascending', 'value' => 'name asc'],
-                    ['text' => 'Name descending', 'value' => 'name desc'],
-                    ['text' => 'Email ascending', 'value' => 'email asc'],
-                    ['text' => 'Email descending', 'value' => 'email desc'],
-                    ['text' => 'Username ascending', 'value' => 'username asc'],
-                    ['text' => 'Username descending', 'value' => 'username desc'],
+                    ['text' => 'Title ascending', 'value' => 'title asc'],
+                    ['text' => 'Title descending', 'value' => 'title desc'],
                 ],
                 'showLabel' => false
             ]

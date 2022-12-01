@@ -14,9 +14,9 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminUserVM extends ViewModel
+class AdminMilestoneVM extends ViewModel
 {
-    protected $alias = 'AdminUserVM';
+    protected $alias = 'AdminMilestoneVM';
     protected $layouts = [
         'layouts.backend.user' => [
             'login',

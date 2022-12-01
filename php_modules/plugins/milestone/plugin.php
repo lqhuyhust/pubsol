@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\user;
+namespace App\plugins\milestone;
 
 use SPT\App\Instance as AppIns;
 use SPT\Plugin\CMS as PluginAbstract;
@@ -33,7 +33,6 @@ class plugin extends PluginAbstract
                 ],
             ],
             'entity' => [],
-            'file' => [],
         ];
     }
 
@@ -45,11 +44,6 @@ class plugin extends PluginAbstract
             'version' =>  '0.1',
             'description' => 'Milestone Plugin'
         ];
-    }
-
-    public function loadFile(Container $container)
-    {
-        $container->set('file', new File());
     }
 
     public function loadEntity(Container $container)

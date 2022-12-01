@@ -2,10 +2,10 @@
 
 return [
     'admin' => [
-        // Endpoint User
+        // Endpoint Milestones
         'milestones'=>[
             'fnc' => [
-                'get' => 'milestone.user.list',
+                'get' => 'milestone.milestone.list',
                 'post' => 'milestone.milestone.list',
                 'put' => 'milestone.milestone.update',
                 'delete' => 'milestone.milestone.delete'

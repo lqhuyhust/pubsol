@@ -10,9 +10,9 @@
 
 namespace App\plugins\milestone\entities;
 
-use SPT\User\SPT\UserEntity as Entity;
+use SPT\Storage\DB\Entity;
 
-class UserEntity extends Entity
+class MilestoneEntity extends Entity
 {
     protected $table = '#__milestones';
     protected $pk = 'id';
