@@ -20,8 +20,6 @@ class AdminVersionNotesVM extends ViewModel
     protected $layouts = [
         'layouts.backend.version_note' => [
             'list',
-            'list.row',
-            'list.filter'
         ]
     ];
 
