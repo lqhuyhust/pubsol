@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\starter\entities;
+namespace App\plugins\version\entities;
 
 use SPT\Storage\DB\Entity;
 

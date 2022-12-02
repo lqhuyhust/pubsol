@@ -8,11 +8,11 @@
  * 
  */
 
-namespace App\plugins\starter\entities;
+namespace App\plugins\version\entities;
 
 use SPT\Storage\DB\Entity;
 
-class VersionEntity extends Entity
+class VersionNoteEntity extends Entity
 {
     protected $table = '#__version_notes'; //table name
     protected $pk = 'id'; //primary key
