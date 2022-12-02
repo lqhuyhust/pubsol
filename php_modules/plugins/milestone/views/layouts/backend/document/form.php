@@ -41,7 +41,7 @@
                                     <p class="fw-bold mb-0"><?php echo $this->user_id == $item['user_id'] ? 'You' : $item['user']; ?></p>
                                     <p class="text-muted small mb-0"><i class="far fa-clock"></i> <?php echo $item['sent_at'] ?></p>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body pt-0">
                                     <p class="mb-0">
                                         <?php echo $item['message'] ?>
                                     </p>

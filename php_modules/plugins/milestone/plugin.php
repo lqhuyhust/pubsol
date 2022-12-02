@@ -96,6 +96,7 @@ class plugin extends PluginAbstract
             return [
                 [['relate-notes/'. $request_id, 'relate-note/'. $request_id,], 'relate-notes/'. $request_id, 'Relate Note', '<i class="fa-solid fa-link"></i>', ''],
                 [['document/'. $request_id], 'document/'. $request_id, 'Document', '<i class="fa-solid fa-file"></i>', ''],
+                [['tasks/'. $request_id, 'task/'. $request_id,], 'tasks/'. $request_id, 'Tasks', '<i class="fa-solid fa-list-check"></i>', ''],
             ];
         }
 
