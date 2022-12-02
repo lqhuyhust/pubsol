@@ -25,6 +25,12 @@ return [
             ],
             'parameters' => ['version_id'],
         ],
+        'version-feedback' => [
+            'fnc' => [
+                'get' => 'version.feedback.list',
+            ],
+            'parameters' => ['version_id'],
+        ],
         'version-note' => [
             'fnc' => [
                 'post' => 'version.note.add',

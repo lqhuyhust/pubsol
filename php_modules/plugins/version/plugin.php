@@ -27,6 +27,7 @@ class plugin extends PluginAbstract
                     'App\plugins\version\viewmodels\AdminVersionsVM' => 'AdminVersionsVM',
                     'App\plugins\version\viewmodels\AdminVersionVM' => 'AdminVersionVM',
                     'App\plugins\version\viewmodels\AdminVersionNotesVM' => 'AdminVersionNotesVM',
+                    'App\plugins\version\viewmodels\AdminFeedbackVM' => 'AdminFeedbackVM',
                 ],
             ],
             'models' => [
