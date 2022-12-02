@@ -75,6 +75,7 @@ class AdminRequestsVM extends ViewModel
         $this->set('link_list', $this->router->url('admin/requests/4'), true);
         $this->set('title_page', $title_page, true);
         $this->set('link_form', $this->router->url('admin/request/4'), true);
+        $this->set('link_detail', $this->router->url('admin/relate-notes/4'), true);
         $this->set('token', $this->app->getToken(), true);
     }
 
