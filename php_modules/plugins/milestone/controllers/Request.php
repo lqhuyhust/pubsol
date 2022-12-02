@@ -49,6 +49,7 @@ class Request extends Admin
         $milestone_id = $this->validateMilestoneID();
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
+        $note = $this->request->post->get('note', '', 'string');
         if (!$title)
         {
             $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
@@ -81,7 +82,7 @@ class Request extends Admin
         {
             $this->session->set('flashMsg', 'Create Success!');
             $this->app->redirect(
-                $this->router->url('admin/request/'. $milestone_id .'s')
+                $this->router->url('admin/requests'. $milestone_id)
             );
         }
     }
@@ -203,7 +204,7 @@ class Request extends Admin
         {
             $this->session->set('flashMsg', 'Invalid Milestone');
             $this->app->redirect(
-                $this->router->url('admin/milestone'),
+                $this->router->url('admin/milestones'),
             );
         }
 

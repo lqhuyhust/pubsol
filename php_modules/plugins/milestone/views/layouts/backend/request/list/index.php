@@ -7,7 +7,7 @@
 						<div class="card-body">
 						<?php echo $this->render('message');?>
                         <div class="row align-items-center">
-								<?php echo $this->render('backend.milestone.list.filter');?>
+								<?php echo $this->render('backend.request.list.filter');?>
 							</div>
 							<form action="<?php echo $this->link_list ?>" method="POST" id="formList">
 								<input type="hidden" value="<?php echo $this->token ?>" name="token">
@@ -25,7 +25,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php while($this->list->hasRow()) $this->render('backend.milestone.list.row'); ?> 
+										<?php while($this->list->hasRow()) $this->render('backend.request.list.row'); ?> 
 									</tbody>
 								<?php
 								?>

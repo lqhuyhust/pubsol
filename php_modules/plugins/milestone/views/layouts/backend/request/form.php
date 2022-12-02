@@ -18,18 +18,6 @@
                     </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">Start Date:</label>
-                            <?php $this->field('start_date'); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">End Date:</label>
-                            <?php $this->field('end_date'); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                             <label class="form-label fw-bold">Status:</label>
                             <?php $this->field('status'); ?>
                         </div>

@@ -18,7 +18,7 @@ return [
                 'put' => 'milestone.request.update',
                 'delete' => 'milestone.request.delete'
             ],
-            'parameters' => ['id'],
+            'parameters' => ['milestone_id'],
         ],
         'request' => [
             'fnc' => [

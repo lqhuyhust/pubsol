@@ -29,8 +29,8 @@ class AdminRequestsVM extends ViewModel
     {
         $filter = $this->filter();
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
+        $milestone_id = (int) $urlVars['milestone_id'];
+        $this->set('milestone_id', $milestone_id, true);
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
@@ -40,11 +40,11 @@ class AdminRequestsVM extends ViewModel
         if ($page <= 0) $page = 1;
 
         $where = [];
-        $where[] = ['milestone_id = '. $id];
+        $where[] = ['milestone_id = '. $milestone_id];
 
         if( !empty($search) )
         {
-            $where[] = "(`title` LIKE '%".$search."%'";
+            $where[] = "(`title` LIKE '%".$search."%')";
         }
         if(is_numeric($status))
         {
@@ -62,7 +62,7 @@ class AdminRequestsVM extends ViewModel
             $total = 0;
             $this->session->set('flashMsg', 'Not Found Request');
         }
-        $milestone = $this->MilestoneEntity->findByPK($id);
+        $milestone = $this->MilestoneEntity->findByPK($milestone_id);
         $title_page = $milestone ? $milestone['title'] .' - Request List' : 'Request List';
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
@@ -125,8 +125,8 @@ class AdminRequestsVM extends ViewModel
                 'formClass' => 'form-select',
                 'options' => [
                     ['text' => '--', 'value' => ''],
-                    ['text' => 'Show', 'value' => '1'],
-                    ['text' => 'Hide', 'value' => '0'],
+                    ['text' => 'Active', 'value' => '1'],
+                    ['text' => 'Inactive', 'value' => '0'],
                 ],
                 'showLabel' => false
             ],

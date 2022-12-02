@@ -32,15 +32,14 @@ class AdminRequestVM extends ViewModel
         $data = $id ? $this->RequestEntity->findOne(['id = '. $id, 'milestone_id = '. $milestone_id ]) : [];
         
         $form = new Form($this->getFormFields(), $data);
-        $milestone = $this->MilestoneEntity->findOne(['milestone_id = '. $milestone_id]);
-        $title_page = $milestone ? $mi
-
+        $milestone = $this->MilestoneEntity->findOne(['id = '. $milestone_id]);
+        $title_page = $milestone ? $milestone['title'] .' - ' : '';
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'Edit Milestone' : 'New Milestone', true);
+        $this->set('title_page', $data ? $title_page. 'Edit Request' : $title_page. 'New Request', true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/milestones'));
-        $this->set('link_form', $this->router->url('admin/milestone'));
+        $this->set('link_list', $this->router->url('admin/requests/'. $milestone_id));
+        $this->set('link_form', $this->router->url('admin/request/'. $milestone_id));
     }
 
     public function getFormFields()
@@ -60,24 +59,14 @@ class AdminRequestVM extends ViewModel
                 'formClass' => 'form-control',
                 'required' => 'required',
             ],
-            'start_date' => ['date',
-                'showLabel' => false,
-                'formClass' => 'form-control',
-                'required' => 'required',
-            ],
-            'end_date' => ['date',
-                'showLabel' => false,
-                'formClass' => 'form-control',
-                'required' => 'required',
-            ],
             'status' => ['option',
                 'showLabel' => false,
                 'type' => 'radio',
                 'formClass' => '',
                 'default' => 1,
                 'options' => [
-                    ['text'=>'Show', 'value'=>1],
-                    ['text'=>'Hide', 'value'=>0]
+                    ['text'=>'Active', 'value'=>1],
+                    ['text'=>'Inactive', 'value'=>0]
                 ]
             ],
             'token' => ['hidden',
