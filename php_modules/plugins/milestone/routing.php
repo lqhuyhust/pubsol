@@ -29,6 +29,24 @@ return [
             ],
             'parameters' => ['milestone_id','id'],
         ],
+        'relate-notes' => [
+            'fnc' => [
+                'get' => 'milestone.note.list',
+                'post' => 'milestone.note.list',
+                'put' => 'milestone.note.update',
+                'delete' => 'milestone.note.delete'
+            ],
+            'parameters' => ['request_id'],
+        ],
+        'relate-note' => [
+            'fnc' => [
+                'get' => 'milestone.note.detail',
+                'post' => 'milestone.note.add',
+                'put' => 'milestone.note.update',
+                'delete' => 'milestone.note.delete'
+            ],
+            'parameters' => ['request_id', 'id'],
+        ],
         'milestone' => [
             'fnc' => [
                 'get' => 'milestone.milestone.detail',

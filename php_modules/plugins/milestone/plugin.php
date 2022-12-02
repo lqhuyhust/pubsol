@@ -27,6 +27,8 @@ class plugin extends PluginAbstract
                     'App\plugins\milestone\viewmodels\AdminMilestoneVM' => 'AdminMilestoneVM',
                     'App\plugins\milestone\viewmodels\AdminRequestsVM' => 'AdminRequestsVM',
                     'App\plugins\milestone\viewmodels\AdminRequestVM' => 'AdminRequestVM',
+                    'App\plugins\milestone\viewmodels\AdminRelateNotesVM' => 'AdminRelateNotesVM',
+                    'App\plugins\milestone\viewmodels\AdminRelateNoteVM' => 'AdminRelateNoteVM',
                 ],
             ],
             'models' => [

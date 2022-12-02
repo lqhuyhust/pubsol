@@ -30,6 +30,11 @@ class RelateNoteEntity extends Entity
                     'type' => 'int',
                     'option' => 'unsigned',
                 ],
+                'title' => [
+                    'type' => 'varchar',
+                    'limit' => 255,
+                    'null' => 'YES',
+                ],
                 'note_id' => [
                     'type' => 'int',
                     'option' => 'unsigned',

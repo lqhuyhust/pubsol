@@ -14,11 +14,11 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminRequestsVM extends ViewModel
+class AdminRelateNotesVM extends ViewModel
 {
-    protected $alias = 'AdminRequestsVM';
+    protected $alias = 'AdminRelateNotesVM';
     protected $layouts = [
-        'layouts.backend.request' => [
+        'layouts.backend.relate_note' => [
             'list',
             'list.row',
             'list.filter'
@@ -29,8 +29,8 @@ class AdminRequestsVM extends ViewModel
     {
         $filter = $this->filter();
         $urlVars = $this->request->get('urlVars');
-        $milestone_id = (int) $urlVars['milestone_id'];
-        $this->set('milestone_id', $milestone_id, true);
+        $request_id = (int) $urlVars['request_id'];
+        $this->set('request_id', $request_id, true);
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
@@ -40,7 +40,7 @@ class AdminRequestsVM extends ViewModel
         if ($page <= 0) $page = 1;
 
         $where = [];
-        $where[] = ['milestone_id = '. $milestone_id];
+        $where[] = ['request_id = '. $request_id];
 
         if( !empty($search) )
         {
@@ -60,16 +60,10 @@ class AdminRequestsVM extends ViewModel
         {
             $result = [];
             $total = 0;
-            $this->session->set('flashMsg', 'Not Found Request');
         }
-        $milestone = $this->MilestoneEntity->findByPK($milestone_id);
-        $title_page = $milestone ? $milestone['title'] .' - Request List' : 'Request List';
-
-        foreach($result as &$item)
-        {
-            $user_tmp = $this->UserEntity->findByPK($item['created_by']);
-            $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
-        }
+        $request = $this->RequestEntity->findByPK($request_id);
+        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
@@ -78,10 +72,9 @@ class AdminRequestsVM extends ViewModel
         $this->set('sort', $sort, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/requests/'. $milestone_id), true);
+        $this->set('link_list', $this->router->url('admin/relate-notes/'. $request_id), true);
         $this->set('title_page', $title_page, true);
-        $this->set('link_form', $this->router->url('admin/request/'. $milestone_id), true);
-        $this->set('link_detail', $this->router->url('admin/relate-notes'), true);
+        $this->set('link_form', $this->router->url('admin/relate-note/'. $request_id), true);
         $this->set('token', $this->app->getToken(), true);
     }
 

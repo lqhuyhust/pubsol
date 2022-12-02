@@ -25,7 +25,7 @@ class Request extends Admin
         $exist = $this->RequestEntity->findByPK($id);
         if(!empty($id) && !$exist) 
         {
-            $this->session->set('flashMsg', "Invalid Milestone");
+            $this->session->set('flashMsg', "Invalid Request");
             $this->app->redirect(
                 $this->router->url('admin/requests/'. $milestone_id)
             );
@@ -82,7 +82,7 @@ class Request extends Admin
         {
             $this->session->set('flashMsg', 'Create Success!');
             $this->app->redirect(
-                $this->router->url('admin/requests'. $milestone_id)
+                $this->router->url('admin/requests/'. $milestone_id)
             );
         }
     }
@@ -126,8 +126,9 @@ class Request extends Admin
             
             if($try) 
             {
+                $this->session->set('flashMsg', 'Edit Successfully');
                 $this->app->redirect(
-                    $this->router->url('admin/requests/'. $milestone_id), 'Edit Successfully'
+                    $this->router->url('admin/requests/'. $milestone_id)
                 );
             }
             else
