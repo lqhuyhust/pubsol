@@ -38,6 +38,14 @@ return [
             ],
             'parameters' => ['request_id'],
         ],
+        'document' => [
+            'fnc' => [
+                'get' => 'milestone.document.detail',
+                'post' => 'milestone.document.add',
+                'put' => 'milestone.document.update',
+            ],
+            'parameters' => ['request_id'],
+        ],
         'relate-note' => [
             'fnc' => [
                 'get' => 'milestone.note.detail',

@@ -3,7 +3,7 @@
 static $tinyMCE;
 if(!isset($tinyMCE))
 {
-    $this->theme->add( $this->site_url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
+    $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
 }
 
 $js = <<<Javascript

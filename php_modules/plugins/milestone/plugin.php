@@ -29,6 +29,7 @@ class plugin extends PluginAbstract
                     'App\plugins\milestone\viewmodels\AdminRequestVM' => 'AdminRequestVM',
                     'App\plugins\milestone\viewmodels\AdminRelateNotesVM' => 'AdminRelateNotesVM',
                     'App\plugins\milestone\viewmodels\AdminRelateNoteVM' => 'AdminRelateNoteVM',
+                    'App\plugins\milestone\viewmodels\AdminDocumentVM' => 'AdminDocumentVM',
                 ],
             ],
             'models' => [
@@ -93,8 +94,8 @@ class plugin extends PluginAbstract
             $request_id = (int) $urlVars['request_id'];
             
             return [
-                [['relate-notes/'. $request_id, 'relate-note/'. $request_id,], 'relate-notes/'. $request_id, 'Relate Note', '<i class="fa-solid fa-note-sticky"></i>', ''],
-                [['documents/'. $request_id, 'document/'. $request_id,], 'documents/'. $request_id, 'Document', '<i class="fa-solid fa-note-sticky"></i>', ''],
+                [['relate-notes/'. $request_id, 'relate-note/'. $request_id,], 'relate-notes/'. $request_id, 'Relate Note', '<i class="fa-solid fa-link"></i>', ''],
+                [['document/'. $request_id], 'document/'. $request_id, 'Document', '<i class="fa-solid fa-file"></i>', ''],
             ];
         }
 
