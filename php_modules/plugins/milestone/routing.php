@@ -46,6 +46,12 @@ return [
             ],
             'parameters' => ['request_id'],
         ],
+        'discussion' => [
+            'fnc' => [
+                'post' => 'milestone.discussion.add',
+            ],
+            'parameters' => ['request_id'],
+        ],
         'relate-note' => [
             'fnc' => [
                 'get' => 'milestone.note.detail',
