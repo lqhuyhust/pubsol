@@ -71,4 +71,11 @@ class plugin extends PluginAbstract
             // else { debug this }
         }
     }
+
+    public function registerMenu()
+    {
+        return [
+            [['setting', 'setting',], 'setting', 'Setting', '<i class="fa-solid fa-gear"></i>', ''],
+        ];
+    }
 }

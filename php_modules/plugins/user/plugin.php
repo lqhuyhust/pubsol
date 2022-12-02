@@ -77,4 +77,12 @@ class plugin extends PluginAbstract
             // else { debug this }
         }
     }
+
+    public function registerMenu()
+    {
+        return [
+            [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', ''],
+            [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', '']
+        ];
+    }
 }

@@ -12,18 +12,7 @@
         </a>
         <ul class="sidebar-nav fs-4">
             <?php
-            $menu = [];
-            $menu = array_merge($menu, [
-                [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', ''],
-                [['milestones', 'milestone',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
-                [['setting', 'setting',], 'setting', 'Setting', '<i class="fa-solid fa-gear"></i>', ''],
-            ]);
-            $menu = array_merge($menu, 
-                [
-                    [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', '']
-                ],
-            );
-            foreach ($menu as $row) {
+            foreach ($this->menu as $row) {
                 list($allow, $plural, $name, $icon, $submenu) = $row;
                 preg_match('/^(\/admin\/' . $plural . ')(|\/)$/', $this->path_current, $match);
                 if (is_array($match) && count($match)) {

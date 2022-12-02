@@ -64,4 +64,11 @@ class plugin extends PluginAbstract
             // else { debug this }
         }
     }
+
+    public function registerMenu()
+    {
+        return [
+            [['milestones', 'milestone',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
+        ];
+    }
 }
