@@ -65,6 +65,12 @@ class AdminRequestsVM extends ViewModel
         $milestone = $this->MilestoneEntity->findByPK($milestone_id);
         $title_page = $milestone ? $milestone['title'] .' - Request List' : 'Request List';
 
+        foreach($result as &$item)
+        {
+            $user_tmp = $this->UserEntity->findByPK($item['created_by']);
+            $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
+        }
+
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
         $this->set('page', $page, true);
