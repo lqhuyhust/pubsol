@@ -19,13 +19,13 @@ return [
             ],
             'parameters' => ['id'],
         ],
-        'version/notes' => [
+        'version-notes' => [
             'fnc' => [
                 'get' => 'version.note.list',
             ],
-            'parameters' => ['id'],
+            'parameters' => ['version_id'],
         ],
-        'version/note' => [
+        'version-note' => [
             'fnc' => [
                 'post' => 'version.note.add',
                 'put' => 'version.note.update',

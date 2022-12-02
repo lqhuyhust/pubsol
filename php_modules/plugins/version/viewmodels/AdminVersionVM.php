@@ -30,7 +30,10 @@ class AdminVersionVM extends ViewModel
         $this->set('id', $id, true);
 
         $data = $id ? $this->VersionEntity->findByPK($id) : [];
-        
+        if ($data)
+        {
+            $data['release_date'] = $data['release_date'] ? date('Y-m-d', strtotime($data['release_date'])) : '';
+        }
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);

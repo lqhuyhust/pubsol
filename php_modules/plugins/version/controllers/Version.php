@@ -108,8 +108,8 @@ class Version extends Admin
         }
         if(is_numeric($ids) && $ids)
         {
-            $name = $this->request->post->get('name', '');
-            $release_date = $this->request->post->get('release_date', '');
+            $name = $this->request->post->get('name', '', '');
+            $release_date = $this->request->post->get('release_date', '', '');
             $findOne = $this->VersionEntity->findOne(['name = "'. $name. '"', 'id <> '. $ids]);
             if ($findOne)
             {

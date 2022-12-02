@@ -26,6 +26,7 @@ class plugin extends PluginAbstract
                 'alias' => [
                     'App\plugins\version\viewmodels\AdminVersionsVM' => 'AdminVersionsVM',
                     'App\plugins\version\viewmodels\AdminVersionVM' => 'AdminVersionVM',
+                    'App\plugins\version\viewmodels\AdminVersionNotesVM' => 'AdminVersionNotesVM',
                 ],
             ],
             'models' => [
@@ -69,7 +70,7 @@ class plugin extends PluginAbstract
     public function registerMenu()
     {
         $menu = [
-            [['versions', 'version',], 'versions', 'Version', '<i class="fa-solid fa-code-branch"></i>', ''],
+            [['versions', 'version', 'version-notes'], 'versions', 'Version', '<i class="fa-solid fa-code-branch"></i>', ''],
         ];
         return $menu;
     }
