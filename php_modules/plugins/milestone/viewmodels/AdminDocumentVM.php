@@ -29,7 +29,7 @@ class AdminDocumentVM extends ViewModel
 
         $editor = $this->request->get->get('editor', '');
         $data = $request_id ? $this->DocumentEntity->findOne(['request_id = '. $request_id ]) : [];
-        $editor = $data ? $editor : 1;
+        $editor = 1;
         $form = new Form($this->getFormFields(), $data ? $data : []);
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
