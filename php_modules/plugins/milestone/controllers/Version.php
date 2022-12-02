@@ -137,7 +137,7 @@ class Version extends Admin
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         $this->app->redirect(
-            $this->router->url('admin/request-version/'. $version_id), 
+            $this->router->url('admin/request-version/'. $request_id), 
         );
     }
 

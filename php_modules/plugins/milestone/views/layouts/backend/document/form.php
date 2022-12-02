@@ -61,7 +61,7 @@
                                 <div class="form-notch-trailing"></div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-info btn-rounded float-end">Comment</button>
+                        <button type="submit" class="mt-2 btn btn-info btn-rounded float-end">Comment</button>
                     </form>
                 </div>
                 <div class="col-12 mt-4">
