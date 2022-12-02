@@ -9,7 +9,6 @@
     document.getElementById('clear_filter').onclick = function() {
         document.getElementById("search").value = "";
         document.getElementById("sort").value = "title asc";
-        document.getElementById("status").value = "";
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {

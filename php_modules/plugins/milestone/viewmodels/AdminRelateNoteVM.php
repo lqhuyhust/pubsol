@@ -13,11 +13,11 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 
-class AdminRequestVM extends ViewModel
+class AdminRelateNoteVM extends ViewModel
 {
-    protected $alias = 'AdminRequestVM';
+    protected $alias = 'AdminRelateNoteVM';
     protected $layouts = [
-        'layouts.backend.request' => [
+        'layouts.backend.relate_note' => [
             'form'
         ]
     ];
@@ -26,20 +26,22 @@ class AdminRequestVM extends ViewModel
     {
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $milestone_id = (int) $urlVars['milestone_id'];
+        $request_id = (int) $urlVars['request_id'];
         $this->set('id', $id, true);
 
-        $data = $id ? $this->RequestEntity->findOne(['id = '. $id, 'milestone_id = '. $milestone_id ]) : [];
+        $data = $id ? $this->RelateNoteEntity->findOne(['id = '. $id, 'request_id = '. $request_id ]) : [];
         
         $form = new Form($this->getFormFields(), $data);
-        $milestone = $this->MilestoneEntity->findOne(['id = '. $milestone_id]);
-        $title_page = $milestone ? $milestone['title'] .' - ' : '';
+        $request = $this->RequestEntity->findByPK($request_id);
+        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
+
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? $title_page. 'Edit Request' : $title_page. 'New Request', true);
+        $this->set('title_page', $title_page, true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/requests/'. $milestone_id));
-        $this->set('link_form', $this->router->url('admin/request/'. $milestone_id));
+        $this->set('link_list', $this->router->url('admin/relate-notes/'. $request_id));
+        $this->set('link_form', $this->router->url('admin/relate-note/'. $request_id));
     }
 
     public function getFormFields()
@@ -53,41 +55,17 @@ class AdminRequestVM extends ViewModel
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
-            'note' => ['textarea',
+            'description' => ['textarea',
                 'placeholder' => 'Enter Note',
                 'showLabel' => false,
                 'formClass' => 'form-control',
                 'required' => 'required',
             ],
-            'status' => ['option',
-                'showLabel' => false,
-                'type' => 'radio',
-                'formClass' => '',
-                'default' => 1,
-                'options' => [
-                    ['text'=>'Active', 'value'=>1],
-                    ['text'=>'Inactive', 'value'=>0]
-                ]
-            ],
+            
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
             ],
         ];
-
-        if($this->view->id)
-        {
-            $fields['modified_at'] = ['readonly'];
-            $fields['modified_by'] = ['readonly'];
-            $fields['created_at'] = ['readonly'];
-            $fields['created_by'] = ['readonly'];
-        }
-        else
-        {
-            $fields['modified_at'] = ['hidden'];
-            $fields['modified_by'] = ['hidden'];
-            $fields['created_at'] = ['hidden'];
-            $fields['created_by'] = ['hidden'];
-        }
 
         return $fields;
     }

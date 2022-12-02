@@ -35,7 +35,6 @@ class AdminRelateNotesVM extends ViewModel
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $status = $filter->getField('status')->value;
         $page   = $this->request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -46,16 +45,12 @@ class AdminRelateNotesVM extends ViewModel
         {
             $where[] = "(`title` LIKE '%".$search."%')";
         }
-        if(is_numeric($status))
-        {
-            $where[] = '`status`='. $status;
-        }
-
+        
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->RequestEntity->list( $start, $limit, $where, $sort);
-        $total = $this->RequestEntity->getListTotal();
+        $result = $this->RelateNoteEntity->list( $start, $limit, $where, $sort);
+        $total = $this->RelateNoteEntity->getListTotal();
         if (!$result)
         {
             $result = [];
@@ -65,6 +60,13 @@ class AdminRelateNotesVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
 
+        foreach ($result as &$item)
+        {
+            if (strlen($item['description']) > 100)
+            {
+                $item['description'] = substr($item['description'], 0, 100) .' ...';
+            }
+        }
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
         $this->set('page', $page, true);
@@ -95,7 +97,6 @@ class AdminRelateNotesVM extends ViewModel
         if( null === $this->_filter):
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'request.search'),
-                'status' => $this->state('status', '','', 'post', 'request.status'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'request.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'request.sort')
             ];
@@ -119,16 +120,6 @@ class AdminRelateNotesVM extends ViewModel
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',
                 'placeholder' => 'Search..'
-            ],
-            'status' => ['option',
-                'default' => '1',
-                'formClass' => 'form-select',
-                'options' => [
-                    ['text' => '--', 'value' => ''],
-                    ['text' => 'Active', 'value' => '1'],
-                    ['text' => 'Inactive', 'value' => '0'],
-                ],
-                'showLabel' => false
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',

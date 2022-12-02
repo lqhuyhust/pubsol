@@ -22,7 +22,7 @@ class Note extends Admin
         $id = (int) $urlVars['id'];
         
         $request_id = $this->validateRequestID();
-        $exist = $this->RequestEntity->findByPK($id);
+        $exist = $this->RelateNoteEntity->findByPK($id);
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Relate Note");

@@ -12,14 +12,8 @@
                     </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">Note:</label>
-                            <?php $this->field('note'); ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">Status:</label>
-                            <?php $this->field('status'); ?>
+                            <label class="form-label fw-bold">Description:</label>
+                            <?php $this->field('description'); ?>
                         </div>
                     </div>
                     <div class="row g-3 align-items-center m-0">

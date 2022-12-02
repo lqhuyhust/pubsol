@@ -7,7 +7,7 @@
 						<div class="card-body">
 						<?php echo $this->render('message');?>
                         <div class="row align-items-center">
-								<?php echo $this->render('backend.request.list.filter');?>
+								<?php echo $this->render('backend.relate_note.list.filter');?>
 							</div>
 							<form action="<?php echo $this->link_list ?>" method="POST" id="formList">
 								<input type="hidden" value="<?php echo $this->token ?>" name="token">
@@ -19,14 +19,12 @@
 												<input type="checkbox" id="select_all">
 											</th>
 											<th>Title</th>
-											<th>Status</th>
-											<th>Creator</th>
-											<th>Created At</th>
+											<th>Note</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php while($this->list->hasRow()) $this->render('backend.request.list.row'); ?> 
+										<?php while($this->list->hasRow()) $this->render('backend.relate_note.list.row'); ?> 
 									</tbody>
 								<?php
 								?>
