@@ -25,7 +25,6 @@ class plugin extends PluginAbstract
                     'App\plugins\core\viewmodels\MessageVM' => 'MessageVM',
                     'App\plugins\core\viewmodels\SideBarVM' => 'SideBarVM',
                     'App\plugins\core\viewmodels\PaginationVM' => 'PaginationVM',
-                    'App\plugins\core\viewmodels\DemoVM' => 'DemoVM',
                 ],
             ],
         ];
