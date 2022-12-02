@@ -33,6 +33,7 @@ class plugin extends PluginAbstract
                     'App\plugins\milestone\viewmodels\AdminDocumentVM' => 'AdminDocumentVM',
                     'App\plugins\milestone\viewmodels\AdminTasksVM' => 'AdminTasksVM',
                     'App\plugins\milestone\viewmodels\AdminTaskVM' => 'AdminTaskVM',
+                    'App\plugins\milestone\viewmodels\AdminVersionLatestVM' => 'AdminVersionLatestVM',
                 ],
             ],
             'models' => [
@@ -105,7 +106,7 @@ class plugin extends PluginAbstract
 
             if ($version instanceof Entity)
             {
-                $menu[] = [['version/'. $request_id,], 'version/'. $request_id, 'Versions', '<i class="fa-solid fa-code-branch"></i>', ''];
+                $menu[] = [['request-version/'. $request_id,], 'request-version/'. $request_id, 'Versions', '<i class="fa-solid fa-code-branch"></i>', ''];
             }
             return $menu;
         }
