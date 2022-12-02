@@ -40,10 +40,10 @@ return [
         ],
         'task' => [
             'fnc' => [
-                'get' => 'milestone.note.detail',
-                'post' => 'milestone.note.add',
-                'put' => 'milestone.note.update',
-                'delete' => 'milestone.note.delete'
+                'get' => 'milestone.task.detail',
+                'post' => 'milestone.task.add',
+                'put' => 'milestone.task.update',
+                'delete' => 'milestone.task.delete'
             ],
             'parameters' => ['request_id', 'id'],
         ],

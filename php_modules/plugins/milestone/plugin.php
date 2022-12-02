@@ -30,6 +30,8 @@ class plugin extends PluginAbstract
                     'App\plugins\milestone\viewmodels\AdminRelateNotesVM' => 'AdminRelateNotesVM',
                     'App\plugins\milestone\viewmodels\AdminRelateNoteVM' => 'AdminRelateNoteVM',
                     'App\plugins\milestone\viewmodels\AdminDocumentVM' => 'AdminDocumentVM',
+                    'App\plugins\milestone\viewmodels\AdminTasksVM' => 'AdminTasksVM',
+                    'App\plugins\milestone\viewmodels\AdminTaskVM' => 'AdminTaskVM',
                 ],
             ],
             'models' => [

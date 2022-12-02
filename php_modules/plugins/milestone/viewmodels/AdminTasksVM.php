@@ -14,11 +14,11 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminRelateNotesVM extends ViewModel
+class AdminTasksVM extends ViewModel
 {
-    protected $alias = 'AdminRelateNotesVM';
+    protected $alias = 'AdminTasksVM';
     protected $layouts = [
-        'layouts.backend.relate_note' => [
+        'layouts.backend.task' => [
             'list',
             'list.row',
             'list.filter'
@@ -49,8 +49,8 @@ class AdminRelateNotesVM extends ViewModel
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->RelateNoteEntity->list( $start, $limit, $where, $sort);
-        $total = $this->RelateNoteEntity->getListTotal();
+        $result = $this->TaskEntity->list( $start, $limit, $where, $sort);
+        $total = $this->TaskEntity->getListTotal();
         if (!$result)
         {
             $result = [];
@@ -58,15 +58,8 @@ class AdminRelateNotesVM extends ViewModel
         }
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
-        $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
+        $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Task' : 'Task';
 
-        foreach ($result as &$item)
-        {
-            if (strlen($item['description']) > 100)
-            {
-                $item['description'] = substr($item['description'], 0, 100) .' ...';
-            }
-        }
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
         $this->set('page', $page, true);
@@ -74,9 +67,9 @@ class AdminRelateNotesVM extends ViewModel
         $this->set('sort', $sort, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/relate-notes/'. $request_id), true);
+        $this->set('link_list', $this->router->url('admin/tasks/'. $request_id), true);
         $this->set('title_page', $title_page, true);
-        $this->set('link_form', $this->router->url('admin/relate-note/'. $request_id), true);
+        $this->set('link_form', $this->router->url('admin/task/'. $request_id), true);
         $this->set('token', $this->app->getToken(), true);
     }
 
@@ -85,7 +78,7 @@ class AdminRelateNotesVM extends ViewModel
         return [
             'num' => '#',
             'title' => 'Title',
-            'status' => 'Status',
+            'url' => 'url',
             'created_at' => 'Created at',
             'col_last' => ' ',
         ];
@@ -96,9 +89,9 @@ class AdminRelateNotesVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'relate_note.search'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'relate_note.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'relate_note.sort')
+                'search' => $this->state('search', '', '', 'post', 'task.search'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'task.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'task.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
