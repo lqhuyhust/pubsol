@@ -64,7 +64,7 @@
                         <button type="submit" class="mt-2 btn btn-info btn-rounded float-end">Comment</button>
                     </form>
                 </div>
-                <div class="col-12 mt-4">
+                <div class="col-12">
                     <hr class="bg-danger border-2 border-top border-danger">
                     <h4>History:</h4>
                     <ul class="list-group list-group-flush">

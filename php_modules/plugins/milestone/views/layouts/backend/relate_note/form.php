@@ -12,7 +12,7 @@
                     </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                            <label class="form-label fw-bold">Description:</label>
+                            <label class="form-label fw-bold">Note:</label>
                             <?php $this->field('description'); ?>
                         </div>
                     </div>

@@ -18,8 +18,7 @@ class Discussion extends Admin
     {
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
-        $document = $this->DocumentEntity->findOne(['request_id', $request_id]);
-
+        $document = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
         $message = $this->request->post->get('message', '', 'string');
         if (!$message)
         {
@@ -55,7 +54,6 @@ class Discussion extends Admin
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
         ]);
-
         if (!$document)
         {
             $msg = 'Comment Fail';
@@ -67,7 +65,7 @@ class Discussion extends Admin
         
         $newId = $this->DiscussionEntity->add([
             'user_id' => $this->user->get('id'),
-            'document_id' => $document['id'],
+            'document_id' => $document,
             'message' => $message,
             'sent_at' => date('Y-m-d H:i:s'),
             'modified_at' => date('Y-m-d H:i:s'),
