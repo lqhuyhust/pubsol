@@ -17,7 +17,15 @@ class Document extends Admin
     public function detail()
     {
         $this->isLoggedIn();
-        
+        $request_id = $this->validateRequestID();
+        $request = $this->RequestEntity->findByPK($request_id);
+        if (!$request)
+        {
+            $this->session->set('flashMsg', 'Invalid Request');
+            $this->app->redirect(
+                $this->router->url('admin/milestones')
+            );
+        }
         $this->app->set('layout', 'backend.document.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
@@ -119,7 +127,7 @@ class Document extends Admin
 
         if(empty($id))
         {
-            $this->session->set('flashMsg', 'Invalid Milestone');
+            $this->session->set('flashMsg', 'Invalid Request');
             $this->app->redirect(
                 $this->router->url('admin/milestones'),
             );

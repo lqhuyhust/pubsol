@@ -28,7 +28,8 @@ class AdminDocumentVM extends ViewModel
         $request_id = (int) $urlVars['request_id'];
 
         $data = $request_id ? $this->DocumentEntity->findOne(['request_id = '. $request_id ]) : [];
-        $form = new Form($this->getFormFields(), $data);
+
+        $form = new Form($this->getFormFields(), $data ? $data : []);
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Document' : 'Document';
