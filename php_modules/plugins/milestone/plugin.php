@@ -70,13 +70,39 @@ class plugin extends PluginAbstract
     public function registerMenu()
     {
         $entity = AppIns::factory('MilestoneEntity');
+        $router = AppIns::factory('router');
+        $path_current = $router->get('actualPath');
+        $str = ['relate-note', 'task', 'request-version', 'document'];
+        $check = false;
+        foreach ($str as $item)
+        {
+            if (strpos($path_current, $item) !== false)
+            {
+                $check = true;
+                break;
+            }
+        }
+        if ($check)
+        {
+            $request = AppIns::factory('request');
+            $app = AppIns::factory('app');
+            $app->set('menu_type', 'milestone');
+            $urlVars = $request->get('urlVars');
+            $request_id = (int) $urlVars['request_id'];
+            
+            return [
+                [['relate-notes/'. $request_id, 'relate-note/'. $request_id,], 'relate-notes/'. $request_id, 'Relate Note', '<i class="fa-solid fa-note-sticky"></i>', ''],
+                [['documents/'. $request_id, 'document/'. $request_id,], 'documents/'. $request_id, 'Document', '<i class="fa-solid fa-note-sticky"></i>', ''],
+            ];
+        }
+
         $list = $entity->list(0, 0, ['status = 1']);
         $menu = [
             [['milestones', 'milestone',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
         ];
         foreach($list as $item)
         {
-            $menu[] = [['requests/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', ''];
+            $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', ''];
         }
         return $menu;
     }
