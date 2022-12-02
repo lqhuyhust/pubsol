@@ -88,5 +88,19 @@ return [
             ],
             'parameters' => ['id'],
         ],
+        'request-version' => [
+            'fnc' => [
+                'get' => 'milestone.version.list',
+            ],
+            'parameters' => ['request_id'],
+        ],
+        '/request-version' => [
+            'fnc' => [
+                'post' => 'milestone.version.add',
+                'put' => 'milestone.version.update',
+                'delete' => 'milestone.version.delete',
+            ],
+            'parameters' => ['request_id', 'id'],
+        ],
     ],
 ];
