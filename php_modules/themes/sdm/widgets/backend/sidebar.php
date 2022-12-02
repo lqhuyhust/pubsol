@@ -14,7 +14,8 @@
             <?php
             foreach ($this->menu as $row) {
                 list($allow, $plural, $name, $icon, $submenu) = $row;
-                preg_match('/^(\/admin\/' . $plural . ')(|\/)$/', $this->path_current, $match);
+                $plural_tmp = str_replace('/', '\/', $plural); 
+                preg_match('/^(\/admin\/' . $plural_tmp . ')(|\/)$/', $this->path_current, $match);
                 if (is_array($match) && count($match)) {
                     $active = true;
                 } else {

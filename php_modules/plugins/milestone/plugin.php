@@ -25,6 +25,8 @@ class plugin extends PluginAbstract
                 'alias' => [
                     'App\plugins\milestone\viewmodels\AdminMilestonesVM' => 'AdminMilestonesVM',
                     'App\plugins\milestone\viewmodels\AdminMilestoneVM' => 'AdminMilestoneVM',
+                    'App\plugins\milestone\viewmodels\AdminRequestsVM' => 'AdminRequestsVM',
+                    'App\plugins\milestone\viewmodels\AdminRequestVM' => 'AdminRequestVM',
                 ],
             ],
             'models' => [
@@ -67,8 +69,15 @@ class plugin extends PluginAbstract
 
     public function registerMenu()
     {
-        return [
+        $entity = AppIns::factory('MilestoneEntity');
+        $list = $entity->list(0, 0, ['status = 1']);
+        $menu = [
             [['milestones', 'milestone',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
         ];
+        foreach($list as $item)
+        {
+            $menu[] = [['requests/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', ''];
+        }
+        return $menu;
     }
 }

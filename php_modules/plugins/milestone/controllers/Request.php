@@ -12,7 +12,7 @@ namespace App\plugins\milestone\controllers;
 
 use SPT\MVC\JDIContainer\MVController;
 
-class Milestone extends Admin 
+class Request extends Admin 
 {
     public function detail()
     {
@@ -20,16 +20,17 @@ class Milestone extends Admin
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
-
-        $exist = $this->MilestoneEntity->findByPK($id);
+        
+        $milestone_id = $this->validateMilestoneID();
+        $exist = $this->RequestEntity->findByPK($id);
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Milestone");
             $this->app->redirect(
-                $this->router->url('admin/milestones')
+                $this->router->url('admin/requests/'. $milestone_id)
             );
         }
-        $this->app->set('layout', 'backend.milestone.form');
+        $this->app->set('layout', 'backend.request.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
     }
@@ -39,38 +40,28 @@ class Milestone extends Admin
         $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.milestone.list');
+        $this->app->set('layout', 'backend.request.list');
     }
 
     public function add()
     {
         $this->isLoggedIn();
-
+        $milestone_id = $this->validateMilestoneID();
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
-        $note = $this->request->post->get('note', '', 'string');
         if (!$title)
         {
             $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
             $this->app->redirect(
-                $this->router->url('admin/milestone/0')
+                $this->router->url('admin/requests/'. $milestone_id.'/0')
             );
         }
 
-        $findOne = $this->MilestoneEntity->findOne(['title = "'. $title. '"']);
-        if ($findOne)
-        {
-            $this->session->set('flashMsg', 'Error: Title is already in use! ');
-            $this->app->redirect(
-                $this->router->url('admin/milestone/0')
-            );
-        }
         // TODO: validate new add
-        $newId =  $this->MilestoneEntity->add([
+        $newId =  $this->RequestEntity->add([
+            'milestone_id' => $milestone_id,
             'title' => $title,
             'note' => $note,
-            'start_date' => $this->request->post->get('start_date', '' , 'string'),
-            'end_date' => $this->request->post->get('end_date', '', 'string'),
             'status' => $this->request->post->get('status', ''),
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -83,14 +74,14 @@ class Milestone extends Admin
             $msg = 'Error: Create Failed!';
             $this->session->set('flashMsg', $msg);
             $this->app->redirect(
-                $this->router->url('admin/milestone/0')
+                $this->router->url('admin/request/'. $milestone_id .'/0')
             );
         }
         else
         {
             $this->session->set('flashMsg', 'Create Success!');
             $this->app->redirect(
-                $this->router->url('admin/milestones')
+                $this->router->url('admin/request/'. $milestone_id .'s')
             );
         }
     }
@@ -98,7 +89,7 @@ class Milestone extends Admin
     public function update()
     {
         $ids = $this->validateID(); 
-       
+        $milestone_id = $this->validateMilestoneID();
         // TODO valid the request input
 
         if( is_array($ids) && $ids != null)
@@ -109,32 +100,23 @@ class Milestone extends Admin
 
             foreach($ids as $id)
             {
-                $toggle = $this->MilestoneEntity->toggleStatus($id, $action);
+                $toggle = $this->RequestEntity->toggleStatus($id, $action);
                 $count++;
             }
             $this->session->set('flashMsg', $count.' changed record(s)');
             $this->app->redirect(
-                $this->router->url('admin/milestones')
+                $this->router->url('admin/requests/'. $milestone_id)
             );
         }
         if(is_numeric($ids) && $ids)
         {
             $title = $this->request->post->get('title', '');
             $note = $this->request->post->get('note', '');
-            $findOne = $this->MilestoneEntity->findOne(['title = "'. $title. '"', 'id <> '. $ids]);
-            if ($findOne)
-            {
-                $this->session->set('flashMsg', 'Error: Title is already in use! ');
-                $this->app->redirect(
-                    $this->router->url('admin/milestone/'. $ids)
-                );
-            }
 
-            $try = $this->MilestoneEntity->update([
+            $try = $this->RequestEntity->update([
+                'milestone_id' => $milestone_id,
                 'title' => $title,
                 'note' => $note,
-                'start_date' => $this->request->post->get('start_date', '' , 'string'),
-                'end_date' => $this->request->post->get('end_date', '', 'string'),
                 'status' => $this->request->post->get('status', ''),
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
@@ -144,7 +126,7 @@ class Milestone extends Admin
             if($try) 
             {
                 $this->app->redirect(
-                    $this->router->url('admin/milestones'), 'Edit Successfully'
+                    $this->router->url('admin/requests/'. $milestone_id), 'Edit Successfully'
                 );
             }
             else
@@ -152,7 +134,7 @@ class Milestone extends Admin
                 $msg = 'Error: Save Failed';
                 $this->session->set('flashMsg', $msg);
                 $this->app->redirect(
-                    $this->router->url('admin/milestone/'. $ids)
+                    $this->router->url('admin/request/'. $milestone_id .'/'. $ids)
                 );
             }
         }
@@ -161,14 +143,14 @@ class Milestone extends Admin
     public function delete()
     {
         $ids = $this->validateID();
-        
+        $milestone_id = $this->validateMilestoneID();
         $count = 0;
         if( is_array($ids))
         {
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->MilestoneEntity->remove( $id ) )
+                if( $this->RequestEntity->remove( $id ) )
                 {
                     $count++;
                 }
@@ -176,7 +158,7 @@ class Milestone extends Admin
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->MilestoneEntity->remove($ids ) )
+            if( $this->RequestEntity->remove($ids ) )
             {
                 $count++;
             }
@@ -185,14 +167,14 @@ class Milestone extends Admin
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         $this->app->redirect(
-            $this->router->url('admin/milestones'), 
+            $this->router->url('admin/requests/'. $milestone_id), 
         );
     }
 
     public function validateID()
     {
         $this->isLoggedIn();
-
+        $milestone_id = $this->validateMilestoneID();
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -201,13 +183,30 @@ class Milestone extends Admin
             $ids = $this->request->post->get('ids', [], 'array');
             if(count($ids)) return $ids;
 
-            $this->session->set('flashMsg', 'Invalid Milestone');
+            $this->session->set('flashMsg', 'Invalid request');
             $this->app->redirect(
-                $this->router->url('admin/milestones'),
+                $this->router->url('admin/requests/'. $milestone_id),
             );
         }
 
         return $id;
     }
 
+    public function validateMilestoneID()
+    {
+        $this->isLoggedIn();
+
+        $urlVars = $this->request->get('urlVars');
+        $id = (int) $urlVars['milestone_id'];
+
+        if(empty($id))
+        {
+            $this->session->set('flashMsg', 'Invalid Milestone');
+            $this->app->redirect(
+                $this->router->url('admin/milestone'),
+            );
+        }
+
+        return $id;
+    }
 }

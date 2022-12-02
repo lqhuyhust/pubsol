@@ -11,6 +11,24 @@ return [
                 'delete' => 'milestone.milestone.delete'
             ],
         ],
+        'requests' => [
+            'fnc' => [
+                'get' => 'milestone.request.list',
+                'post' => 'milestone.request.list',
+                'put' => 'milestone.request.update',
+                'delete' => 'milestone.request.delete'
+            ],
+            'parameters' => ['id'],
+        ],
+        'request' => [
+            'fnc' => [
+                'get' => 'milestone.request.detail',
+                'post' => 'milestone.request.add',
+                'put' => 'milestone.request.update',
+                'delete' => 'milestone.request.delete'
+            ],
+            'parameters' => ['milestone_id','id'],
+        ],
         'milestone' => [
             'fnc' => [
                 'get' => 'milestone.milestone.detail',
