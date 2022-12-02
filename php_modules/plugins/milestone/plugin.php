@@ -14,6 +14,7 @@ use SPT\App\Instance as AppIns;
 use SPT\Plugin\CMS as PluginAbstract;
 use SPT\Support\Loader;
 use Joomla\DI\Container;
+use SPT\Storage\DB\Entity;
 
 class plugin extends PluginAbstract
 { 
@@ -90,16 +91,23 @@ class plugin extends PluginAbstract
         if ($check)
         {
             $request = AppIns::factory('request');
+            $version = AppIns::factory('VersionEntity');
             $app = AppIns::factory('app');
             $app->set('menu_type', 'milestone');
             $urlVars = $request->get('urlVars');
             $request_id = (int) $urlVars['request_id'];
             
-            return [
-                [['relate-notes/'. $request_id, 'relate-note/'. $request_id,], 'relate-notes/'. $request_id, 'Relate Note', '<i class="fa-solid fa-link"></i>', ''],
+            $menu = [
+                [['relate-notes/'. $request_id, 'relate-note/'. $request_id,], 'relate-notes/'. $request_id, 'Relate Notes', '<i class="fa-solid fa-link"></i>', ''],
                 [['document/'. $request_id], 'document/'. $request_id, 'Document', '<i class="fa-solid fa-file"></i>', ''],
                 [['tasks/'. $request_id, 'task/'. $request_id,], 'tasks/'. $request_id, 'Tasks', '<i class="fa-solid fa-list-check"></i>', ''],
             ];
+
+            if ($version instanceof Entity)
+            {
+                $menu[] = [['version/'. $request_id,], 'version/'. $request_id, 'Versions', '<i class="fa-solid fa-code-branch"></i>', ''];
+            }
+            return $menu;
         }
 
         $list = $entity->list(0, 0, ['status = 1']);
