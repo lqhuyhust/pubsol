@@ -60,8 +60,20 @@ class AdminRelateNotesVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
 
+        $note_exist = $this->container->exists('NoteEntity');
+
         foreach ($result as &$item)
         {
+            if ($note_exist)
+            {
+                $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
+                if ($note_tmp)
+                {
+                    $item['title'] = $note_tmp['title'];
+                    $item['description'] = $note_tmp['html_editor'];
+                }
+            }
+
             if (strlen($item['description']) > 100)
             {
                 $item['description'] = substr($item['description'], 0, 100) .' ...';
