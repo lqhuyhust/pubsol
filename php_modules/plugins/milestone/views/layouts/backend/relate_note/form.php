@@ -4,6 +4,7 @@
             <?php echo $this->render('message'); ?>
             <form action="<?php echo $this->link_form . '/' . $this->id ?>" method="post">
                 <div class="row g-3 align-items-center">
+                    <?php if (!$this->note_exist) : ?>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
                             <label class="form-label fw-bold">Title:</label>
@@ -16,6 +17,14 @@
                             <?php $this->field('description'); ?>
                         </div>
                     </div>
+                    <?php else : ?>
+                    <div class="row">
+                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
+                            <label class="form-label fw-bold">Note:</label>
+                            <?php $this->field('note_id'); ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <div class="row g-3 align-items-center m-0">
                         <?php $this->field('token'); ?>
                         <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
