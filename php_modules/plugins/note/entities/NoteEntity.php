@@ -39,6 +39,10 @@ class NoteEntity extends Entity
                     'type' => 'text',
                     'null' => 'YES',
                 ],
+                'tags' => [
+                    'type' => 'varchar',
+                    'limit' => 1000,
+                ],
                 'created_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',

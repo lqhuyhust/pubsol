@@ -19,5 +19,11 @@ return [
             ],
             'parameters' => ['id'],
         ],
+        'tag' => [
+            'fnc' => [
+                'get' => 'note.tag.list',
+                'post' => 'note.tag.add',
+            ]
+        ],
     ],
 ];
