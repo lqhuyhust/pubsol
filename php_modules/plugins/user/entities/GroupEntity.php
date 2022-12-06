@@ -42,7 +42,7 @@ class GroupEntity extends Entity
                 ],
                 'created_at' => [
                     'type' => 'datetime',
-                    'default_value' => '0000-00-00 00:00:00',
+                    'null' => 'YES',
                 ],
                 'created_by' => [
                     'type' => 'tinyint',
@@ -50,7 +50,7 @@ class GroupEntity extends Entity
                 ],
                 'modified_at' => [
                     'type' => 'datetime',
-                    'default_value' => '0000-00-00 00:00:00',
+                    'null' => 'YES',
                 ],
                 'modified_by' => [
                     'type' => 'int',
