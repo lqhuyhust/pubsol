@@ -82,6 +82,7 @@ class plugin extends PluginAbstract
     {
         return [
             [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', ''],
+            [['user-groups', 'user-group',], 'user-groups', 'Groups', '<i class="fa-solid fa-user-group"></i>', ''],
             [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', '']
         ];
     }

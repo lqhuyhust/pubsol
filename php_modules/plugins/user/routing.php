@@ -28,5 +28,22 @@ return [
             ],
             'parameters' => ['id'],
         ],
+        'user-groups'=>[
+            'fnc' => [
+                'get' => 'user.usergroup.list',
+                'post' => 'user.usergroup.list',
+                'put' => 'user.usergroup.update',
+                'delete' => 'user.usergroup.delete'
+            ],
+        ],
+        'user-group' => [
+            'fnc' => [
+                'get' => 'user.usergroup.detail',
+                'post' => 'user.usergroup.add',
+                'put' => 'user.usergroup.update',
+                'delete' => 'user.usergroup.delete'
+            ],
+            'parameters' => ['id'],
+        ],
     ],
 ];
