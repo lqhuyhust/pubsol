@@ -32,6 +32,9 @@ class plugin extends PluginAbstract
         $Validation = new Validation('plugins\user\middlewares\validation');
         MW::register('validation', $Validation);
 
+        $permissionList = new Permission('plugins\user\middlewares\permission');
+        MW::register('permission', $permissionList);
+
         return [
             // write your code here
             'viewmodels' => [
