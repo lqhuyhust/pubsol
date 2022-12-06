@@ -10,10 +10,11 @@
 
 namespace App\plugins\user\entities;
 
-use SPT\User\SPT\UserEntity as Entity;
+use SPT\Storage\DB\DipatchableEntity as Entity;
 
 class UserEntity extends Entity
 {
+    protected $affix = 'User';
     protected $table = '#__users';
     protected $pk = 'id';
 
