@@ -21,6 +21,7 @@
 											<th>User Name</th>
 											<th>Name</th>
 											<th>Email</th>
+											<th>Groups</th>
 											<th>Status</th>
 											<th>Created At</th>
 											<th>Action</th>

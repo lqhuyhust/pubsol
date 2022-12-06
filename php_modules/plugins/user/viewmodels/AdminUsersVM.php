@@ -33,6 +33,7 @@ class AdminUsersVM extends ViewModel
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
+        $group = $filter->getField('group')->value;
         $page   = $this->request->get->get('page', 1, 'int');
         if ($page <= 0) $page = 1;
 
@@ -101,6 +102,7 @@ class AdminUsersVM extends ViewModel
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'users.search'),
                 'status' => $this->state('status', '','', 'post', 'users.status'),
+                'group' => $this->state('group', '','', 'post', 'users.group'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'users.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'users.sort')
             ];
@@ -118,6 +120,18 @@ class AdminUsersVM extends ViewModel
 
     public function getFilterFields()
     {
+        $groups = $this->GroupEntity->list(0, 0, [], 'name asc');
+        $options = [
+            ['text' => 'Select Group', 'value' => ''],
+        ];
+        foreach ($groups as $group)
+        {
+            $options[] = [
+                'text' => $group['name'],
+                'value' => $group['id'],
+            ];
+        }
+
         return [
             'search' => ['text',
                 'default' => '',
@@ -139,6 +153,11 @@ class AdminUsersVM extends ViewModel
                 'formClass' => 'form-select',
                 'default' => 10,
                 'options' => [ 5, 10, 20, 50],
+                'showLabel' => false
+            ],
+            'group' => ['option',
+                'formClass' => 'form-select',
+                'options' => $options,
                 'showLabel' => false
             ],
             'sort' => ['option',
