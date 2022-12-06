@@ -33,7 +33,7 @@ class AdminUsersVM extends ViewModel
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
-        $group = $filter->getField('group')->value;
+        $filter_group = $filter->getField('group')->value;
         $page   = $this->request->get->get('page', 1, 'int');
         if ($page <= 0) $page = 1;
 
@@ -53,6 +53,17 @@ class AdminUsersVM extends ViewModel
 
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'name ASC';
+        if ($filter_group)
+        {
+            $user_map = $this->UserGroupEntity->list(0, 0, ['group_id' => $filter_group]);
+            $where_group[] = 0;
+            foreach($user_map as $map)
+            {
+                $where_group[] = $map['user_id'];
+            }
+        
+            $where[] = 'id IN ('. implode(',', $where_group) . ')';
+        }
 
         $result = $this->UserEntity->list( $start, $limit, $where, $sort);
         $total = $this->UserEntity->getListTotal();
@@ -61,7 +72,10 @@ class AdminUsersVM extends ViewModel
         {
             $result = [];
             $total = 0;
-            $this->session->set('flashMsg', 'Not Found User');
+            if ($where)
+            {
+                $this->session->set('flashMsg', 'Not Found User');
+            }
         }
 
         foreach( $result as $key => &$value )
