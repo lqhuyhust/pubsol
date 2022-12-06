@@ -20,10 +20,12 @@ class PermissionKey extends Script
         if ( is_array( $params['PermissionKey'] ))
         { 
             $user = AppIns::factory('user');
-            
-            foreach($user->getPermissions() as $permission)
+            $request = AppIns::factory('request');
+            $method = $request->header->getRequestMethod();
+            $allows = isset($params['PermissionKey'][$method]) && is_array($params['PermissionKey'][$method]) ? $params['PermissionKey'][$method] : $params['PermissionKey'];
+            foreach($user->getPermissions($user->get('id')) as $permission)
             {
-                if( in_array( $permission, $params['PermissionKey']) )
+                if( in_array( $permission, $allows) )
                 {
                     return true;
                 }

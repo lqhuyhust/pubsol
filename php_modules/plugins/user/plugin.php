@@ -101,7 +101,7 @@ class plugin extends PluginAbstract
 
     public function getRightAccess()
     {
-        return ['user_create', 'user_read', 'user_manager','user_delete', 'user_update', 'usergroup_manager', 'usergroup_read', 'usergroup_delete', 'usergroup_update', 'usergroup_create'];
+        return ['user_manager', 'user_create', 'user_read', 'user_delete', 'user_update', 'usergroup_manager', 'usergroup_read', 'usergroup_create', 'usergroup_update', 'usergroup_delete'];
     }
 
 }
