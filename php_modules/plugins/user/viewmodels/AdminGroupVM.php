@@ -27,64 +27,65 @@ class AdminGroupVM extends ViewModel
     {
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
+        $this->view->set('id', $id, true);
 
-        $data = $id ? $this->UserEntity->findByPK($id) : [];
-        if ($data)
+        $data = $id ? $this->GroupEntity->findByPK($id) : [];
+        if (isset($data['access']) && $data['access'])
         {
-            $data['password'] = '';
+            $data['access'] = (array) json_decode($data['access']);
         }
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'New User' : 'Update User', true);
+        $this->set('title_page', $data ? 'New User Group' : 'Update User Group', true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/users'));
-        $this->set('link_form', $this->router->url('admin/user'));
+        $this->set('link_list', $this->router->url('admin/user-groups'));
+        $this->set('link_form', $this->router->url('admin/user-group'));
     }
 
     public function getFormFields()
     {
+        $key_access = $this->UserModel->getRightAccess();
+        $option = [
+            [
+                'text' => 'select',
+                'value' => '',
+            ]
+        ];
+        foreach ($key_access as $key)
+        {
+            $option[] = [
+                'text' => $key,
+                'value' => $key,
+            ];
+        }
+
         $fields = [
             'id' => ['hidden'],
-            'name' => [
-                'text',
-                'placeholder' => 'Enter Name',
+            'name' => ['text',
                 'showLabel' => false,
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
-            'username' => ['text',
-                'placeholder' => 'Enter User Name',
-                'showLabel' => false,
+            'description' => ['textarea',
                 'formClass' => 'form-control',
-                'required' => 'required',
-            ],
-            'email' => ['email',
-                'formClass' => 'form-control',
-                'placeholder' => 'Enter Email',
                 'showLabel' => false,
-                // 'required' => 'required'
+                'placeholder' => ''
             ],
-            'password' => ['password',
-                'placeholder' => 'Enter Password',
+            'access' => ['option',
                 'showLabel' => false,
-                'formClass' => 'form-control'
-            ],
-            'confirm_password' => ['password',
-                'placeholder' => 'Enter Confirm Password',
-                'showLabel' => false,
-                'formClass' => 'form-control'
+                'placeholder' => 'Select Right Access',
+                'type' => 'multiselect',
+                'formClass' => 'form-select',
+                'options' => $option
             ],
             'status' => ['option',
-                'showLabel' => false,
                 'type' => 'radio',
                 'formClass' => '',
-                'default' => 1,
                 'options' => [
-                    ['text'=>'Active', 'value'=>1],
-                    ['text'=>'Inactive', 'value'=>0]
+                    ['text'=>'Yes', 'value'=>1],
+                    ['text'=>'No', 'value'=>0]
                 ]
             ],
             'token' => ['hidden',

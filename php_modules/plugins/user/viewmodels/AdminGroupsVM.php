@@ -14,7 +14,7 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminGrousVM extends ViewModel
+class AdminGroupsVM extends ViewModel
 {
     protected $alias = 'AdminGroupsVM';
     protected $layouts = [
@@ -57,7 +57,6 @@ class AdminGrousVM extends ViewModel
         {
             $result = [];
             $total = 0;
-            $this->session->set('flashMsg', 'Not Found User');
         }
 
         foreach($result as &$group) {
@@ -85,9 +84,9 @@ class AdminGrousVM extends ViewModel
         $this->set('sort', $sort, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/users'), true);
-        $this->set('title_page', 'User Manager', true);
-        $this->set('link_form', $this->router->url('admin/user'), true);
+        $this->set('link_list', $this->router->url('admin/user-groups'), true);
+        $this->set('title_page', 'User Group Manager', true);
+        $this->set('link_form', $this->router->url('admin/user-group'), true);
         $this->set('token', $this->app->getToken(), true);
     }
 
@@ -96,7 +95,6 @@ class AdminGrousVM extends ViewModel
         return [
             'num' => '#',
             'name' => 'Name',
-            'description' => 'Description',
             'right_access' => 'Right access',
             'status' => 'Status',
             'col_last' => ' ',
@@ -150,7 +148,7 @@ class AdminGrousVM extends ViewModel
                 'options' => [ 5, 10, 20, 50],
                 'showLabel' => false
             ],
-            'sort' => ['hidden',
+            'sort' => ['option',
                 'formClass' => 'form-select',
                 'default' => 'name asc',
                 'options' => [

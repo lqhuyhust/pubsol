@@ -32,6 +32,8 @@ class plugin extends PluginAbstract
                 'alias' => [
                     'App\plugins\user\viewmodels\AdminUsersVM' => 'AdminUsersVM',
                     'App\plugins\user\viewmodels\AdminUserVM' => 'AdminUserVM',
+                    'App\plugins\user\viewmodels\AdminGroupsVM' => 'AdminGroupsVM',
+                    'App\plugins\user\viewmodels\AdminGroupVM' => 'AdminGroupVM',
                 ],
             ],
             'models' => [
