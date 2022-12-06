@@ -63,6 +63,11 @@ class AdminUsersVM extends ViewModel
             $this->session->set('flashMsg', 'Not Found User');
         }
 
+        foreach( $result as $key => &$value )
+        {
+            $result[$key]['groups'] = $this->UserEntity->getGroups($value['id']);
+        }
+
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
         $this->set('page', $page, true);

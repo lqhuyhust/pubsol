@@ -74,4 +74,15 @@ class UserEntity extends Entity
             'status' => $status,
         ], ['id' => $id ]);
     }
+    
+    public function getGroups($user_id)
+    {
+        $list = $this->db->select( 'usermap.user_id, usergroup.name as group_name, usergroup.id as group_id' )
+                        ->table( '#__user_usergroup_map as usermap' )
+                        ->join( 'LEFT JOIN #__user_groups as usergroup ON usergroup.id = usermap.group_id ')
+                        ->where(['usermap.user_id = ' .$user_id]);
+
+        return $list->list(0, 0);
+    }
+
 }

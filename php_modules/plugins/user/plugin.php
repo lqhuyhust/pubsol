@@ -18,11 +18,17 @@ use SPT\Middleware\Dispatcher as MW;
 use App\plugins\user\middlewares\Permission;
 use App\plugins\user\middlewares\Validation;
 use SPT\File;
+use SPT\Dispatcher;
 
 class plugin extends PluginAbstract
 { 
     public function register()
     {
+        Dispatcher::register('afterNewUser', 'UserGroupModel', 'addUserMap');
+        Dispatcher::register('afterUpdateUser', 'UserGroupModel', 'updateUserMap');
+        Dispatcher::register('afterRemoveUser', 'UserGroupModel', 'removeByUser');
+        Dispatcher::register('afterRemoveGroup', 'UserGroupModel', 'removeByGroup');
+
         $Validation = new Validation('plugins\user\middlewares\validation');
         MW::register('validation', $Validation);
 
@@ -39,6 +45,7 @@ class plugin extends PluginAbstract
             'models' => [
                 'alias' => [
                     'App\plugins\user\models\UserModel' => 'UserModel',
+                    'App\plugins\user\models\UserGroupModel' => 'UserGroupModel',
                 ],
             ],
             'entity' => [],
