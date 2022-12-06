@@ -7,7 +7,7 @@
     <td><a href="<?php echo $this->link_form . '/' . $this->item['id']; ?>"><?php echo  $this->item['username']  ?></a></td>
     <td><?php echo  $this->item['name'];  ?></td>
     <td><?php echo   $this->item['email'];  ?></td>
-    <td class="align-middle">
+    <td>
         <?php
             if ($this->item['groups'] && count($this->item['groups']) < 4){
                 foreach($this->item['groups'] as $item) 

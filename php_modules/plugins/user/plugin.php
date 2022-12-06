@@ -95,4 +95,10 @@ class plugin extends PluginAbstract
             [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', '']
         ];
     }
+
+    public function getRightAccess()
+    {
+        return ['user_create', 'user_read', 'user_manager','user_delete', 'user_update', 'usergroup_manager', 'usergroup_read', 'usergroup_delete', 'usergroup_update', 'usergroup_create'];
+    }
+
 }

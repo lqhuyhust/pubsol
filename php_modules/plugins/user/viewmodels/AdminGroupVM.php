@@ -47,12 +47,7 @@ class AdminGroupVM extends ViewModel
     public function getFormFields()
     {
         $key_access = $this->UserModel->getRightAccess();
-        $option = [
-            [
-                'text' => 'select',
-                'value' => '',
-            ]
-        ];
+        $option = [];
         foreach ($key_access as $key)
         {
             $option[] = [
