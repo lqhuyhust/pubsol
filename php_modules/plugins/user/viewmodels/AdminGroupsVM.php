@@ -14,11 +14,11 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminUsersVM extends ViewModel
+class AdminGrousVM extends ViewModel
 {
-    protected $alias = 'AdminUsersVM';
+    protected $alias = 'AdminGroupsVM';
     protected $layouts = [
-        'layouts.backend.user' => [
+        'layouts.backend.usergroup' => [
             'list',
             'list.row',
             'list.filter'
@@ -34,17 +34,15 @@ class AdminUsersVM extends ViewModel
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
         $page   = $this->request->get->get('page', 1, 'int');
+
         if ($page <= 0) $page = 1;
 
         $where = [];
-        
-
         if( !empty($search) )
         {
-            $where[] = "(`username` LIKE '%".$search."%' ".
-                "OR `name` LIKE '%".$search."%' ".
-                "OR `email` LIKE '%".$search."%' )";
+            $where[] = "(`name` LIKE '%".$search."%' )";
         }
+
         if(is_numeric($status))
         {
             $where[] = '`status`='. $status;
@@ -52,15 +50,32 @@ class AdminUsersVM extends ViewModel
 
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'name ASC';
-
-        $result = $this->UserEntity->list( $start, $limit, $where, $sort);
-        $total = $this->UserEntity->getListTotal();
+        $result = $this->GroupEntity->list( $start, $limit, $where, $sort);
+        $total = $this->GroupEntity->getListTotal();
 
         if (!$result)
         {
             $result = [];
             $total = 0;
             $this->session->set('flashMsg', 'Not Found User');
+        }
+
+        foreach($result as &$group) {
+            //get users in group
+            $userIn = $this->UserGroupEntity->getUserActive($group['id']);
+            $userInGroup = $this->UserGroupEntity->getListTotal();
+            $group['user_in'] = $userInGroup;
+
+            //get Right Access
+            $group['access'] = (array) json_decode($group['access']);
+            $keys = $this->UserModel->getRightAccess();
+            foreach($group['access'] as $key => $value)
+            {
+                if (!in_array($value, $keys))
+                {
+                    unset($group['access'][$key]);
+                }
+            }
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
@@ -81,10 +96,9 @@ class AdminUsersVM extends ViewModel
         return [
             'num' => '#',
             'name' => 'Name',
-            'username' => 'User name',
-            'emal' => 'Email',
-            'block' => 'Is block',
-            'created_at' => 'Created at',
+            'description' => 'Description',
+            'right_access' => 'Right access',
+            'status' => 'Status',
             'col_last' => ' ',
         ];
     }
@@ -94,22 +108,22 @@ class AdminUsersVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'users.search'),
-                'status' => $this->state('status', '','', 'post', 'users.status'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'users.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'users.sort')
+                'search' => $this->state('search', '', '', 'post', 'user-groups.search'),
+                'status' => $this->state('status', '','', 'post', 'user-groups.status'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'user-groups.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'user-groups.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
             $this->set('form', ['filter' => $filter], true);
             $this->set('dataform', $data, true);
-
             foreach($data as $k=>$v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
         return $this->_filter;
     }
+
 
     public function getFilterFields()
     {
@@ -121,12 +135,12 @@ class AdminUsersVM extends ViewModel
                 'placeholder' => 'Search..'
             ],
             'status' => ['option',
-                'default' => '1',
+                'default' => '',
                 'formClass' => 'form-select',
                 'options' => [
                     ['text' => '--', 'value' => ''],
-                    ['text' => 'Inactive', 'value' => '0'],
-                    ['text' => 'Active', 'value' => '1']
+                    ['text' => 'Blocked', 'value' => '1'],
+                    ['text' => 'Active', 'value' => '0']
                 ],
                 'showLabel' => false
             ],
@@ -136,16 +150,14 @@ class AdminUsersVM extends ViewModel
                 'options' => [ 5, 10, 20, 50],
                 'showLabel' => false
             ],
-            'sort' => ['option',
+            'sort' => ['hidden',
                 'formClass' => 'form-select',
                 'default' => 'name asc',
                 'options' => [
                     ['text' => 'Name ascending', 'value' => 'name asc'],
                     ['text' => 'Name descending', 'value' => 'name desc'],
-                    ['text' => 'Email ascending', 'value' => 'email asc'],
-                    ['text' => 'Email descending', 'value' => 'email desc'],
-                    ['text' => 'Username ascending', 'value' => 'username asc'],
-                    ['text' => 'Username descending', 'value' => 'username desc'],
+                    ['text' => 'Status ascending', 'value' => 'status asc'],
+                    ['text' => 'Status descending', 'value' => 'status desc'],
                 ],
                 'showLabel' => false
             ]
