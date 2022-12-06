@@ -30,14 +30,18 @@ class AdminNoteVM extends ViewModel
         $this->set('id', $id, true);
 
         $data = $id ? $this->NoteEntity->findByPK($id) : [];
+        $where[] = "(`id` IN (".$data['tags'].") )";
+        $data_tags = !empty($data['tags']) ? $this->TagEntity->list(0, 1000, $where) : [];
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
+        $this->set('data_tags', $data_tags, true);
         $this->set('title_page', $data ? 'Edit Note' : 'New Milestone', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('admin/notes'));
         $this->set('link_form', $this->router->url('admin/note'));
+        $this->set('link_tag', $this->router->url('admin/tag'));
     }
 
     public function getFormFields()

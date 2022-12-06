@@ -48,6 +48,7 @@ class Note extends Admin {
 
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
+        $tags = $this->request->post->get('tags', '', 'string');
         $html_editor = $this->request->post->get('html_editor', '', 'string');
         if (!$title)
         {
@@ -69,6 +70,7 @@ class Note extends Admin {
         // TODO: validate new add
         $newId =  $this->NoteEntity->add([
             'title' => $title,
+            'tags' => $tags,
             'html_editor' => $html_editor,
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -118,6 +120,7 @@ class Note extends Admin {
         if(is_numeric($ids) && $ids)
         {
             $title = $this->request->post->get('title', '');
+            $tags = $this->request->post->get('tags', '', 'string');
             $html_editor = $this->request->post->get('html_editor', '');
             $findOne = $this->NoteEntity->findOne(['title = "'. $title. '"', 'id <> '. $ids]);
             if ($findOne)
@@ -130,6 +133,7 @@ class Note extends Admin {
 
             $try = $this->NoteEntity->update([
                 'title' => $title,
+                'tags' => $tags,
                 'html_editor' => $html_editor,
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),

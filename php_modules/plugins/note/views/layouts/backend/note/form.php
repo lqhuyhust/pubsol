@@ -23,7 +23,7 @@
                             <?php $this->field('title'); ?>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="display: none">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
                             <label class="form-label fw-bold">Tags:</label>
                             <?php $this->field('tags'); ?>
@@ -33,7 +33,11 @@
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
                             <label class="form-label fw-bold">Tags:</label>
-                            <select class="js-example-tags" multiple id="select_tags"></select>
+                            <select class="js-example-tags" multiple id="select_tags">
+                                <?php foreach ($this->data_tags as $item): ?>
+                                    <option selected="selected" value="<?=$item['id']?>"><?=$item['name']?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
 
@@ -68,12 +72,13 @@
 </style>
 
 <script>
+    var new_tags = [];
     $(".js-example-tags").select2({
         tags: true,
         createTag:newtag,
-        // matcher: matchCustom,
+        matcher: matchCustom,
         ajax: {
-            url: "http://sdm.local/admin/tag",
+            url: "<?=$this->link_tag?>",
             dataType: 'json',
             delay: 250,
             data: function (params) {
@@ -110,7 +115,7 @@
 
         return {
             id: term,
-            text: term + " (New tag)",
+            text: term,
             newTag: true // add additional parameters
         }
     }
@@ -118,22 +123,59 @@
     $('.js-example-tags').on('select2:select', function (e) {
         let tag = e.params.data;
         if (tag.newTag === true) {
-            console.log('========data', tag);
-            // $.post( "http://sdm.local/admin/tag", { name: "tag"})
-            //     .done(function( data ) {
-            //         console.log('========data', data);
-            //     });
+             $.post( "<?=$this->link_tag?>", { name: tag.text})
+                 .done(function( data ) {
+                     new_tags.push({id:data.data.id, text: data.data.name})
+
+                     setTags();
+                 });
+        } else {
+            setTags();
         }
-        console.log('===1', $('#select_tags').val());
-        // if ($('#select_tags').val().length > 0){
-        //
-        // }
     });
 
-    $('.js-example-tags').on('change', function (e) {
-        // let tag = e.params.data;
-        // console.log('=====tag', tag);
+    $('.js-example-tags').on('select2:unselect', function (e) {
+        setTags();
+    });
 
-        console.log('========', $('#select_tags').val());
-    })
+    function matchCustom(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+            return data;
+        }
+
+        // Do not display the item if there is no 'text' property
+        if (typeof data.text === 'undefined') {
+            return null;
+        }
+
+        // Return `null` if the term should not be displayed
+        return null;
+    }
+
+    function setTags() {
+        let tmp_tags = $('#select_tags').val();
+        console.log('tmp_tags', tmp_tags.length, tmp_tags,'=====1',new_tags,'=======tag3');
+        if (tmp_tags.length > 0){
+            var items = [];
+
+            if (new_tags.length > 0){
+                tmp_tags.forEach( function (item, key) {
+                    new_tags.forEach(function (item2, key2) {
+
+                        console.log(item,'=====',item2);
+                        // if (item[key] == item2[key2].text) {
+                        //     items.push(item2[key2].id)
+                        // } else {
+                        //     items.push(item[key])
+                        // }
+                    })
+                })
+            } else items = tmp_tags
+            console.log('=========items', items);
+            $('#tags').val(items.join(','))
+        } else {
+            $('#tags').val('')
+        }
+    }
 </script>
