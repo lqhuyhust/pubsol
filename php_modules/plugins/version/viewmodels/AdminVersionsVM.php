@@ -7,18 +7,18 @@
  * @description: Just a basic viewmodel
  * 
  */
-namespace App\plugins\milestone\viewmodels; 
+namespace App\plugins\version\viewmodels; 
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\Util;
 
-class AdminRelateNotesVM extends ViewModel
+class AdminVersionsVM extends ViewModel
 {
-    protected $alias = 'AdminRelateNotesVM';
+    protected $alias = 'AdminVersionsVM';
     protected $layouts = [
-        'layouts.backend.relate_note' => [
+        'layouts.backend.version' => [
             'list',
             'list.row',
             'list.filter'
@@ -28,9 +28,6 @@ class AdminRelateNotesVM extends ViewModel
     public function list()
     {
         $filter = $this->filter();
-        $urlVars = $this->request->get('urlVars');
-        $request_id = (int) $urlVars['request_id'];
-        $this->set('request_id', $request_id, true);
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
@@ -39,46 +36,24 @@ class AdminRelateNotesVM extends ViewModel
         if ($page <= 0) $page = 1;
 
         $where = [];
-        $where[] = ['request_id = '. $request_id];
+        
 
         if( !empty($search) )
         {
-            $where[] = "(`title` LIKE '%".$search."%')";
+            $where[] = "(`name` LIKE '%".$search."%')";
         }
         
         $start  = ($page-1) * $limit;
-        $sort = $sort ? $sort : 'title asc';
+        $sort = $sort ? $sort : 'name asc';
 
-        $result = $this->RelateNoteEntity->list( $start, $limit, $where, $sort);
-        $total = $this->RelateNoteEntity->getListTotal();
+        $result = $this->VersionEntity->list( $start, $limit, $where, $sort);
+        $total = $this->VersionEntity->getListTotal();
         if (!$result)
         {
             $result = [];
             $total = 0;
         }
-        $request = $this->RequestEntity->findByPK($request_id);
-        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
-        $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
 
-        $note_exist = $this->container->exists('NoteEntity');
-
-        foreach ($result as &$item)
-        {
-            if ($note_exist)
-            {
-                $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
-                if ($note_tmp)
-                {
-                    $item['title'] = $note_tmp['title'];
-                    $item['description'] = $note_tmp['html_editor'];
-                }
-            }
-
-            if (strlen($item['description']) > 100)
-            {
-                $item['description'] = substr($item['description'], 0, 100) .' ...';
-            }
-        }
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
         $this->set('page', $page, true);
@@ -86,9 +61,10 @@ class AdminRelateNotesVM extends ViewModel
         $this->set('sort', $sort, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('admin/relate-notes/'. $request_id), true);
-        $this->set('title_page', $title_page, true);
-        $this->set('link_form', $this->router->url('admin/relate-note/'. $request_id), true);
+        $this->set('link_list', $this->router->url('admin/versions'), true);
+        $this->set('title_page', 'Version Manager', true);
+        $this->set('link_form', $this->router->url('admin/version'), true);
+        $this->set('link_form_detail', $this->router->url('admin/version-notes'), true);
         $this->set('token', $this->app->getToken(), true);
     }
 
@@ -97,7 +73,7 @@ class AdminRelateNotesVM extends ViewModel
         return [
             'num' => '#',
             'title' => 'Title',
-            'status' => 'Status',
+            'release' => 'release',
             'created_at' => 'Created at',
             'col_last' => ' ',
         ];
@@ -108,9 +84,9 @@ class AdminRelateNotesVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'relate_note.search'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'relate_note.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'relate_note.sort')
+                'search' => $this->state('search', '', '', 'post', 'version.search'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'version.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'version.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
@@ -141,10 +117,10 @@ class AdminRelateNotesVM extends ViewModel
             ],
             'sort' => ['option',
                 'formClass' => 'form-select',
-                'default' => 'title asc',
+                'default' => 'name asc',
                 'options' => [
-                    ['text' => 'Title ascending', 'value' => 'title asc'],
-                    ['text' => 'Title descending', 'value' => 'title desc'],
+                    ['text' => 'Name ascending', 'value' => 'name asc'],
+                    ['text' => 'Name descending', 'value' => 'name desc'],
                 ],
                 'showLabel' => false
             ]

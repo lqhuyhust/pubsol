@@ -34,7 +34,12 @@
                             <?php $this->field('email'); ?>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
+                            <label class="form-label fw-bold" for="groups">Groups:</label>
+                            <?php $this->field('groups'); ?>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                             <label class="form-label fw-bold">Status:</label>

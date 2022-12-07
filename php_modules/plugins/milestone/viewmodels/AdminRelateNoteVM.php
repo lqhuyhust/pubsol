@@ -36,6 +36,9 @@ class AdminRelateNoteVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = $request ? '<a href="'. $this->router->url('admin/requests/'. $milestone['id']).'" >'.$milestone['title'] .'</a> >> Request: '. $request['title'] .' - Relate Note' : 'Relate Note';
 
+        $note_exist = $this->container->exists('NoteEntity');
+
+        $this->set('note_exist', $note_exist);
         $this->set('form', $form, true);
         $this->set('data', $data, true);
         $this->set('title_page', $title_page, true);
@@ -46,6 +49,23 @@ class AdminRelateNoteVM extends ViewModel
 
     public function getFormFields()
     {
+        $notes = [];
+        if ($this->container->exists('NoteEntity'))
+        {
+            $notes = $this->NoteEntity->list(0 , 0);
+        }
+        $options = [[
+            'text' => 'Select Note',
+            'value' => '',
+        ]];
+        foreach ($notes as $note)
+        {
+            $options[] = [
+                'text' => $note['title'],
+                'value' => $note['id'],
+            ];
+        }
+
         $fields = [
             'id' => ['hidden'],
             'title' => [
@@ -61,7 +81,12 @@ class AdminRelateNoteVM extends ViewModel
                 'formClass' => 'form-control',
                 'required' => 'required',
             ],
-            
+            'note_id' => ['option',
+                'options' => $options,
+                'showLabel' => false,
+                'formClass' => 'form-select',
+                'required' => 'required',
+            ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
             ],
