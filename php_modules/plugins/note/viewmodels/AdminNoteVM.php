@@ -30,8 +30,13 @@ class AdminNoteVM extends ViewModel
         $this->set('id', $id, true);
 
         $data = $id ? $this->NoteEntity->findByPK($id) : [];
-        $where[] = "(`id` IN (".$data['tags'].") )";
-        $data_tags = !empty($data['tags']) ? $this->TagEntity->list(0, 1000, $where) : [];
+        
+        $data_tags = [];
+        if (!empty($data['tags'])){
+            $where[] = "(`id` IN (".$data['tags'].") )";
+            $data_tags = $this->TagEntity->list(0, 1000, $where);
+        }
+       
         $form = new Form($this->getFormFields(), $data);
 
         $this->set('form', $form, true);
