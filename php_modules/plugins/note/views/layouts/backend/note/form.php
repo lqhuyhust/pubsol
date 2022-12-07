@@ -155,24 +155,25 @@
 
     function setTags() {
         let tmp_tags = $('#select_tags').val();
-        console.log('tmp_tags', tmp_tags.length, tmp_tags,'=====1',new_tags,'=======tag3');
         if (tmp_tags.length > 0){
             var items = [];
 
             if (new_tags.length > 0){
                 tmp_tags.forEach( function (item, key) {
+                    let ck = false;
                     new_tags.forEach(function (item2, key2) {
 
-                        console.log(item,'=====',item2);
-                        // if (item[key] == item2[key2].text) {
-                        //     items.push(item2[key2].id)
-                        // } else {
-                        //     items.push(item[key])
-                        // }
+                        if (item == item2.text)
+                            ck = item2
                     })
+
+                    if (ck === false)
+                        items.push(item)
+                     else
+                        items.push(ck.id)
                 })
             } else items = tmp_tags
-            console.log('=========items', items);
+
             $('#tags').val(items.join(','))
         } else {
             $('#tags').val('')
