@@ -1,10 +1,4 @@
 <div class="main">
-    <nav class="navbar navbar-expand navbar-light navbar-bg shadow-none py-2 ">
-        <a class="sidebar-toggle js-sidebar-toggle">
-            <i class="hamburger align-self-center"></i>
-        </a>
-        <h2 class="pt-2">Setting</h2>
-    </nav>
     <main class="content p-0">
         <div class="container-fluid align-items-center row justify-content-center mx-auto p-0">
             <?php

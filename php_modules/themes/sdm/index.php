@@ -1,7 +1,6 @@
 <?php defined( 'APP_PATH' ) or die('');
 
 $this->theme->prepareAssets([
-    'jquery',
     'bootstrap-css',
     'style-css',
     'js-bootstrap'
@@ -13,7 +12,7 @@ $this->theme->prepareAssets([
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>App Demo</title>
+    <title>SDM</title>
 
     <?php $this->theme->echo('css', $this->url) ?> 
     <?php $this->theme->echo('topJs', $this->url) ?>
