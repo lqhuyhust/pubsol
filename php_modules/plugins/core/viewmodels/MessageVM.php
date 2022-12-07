@@ -18,7 +18,9 @@ class MessageVM extends ViewModel
 
     public function render()
     {
-        $this->view->set('message', $this->session->get('flashMsg'));
+        $message = $this->session->get('flashMsg');
+        $message = is_array($message) ? implode('<br>', $message) : $message;
+        $this->view->set('message', $message);
         $this->session->set('flashMsg', '');
     }
 }
