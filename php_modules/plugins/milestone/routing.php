@@ -1,0 +1,101 @@
+<?php 
+
+return [
+    'admin' => [
+        // Endpoint Milestones
+        'milestones'=>[
+            'fnc' => [
+                'get' => 'milestone.milestone.list',
+                'post' => 'milestone.milestone.list',
+                'put' => 'milestone.milestone.update',
+                'delete' => 'milestone.milestone.delete'
+            ],
+        ],
+        'requests' => [
+            'fnc' => [
+                'get' => 'milestone.request.list',
+                'post' => 'milestone.request.list',
+                'put' => 'milestone.request.update',
+                'delete' => 'milestone.request.delete'
+            ],
+            'parameters' => ['milestone_id'],
+        ],
+        'request' => [
+            'fnc' => [
+                'get' => 'milestone.request.detail',
+                'post' => 'milestone.request.add',
+                'put' => 'milestone.request.update',
+                'delete' => 'milestone.request.delete'
+            ],
+            'parameters' => ['milestone_id','id'],
+        ],
+        'tasks' => [
+            'fnc' => [
+                'get' => 'milestone.task.list',
+                'post' => 'milestone.task.list',
+                'put' => 'milestone.task.update',
+                'delete' => 'milestone.task.delete'
+            ],
+            'parameters' => ['request_id'],
+        ],
+        'task' => [
+            'fnc' => [
+                'get' => 'milestone.task.detail',
+                'post' => 'milestone.task.add',
+                'put' => 'milestone.task.update',
+                'delete' => 'milestone.task.delete'
+            ],
+            'parameters' => ['request_id', 'id'],
+        ],
+        'relate-notes' => [
+            'fnc' => [
+                'get' => 'milestone.note.list',
+                'post' => 'milestone.note.list',
+                'put' => 'milestone.note.update',
+                'delete' => 'milestone.note.delete'
+            ],
+            'parameters' => ['request_id'],
+        ],
+        'document' => [
+            'fnc' => [
+                'get' => 'milestone.document.detail',
+                'post' => 'milestone.document.add',
+                'put' => 'milestone.document.update',
+            ],
+            'parameters' => ['request_id'],
+        ],
+        'discussion' => [
+            'fnc' => [
+                'post' => 'milestone.discussion.add',
+            ],
+            'parameters' => ['request_id'],
+        ],
+        'relate-note' => [
+            'fnc' => [
+                'get' => 'milestone.note.detail',
+                'post' => 'milestone.note.add',
+                'put' => 'milestone.note.update',
+                'delete' => 'milestone.note.delete'
+            ],
+            'parameters' => ['request_id', 'id'],
+        ],
+        'milestone' => [
+            'fnc' => [
+                'get' => 'milestone.milestone.detail',
+                'post' => 'milestone.milestone.add',
+                'put' => 'milestone.milestone.update',
+                'delete' => 'milestone.milestone.delete'
+            ],
+            'parameters' => ['id'],
+        ],
+        'request-version' => [
+            'fnc' => [
+                'get' => 'milestone.version.list',
+                'post' => 'milestone.version.add',
+                'put' => 'milestone.version.update',
+                'delete' => 'milestone.version.delete',
+            ],
+            'parameters' => ['request_id', 'id'],
+        ],
+    ],
+];

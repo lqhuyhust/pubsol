@@ -302,7 +302,7 @@ class User extends Admin
             $ids = $this->request->post->get('ids', [], 'array');
             if(count($ids)) return $ids;
 
-            $this->session->set( 'Invalid user');
+            $this->session->set('flashMsg', 'Invalid user');
             $this->app->redirect(
                 $this->router->url('admin/users'),
             );
