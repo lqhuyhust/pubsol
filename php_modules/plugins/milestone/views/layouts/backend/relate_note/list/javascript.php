@@ -27,6 +27,11 @@
             $('input[name="ids[]"]:checked').each(function() {
                 count++;
             });
+            if (!count)
+            {
+                alert('Please select the record before deleting!')
+                return false;
+            }
             var result = confirm("You are going to delete " + count + " record(s). Are you sure ?");
             if (result) {
                 $('#formListRelateNote').submit();
