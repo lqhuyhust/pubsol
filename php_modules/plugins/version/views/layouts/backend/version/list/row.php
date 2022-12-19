@@ -44,6 +44,5 @@
             <i class="fa-solid fa-pen-to-square"></i>
         </a>
         <a class="fs-4 me-1" href="<?php echo $this->link_form . '-feedback/' . $this->item['id']; ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Go to feedback"><i class="fa-solid fa-message"></i></a>
-        <a data-id="<?php echo  $this->item['id'] ?>" style="color:#3b7ddd;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="delete fs-4 border-0 bg-transparent button_delete_item"><i class="fa-solid fa-trash"></i></a>
     </td>
 </tr>
