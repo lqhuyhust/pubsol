@@ -50,6 +50,10 @@ class Version extends Admin
         $name = $this->request->post->get('name', '', 'string');
         $release_date = $this->request->post->get('release_date', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
+
+        if($release_date == '')
+            $release_date = NULL;
+
         if (!$name)
         {
             $this->session->set('flashMsg', 'Error: Name can\'t empty! ');
@@ -113,6 +117,10 @@ class Version extends Admin
             $name = $this->request->post->get('name', '', 'string');
             $release_date = $this->request->post->get('release_date', '', 'string');
             $description = $this->request->post->get('description', '', 'string');
+
+            if($release_date == '')
+            $release_date = NULL;
+
             $findOne = $this->VersionEntity->findOne(['name = "'. $name. '"', 'id <> '. $ids]);
             if ($findOne)
             {
