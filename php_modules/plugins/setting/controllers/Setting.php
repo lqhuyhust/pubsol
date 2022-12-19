@@ -78,7 +78,7 @@ class Setting extends MVController
         $try = $this->EmailModel->send($admin_mail, 'Admin', 'This is mail test', 'Mail Test');
         if ($try)
         {
-            $this->session->set('flashMsg', 'Sent Mail Success');
+            $this->session->set('flashMsg', 'Sent Mail Successfully');
         }
         $this->app->redirect( $this->router->url('setting'));
     }

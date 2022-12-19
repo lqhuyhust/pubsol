@@ -38,7 +38,7 @@ class Discussion extends Admin
                 'modified_at' => date('Y-m-d H:i:s'),
             ]);
 
-            $msg = $newId ? 'Comment Success' : 'Comment Fail';
+            $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
             $this->session->set('flashMsg', $msg);
             $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
@@ -71,7 +71,7 @@ class Discussion extends Admin
             'modified_at' => date('Y-m-d H:i:s'),
         ]);
 
-        $msg = $newId ? 'Comment Success' : 'Comment Fail';
+        $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
         $this->session->set('flashMsg', $msg);
         $this->app->redirect(
             $this->router->url('detail-request/'. $request_id)

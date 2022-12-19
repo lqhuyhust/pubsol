@@ -61,7 +61,7 @@ class Version extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Version Success!');
+            $this->session->set('flashMsg', 'Create Version Successfully!');
             $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );

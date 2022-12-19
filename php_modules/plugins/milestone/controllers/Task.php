@@ -74,7 +74,7 @@ class Task extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Task Success!');
+            $this->session->set('flashMsg', 'Create Task Successfully!');
             $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );

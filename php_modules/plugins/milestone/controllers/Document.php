@@ -63,7 +63,7 @@ class Document extends Admin
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s')
             ]);
-            $this->session->set('flashMsg', 'Update Document Success!');
+            $this->session->set('flashMsg', 'Update Document Successfully!');
             $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );

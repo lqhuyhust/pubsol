@@ -82,7 +82,7 @@ class Note extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Relate Note Success!');
+            $this->session->set('flashMsg', 'Create Relate Note Successfully!');
             $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );

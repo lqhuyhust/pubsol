@@ -70,7 +70,7 @@ class Usergroup extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Creat Success');
+            $this->session->set('flashMsg', 'Creat Successfully');
             $this->app->redirect(
                 $this->router->url('user-groups')
             );
@@ -123,7 +123,7 @@ class Usergroup extends Admin
             ];
             $try = $this->GroupEntity->update( $user );
     
-            $msg = $try ? 'Edit Success' : 'Edit Failed';
+            $msg = $try ? 'Edit Successfully' : 'Edit Failed';
             $this->session->set('flashMsg', $msg);
     
             if ($try)

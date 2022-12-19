@@ -112,7 +112,7 @@ class Note extends Admin {
                     }
                 }
             }
-            $this->session->set('flashMsg', 'Create Success!');
+            $this->session->set('flashMsg', 'Create Successfully!');
             $this->app->redirect(
                 $this->router->url('note/'. $newId)
             );
