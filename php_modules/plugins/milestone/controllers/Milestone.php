@@ -52,12 +52,12 @@ class Milestone extends Admin
         $description = $this->request->post->get('description', '', 'string');
         $start_date = $this->request->post->get('start_date', '', 'string');
         $end_date = $this->request->post->get('end_date', '', 'string');
-        
+
         if ($start_date == '')
             $start_date = NULL;
         if ($end_date == '')
             $end_date = NULL;
-        
+
         if (!$title) {
             $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
             $this->app->redirect(
@@ -123,6 +123,14 @@ class Milestone extends Admin
         if (is_numeric($ids) && $ids) {
             $title = $this->request->post->get('title', '', 'string');
             $description = $this->request->post->get('description', '', 'string');
+            $start_date = $this->request->post->get('start_date', '', 'string');
+            $end_date = $this->request->post->get('end_date', '', 'string');
+
+            if ($start_date == '')
+                $start_date = NULL;
+            if ($end_date == '')
+                $end_date = NULL;
+                
             $findOne = $this->MilestoneEntity->findOne(['title = "' . $title . '"', 'id <> ' . $ids]);
             if ($findOne) {
                 $this->session->set('flashMsg', 'Error: Title is already in use! ');
@@ -134,8 +142,8 @@ class Milestone extends Admin
             $try = $this->MilestoneEntity->update([
                 'title' => $title,
                 'description' => $description,
-                'start_date' => $this->request->post->get('start_date', '', 'string'),
-                'end_date' => $this->request->post->get('end_date', '', 'string'),
+                'start_date' => $start_date,
+                'end_date' => $end_date,
                 'status' => $this->request->post->get('status', ''),
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
