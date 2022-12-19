@@ -48,8 +48,9 @@ class User extends Admin
             else
             {
                 $this->session->set('flashMsg', 'Hello!!!');
+                $redirect_after_login = $this->config->exists('redirect_after_login') ? $this->config->redirect_after_login : ''; 
                 $this->app->redirect(
-                    $this->router->url('users')
+                    $this->router->url($redirect_after_login)
                 );
             }
         }
