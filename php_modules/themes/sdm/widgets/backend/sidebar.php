@@ -61,7 +61,6 @@
                         <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '" data-bs-toggle="collapse" aria-expanded="true" ' : '' ?> 
                     >
                 <?php 
-                // var_dump($this->link_admin . $plural);die; 
                 ?>
 
                         <?php echo $icon ?> 
