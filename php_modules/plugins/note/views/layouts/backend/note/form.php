@@ -5,7 +5,7 @@ $this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-s
 ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <div class="card shadow-none p-0 col-lg-12">
-        <div class="card-body">
+        <div class="card-body pt-0">
             <?php echo $this->render('message'); ?>
             <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post">
                 <div class="row g-3">
