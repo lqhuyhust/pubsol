@@ -13,6 +13,7 @@
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {
+        $('.toast').toast('show');
         $("#select_all").click( function(){
             $('.checkbox-item').prop('checked', this.checked);
         });
