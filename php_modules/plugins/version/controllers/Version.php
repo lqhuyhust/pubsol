@@ -51,6 +51,43 @@ class Version extends Admin
         $release_date = $this->request->post->get('release_date', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
 
+        $where = [];
+        $result = $this->VersionEntity->list(0, 0, $where, '');
+        if($result) {
+            foreach($result as $item){
+                $record [] = $item['id'];
+            }
+            $max_id = max($record);
+            $where = [
+                'id = '. $max_id
+            ];
+        }
+        $result = $this->VersionEntity->list(0, 0, $where, '');
+        foreach($result as $item){}
+
+        $current_version = $item['version'];
+        if($current_version == '')
+        {
+            $current_version = '0.0.0';
+        }
+        $vParts = explode('.', $current_version);
+        $partsArray = [
+            'major' => $vParts[0],
+            'minor' => $vParts[1],
+            'patch' => $vParts[2],
+        ];
+        $partsArray['patch'] = $partsArray['patch'] + 1;
+        if ($partsArray['patch'] > 99) {
+            $partsArray['minor'] = $partsArray['minor'] + 1;
+            $partsArray['patch'] = 0;
+        }
+        if ($partsArray['minor'] > 99) {
+            $partsArray['major'] = $partsArray['major'] + 1;
+            $partsArray['minor'] = 0;
+        }
+
+        $vArray = implode( ".", $partsArray );
+
         if($release_date == '')
             $release_date = NULL;
 
@@ -75,6 +112,7 @@ class Version extends Admin
             'name' => $name,
             'release_date' => $release_date,
             'description' => $description,
+            'version' => $vArray,
             'status' => $this->request->post->get('status', 1, 'string'),
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
