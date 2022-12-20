@@ -30,6 +30,10 @@
         ?>
     </td>
     <td><?php echo   $this->item['release_date'] ? date('m-d-Y', strtotime($this->item['release_date'])) : '';  ?></td>
+    <td>
+        <?php  echo $this->item['feedback']?>
+    </td>
+   
     <td><?php echo   $this->item['created_at'] ? date('m-d-Y', strtotime($this->item['created_at'])) : '';  ?></td>
     <td>
         <a href="#" 

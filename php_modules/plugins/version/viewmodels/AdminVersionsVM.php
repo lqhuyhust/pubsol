@@ -58,7 +58,38 @@ class AdminVersionsVM extends ViewModel
             $total = 0;
         }
 
-        $list   = new Listing($result, $total, $limit, $this->getColumns());
+        foreach ($result as &$version) {
+            $tag_exist = $this->container->exists('TagEntity');
+            $note_exist = $this->container->exists('NoteEntity');
+            $total_feedback = 0;
+            if ($tag_exist && $note_exist) {
+                $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
+                $tag_version = $this->TagEntity->findOne(["`name` = '" . $version['name'] . "'"]);
+                $where = [];
+                if ($tag_feedback && $tag_version) {
+                    $where = array_merge($where, [
+                        "(`tags` = '" . $tag_feedback['id'] . "'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_feedback['id'] . "%'" .
+                            " OR `tags` LIKE '%" . $tag_feedback['id'] . ',' . "%'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_feedback['id'] . ',' . "%' )",
+                        "(`tags` = '" . $tag_version['id'] . "'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_version['id'] . "%'" .
+                            " OR `tags` LIKE '%" . $tag_version['id'] . ',' . "%'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_version['id'] . ',' . "%' )"
+                    ]);
+                    $result_feedback = $this->NoteEntity->list(0, 0, $where, '');
+                    $total_feedback = $this->NoteEntity->getListTotal();
+                }
+            }
+            if($total_feedback) {
+                $version['feedback'] = $total_feedback;
+            } else {
+                $version['feedback'] = 0;
+            }
+        }
+
+        $list = new Listing($result, $total, $limit, $this->getColumns());
+
         $this->set('list', $list, true);
         $this->set('page', $page, true);
         $this->set('start', $start, true);
