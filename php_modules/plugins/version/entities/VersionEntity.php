@@ -30,6 +30,9 @@ class VersionEntity extends Entity
                 'type' => 'varchar',
                 'limit' => 255,
             ],
+            'version' => [
+                'type' => 'text',
+            ],
             'release_date' => [
                 'type' => 'datetime',
                 'null' => 'YES',
