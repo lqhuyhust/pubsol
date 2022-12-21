@@ -77,6 +77,7 @@ class AdminGroupVM extends ViewModel
             ],
             'status' => ['option',
                 'type' => 'radio',
+                'showLabel' => false,
                 'formClass' => '',
                 'default' => 1,
                 'options' => [
