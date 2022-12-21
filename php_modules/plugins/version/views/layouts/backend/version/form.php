@@ -25,6 +25,18 @@
                         <div class="mb-3 col-12 mx-auto">
                             <div class="row">
                                 <div class="col-3 d-flex align-items-center">
+                                    <label class="form-label fw-bold mb-0">Version</label>
+                                </div>
+                                <div class="col-9">
+                                    <span id="version_number"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row px-0">
+                        <div class="mb-3 col-12 mx-auto">
+                            <div class="row">
+                                <div class="col-3 d-flex align-items-center">
                                     <label class="form-label fw-bold mb-0">Description</label>
                                 </div>
                                 <div class="col-9">

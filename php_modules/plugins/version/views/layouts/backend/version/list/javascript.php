@@ -49,10 +49,12 @@
             var name = $(this).data('name');
             var release_date = $(this).data('release_date');
             var description = $(this).data('description');
-            console.log('test' + release_date)
+            var version_number = $(this).data('version_number');
+            
             $('#name').val(name);
             $('#release_date').val(release_date);
             $('#description').val(description);
+            document.getElementById('version_number').innerHTML = version_number;
 
             $('#form_version').attr('action', '<?php echo $this->link_form;?>/' + id);
             if(id) {

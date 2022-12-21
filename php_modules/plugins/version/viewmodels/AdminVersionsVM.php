@@ -88,12 +88,14 @@ class AdminVersionsVM extends ViewModel
             }
         }
 
+        $version_number = $this->VersionModel->version();
         $list = new Listing($result, $total, $limit, $this->getColumns());
 
         $this->set('list', $list, true);
         $this->set('page', $page, true);
         $this->set('start', $start, true);
         $this->set('sort', $sort, true);
+        $this->set('version_number', $version_number, true);
         $this->set('get_log', $get_log, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
