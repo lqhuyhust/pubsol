@@ -50,7 +50,7 @@ class AdminUserVM extends ViewModel
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'New User' : 'Update User', true);
+        $this->set('title_page', $data ? 'Update User' : 'New User', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('users'));
         $this->set('link_form', $this->router->url('user'));

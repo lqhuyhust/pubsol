@@ -105,6 +105,7 @@ class User extends Admin
     public function add()
     {
         $this->isLoggedIn();
+        $save_close = $this->request->post->get('save_close', '', 'string');
         $try = MW::fire('validation', ['ValidateUser'], []);
         if (!$try)
         {
@@ -148,8 +149,9 @@ class User extends Admin
         else
         {
             $this->session->set('flashMsg', 'Create Successfully');
+            $link = $save_close ? 'users' : 'user/'. $newId;
             $this->app->redirect(
-                $this->router->url('users')
+                $this->router->url($link)
             );
         }
     }
@@ -157,6 +159,7 @@ class User extends Admin
     public function update()
     {
         $ids = $this->validateID(); 
+        $save_close = $this->request->post->get('save_close', '', 'string');
        
         // TODO valid the request input
 
@@ -230,8 +233,9 @@ class User extends Admin
             if($try) 
             {
                 $this->session->set('flashMsg', 'Edit Successfully');
+                $link = $save_close ? 'users' : 'user/'. $ids;
                 $this->app->redirect(
-                    $this->router->url('users')
+                    $this->router->url($link)
                 );
             }
             else

@@ -37,6 +37,7 @@ class Usergroup extends Admin
     public function add()
     {
         $this->isLoggedIn();
+        $save_close = $this->request->post->get('save_close', '', 'string');
         
         $try = MW::fire('validation', ['ValidateGroup'], []);
         if (!$try)
@@ -71,8 +72,9 @@ class Usergroup extends Admin
         else
         {
             $this->session->set('flashMsg', 'Creat Successfully');
+            $link = $save_close ? 'user-groups' : 'user-group/'. $newId;
             $this->app->redirect(
-                $this->router->url('user-groups')
+                $this->router->url($link)
             );
         }
     }
@@ -80,6 +82,7 @@ class Usergroup extends Admin
     public function update()
     {
         $sth = $this->validateId(); 
+        $save_close = $this->request->post->get('save_close', '', 'string');
         
         if( is_array($sth) )
         {
@@ -128,8 +131,9 @@ class Usergroup extends Admin
     
             if ($try)
             {
+                $link = $save_close ? 'user-groups' : 'user-group/'. $sth;
                 $this->app->redirect(
-                    $this->router->url('user-groups')
+                    $this->router->url($link)
                 );
             }
             else
@@ -141,8 +145,8 @@ class Usergroup extends Admin
             
         }
 
-            $this->session->set('flashMsg', 'Error: Invalid request');
-            $this->app->redirect(
+        $this->session->set('flashMsg', 'Error: Invalid request');
+        $this->app->redirect(
             $this->router->url('user-groups')
         );
     }
