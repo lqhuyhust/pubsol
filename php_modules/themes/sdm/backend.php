@@ -5,7 +5,8 @@ $this->theme->prepareAssets([
     'fontawesome-css',
     'admin-css',
     'style-css',
-    'js-bootstrap'
+    'js-bootstrap',
+    'js-backend',
 ]);
 
 ?>
