@@ -84,6 +84,77 @@ class User extends Admin
         $this->app->set('format', 'html');
     }
 
+    public function profile()
+    {
+        $this->isLoggedIn();
+
+        $this->app->set('layout', 'backend.user.profile');
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+    }
+
+    public function saveProfile()
+    {
+        $this->isLoggedIn();
+        $id = $this->user->get('id'); 
+        $save_close = $this->request->post->get('save_close', '', 'string');
+       
+        // TODO valid the request input
+        $try = $this->UserModel->validate($id);
+        if (!$try)
+        {
+            $msg = $this->session->get('validate', '');
+            $this->session->set('flashMsg', $msg);
+            $this->app->redirect(
+                $this->router->url('profile')
+            );
+        }
+
+        $password = $this->request->post->get('password', '');
+        $repassword = $this->request->post->get('confirm_password', '');
+        
+        if($password == $repassword) 
+        {
+            $user = [
+                'name' => $this->request->post->get('name', '', 'string'),
+                'username' => $this->request->post->get('username', '' , 'string'),
+                'email' => $this->request->post->get('email', '', 'string'),
+                'status' => $this->request->post->get('status', 0),
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s'),
+                'id' => $id,
+            ];
+        }
+        else
+        {
+            $this->session->set('flashMsg', 'Error: Confirm Password Failed');
+            $this->app->redirect(
+                $this->router->url('user/'.$id)
+            );
+        }
+
+        if($password) $user['password'] = md5($passwrd);
+        
+        $try = $this->UserEntity->update( $user );
+
+        if($try) 
+        {
+            $this->session->set('flashMsg', 'Edit Successfully');
+            $link = $save_close ? '' : 'profile';
+            $this->app->redirect(
+                $this->router->url($link)
+            );
+        }
+        else
+        {
+            $msg = 'Error: Save Failed';
+            $this->session->set('flashMsg', $msg);
+            $this->app->redirect(
+                $this->router->url('profile')
+            );
+        }
+    }
+
     public function list()
     {
         $this->isLoggedIn();

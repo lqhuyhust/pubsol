@@ -20,7 +20,8 @@ class AdminUserVM extends ViewModel
     protected $layouts = [
         'layouts.backend.user' => [
             'login',
-            'form'
+            'form',
+            'profile',
         ]
     ];
 
@@ -136,6 +137,78 @@ class AdminUserVM extends ViewModel
             $fields['created_at'] = ['hidden'];
             $fields['created_by'] = ['hidden'];
         }
+
+        return $fields;
+    }
+
+    public function profile()
+    {
+        $id = $this->user->get('id');
+        $data = $id ? $this->UserEntity->findByPK($id) : [];
+        if ($data)
+        {
+            $data['password'] = '';
+            $data['groups'] = [];
+
+            $groups = $this->UserEntity->getGroups($data['id']);
+            foreach ($groups as $group)
+            {
+                $data['groups'][] = $group['group_name'];
+            }
+            $data['groups'] = implode(',',  $data['groups']);
+        }
+        
+        $form = new Form($this->getFormFieldsProfile(), $data);
+
+        $this->set('form', $form, true);
+        $this->set('data', $data, true);
+        $this->set('title_page', 'My Profile', true);
+        $this->set('url', $this->router->url(), true);
+        $this->set('link_list', $this->router->url('profile'));
+        $this->set('link_form', $this->router->url('profile'));
+    }
+
+    public function getFormFieldsProfile()
+    {
+        $fields = [
+            'id' => ['hidden'],
+            'name' => [
+                'text',
+                'placeholder' => 'Enter Name',
+                'showLabel' => false,
+                'formClass' => 'form-control',
+                'required' => 'required'
+            ],
+            'username' => ['text',
+                'placeholder' => 'Enter User Name',
+                'showLabel' => false,
+                'formClass' => 'form-control',
+                'required' => 'required',
+            ],
+            'email' => ['email',
+                'formClass' => 'form-control',
+                'placeholder' => 'Enter Email',
+                'showLabel' => false,
+                // 'required' => 'required'
+            ],
+            'password' => ['password',
+                'placeholder' => 'Enter Password',
+                'showLabel' => false,
+                'formClass' => 'form-control'
+            ],
+            'confirm_password' => ['password',
+                'placeholder' => 'Enter Confirm Password',
+                'showLabel' => false,
+                'formClass' => 'form-control'
+            ],
+            'groups' => [
+                'type' => 'readonly',
+                'showLabel' => false,
+            ],
+            'token' => ['hidden',
+                'default' => $this->app->getToken(),
+            ],
+        ];
 
         return $fields;
     }

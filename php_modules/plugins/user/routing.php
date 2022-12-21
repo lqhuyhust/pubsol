@@ -28,6 +28,12 @@ return [
             ]
         ],
     ],
+    'profile'=>[
+        'fnc' => [
+            'get' => 'user.user.profile',
+            'post' => 'user.user.saveProfile',
+        ],
+    ],
     'user/0' => [
         'fnc' => [
             'get' => 'user.user.detail',
