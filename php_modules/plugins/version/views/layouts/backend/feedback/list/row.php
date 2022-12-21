@@ -1,7 +1,7 @@
 <tr>
     <td>
         <a href="<?php echo $this->link_form . '/' . $this->item['id']; ?>" target="_blank">
-            <?php echo  $this->item['title']  ?><i class="fas fa-directions ms-2"></i>
+            <?php echo  $this->item['title']  ?><i class="fa-solid fa-arrow-up-right-from-square ms-2"></i>
         </a>
     </td>
     <td>
