@@ -1,3 +1,4 @@
+<?php echo $this->render('notification'); ?>
 <div class="main">
     <main class="content p-0">
         <div class="container-fluid align-items-center row justify-content-center mx-auto p-0">
@@ -5,7 +6,6 @@
             ?>
             <div class="card shadow-none col-lg-12">
                 <div class="card-body">
-                    <?php echo $this->render('message'); ?>
                     <form enctype='multipart/form-data' action="<?php echo  $this->link_form ?>" method="POST">
                         <?php foreach ($this->legends as $index => $legend) { ?>
                             <?php echo $index == 0 ? '' : '<hr class="mb-4 mt-4">';?>
