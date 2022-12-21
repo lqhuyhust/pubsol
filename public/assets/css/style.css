@@ -12,12 +12,9 @@ ul a.submenu-link{
     z-index: 9999999;
     top: 20px; 
     right: 20px;
-    opacity: 80%;
     box-shadow: none !important;
 }
-.message-toast:hover{
-    opacity: 100%;
-}
+
 .message-toast .message-body{
     padding: 3px 0px 3px 10px;
 }
