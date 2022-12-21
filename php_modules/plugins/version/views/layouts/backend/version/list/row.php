@@ -16,6 +16,9 @@
         </a>
     </td>
     <td>
+        <?php  echo $this->item['version']?>
+    </td>
+    <td>
         <?php echo  strlen($this->item['description']) > 50 ? substr($this->item['description'], 0, 50) .'...' : $this->item['description'];  ?>
     </td>
     <td>
