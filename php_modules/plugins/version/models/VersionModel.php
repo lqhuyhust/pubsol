@@ -51,9 +51,9 @@ class VersionModel extends Base
             $partsArray['minor'] = 0;
         }
 
-        $vArray = implode( ".", $partsArray );
+        $version_number = implode( ".", $partsArray );
 
-        return $vArray;
+        return $version_number;
     }
 
 }
