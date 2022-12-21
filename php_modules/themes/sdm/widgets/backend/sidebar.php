@@ -48,6 +48,7 @@
                                 preg_match('/^(\/' . $single . ')(|\/([0-9]*?))$/', $this->path_current, $match);
                                 if (is_array($match) && count($match)) {
                                     $sub_actives[$key] = true;
+                                    $check_submenu_active = true;
                                     break;
                                 }
                             }
@@ -57,8 +58,8 @@
                 ?>
                 <li class="sidebar-item <?php echo $active && !(is_array($submenu) && $submenu) ? 'active' : ''; ?>">
                     <a href="<?php echo (is_array($submenu) && $submenu) ? '' : $this->link_admin . $plural ?>" 
-                        class="sidebar-link <?php echo (is_array($submenu) && $submenu) ? 'link-collapse' : '';?>" 
-                        <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '" data-bs-toggle="collapse" aria-expanded="true" ' : '' ?> 
+                        class="sidebar-link <?php echo (is_array($submenu) && $submenu) ? 'link-collapse collapsed' : '';?>" 
+                        <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
                     >
                         <?php echo $icon ?> 
                         <span class="align-middle">
@@ -69,7 +70,7 @@
                         </span>
                     </a>
                     <?php if (is_array($submenu) && $submenu) : ?>
-                        <ul id="<?php echo $plural; ?>" class="sidebar-dropdown list-unstyled collapse <?php echo $check_submenu_active ? 'show' : ''; ?>" >
+                        <ul id="<?php echo $plural."_tab"; ?>" class="sidebar-dropdown list-unstyled collapse <?php echo $check_submenu_active ? 'show' : ''; ?>" >
                             <?php foreach($submenu as $key => $sub) :
                                 list($allow_sub, $plural_sub, $name_sub, $icon_sub) = $sub;
                              ?>
