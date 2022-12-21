@@ -37,16 +37,20 @@ $this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-s
                     </div>
                 </div>
                 
-                <div class="row g-3 align-items-end m-0">
+                <div class="d-flex g-3 flex-row align-items-end m-0 justify-content-center">
                     <?php $this->field('token'); ?>
                     <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
-                    <div class="col-xl-6 col-sm-6 text-end">
+                    <div class="me-2">
                         <a href="<?php echo $this->link_list ?>">
                             <button type="button" class="btn btn-outline-secondary">Cancel</button>
                         </a>
                     </div>
-                    <div class="col-xl-3 col-sm-6 text-start ">
-                        <button type="submit" class="btn btn-outline-success">Save</button>
+                    <div class="me-2">
+                        <input type="hidden" name="save_close" id="save_close">
+                        <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
+                    </div>
+                    <div class="">
+                        <button type="submit" class="btn btn-outline-success">Apply</button>
                     </div>
                 </div>
             </div>
@@ -230,6 +234,9 @@ $js = <<<Javascript
     }
 
     $(document).ready(function() {
+        $(".btn_save_close").click(function() {
+            $("#save_close").val(1);
+        });
         $("#description").attr('rows', 18);
         $(".button_delete_item").click(function() {
             var id = $(this).data('id');
