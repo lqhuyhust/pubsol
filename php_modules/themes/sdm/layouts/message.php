@@ -1,26 +1,19 @@
-<?php if( $this->message ){ ?>
-    <div id="alert_message" class="alert alert_msg <?php echo (0 === strpos($this->message, 'Error')) ? 'alert-danger' : 'alert-success'; ?> alert-dismissible fade show" role="alert">
-        <?php echo $this->message; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-            style="display: block;
-            position: absolute;
-            font-size: 25px;
-            right: 20px;
-            top: 5px;
-            color: #423f3f;
-            font-weight: 900;
-            width: auto;
-            height: auto;
-            background: none;padding: 0;"
-        >
-            <i class="fas fa-times" id="close_message"></i>
-        </button>
+<?php if ($this->message) { ?>
+    <div class="toast message-toast ">
+    <div class="d-flex message-body <?php echo (0 === strpos($this->message, 'Error')) ? 'alert-danger' : 'alert-success'; ?>">
+        <div class="toast-body">
+            <?php echo $this->message;?>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-<script>
-    document.getElementById('close_message').onclick =  function() {
-        document.getElementById("alert_message").style.display = "none";
-    };
-</script>
-<?php 
+        
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('.toast').toast('show');
+            $('.message-toast').fadeIn('500');
+        })
+    </script>
+<?php
 }
 ?>

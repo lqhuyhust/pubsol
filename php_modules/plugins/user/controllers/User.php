@@ -147,7 +147,7 @@ class User extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Save Successfully');
+            $this->session->set('flashMsg', 'Create Successfully');
             $this->app->redirect(
                 $this->router->url('users')
             );
@@ -229,8 +229,9 @@ class User extends Admin
 
             if($try) 
             {
+                $this->session->set('flashMsg', 'Edit Successfully');
                 $this->app->redirect(
-                    $this->router->url('users'), 'Edit Successfully'
+                    $this->router->url('users')
                 );
             }
             else

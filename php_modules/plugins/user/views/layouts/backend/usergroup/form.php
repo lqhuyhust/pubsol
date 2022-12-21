@@ -1,7 +1,7 @@
+<?php echo $this->render('notification');?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <div class="card shadow-none p-0 col-lg-12">
         <div class="card-body">
-            <?php echo $this->render('message'); ?>
             <form action="<?php echo $this->link_form . '/' . $this->id ?>" method="post">
                 <div class="row g-3 align-items-center">
                     <div class="row">
