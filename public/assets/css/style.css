@@ -10,8 +10,8 @@ ul a.submenu-link{
 .message-toast{
     position: fixed; 
     z-index: 9999999;
-    top: 12px; 
-    right: 12px;
+    top: 2px; 
+    right: 2px;
     box-shadow: none !important;
 }
 .message-toast .message-body{

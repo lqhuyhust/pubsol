@@ -1,5 +1,5 @@
 <?php if ($this->message) { ?>
-    <div class="toast message-toast ">
+    <div class="toast message-toast " data-bs-autohide="false">
     <div class="d-flex message-body <?php echo (0 === strpos($this->message, 'Error')) ? 'alert-danger' : 'alert-success'; ?>">
         <div class="toast-body">
             <?php echo $this->message;?>
