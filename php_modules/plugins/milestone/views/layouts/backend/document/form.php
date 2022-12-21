@@ -1,10 +1,10 @@
+<?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3 border-bottom border-3 border-dark" id="document_link">
     <div class="card shadow-none p-0 col-lg-12">
         <div class="card-body">
             <h2 class=" pb-4 border-bottom"><i class="fa-regular fa-folder-open pe-2"></i><?php echo $this->title_page_document ?></h2>
             <div class="row pt-3">
                 <div class="col-lg-7 col-6 border-end">
-                    <?php echo $this->render('message'); ?>
                     <h4>Document:</h4>
                     <?php if ($this->editor) : ?>
                         <form action="<?php echo $this->link_form ?>" method="post">

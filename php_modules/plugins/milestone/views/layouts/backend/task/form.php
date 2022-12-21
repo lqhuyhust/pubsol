@@ -1,7 +1,7 @@
+<?php echo $this->render('notification'); ?>
 <div class="modal fade" id="Popup_form_task" aria-labelledby="Popup Form Task" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered " style="max-width: 600px;">
         <div class="modal-content container px-5 pt-5">
-            <?php echo $this->render('message'); ?>
             <form action="" method="post" id="form_task">
                 <div class="row g-3 align-items-center">
                     <div class="row px-0">

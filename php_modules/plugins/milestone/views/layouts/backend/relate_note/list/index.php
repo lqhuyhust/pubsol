@@ -1,3 +1,4 @@
+<?php echo $this->render('notification');?>
 <div class="main " style="min-height: 30vh;" id="relate_note_link">
 	<main class="content p-0 border-bottom border-3 border-dark">
 		<div class="container-fluid p-0">
@@ -6,7 +7,6 @@
 					<div class="card border-0 shadow-none">
 						<div class="card-body">
 						<h2 class="pb-4 border-bottom"><i class="fa-solid fa-link pe-2"></i><?php echo $this->title_page_relate_note ?></h2>
-						<?php echo $this->render('message');?>
                         <div class="row align-items-center pt-3">
 								<?php echo $this->render('backend.relate_note.list.filter');?>
 							</div>
