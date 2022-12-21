@@ -101,8 +101,6 @@ class AdminFeedbackVM extends ViewModel
         $title_page = $version['name'] ? '<a href="'. $this->router->url('versions/').'" >Version: '.$version['name'].'</a> >> Feedback ' : 'Feedback';
 
         $this->set('list', $list, true);
-        $this->set('tag_feedback', $tag_feedback, true);
-        $this->set('tag_version', $tag_version, true);
         $this->set('url', $this->router->url(), true);
         $this->set('data_tags', $data_tags, true);
         $this->set('link_cancel', $this->router->url('versions'), true);
