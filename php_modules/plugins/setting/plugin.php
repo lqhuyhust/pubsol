@@ -126,8 +126,13 @@ class plugin extends PluginAbstract
 
     public function registerMenu()
     {
+        $menu = [];
         return [
-            [['setting', 'setting',], 'setting', 'Settings', '<i class="fa-solid fa-gear"></i>', ''],
+            [['setting', 'setting',], 'setting', 'Settings', '<i class="fa-solid fa-gear"></i>', [
+                [['setting-system'], 'setting-system', 'System', ''],
+                [['setting-smtp'], 'setting-smtp', 'SMTP', ''],
+                [['setting-connections'], 'setting-connections', 'Connections', ''],
+            ]],
         ];
     }
 }
