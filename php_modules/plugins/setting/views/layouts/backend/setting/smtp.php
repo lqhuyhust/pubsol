@@ -16,6 +16,9 @@
                     <button type="button" class="btn btn-outline-secondary">Cancel</button>
                 </a>
             </div>
+            <div class="me-2">
+                <a id="test_mail" class="btn btn-outline-secondary" type="button">Test SMTP Mail</a>
+            </div>
             <div class="">
                 <button type="submit" class="btn btn-outline-success">Apply</button>
             </div>
@@ -25,3 +28,12 @@
     //  } 
     ?>
 </div>
+<form id="form_mail_test" action="<?php echo $this->link_mail_test ?>" method="POST">
+</form>
+<script>
+    $(document).ready(function() {
+        $('#test_mail').click(function(){
+            $("#form_mail_test").submit();
+        });
+    });
+</script>
