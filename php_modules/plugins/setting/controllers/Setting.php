@@ -22,6 +22,14 @@ class Setting extends MVController
         $this->app->set('page', 'backend');
     }
 
+    public function system()
+    {
+        $this->isLoggedIn();
+        $this->app->set('format', 'html');
+        $this->app->set('layout', 'backend.setting.system');
+        $this->app->set('page', 'backend');
+    }
+
     public function save()
     {
         $this->isLoggedIn();

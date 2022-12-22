@@ -19,11 +19,11 @@ class AdminSettingVM extends ViewModel
     protected $alias = 'AdminSettingVM';
     protected $layouts = [
         'layouts.backend.setting' => [
-            'form'
+            'system',
         ]
     ];
 
-    public function form()
+    public function system()
     {
         
         $fields = $this->getFormFields();
@@ -36,40 +36,26 @@ class AdminSettingVM extends ViewModel
         }
         $form = new Form($this->getFormFields(), $data);
 
-        $title_page = 'Setting';
+        $title_page = 'Setting System';
         $this->view->set('fields', $fields, true);
         $this->view->set('form', $form, true);
         $this->view->set('title_page', $title_page, true);
         $this->view->set('data', $data, true);
         $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_form', $this->router->url('setting'));
+        $this->view->set('link_form', $this->router->url('setting-system'));
         $this->view->set('link_mail_test', $this->router->url('setting/mail-test'));
     }
 
     public function getFormFields()
     {
-        $fields = [];
-        $legends = [];
-        foreach ($this->plugin as $name => $plg)
-        {
-            if (method_exists($plg, 'registerSetting'))
-            {
-                $register = $plg->registerSetting();
-                if (is_array($register))
-                {
-                    foreach ($register as $item)
-                    {
-                        $legend = [];
-                        $legend['label'] = $item['label'];
-                        $legend['fields'] = [];
-                        $fields = array_merge($fields, $item['fields']);
-                        $legend['fields'] = array_keys($item['fields']);
-                        $legends[] = $legend;
-                    }
-                }
-            }
-        }
-        $this->view->set('legends', $legends);
+        $fields = [
+            'admin_mail' => [
+                'text',
+                'label' => 'Admin Mail:',
+                'formClass' => 'form-control',
+            ],
+        ];
+       
         return $fields;
     }
 }
