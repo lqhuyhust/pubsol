@@ -75,4 +75,11 @@ class plugin extends PluginAbstract
         ];
         return $menu;
     }
+
+    public function registerSetting()
+    {
+        return [
+            [['setting-version'], 'setting-version', 'Version Format', ''],
+        ];
+    }
 }
