@@ -51,7 +51,7 @@ class Version extends Admin
         $release_date = $this->request->post->get('release_date', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
 
-        $version_number = $this->VersionModel->version();
+        $version_number = $this->VersionModel->getVersion();
 
         if($release_date == '')
             $release_date = NULL;

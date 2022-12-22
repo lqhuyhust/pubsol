@@ -14,7 +14,7 @@ use SPT\JDIContainer\Base;
 
 class VersionModel extends Base 
 { 
-    public function version()
+    public function getVersion()
     {
         $where = [];
         $result = $this->VersionEntity->list(0, 0, $where, '');

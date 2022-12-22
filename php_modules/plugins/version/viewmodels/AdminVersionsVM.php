@@ -57,14 +57,14 @@ class AdminVersionsVM extends ViewModel
             $result = [];
             $total = 0;
         }
+        $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
 
         foreach ($result as &$version) {
             $tag_exist = $this->container->exists('TagEntity');
             $note_exist = $this->container->exists('NoteEntity');
             $total_feedback = 0;
             if ($tag_exist && $note_exist) {
-                $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
-                $tag_version = $this->TagEntity->findOne(["`name` = '" . $version['name'] . "'"]);
+                $tag_version = $this->TagEntity->findOne(["`name` = '" . $version['version'] . "'"]);
                 $where = [];
                 if ($tag_feedback && $tag_version) {
                     $where = array_merge($where, [
@@ -88,7 +88,7 @@ class AdminVersionsVM extends ViewModel
             }
         }
 
-        $version_number = $this->VersionModel->version();
+        $version_number = $this->VersionModel->getVersion();
         $list = new Listing($result, $total, $limit, $this->getColumns());
 
         $this->set('list', $list, true);
