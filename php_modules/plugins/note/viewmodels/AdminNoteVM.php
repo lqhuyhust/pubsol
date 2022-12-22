@@ -20,8 +20,10 @@ class AdminNoteVM extends ViewModel
     protected $layouts = [
         'layouts.backend.note' => [
             'form',
-            'setting',
-        ]
+        ],
+        'layouts.backend.setting' => [
+            'connections',
+        ],
     ];
 
     public function form()
@@ -102,7 +104,7 @@ class AdminNoteVM extends ViewModel
         return $fields;
     }
 
-    public function smtp()
+    public function connections()
     {
         
         $fields = $this->getFormFieldsConnection();
@@ -127,34 +129,24 @@ class AdminNoteVM extends ViewModel
     public function getFormFieldsConnection()
     {
         $fields = [
-            'email_host' => [
+            'folder_id' => [
                 'text',
-                'label' => 'Email Host:',
+                'label' => 'Folder ID:',
                 'formClass' => 'form-control',
             ],
-            'email_port' => [
+            'client_id' => [
                 'text',
-                'label' => 'Email Port:',
+                'label' => 'Client ID:',
                 'formClass' => 'form-control',
             ],
-            'email_username' => [
-                'email',
-                'label' => 'Email:',
-                'formClass' => 'form-control',
-            ],
-            'email_password' => [
-                'password',
-                'label' => 'Password Email:',
-                'formClass' => 'form-control',
-            ],
-            'email_from_addr' => [
-                'email',
-                'label' => 'From Email:',
-                'formClass' => 'form-control',
-            ],
-            'email_from_name' => [
+            'client_secret' => [
                 'text',
-                'label' => 'From Name:',
+                'label' => 'Client secret',
+                'formClass' => 'form-control',
+            ],
+            'access_token' => [
+                'text',
+                'label' => 'Access Token',
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',

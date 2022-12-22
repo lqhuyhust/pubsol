@@ -12,7 +12,7 @@ namespace App\plugins\note\controllers;
 
 use SPT\MVC\JDIContainer\MVController;
 
-class Setting extends MVController
+class Setting extends Admin
 {
     public function connections()
     {
@@ -26,11 +26,14 @@ class Setting extends MVController
     {
         $this->isLoggedIn();
         $fields = [
-            'admin_mail',
+            'folder_id',
+            'client_id',
+            'client_secret',
+            'access_token',
         ];
 
         $try = true;
-        foreach ($fields as $key => $value)
+        foreach ($fields as $key)
         {
             $try = $this->OptionModel->set($key, $this->request->post->get($key, '', 'string'));
             if (!$try) break;
@@ -38,6 +41,6 @@ class Setting extends MVController
 
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        $this->app->redirect( $this->router->url('setting-system'));
+        $this->app->redirect( $this->router->url('setting-connections'));
     }
 }

@@ -38,8 +38,8 @@ return [
     ],
     'setting-connections'=>[
         'fnc' => [
-            'get' => 'note.setting.system',
-            'post' => 'note.setting.systemSave',
+            'get' => 'note.setting.connections',
+            'post' => 'note.setting.connectionsSave',
         ],
     ],
 ];
