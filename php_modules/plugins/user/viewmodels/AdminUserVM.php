@@ -155,7 +155,7 @@ class AdminUserVM extends ViewModel
             {
                 $data['groups'][] = $group['group_name'];
             }
-            $data['groups'] = implode(',',  $data['groups']);
+            $data['groups'] = implode(', ',  $data['groups']);
         }
         
         $form = new Form($this->getFormFieldsProfile(), $data);

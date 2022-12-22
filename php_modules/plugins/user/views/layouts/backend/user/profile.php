@@ -35,9 +35,7 @@
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold" for="groups">Groups:</label>
-                    <div>
-                        <?php $this->field('groups'); ?>
-                    </div>
+                    <strong class="ps-2"><?php $this->field('groups'); ?></strong>
                 </div>
             </div>
             <div class="d-flex g-3 flex-row align-items-end m-0 justify-content-center">
