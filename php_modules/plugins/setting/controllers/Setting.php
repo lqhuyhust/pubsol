@@ -81,36 +81,6 @@ class Setting extends MVController
         $this->app->redirect( $this->router->url('setting-smtp'));
     }
 
-    public function save()
-    {
-        $this->isLoggedIn();
-        $fields = [];
-        foreach ($this->plugin as $name => $plg)
-        {
-            if (method_exists($plg, 'registerSetting'))
-            {
-                $register = $plg->registerSetting();
-                if (is_array($register))
-                {
-                    foreach ($register as $item)
-                    {
-                        $fields = array_merge($fields, $item['fields']);
-                    }
-                }
-            }
-        }
-        $try = true;
-        foreach ($fields as $key => $value)
-        {
-            $try = $this->OptionModel->set($key, $this->request->post->get($key, '', 'string'));
-            if (!$try) break;
-        }
-
-        $msg = $try ? 'Save Done.' : 'Save Fail';
-        $this->session->set('flashMsg', $msg);
-        $this->app->redirect( $this->router->url('setting'));
-    }
-
     public function isLoggedIn()
     {
         if( !$this->user->get('id') )
