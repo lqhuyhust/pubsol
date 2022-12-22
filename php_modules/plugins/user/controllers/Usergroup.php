@@ -163,6 +163,7 @@ class Usergroup extends Admin
             {
                 if( $this->GroupEntity->remove( $id ) )
                 {
+                    $this->UserGroupModel->removeByGroup($id);
                     $count++;
                 }
             }
@@ -171,6 +172,7 @@ class Usergroup extends Admin
         {
             if( $this->GroupEntity->remove($sth ) )
             {
+                $this->UserGroupModel->removeByGroup($sth);
                 $count++;
             }
         }  

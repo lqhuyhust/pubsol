@@ -24,11 +24,6 @@ class plugin extends PluginAbstract
 { 
     public function register()
     {
-        Dispatcher::register('afterNewUser', 'UserGroupModel', 'addUserMap');
-        Dispatcher::register('afterUpdateUser', 'UserGroupModel', 'updateUserMap');
-        Dispatcher::register('afterRemoveUser', 'UserGroupModel', 'removeByUser');
-        Dispatcher::register('afterRemoveGroup', 'UserGroupModel', 'removeByGroup');
-
         $Validation = new Validation('plugins\user\middlewares\validation');
         MW::register('validation', $Validation);
 

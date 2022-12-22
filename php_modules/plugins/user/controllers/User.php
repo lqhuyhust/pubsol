@@ -219,6 +219,7 @@ class User extends Admin
         }
         else
         {
+            $this->UserGroupModel->addUserMap($newId);
             $this->session->set('flashMsg', 'Create Successfully');
             $link = $save_close ? 'users' : 'user/'. $newId;
             $this->app->redirect(
@@ -303,6 +304,7 @@ class User extends Admin
 
             if($try) 
             {
+                $this->UserGroupModel->updateUserMap($user);
                 $this->session->set('flashMsg', 'Edit Successfully');
                 $link = $save_close ? 'users' : 'user/'. $ids;
                 $this->app->redirect(
@@ -340,6 +342,7 @@ class User extends Admin
                 //Delete file in source
                 if( $this->UserEntity->remove( $id ) )
                 {
+                    $this->UserGroupModel->removeByUser($id);
                     $count++;
                 }
             }
@@ -356,6 +359,7 @@ class User extends Admin
             //Delete file in source
             if( $this->UserEntity->remove($userID ) )
             {
+                $this->UserGroupModel->removeByUser($userID);
                 $count++;
             }
         }  
