@@ -79,7 +79,7 @@ class plugin extends PluginAbstract
     public function registerSetting()
     {
         return [
-            [['setting-version'], 'setting-version', 'Version Format', ''],
+            [['setting-version'], 'setting-version', 'Version', ''],
         ];
     }
 }
