@@ -73,18 +73,13 @@ class plugin extends PluginAbstract
         }
     }
 
-    public function registerSetting()
-    {
-        return [
-            [['setting-system'], 'setting-system', 'System', ''],
-            [['setting-smtp'], 'setting-smtp', 'SMTP', ''],
-        ];
-    }
-
     public function registerMenu()
     {
         $plugin = AppIns::factory('plugin');
-        $menu  = [];
+        $menu  = [
+            [['setting-system'], 'setting-system', 'System', ''],
+            [['setting-smtp'], 'setting-smtp', 'SMTP', ''],
+        ];
         foreach ($plugin as $name => $plg)
         {
             if (method_exists($plg, 'registerSetting'))

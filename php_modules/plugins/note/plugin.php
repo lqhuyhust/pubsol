@@ -76,6 +76,13 @@ class plugin extends PluginAbstract
         }
     }
 
+    public function registerSetting()
+    {
+        return [
+            [['setting-connections'], 'setting-connections', 'Connections', ''],
+        ];
+    }
+
     public function registerMenu()
     {
         return [

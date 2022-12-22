@@ -38,7 +38,7 @@ class Setting extends MVController
         ];
 
         $try = true;
-        foreach ($fields as $key => $value)
+        foreach ($fields as $key)
         {
             $try = $this->OptionModel->set($key, $this->request->post->get($key, '', 'string'));
             if (!$try) break;
@@ -70,7 +70,7 @@ class Setting extends MVController
         ];
 
         $try = true;
-        foreach ($fields as $key => $value)
+        foreach ($fields as $key)
         {
             $try = $this->OptionModel->set($key, $this->request->post->get($key, '', 'string'));
             if (!$try) break;

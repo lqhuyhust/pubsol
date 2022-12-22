@@ -76,13 +76,13 @@ class AdminSettingVM extends ViewModel
         }
         $form = new Form($fields, $data);
 
-        $title_page = 'Setting System';
+        $title_page = 'Setting SMTP';
         $this->view->set('fields', $fields, true);
         $this->view->set('form', $form, true);
         $this->view->set('title_page', $title_page, true);
         $this->view->set('data', $data, true);
         $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_form', $this->router->url('setting-system'));
+        $this->view->set('link_form', $this->router->url('setting-smtp'));
         $this->view->set('link_mail_test', $this->router->url('setting/mail-test'));
     }
 
