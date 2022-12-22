@@ -54,6 +54,9 @@ class AdminSettingVM extends ViewModel
                 'label' => 'Admin Mail:',
                 'formClass' => 'form-control',
             ],
+            'token' => ['hidden',
+                'default' => $this->app->getToken(),
+            ],
         ];
        
         return $fields;

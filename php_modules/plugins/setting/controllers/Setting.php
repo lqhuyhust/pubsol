@@ -30,6 +30,25 @@ class Setting extends MVController
         $this->app->set('page', 'backend');
     }
 
+    public function systemSave()
+    {
+        $this->isLoggedIn();
+        $fields = [
+            'admin_mail',
+        ];
+
+        $try = true;
+        foreach ($fields as $key => $value)
+        {
+            $try = $this->OptionModel->set($key, $this->request->post->get($key, '', 'string'));
+            if (!$try) break;
+        }
+
+        $msg = $try ? 'Save Done.' : 'Save Fail';
+        $this->session->set('flashMsg', $msg);
+        $this->app->redirect( $this->router->url('setting-system'));
+    }
+
     public function save()
     {
         $this->isLoggedIn();

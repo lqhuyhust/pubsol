@@ -16,10 +16,6 @@
                     <button type="button" class="btn btn-outline-secondary">Cancel</button>
                 </a>
             </div>
-            <div class="me-2">
-                <input type="hidden" name="save_close" id="save_close">
-                <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
-            </div>
             <div class="">
                 <button type="submit" class="btn btn-outline-success">Apply</button>
             </div>
@@ -36,6 +32,5 @@
         $('#test_mail').click(function(){
             $("#form_mail_test").submit();
         });
-        
     });
 </script>
