@@ -22,9 +22,11 @@
 												<input type="checkbox" id="select_all">
 											</th>
 											<th>Title</th>
+											<th>Version</th>
 											<th>Description</th>
 											<th>Change Logs</th>
 											<th>Release Date</th>
+											<th>Number of Feedback</th>
 											<th>Created At</th>
 											<th>Action</th>
 										</tr>

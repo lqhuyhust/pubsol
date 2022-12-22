@@ -73,7 +73,6 @@ class AdminFeedbackVM extends ViewModel
                 $total = $this->NoteEntity->getListTotal();
             }
         }
-
         $data_tags = [];
         foreach ($result as $item){
             if (!empty($item['tags'])){
@@ -81,9 +80,12 @@ class AdminFeedbackVM extends ViewModel
                 $where[] = "(`id` IN (".$item['tags'].") )";
                 $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
 
-                foreach ($t2 as $i) $t1[] = $i['name'];
-
-                $data_tags[$item['id']] = implode(',', $t1);
+                foreach ($t2 as $i) {
+                    if($i['name'] != $tag_feedback['name'] && $i['name'] != $tag_version['name']) {
+                        $t1[] = $i['name'];
+                    }
+                }
+                $data_tags[$item['id']] = implode(', ', $t1);
             }
         }
 
