@@ -27,7 +27,6 @@
 											<th>Change Logs</th>
 											<th>Release Date</th>
 											<th>Number of Feedback</th>
-											<th>Created At</th>
 											<th>Action</th>
 										</tr>
 									</thead>

@@ -37,8 +37,6 @@
     <td>
         <?php  echo $this->item['feedback']?>
     </td>
-   
-    <td><?php echo   $this->item['created_at'] ? date('m-d-Y', strtotime($this->item['created_at'])) : '';  ?></td>
     <td>
         <a href="#" 
             class="fs-4 me-1 show_data" 
