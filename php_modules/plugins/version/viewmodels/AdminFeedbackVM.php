@@ -56,7 +56,7 @@ class AdminFeedbackVM extends ViewModel
         if ($tag_exist && $note_exist && $version) {
             
             $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
-            $tag_version = $this->TagEntity->findOne(["`name` = '". $version['name']."'"]);
+            $tag_version = $this->TagEntity->findOne(["`name` = '". $version['version']."'"]);
             if ($tag_feedback && $tag_version)
             {
                 $where = array_merge($where, [
