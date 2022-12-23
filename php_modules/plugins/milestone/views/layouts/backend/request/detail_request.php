@@ -15,6 +15,21 @@
 	
 	$(document).on("scroll", onScroll);
 	$("#sidebar .sidebar-content").addClass('position-fixed');
+	function showMessage(status, message)
+    {
+        console.log(status);
+        if (status == 'ok')
+        {
+            $('#message_form').addClass('alert-success');
+            $('#message_form').removeClass('alert-danger');
+        }else{
+            $('#message_form').removeClass('alert-success');
+            $('#message_form').addClass('alert-danger');
+        }
+
+        $('#message_form .toast-body').text(message);
+        $("#message_ajax").toast('show');
+    }
 	function onScroll(event){
 		var scrollPos = $(document).scrollTop() +1;
 		$('a.sidebar-link').each(function () {

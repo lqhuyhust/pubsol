@@ -37,25 +37,11 @@
                 success: function (result) {
                     modal = bootstrap.Modal.getInstance($('#exampleModalToggle'))
                     modal.hide();
+                    $('#note_id').val('');
                     showMessage(result.result, result.message);
                     listRelateNote();
                 }
             });
         });
     });
-    function showMessage(status, message)
-    {
-        console.log(status);
-        if (status == 'ok')
-        {
-            $('#message_form').addClass('alert-success');
-            $('#message_form').removeClass('alert-danger');
-        }else{
-            $('#message_form').removeClass('alert-success');
-            $('#message_form').addClass('alert-danger');
-        }
-
-        $('#message_form .toast-body').text(message);
-        $("#message_ajax").toast('show');
-    }
 </script>
