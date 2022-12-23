@@ -42,7 +42,7 @@ class VersionModel extends Base
             unset($partsArray['patch']);
             $partsArray['minor'] = $partsArray['minor'] + 1;
         }
-        if ($partsArray['patch'] > $maxPatch) {
+        if ($version_z && $partsArray['patch'] > $maxPatch) {
             $partsArray['minor'] = $partsArray['minor'] + 1;
             $partsArray['patch'] = 0;
         }
