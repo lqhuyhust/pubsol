@@ -21,7 +21,7 @@ class VersionModel extends Base
         $version_z = $this->OptionModel->get('version_format_z', 'x');
 
         $version_lastest = $this->VersionEntity->list(0, 1, [], 'id desc');
-        $current_version = $version_lastest ? $version_lastest[0]['version'] : '';
+        $current_version = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         
         $vParts = explode('.', $current_version);
         $maxMajor = (int) str_repeat('9', substr_count($version_x, 'x'));
