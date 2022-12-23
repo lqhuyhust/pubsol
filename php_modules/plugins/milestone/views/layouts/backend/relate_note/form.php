@@ -12,7 +12,6 @@
                 <div class="row g-3 align-items-center m-0">
                     <div class="modal-footer">
                         <?php $this->field('token'); ?>
-                        <input class="form-control rounded-0 border border-1" id="relate_note" type="hidden" name="_method" value="POST">
                         <div class="row">
                             <div class="col-6 text-end pe-0">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -29,9 +28,34 @@
 </div>
 <script>
     $(document).ready(function() {
-        $("#form_relate_note").on('submit', function(e){
-            e.preventDefault();
-            console.log('truee');
+            $("#form_relate_note").on('submit', function(e){
+                e.preventDefault();
+                $.ajax({
+                type: 'POST',
+                url: '<?php echo $this->link_form .'/0' ?>',
+                data: $('#form_relate_note').serialize(),
+                success: function (result) {
+                    modal = bootstrap.Modal.getInstance($('#exampleModalToggle'))
+                    modal.hide();
+                    showMessage(result.result, result.message);
+                    listRelateNote();
+                }
+            });
         });
     });
+    function showMessage(status, message)
+    {
+        console.log(status);
+        if (status == 'ok')
+        {
+            $('#message_form').addClass('alert-success');
+            $('#message_form').removeClass('alert-danger');
+        }else{
+            $('#message_form').removeClass('alert-success');
+            $('#message_form').addClass('alert-danger');
+        }
+
+        $('#message_form .toast-body').text(message);
+        $("#message_ajax").toast('show');
+    }
 </script>

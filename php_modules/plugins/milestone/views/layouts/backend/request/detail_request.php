@@ -3,7 +3,14 @@
 <?php echo $this->render('layouts.backend.document.form'); ?>
 <?php echo $this->render('layouts.backend.task.list'); ?>
 <?php echo $this->render('layouts.backend.version_latest.list'); ?>
-<?php echo $this->render('notification'); ?>
+<div class="toast message-toast" id="message_ajax">
+    <div id="message_form" class="d-flex message-body ">
+        <div class="toast-body">
+            
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+</div>
 <script>
 	
 	$(document).on("scroll", onScroll);

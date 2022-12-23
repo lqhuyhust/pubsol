@@ -76,10 +76,10 @@ class Note extends Admin
             $findOne = $this->RelateNoteEntity->findOne(['note_id = '. $note_id, 'request_id = '. $request_id]);
             if ($findOne)
             {
-                $this->session->set('flashMsg', 'Error: Duplicate Relate Note');
-                $this->app->redirect(
-                    $this->router->url('detail-request/'. $request_id),
-                );
+                $this->app->response([
+                    'result' => 'ok',
+                    'message' => 'Error: Duplicate Relate Note',
+                ], 200);
             }
         }
 
@@ -93,18 +93,17 @@ class Note extends Admin
 
         if( !$newId )
         {
-            $msg = 'Error: Create Relate Note Failed!';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id .'/0')
-            );
+            $this->app->response([
+                'result' => 'fail',
+                'message' => 'Error: Create Relate Note Failed!',
+            ], 200);
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Relate Note Successfully!');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            $this->app->response([
+                'result' => 'ok',
+                'message' => 'Create Relate Note Successfully!',
+            ], 200);
         }
     }
 
