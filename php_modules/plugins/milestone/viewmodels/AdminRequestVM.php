@@ -18,7 +18,8 @@ class AdminRequestVM extends ViewModel
     protected $alias = 'AdminRequestVM';
     protected $layouts = [
         'layouts.backend.request' => [
-            'form'
+            'form',
+            'detail_request',
         ]
     ];
 
@@ -57,5 +58,17 @@ class AdminRequestVM extends ViewModel
         ];
 
         return $fields;
+    }
+
+    public function detail_request()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+        $this->set('request_id', $request_id, true);
+        $request = $this->RequestEntity->findByPK($request_id);
+        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+
+        $title_page = '<a href="'.$this->router->url('notes').'">Notes</a> | <a href="'. $this->router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'];
+        $this->set('title_page', $title_page, true);
     }
 }
