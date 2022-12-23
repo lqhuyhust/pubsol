@@ -21,7 +21,6 @@
 											<th>Title</th>
 											<th>Description</th>
 											<th>Tags</th>
-											<th>Created At</th>
 											<th>Action</th>
 										</tr>
 									</thead>
