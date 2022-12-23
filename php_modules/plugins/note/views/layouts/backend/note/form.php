@@ -3,105 +3,12 @@ $this->theme->add( $this->url .'assets/css/select2.min.css', '', 'select2-css');
 $this->theme->add( $this->url .'assets/css/select2_custom.css', '', 'select2-custom-css');
 $this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
 ?>
+<?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
-    <div class="card shadow-none p-0 col-lg-12">
-        <div class="card-body pt-0">
-            <?php echo $this->render('message'); ?>
-            <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post">
-                <div class="row g-3">
-                    <div class="col-lg-8 col-sm-12">
-                        <input id="input_title" type="hidden" name="title">
-                        <div class="row">
-                            <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                                <label class="form-label fw-bold">Description:</label>
-                                <?php $this->field('description'); ?>
-                            </div>
-                        </div>
-                        
-                        <div class="row g-3 align-items-end m-0">
-                            <?php $this->field('token'); ?>
-                            <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
-                            <div class="col-xl-6 col-sm-6 text-end">
-                                <a href="<?php echo $this->link_list ?>">
-                                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
-                                </a>
-                            </div>
-                            <div class="col-xl-3 col-sm-6 text-start ">
-                                <button type="submit" class="btn btn-outline-success">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-12">
-                        <div class="row pt-3" style="display: none">
-                            <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                                <label class="form-label fw-bold">Tags:</label>
-                                <?php $this->field('tags'); ?>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                                <label class="form-label fw-bold">Tags:</label>
-                                <select class="js-example-tags" multiple id="select_tags">
-                                    <?php foreach ($this->data_tags as $item) : ?>
-                                        <option selected="selected" value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <label class="form-label fw-bold pt-3">Attachments:</label>
-                        <input name="files[]" type="file" multiple id="file" class="form-control">
-                        <div class="d-flex flex-wrap pt-4">
-                            <?php foreach ($this->attachments as $item) :
-                                $extension = @end(explode('.', $item['path']));
-                                if (in_array($extension, ['png', 'jpg', 'jpeg'])) {
-                                    $path = file_exists(PUBLIC_PATH . $item['path']) ? $this->url . $item['path'] : $this->url . 'media/default/default_image.png';
-                                }
-                                elseif($extension == 'pdf')
-                                {
-                                    $path = $this->url . 'media/default/default_pdf.png';
-                                }
-                                elseif(in_array($extension, ['doc', 'docx']))
-                                {
-                                    $path = $this->url . 'media/default/default_doc.png';
-                                } 
-                                elseif(in_array($extension, ['xlsx', 'csv']))
-                                {
-                                    $path = $this->url . 'media/default/default_excel.png';
-                                }
-                                else
-                                {
-                                    $path = $this->url . 'media/default/default_file.png';
-                                }
-                                ?>
-                                <div class="card border shadow-none d-flex flex-column me-2 justify-content-center" style="width: auto;">
-                                    <a href="<?php echo file_exists(PUBLIC_PATH. $item['path'] ) ? $this->url . $item['path'] : '' ?>" target="_blank" class="h-100 my-2 px-2 mx-auto" title="<?php echo $item['name']; ?>" style="">
-                                        <img style="height: 120px; max-width: 100%;" src="<?php echo $path ?>" alt="<?php echo $item['name']; ?>">
-                                    </a>
-                                    <div class="card-body d-flex">
-                                        <p class="card-text fw-bold m-0 me-2"><?php echo $item['name']; ?> </p>
-                                        <a data-id="<?php echo $item['id']?>" class="ms-auto me-2 button_download_item fs-4"><i class="fa-solid fa-download"></i></a>
-                                        <a data-id="<?php echo $item['id']?>" class="ms-auto button_delete_item fs-4"><i class="fa-solid fa-trash"></i></a>
-                                    </div>
-                                </div>
-                                <div class="d-block">
-                                    
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                        <label class="form-label fw-bold">Tags:</label>
-                        <select class="js-example-tags" multiple id="select_tags">
-                            <?php foreach ($this->data_tags as $item) : ?>
-                                <option selected="selected" value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
+    <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post">
+        <div class="row g-3">
+            <div class="col-lg-8 col-sm-12">
+                <input id="input_title" type="hidden" name="title">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Description:</label>
@@ -126,7 +33,24 @@ $this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-s
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 mt-0 col-sm-12">
+            <div class="col-lg-4 col-sm-12">
+                <div class="row pt-3" style="display: none">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
+                        <label class="form-label fw-bold">Tags:</label>
+                        <?php $this->field('tags'); ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
+                        <label class="form-label fw-bold">Tags:</label>
+                        <select class="js-example-tags" multiple id="select_tags">
+                            <?php foreach ($this->data_tags as $item) : ?>
+                                <option selected="selected" value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
                 <label class="form-label fw-bold pt-3">Attachments:</label>
                 <input name="files[]" type="file" multiple id="file" class="form-control">
                 <div class="d-flex flex-wrap pt-4">
@@ -173,7 +97,6 @@ $this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-s
         
     </form>
 </div>
-<?php echo $this->render('notification'); ?>
 <form class="hidden" method="POST" id="form_delete">
     <input type="hidden" value="<?php echo $this->token ?>" name="token">
     <input type="hidden" value="DELETE" name="_method">
@@ -311,10 +234,10 @@ $js = <<<Javascript
     }
 
     $(document).ready(function() {
+        $("#description").attr('rows', 18);
         $(".btn_save_close").click(function() {
             $("#save_close").val(1);
         });
-        $("#description").attr('rows', 18);
         $(".button_delete_item").click(function() {
             var id = $(this).data('id');
             var result = confirm("You are going to delete 1 file(s) attchament. Are you sure ?");
