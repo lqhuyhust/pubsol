@@ -3,14 +3,14 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-12">
-				<a class="request-collapse w-100 text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listTask" aria-expanded="true" aria-controls="listTask">
+				<a class="request-collapse w-100 text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#collapseTask" aria-expanded="true" aria-controls="collapseTask">
 					<h2>
 						<i class="fa-solid fa-list-check pe-2"></i><?php echo $this->title_page_task ?></h2>
                     <h2 class="ms-auto">
                         <i class="fa-solid fa-caret-down"></i>
                     </h2>
                 </a>
-				<div class="collapse" id="listTask">
+				<div class="collapse" id="collapseTask">
 					<div class="row align-items-center pt-3">
 						<?php echo $this->render('backend.task.list.filter');?>
 					</div>

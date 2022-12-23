@@ -3,7 +3,7 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-12">
-				<a class="w-100 request-collapse text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listChangeLog" aria-expanded="true" aria-controls="listChangeLog">
+				<a class="w-100 request-collapse text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#collapseChangeLog" aria-expanded="true" aria-controls="collapseChangeLog">
 					<h2 class="pb-1" >
 						<i class="fa-solid fa-code-branch pe-2"></i>
 						<?php echo $this->title_page_version ?>
@@ -13,7 +13,7 @@
 					</h2>
 				</a>
 				<?php if ($this->version_latest['id']) { ?>
-					<div id="listChangeLog" class=" collapse row align-items-center justify-content-center pt-3">
+					<div id="collapseChangeLog" class="mb-5 collapse row align-items-center justify-content-center pt-3">
 						<div class="col-lg-8 col-12" id="listChangeLog">
 							<?php foreach ($this->list as $item) : ?>
 								<form class="form_changelog" action="<?php echo $this->link_form . '/' . $item['id']; ?>" method="post">

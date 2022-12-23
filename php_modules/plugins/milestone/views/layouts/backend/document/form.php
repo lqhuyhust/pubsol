@@ -14,7 +14,6 @@
                 </a>
                 <div class="row pt-3 collapse " id="document_form">
                     <div class="col-lg-7 col-6 border-end">
-                        <h4>Document:</h4>
                         <?php if ($this->editor) : ?>
                             <form id="form_document" action="<?php echo $this->link_form ?>" method="post">
                                 <div class="row">
@@ -38,7 +37,6 @@
                         ?>
                     </div>
                     <div class="col-lg-5 col-6">
-                        <h4>Discussion:</h4>
                         <ul id="list-discussion" class="list-unstyled pt-2" style="max-height: 60vh; overflow:auto;">
                         <?php foreach ($this->discussion as $item) : ?>
                             <li class="d-flex <?php echo $this->user_id == $item['user_id'] ? 'ms-5 me-2 justify-content-end' : 'me-5 ms-2 justify-content-between'; ?>  mb-4">
@@ -156,8 +154,8 @@
         })
     }
     $(document).ready(function() {
-        $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         $("#description").attr('rows', 25);
+        $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         $("#form_document").on('submit', function(e){
             e.preventDefault();
             $.ajax({

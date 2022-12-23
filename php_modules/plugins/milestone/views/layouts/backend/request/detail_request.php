@@ -11,8 +11,46 @@
     </div>
 </div>
 <script>
-	
-	$(document).on("scroll", onScroll);
+	function activeMenu(link)
+    {
+        var link_active = link.split('#')[1];
+        if (link_active)
+        {
+            $('a.sidebar-link').each(function () {
+                var currLink = $(this);
+                var href = currLink.attr("href");
+                var refElement = href.split('#')[1];
+                if (refElement == link_active) {
+                    $('li.sidebar-item  a.sidebar-link').removeClass("active");
+                    currLink.parent('li.sidebar-item').addClass("active");
+                }
+                else{
+                    currLink.parent('li.sidebar-item').removeClass("active");
+                }
+            });
+        }
+        
+
+        var toogleMenu = {
+            'relate_note_link' : 'collapseRelateNote',
+            'document_link' : 'document_form',
+            'task_link' : 'collapseTask',
+            'version_link' : 'collapseChangeLog',
+        };
+
+        if (toogleMenu[link_active])
+        {
+            $('#' + toogleMenu[link_active]).collapse('show');
+            $('#' + toogleMenu[link_active]).parent(".col-12").find('.icon-collapse').toggleClass('fa-caret-down fa-caret-up');
+        }
+        else
+        {
+            $('#' + toogleMenu['relate_note_link']).collapse('show');
+            $('#' + toogleMenu['relate_note_link']).parent(".col-12").find('.icon-collapse').toggleClass('fa-caret-down fa-caret-up');
+        }
+        $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
+    }
+    
 	$("#sidebar .sidebar-content").addClass('position-fixed');
 	function showMessage(status, message)
     {
@@ -28,50 +66,17 @@
         $('#message_form .toast-body').text(message);
         $("#message_ajax").toast('show');
     }
-	function onScroll(event){
-		var scrollPos = $(document).scrollTop() +1;
-		$('a.sidebar-link').each(function () {
-			var currLink = $(this);
-			var href = currLink.attr("href");
-			var refElement = $('#' + href.split('#')[1]);
-			if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() >= scrollPos) {
-				$('li.sidebar-item  a.sidebar-link').removeClass("active");
-				currLink.parent('li.sidebar-item').addClass("active");
-			}
-			else{
-				currLink.parent('li.sidebar-item').removeClass("active");
-			}
-		});
-        var first = $('a.sidebar-link').first();
-        if (scrollPos < first.position().top)
-        {
-            $('li.sidebar-item  a.sidebar-link').removeClass("active");
-            first.parent('li.sidebar-item').addClass('active');
-        }
-	}
 	
     $('.request-collapse').on('click', function() {
         $('.icon-collapse', this).toggleClass('fa-caret-down fa-caret-up');
     });
 
 	$(document).ready(function() {
-		$('a.sidebar-link').each(function () {
-			var currLink = $(this);
-			var href = currLink.attr("href");
-			var refElement = $('#' + href.split('#')[1]);
-			var hash = window.location.hash.substring(1);
-			if (!hash)
-			{
-				hash = 'relate_note_link';
-			}
-			if (href.split('#')[1] == hash) {
-				$('li.sidebar-item  a.sidebar-link').removeClass("active");
-				currLink.parent('li.sidebar-item').addClass("active");
-			}
-			else{
-				currLink.parent('li.sidebar-item').removeClass("active");
-			}
-		});
+        activeMenu(window.location.href);
+        $('a.sidebar-link').on('click', function(){
+            var href = $(this).attr('href');
+            activeMenu(href);
+        });
 	});
 </script>
 

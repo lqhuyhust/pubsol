@@ -3,7 +3,7 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-12">
-				<a class="w-100 request-collapse text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listRelateNote" aria-expanded="true" aria-controls="listRelateNote">
+				<a class="w-100 request-collapse text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#collapseRelateNote" aria-expanded="true" aria-controls="collapseRelateNote">
 					<h2 class="pb-1" >
 						<i class="fa-solid fa-link pe-2 "></i>
 						<?php echo $this->title_page_relate_note ?>
@@ -12,8 +12,8 @@
 						<i class=" icon-collapse fa-solid fa-caret-down"></i>
 					</h2>
 				</a>
-				<div class="collapse" id="listRelateNote">
-					<div class=" row align-items-center pt-3" id="collapseRelateNote">
+				<div class="collapse" id="collapseRelateNote">
+					<div class=" row align-items-center pt-3">
 						<?php echo $this->render('backend.relate_note.list.filter');?>
 					</div>
 					<div class="row align-items-center">
