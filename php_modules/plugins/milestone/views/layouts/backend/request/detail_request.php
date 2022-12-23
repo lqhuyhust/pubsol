@@ -43,6 +43,13 @@
 				currLink.parent('li.sidebar-item').removeClass("active");
 			}
 		});
+        var first = $('a.sidebar-link').first();
+        console.log(scrollPos, first.position().top);
+        if (scrollPos < first.position().top)
+        {
+            $('li.sidebar-item  a.sidebar-link').removeClass("active");
+            first.parent('li.sidebar-item').addClass('active');
+        }
 	}
 	
 	$(document).ready(function() {
