@@ -38,7 +38,6 @@
                 var list = '<option value="" selected="selected">Select Note</option>';
                 if (Array.isArray(resultData))
                 {
-                    console.log(resultData);
                     resultData.forEach(function(item)
                     {
                         list += `<option value="${item['id']}">${item['title']}</option>`;
@@ -50,9 +49,9 @@
     }
     listNote();
     $(document).ready(function() {
-            $("#form_relate_note").on('submit', function(e){
-                e.preventDefault();
-                $.ajax({
+        $("#form_relate_note").on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
                 type: 'POST',
                 url: '<?php echo $this->link_form .'/0' ?>',
                 data: $('#form_relate_note').serialize(),

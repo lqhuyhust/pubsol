@@ -79,7 +79,6 @@
                     url: $('#formListRelateNote').attr('action'),
                     data: $('#formListRelateNote').serialize(),
                     success: function (result) {
-                        console.log(result);
                         showMessage(result.result, result.message);
                         listRelateNote();
                         listNote();

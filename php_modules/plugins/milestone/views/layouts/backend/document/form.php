@@ -7,7 +7,7 @@
                 <div class="col-lg-7 col-6 border-end">
                     <h4>Document:</h4>
                     <?php if ($this->editor) : ?>
-                        <form action="<?php echo $this->link_form ?>" method="post">
+                        <form id="form_document" action="<?php echo $this->link_form ?>" method="post">
                             <div class="row">
                                 <div class="mb-3 col-sm-12 mx-auto">
                                     <?php $this->field('description'); ?>
@@ -81,5 +81,21 @@
     $(document).ready(function() {
         $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         $("#description").attr('rows', 25);
+        $("#form_document").on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $("#form_document").attr('action'),
+                data: $('#form_document').serialize(),
+                success: function (result) {
+                    if (result.result == 'ok')
+                    {
+                        $('#description').val('');
+                    }
+                    showMessage(result.result, result.message);
+                }
+            });
+        });
     });
+    
 </script>
