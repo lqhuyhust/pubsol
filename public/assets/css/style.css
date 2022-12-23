@@ -18,3 +18,7 @@ ul a.submenu-link{
 .message-toast .message-body{
     padding: 3px 0px 3px 10px;
 }
+.back-ground-sidebar
+{
+    background: #0c1f2e  !important;
+}

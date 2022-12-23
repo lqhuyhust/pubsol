@@ -46,7 +46,7 @@ class AdminNoteVM extends ViewModel
         $this->set('data', $data, true);
         $this->set('data_tags', $data_tags, true);
         $this->set('attachments', $attachments);
-        $this->set('title_page', $data ? 'Edit Note' : 'New Milestone', true);
+        $this->set('title_page_edit', $data ? $data['title'] : 'New Note', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('notes'));
         $this->set('link_form', $this->router->url('note'));
@@ -71,8 +71,8 @@ class AdminNoteVM extends ViewModel
             'title' => [
                 'text',
                 'showLabel' => false,
-                'placeholder' => 'Title',
-                'formClass' => 'form-control',
+                'placeholder' => 'New Title',
+                'formClass' => 'form-control border-0 border-bottom fs-2 py-0',
                 'required' => 'required',
             ],
             'tags' => [
