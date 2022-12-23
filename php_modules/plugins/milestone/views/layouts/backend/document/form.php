@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row row justify-content-center mx-auto">
             <div class="col-12">
-                <a class="w-100 request-collapse text-decoration-none d-flex border-bottom " data-bs-toggle="collapse" type="button" data-bs-target="#document_form" aria-expanded="true" aria-controls="document_form">
+                <a class="w-100 request-collapse request-collapse-document text-decoration-none d-flex border-bottom " data-bs-toggle="collapse" type="button" data-bs-target="#document_form" aria-expanded="true" aria-controls="document_form">
                     <h2 class="pb-1" >
                     <i class="fa-regular fa-folder-open pe-2"></i>
                         <?php echo $this->title_page_document ?>
@@ -155,6 +155,9 @@
     }
     $(document).ready(function() {
         $("#description").attr('rows', 25);
+        $('.request-collapse-document').click(function(){
+            $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
+        });
         $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         $("#form_document").on('submit', function(e){
             e.preventDefault();

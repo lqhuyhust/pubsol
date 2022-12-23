@@ -73,7 +73,8 @@
                     data: $('#form_delete').serialize(),
                     success: function (result) {
                         showMessage(result.result, result.message);
-                        listTask();
+                        listTask($('#filter_form_task').serialize());
+
                     }
                 });
             }
@@ -100,7 +101,8 @@
                     data: $('#formListTask').serialize(),
                     success: function (result) {
                         showMessage(result.result, result.message);
-                        listTask();
+                        listTask($('#filter_form_task').serialize());
+
                     }
                 });
             }

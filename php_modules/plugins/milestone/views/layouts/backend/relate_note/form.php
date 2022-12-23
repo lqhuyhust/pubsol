@@ -60,7 +60,7 @@
                     modal.hide();
                     $('#note_id').val('');
                     showMessage(result.result, result.message);
-                    listRelateNote();
+                    listRelateNote($('#filter_form').serialize());
                     listNote();
                 }
             });

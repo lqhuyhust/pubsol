@@ -49,7 +49,7 @@
                 modal = bootstrap.Modal.getInstance($('#Popup_form_task'))
                 modal.hide();
                 showMessage(result.result, result.message);
-                listTask();
+                listTask($('#filter_form_task').serialize());
             }
         });
     });

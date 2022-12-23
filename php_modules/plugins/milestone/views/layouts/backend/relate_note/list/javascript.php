@@ -53,7 +53,7 @@
                     data: $('#form_delete_relate_note').serialize(),
                     success: function (result) {
                         showMessage(result.result, result.message);
-                        listRelateNote();
+                        listRelateNote($('#filter_form').serialize());
                     }
                 });
             }
@@ -80,7 +80,7 @@
                     data: $('#formListRelateNote').serialize(),
                     success: function (result) {
                         showMessage(result.result, result.message);
-                        listRelateNote();
+                        listRelateNote($('#filter_form').serialize());
                     }
                 });
             }
