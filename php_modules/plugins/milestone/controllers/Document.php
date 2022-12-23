@@ -103,4 +103,22 @@ class Document extends Admin
 
         return $id;
     }
+
+    public function getHistory()
+    {
+        $this->isLoggedIn();
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        $document = $this->DocumentEntity->findOne(['request_id' => $request_id]);
+        $result = [];
+        if ($document)
+        {
+            $list = $this->DocumentHistoryEntity->list(0 ,0 ,['document_id' => $document['id']]);
+            $result = $list ? $list : [];
+        }
+
+        return $this->app->response(
+            $result, 200);
+    }
 }

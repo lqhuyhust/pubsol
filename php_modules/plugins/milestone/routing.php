@@ -70,6 +70,12 @@ return [
         ],
         'parameters' => ['request_id'],
     ],
+    'get-history' => [
+        'fnc' => [
+            'post' => 'milestone.document.getHistory',
+        ],
+        'parameters' => ['request_id'],
+    ],
     'discussion' => [
         'fnc' => [
             'post' => 'milestone.discussion.add',

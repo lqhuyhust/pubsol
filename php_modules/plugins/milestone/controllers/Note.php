@@ -69,6 +69,7 @@ class Note extends Admin
         $request_id = (int) $urlVars['request_id'];
 
         $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $request_id]);
+        $where = [];
         if ($relate_note)
         {
             foreach ($relate_note as $note)

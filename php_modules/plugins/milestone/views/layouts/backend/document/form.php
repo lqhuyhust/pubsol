@@ -64,7 +64,7 @@
                 <div class="col-12">
                     <hr class="bg-danger border-2 border-top border-danger">
                     <h4>History:</h4>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush" id="document_history">
                         <?php foreach ($this->history as $item) : ?>
                             <li class="list-group-item">Edited at <?php echo $item['modified_at']; ?></li>
                         <?php endforeach; ?>
@@ -77,6 +77,30 @@
     </div>
 </div>
 <script>
+    function loadHistory(data)
+    {
+        $.ajax({
+            url: '<?php echo $this->url. 'get-history/'. $this->request_id ?>',
+            type: 'POST',
+            data: data,
+            success: function(resultData)
+            {
+                var list = '';
+                if (Array.isArray(resultData))
+                {
+                    
+                    resultData.forEach(function(item)
+                    {
+                        list += `
+                        <li class="list-group-item">Edited at ${item['modified_at']}</li>
+                        `
+                    });
+                    $("#document_history").html(list);
+                }
+            }
+        })
+    }
+    loadHistory();
     $(document).ready(function() {
         $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         $("#description").attr('rows', 25);
@@ -92,6 +116,7 @@
                         $('#description').val('');
                     }
                     showMessage(result.result, result.message);
+                    loadHistory();
                 }
             });
         });
