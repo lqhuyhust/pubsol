@@ -29,6 +29,7 @@
                                 <a href="<?php echo $this->url ?>${item['note_id']}">${item['title']}</a>
                             </td>
                             <td>${item['description']}</td>
+                            <td>${item['tags']}</td>
                         </tr>
                         `
                     });

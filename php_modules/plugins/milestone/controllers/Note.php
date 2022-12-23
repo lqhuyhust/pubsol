@@ -50,6 +50,7 @@ class Note extends Admin
             {
                 $item['title'] = $note_tmp['title'];
                 $item['description'] = strip_tags((string) $note_tmp['description']) ;
+                $item['tags'] = $note_tmp['tags'] ;
             }
 
             if (strlen($item['description']) > 100)
