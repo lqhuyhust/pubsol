@@ -119,7 +119,7 @@ class plugin extends PluginAbstract
         ];
         foreach($list as $item)
         {
-            $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', '', 'back-ground-sidebar'];
+            $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', 'back-ground-sidebar'];
         }
         return $menu;
     }

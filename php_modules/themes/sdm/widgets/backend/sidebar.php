@@ -56,7 +56,7 @@
                     }
                 }
                 ?>
-                <li class="sidebar-item <?php echo $active && !(is_array($submenu) && $submenu) ? 'active' : ''; ?>">
+                <li class="sidebar-item <?php echo $submenu && (string) $submenu ? $submenu : ''; ?> <?php echo $active && !(is_array($submenu) && $submenu) ? 'active' : ''; ?>">
                     <a href="<?php echo (is_array($submenu) && $submenu) ? '' : $this->link_admin . $plural ?>" 
                         class="sidebar-link <?php echo (is_array($submenu) && $submenu) ? 'link-collapse collapsed' : '';?>" 
                         <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
