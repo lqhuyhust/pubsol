@@ -52,6 +52,12 @@ return [
         ],
         'parameters' => ['request_id'],
     ],
+    'get-notes' => [
+        'fnc' => [
+            'post' => 'milestone.note.getNote',
+        ],
+        'parameters' => ['request_id'],
+    ],
     'detail-request' => [
         'fnc' => [
             'get' => 'milestone.request.detail_request',

@@ -62,6 +62,25 @@ class Note extends Admin
             $result, 200);
     }
 
+    public function getNote()
+    {
+        $this->isLoggedIn();
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $request_id]);
+        if ($relate_note)
+        {
+            foreach ($relate_note as $note)
+            {
+                $where[] = 'id <> '. $note['note_id'];
+            }
+        }
+        $notes = $this->NoteEntity->list(0 , 0, $where);
+        return $this->app->response(
+            $notes, 200);
+    }
+
     public function add()
     {
         $this->isLoggedIn();

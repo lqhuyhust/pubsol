@@ -37,37 +37,6 @@ class AdminRelateNoteVM extends ViewModel
 
     public function getFormFields()
     {
-        $notes = [];
-        if ($this->container->exists('NoteEntity'))
-        {
-            $urlVars = $this->request->get('urlVars');
-            $id = (int) $urlVars['request_id'];
-            $where = [];
-            if ($id)
-            {
-                $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $id]);
-                if ($relate_note)
-                {
-                    foreach ($relate_note as $note)
-                    {
-                        $where[] = 'id <> '. $note['note_id'];
-                    }
-                }
-            }
-            $notes = $this->NoteEntity->list(0 , 0, $where);
-        }
-        $options = [[
-            'text' => 'Select Note',
-            'value' => '',
-        ]];
-        foreach ($notes as $note)
-        {
-            $options[] = [
-                'text' => $note['title'],
-                'value' => $note['id'],
-            ];
-        }
-
         $fields = [
             'id' => ['hidden'],
             'title' => [
@@ -84,7 +53,7 @@ class AdminRelateNoteVM extends ViewModel
                 'required' => 'required',
             ],
             'note_id' => ['option',
-                'options' => $options,
+                'options' => [],
                 'showLabel' => false,
                 'formClass' => 'form-select rounded-0 border border-1 py-1 fs-4-5',
                 'required' => 'required',

@@ -82,6 +82,7 @@
                         console.log(result);
                         showMessage(result.result, result.message);
                         listRelateNote();
+                        listNote();
                     }
                 });
             }

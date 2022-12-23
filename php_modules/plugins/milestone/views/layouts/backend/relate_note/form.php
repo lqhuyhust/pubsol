@@ -27,6 +27,28 @@
     </div>
 </div>
 <script>
+    function listNote(data)
+    {
+        $.ajax({
+            url: '<?php echo $this->url. 'get-notes/'. $this->request_id ?>',
+            type: 'POST',
+            data: data,
+            success: function(resultData)
+            {
+                var list = '<option value="" selected="selected">Select Note</option>';
+                if (Array.isArray(resultData))
+                {
+                    console.log(resultData);
+                    resultData.forEach(function(item)
+                    {
+                        list += `<option value="${item['id']}">${item['title']}</option>`;
+                    });
+                    $("#note_id").html(list);
+                }
+            }
+        })
+    }
+    listNote();
     $(document).ready(function() {
             $("#form_relate_note").on('submit', function(e){
                 e.preventDefault();
@@ -40,6 +62,7 @@
                     $('#note_id').val('');
                     showMessage(result.result, result.message);
                     listRelateNote();
+                    listNote();
                 }
             });
         });
