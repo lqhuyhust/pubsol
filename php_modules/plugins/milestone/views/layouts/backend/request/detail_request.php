@@ -16,7 +16,6 @@
 	$("#sidebar .sidebar-content").addClass('position-fixed');
 	function showMessage(status, message)
     {
-        console.log(status);
         if (status == 'ok')
         {
             $('#message_form').addClass('alert-success');
@@ -44,7 +43,6 @@
 			}
 		});
         var first = $('a.sidebar-link').first();
-        console.log(scrollPos, first.position().top);
         if (scrollPos < first.position().top)
         {
             $('li.sidebar-item  a.sidebar-link').removeClass("active");

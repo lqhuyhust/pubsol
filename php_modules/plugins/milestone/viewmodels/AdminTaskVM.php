@@ -52,7 +52,6 @@ class AdminTaskVM extends ViewModel
                 'placeholder' => 'Enter Url',
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
-                'required' => 'required',
             ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),

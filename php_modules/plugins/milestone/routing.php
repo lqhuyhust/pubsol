@@ -107,6 +107,12 @@ return [
         ],
         'parameters' => ['id'],
     ],
+    'request-versions' => [
+        'fnc' => [
+            'post' => 'milestone.version.list',
+        ],
+        'parameters' => ['request_id'],
+    ],
     'request-version' => [
         'fnc' => [
             'post' => 'milestone.version.add',
