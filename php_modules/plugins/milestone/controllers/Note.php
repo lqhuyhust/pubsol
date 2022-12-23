@@ -76,8 +76,8 @@ class Note extends Admin
             $findOne = $this->RelateNoteEntity->findOne(['note_id = '. $note_id, 'request_id = '. $request_id]);
             if ($findOne)
             {
-                $this->app->response([
-                    'result' => 'ok',
+                return $this->app->response([
+                    'result' => 'fail',
                     'message' => 'Error: Duplicate Relate Note',
                 ], 200);
             }
@@ -93,14 +93,14 @@ class Note extends Admin
 
         if( !$newId )
         {
-            $this->app->response([
+            return $this->app->response([
                 'result' => 'fail',
                 'message' => 'Error: Create Relate Note Failed!',
             ], 200);
         }
         else
         {
-            $this->app->response([
+            return $this->app->response([
                 'result' => 'ok',
                 'message' => 'Create Relate Note Successfully!',
             ], 200);
@@ -185,11 +185,10 @@ class Note extends Admin
             }
         }  
         
-
-        $this->session->set('flashMsg', $count.' deleted record(s)');
-        $this->app->redirect(
-            $this->router->url('detail-request/'. $request_id), 
-        );
+        $this->app->response([
+            'result' => 'ok',
+            'message' => $count.' deleted record(s)',
+        ], 200);
     }
 
     public function validateID()
@@ -197,7 +196,7 @@ class Note extends Admin
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
         {
