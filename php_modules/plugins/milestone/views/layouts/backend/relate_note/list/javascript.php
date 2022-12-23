@@ -26,7 +26,7 @@
                                 <input class="checkbox-item-relate-note" type="checkbox" name="ids[]" value="${item['id']}">
                             </td>
                             <td>
-                                <a href="<?php echo $this->url ?>${item['note_id']}">${item['title']}</a>
+                                <a target="_blank" href="<?php echo $this->link_note .'/' ?>${item['note_id']}">${item['title']}</a>
                             </td>
                             <td>${item['description']}</td>
                             <td>${item['tags']}</td>
