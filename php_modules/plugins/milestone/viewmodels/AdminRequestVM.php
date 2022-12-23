@@ -68,7 +68,7 @@ class AdminRequestVM extends ViewModel
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         
-        $title_page = '<a class="me-2" href="'.$this->router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $this->router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<button class="btn btn-primary ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" >Edit</button>';
+        $title_page = '<a class="me-2" href="'.$this->router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $this->router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
         $this->set('link_form_request', $this->router->url('request/'. $milestone['id'] . '/' . $request['id']), true);
         $this->set('title_page', $title_page, true);
         $this->set('request', $request, true);
