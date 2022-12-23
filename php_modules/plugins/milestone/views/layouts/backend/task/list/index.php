@@ -28,7 +28,7 @@
 											<th>Action</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="listTask">
 										<?php while($this->list->hasRow()) $this->render('backend.task.list.row'); ?> 
 									</tbody>
 								<?php

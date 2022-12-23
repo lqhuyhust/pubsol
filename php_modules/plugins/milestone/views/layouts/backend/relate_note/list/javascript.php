@@ -37,7 +37,6 @@
             }
         })
     }
-    listRelateNote();
     $(document).ready(function() {
         $("#select_all_relate_note").click( function(){
             $('.checkbox-item-relate-note').prop('checked', this.checked);

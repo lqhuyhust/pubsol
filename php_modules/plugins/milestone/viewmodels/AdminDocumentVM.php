@@ -36,8 +36,19 @@ class AdminDocumentVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = 'Document';
 
+        $history = $this->DocumentHistoryEntity->list(0,0,['document_id = '.$data['id']]);
+        $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $data['id']], 'sent_at asc');
+        $discussion = $discussion ? $discussion : [];
+        foreach ($discussion as &$item)
+        {
+            $user_tmp = $this->UserEntity->findByPK($item['user_id']);
+            $item['user'] = $user_tmp ? $user_tmp['name'] : '';
+        }
+
         $this->set('form', $form, true);
         $this->set('data', $data, true);
+        $this->set('history', $history ? $history : []);
+        $this->set('discussion', $discussion ? $discussion : []);
         $this->set('editor', $editor);
         $this->set('user_id', $this->user->get('id'));
         $this->set('title_page_document', $title_page, true);
@@ -65,3 +76,5 @@ class AdminDocumentVM extends ViewModel
         return $fields;
     }
 }
+
+

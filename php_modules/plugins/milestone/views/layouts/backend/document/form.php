@@ -31,6 +31,21 @@
                 <div class="col-lg-5 col-6">
                     <h4>Discussion:</h4>
                     <ul id="list-discussion" class="list-unstyled pt-2" style="max-height: 60vh; overflow:auto;">
+                    <?php foreach ($this->discussion as $item) : ?>
+                        <li class="d-flex <?php echo $this->user_id == $item['user_id'] ? 'ms-5 me-2 justify-content-end' : 'me-5 ms-2 justify-content-between'; ?>  mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between p-3">
+                                    <p class="fw-bold mb-0"><?php echo $this->user_id == $item['user_id'] ? 'You' : $item['user']; ?></p>
+                                    <p class="ms-2 text-muted small mb-0 align-self-center"><i class="far fa-clock"></i> <?php echo $item['sent_at'] ?></p>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <p class="mb-0">
+                                        <?php echo nl2br($item['message']) ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
                     </ul>
                     <form id="form_comment" action="<?php echo $this->link_form_comment ?>" method="post">
                         <?php $this->field('token'); ?>
@@ -49,6 +64,9 @@
                     <hr class="bg-danger border-2 border-top border-danger">
                     <h4>History:</h4>
                     <ul class="list-group list-group-flush" id="document_history">
+                        <?php foreach ($this->history as $item) : ?>
+                            <li class="list-group-item">Edited at <?php echo $item['modified_at']; ?></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
@@ -81,7 +99,6 @@
             }
         })
     }
-    loadHistory();
     function loadDiscussion(data)
     {
         const user_id = '<?php echo $this->user_id;?>'
@@ -129,7 +146,6 @@
             }
         })
     }
-    loadDiscussion();
     $(document).ready(function() {
         $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         $("#description").attr('rows', 25);
