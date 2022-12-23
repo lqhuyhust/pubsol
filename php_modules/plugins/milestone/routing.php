@@ -66,8 +66,7 @@ return [
     ],
     'document' => [
         'fnc' => [
-            'post' => 'milestone.document.add',
-            'put' => 'milestone.document.update',
+            'post' => 'milestone.document.save',
         ],
         'parameters' => ['request_id'],
     ],

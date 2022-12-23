@@ -31,91 +31,59 @@ class Document extends Admin
         $this->app->set('format', 'html');
     }
 
-    public function add()
+    public function save()
     {
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
-        //check title sprint
         $description = $this->request->post->get('description', '', 'string');
 
-        // TODO: validate new add
-        $newId =  $this->DocumentEntity->add([
-            'request_id' => $request_id,
-            'description' => $description,
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        $check  = $this->DocumentEntity->findOne(['request_id' => $request_id]);
+        if ($check)
+        {
+            $try = $this->DocumentEntity->update([
+                'description' => $description,
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s'),
+                'id' => $check['id'],
+            ]);
+            $document_id = $check['id'];
+        }
+        else
+        {
+            $try =  $this->DocumentEntity->add([
+                'request_id' => $request_id,
+                'description' => $description,
+                'created_by' => $this->user->get('id'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s')
+            ]);
 
-        if( !$newId )
+            $document_id = $try;
+        }
+       
+        if( !$try )
         {
             $msg = 'Error: Update Document Failed!';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => $msg,
+            ], 200);
         }
         else
         {
             $try = $this->DocumentHistoryEntity->add([
-                'document_id' => $newId,
+                'document_id' => $document_id,
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s')
             ]);
-            $this->session->set('flashMsg', 'Update Document Successfully!');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
-        }
-    }
 
-    public function update()
-    {
-        $request_id = $this->validateRequestID();
-        // TODO valid the request input
-        $find = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
-        if(!$find)
-        {
-            $this->session->set('flashMsg', 'Invalid Document');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'ok',
+                'message' => 'Update Document Successfully!',
+            ], 200);
         }
-        $description = $this->request->post->get('description', '', 'string');
-
-        $try = $this->DocumentEntity->update([
-            'description' => $description,
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s'),
-            'id' => $find['id'],
-        ]);
-        
-        if($try) 
-        {
-            $try = $this->DocumentHistoryEntity->add([
-                'document_id' => $find['id'],
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s')
-            ]);
-            $this->session->set('flashMsg', 'Update Document Successfully');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
-        }
-        else
-        {
-            $msg = 'Error: Update Document Failed';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
-        }
-    }
-
-    public function delete()
-    {
-        // no delete
     }
 
     public function validateRequestID()

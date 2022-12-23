@@ -80,8 +80,7 @@
                     data: $('#formListRelateNote').serialize(),
                     success: function (result) {
                         showMessage(result.result, result.message);
-                        listRelateNote();
-                        listNote();
+                        tinymce.get('description').setContent(result.date);
                     }
                 });
             }
