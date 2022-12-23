@@ -121,4 +121,29 @@ class Document extends Admin
         return $this->app->response(
             $result, 200);
     }
+
+    public function getComment()
+    {
+        $this->isLoggedIn();
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        $document = $this->DocumentEntity->findOne(['request_id' => $request_id]);
+        $result = [];
+        if ($document)
+        {
+            $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $document['id']], 'sent_at asc');
+            $discussion = $discussion ? $discussion : [];
+            foreach ($discussion as &$item)
+            {
+                $user_tmp = $this->UserEntity->findByPK($item['user_id']);
+                $item['user'] = $user_tmp ? $user_tmp['name'] : '';
+            }
+
+            $result = $discussion ? $discussion : [];
+        }
+
+        return $this->app->response(
+            $result, 200);
+    }
 }

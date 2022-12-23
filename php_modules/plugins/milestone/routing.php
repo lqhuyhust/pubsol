@@ -76,6 +76,12 @@ return [
         ],
         'parameters' => ['request_id'],
     ],
+    'get-comment' => [
+        'fnc' => [
+            'post' => 'milestone.document.getComment',
+        ],
+        'parameters' => ['request_id'],
+    ],
     'discussion' => [
         'fnc' => [
             'post' => 'milestone.discussion.add',
