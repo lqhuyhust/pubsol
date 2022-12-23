@@ -31,7 +31,7 @@ class VersionModel extends Base
         $partsArray = [
             'major' => $vParts[0],
             'minor' => $vParts[1],
-            'patch' => isset($vParts[2]) ? $vParts[2] : '',
+            'patch' => isset($vParts[2]) ? $vParts[2] : 0,
         ];
         if ($version_z)
         {
