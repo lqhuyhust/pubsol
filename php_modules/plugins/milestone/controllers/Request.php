@@ -91,7 +91,6 @@ class Request extends Admin
             'milestone_id' => $milestone_id,
             'title' => $title,
             'description' => $description,
-            'status' => $this->request->post->get('status', ''),
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
@@ -121,22 +120,6 @@ class Request extends Admin
         $milestone_id = $this->validateMilestoneID();
         // TODO valid the request input
 
-        if( is_array($ids) && $ids != null)
-        {
-            // publishment
-            $count = 0; 
-            $action = $this->request->post->get('status', 0, 'string');
-
-            foreach($ids as $id)
-            {
-                $toggle = $this->RequestEntity->toggleStatus($id, $action);
-                $count++;
-            }
-            $this->session->set('flashMsg', $count.' changed record(s)');
-            $this->app->redirect(
-                $this->router->url('requests/'. $milestone_id)
-            );
-        }
         if(is_numeric($ids) && $ids)
         {
             $title = $this->request->post->get('title', '', 'string');
@@ -146,7 +129,6 @@ class Request extends Admin
                 'milestone_id' => $milestone_id,
                 'title' => $title,
                 'description' => $description,
-                'status' => $this->request->post->get('status', ''),
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,

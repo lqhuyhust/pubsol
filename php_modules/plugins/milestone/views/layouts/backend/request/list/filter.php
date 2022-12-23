@@ -28,9 +28,6 @@
                 </div>
             </div>
             <div class="pe-2">
-                <?php $this->field('status');  ?>
-            </div>
-            <div class="pe-2">
                 <?php $this->field('sort');  ?>
             </div>
             <div class="pe-2">

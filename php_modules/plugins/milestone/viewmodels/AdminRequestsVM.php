@@ -35,7 +35,6 @@ class AdminRequestsVM extends ViewModel
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $status = $filter->getField('status')->value;
         $page   = $this->request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -46,11 +45,7 @@ class AdminRequestsVM extends ViewModel
         {
             $where[] = "(`title` LIKE '%".$search."%')";
         }
-        if(is_numeric($status))
-        {
-            $where[] = '`status`='. $status;
-        }
-
+        
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
@@ -93,8 +88,7 @@ class AdminRequestsVM extends ViewModel
         return [
             'num' => '#',
             'title' => 'Title',
-            'status' => 'Status',
-            'created_at' => 'Created at',
+            'description' => 'Description',
             'col_last' => ' ',
         ];
     }
@@ -105,7 +99,6 @@ class AdminRequestsVM extends ViewModel
         if( null === $this->_filter):
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'request.search'),
-                'status' => $this->state('status', '','', 'post', 'request.status'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'request.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'request.sort')
             ];
@@ -129,16 +122,6 @@ class AdminRequestsVM extends ViewModel
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',
                 'placeholder' => 'Search..'
-            ],
-            'status' => ['option',
-                'default' => '1',
-                'formClass' => 'form-select',
-                'options' => [
-                    ['text' => '--', 'value' => ''],
-                    ['text' => 'Active', 'value' => '1'],
-                    ['text' => 'Inactive', 'value' => '0'],
-                ],
-                'showLabel' => false
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',

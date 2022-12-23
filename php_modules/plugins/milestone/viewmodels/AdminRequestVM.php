@@ -50,37 +50,11 @@ class AdminRequestVM extends ViewModel
                 'placeholder' => 'Enter description',
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
-                'required' => 'required',
-            ],
-            'status' => ['option',
-                'showLabel' => false,
-                'type' => 'radio_inline',
-                'formClass' => '',
-                'default' => 1,
-                'options' => [
-                    ['text'=>'Active', 'value'=>1],
-                    ['text'=>'Inactive', 'value'=>0]
-                ]
             ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
             ],
         ];
-
-        if($this->view->id)
-        {
-            $fields['modified_at'] = ['readonly'];
-            $fields['modified_by'] = ['readonly'];
-            $fields['created_at'] = ['readonly'];
-            $fields['created_by'] = ['readonly'];
-        }
-        else
-        {
-            $fields['modified_at'] = ['hidden'];
-            $fields['modified_by'] = ['hidden'];
-            $fields['created_at'] = ['hidden'];
-            $fields['created_by'] = ['hidden'];
-        }
 
         return $fields;
     }
