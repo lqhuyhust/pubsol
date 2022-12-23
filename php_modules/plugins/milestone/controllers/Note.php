@@ -56,6 +56,16 @@ class Note extends Admin
             {
                 $item['description'] = substr($item['description'], 0, 100) .' ...';
             }
+
+            if (!empty($item['tags'])){
+                $t1 = $where = [];
+                $where[] = "(`id` IN (".$item['tags'].") )";
+                $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
+
+                foreach ($t2 as $i) $t1[] = $i['name'];
+
+                $item['tags'] = implode(', ', $t1);
+            }
         }
         
         return $this->app->response(

@@ -71,6 +71,17 @@ class AdminRelateNotesVM extends ViewModel
                 {
                     $item['title'] = $note_tmp['title'];
                     $item['description'] = strip_tags((string) $note_tmp['description']) ;
+                    $item['tags'] = $note_tmp['tags'] ;
+                }
+
+                if (!empty($item['tags'])){
+                    $t1 = $where = [];
+                    $where[] = "(`id` IN (".$item['tags'].") )";
+                    $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
+    
+                    foreach ($t2 as $i) $t1[] = $i['name'];
+    
+                    $item['tags'] = implode(', ', $t1);
                 }
             }
 
