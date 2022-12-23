@@ -32,7 +32,7 @@
                     <h4>Discussion:</h4>
                     <ul id="list-discussion" class="list-unstyled pt-2" style="max-height: 60vh; overflow:auto;">
                     </ul>
-                    <form action="<?php echo $this->link_form_comment ?>" method="post">
+                    <form id="form_comment" action="<?php echo $this->link_form_comment ?>" method="post">
                         <?php $this->field('token'); ?>
                         <div class="form-outline">
                             <textarea required name="message" class="form-control" id="textAreaExample2" rows="4"></textarea>
@@ -146,6 +146,20 @@
                     }
                     showMessage(result.result, result.message);
                     loadHistory();
+                }
+            });
+        });
+
+        $("#form_comment").on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $("#form_comment").attr('action'),
+                data: $('#form_comment').serialize(),
+                success: function (result) {
+                    showMessage(result.result, result.message);
+                    $('textarea[name=message]').val('');
+                    loadDiscussion();
                 }
             });
         });
