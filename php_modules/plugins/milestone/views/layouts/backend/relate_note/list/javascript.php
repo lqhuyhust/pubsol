@@ -108,7 +108,6 @@
     });
     document.getElementById('clear_filter').onclick = function() {
         document.getElementById("search").value = "";
-        console.log(true);
         listRelateNote($('#filter_form').serialize());
     };
 </script>

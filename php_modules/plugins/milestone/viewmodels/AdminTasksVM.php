@@ -34,7 +34,7 @@ class AdminTasksVM extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = $filter->getField('search_task')->value;
         $page   = $this->request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -89,7 +89,7 @@ class AdminTasksVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'task.search'),
+                'search_task' => $this->state('search', '', '', 'post', 'task.search'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'task.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'task.sort')
             ];
@@ -108,7 +108,7 @@ class AdminTasksVM extends ViewModel
     public function getFilterFields()
     {
         return [
-            'search' => ['text',
+            'search_task' => ['text',
                 'default' => '',
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',

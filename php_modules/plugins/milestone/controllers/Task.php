@@ -40,8 +40,16 @@ class Task extends Admin
         $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
+        $search = $this->request->post->get('search_task', '', 'string');
+        $where = ['request_id' => $request_id];
+        if ($search)
+        {
+            $where[] = "(`title` LIKE '%".$search."%' OR 
+                        `url` LIKE '%".$search."%')";
 
-        $result = $this->TaskEntity->list( 0, 0, ['request_id' => $request_id], 0);
+        }
+
+        $result = $this->TaskEntity->list( 0, 0, $where, 0);
         $result = $result ? $result : [];
         
         return $this->app->response(

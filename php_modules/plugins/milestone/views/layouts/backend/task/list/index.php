@@ -28,7 +28,6 @@
 									</th>
 									<th>Title</th>
 									<th>Url</th>
-									<th>Created At</th>
 									<th>Action</th>
 								</tr>
 							</thead>

@@ -38,7 +38,6 @@
                                 </a>
                             </td>
                             <td><a href="${item['url']}">${item['url']}</a></td>
-                            <td>${item['created_at']}</td>
                             <td>
                                 <a href="#>" 
                                     class="fs-4 me-1 show_data"
@@ -128,5 +127,13 @@
                 $('#task').val('POST');
             }
         });
+        $('#filter_form_task').on('submit', function (e){
+            e.preventDefault();
+            listTask($(this).serialize());
+        });
     });
+    document.getElementById('clear_filter_task').onclick = function() {
+        document.getElementById("search_task").value = "";
+        listTask($('#filter_form_task').serialize());
+    };
 </script>

@@ -15,7 +15,6 @@
         </a>
     </td>
     <td><a href="<?php echo $this->item['url']; ?>"><?php echo   $this->item['url'] ?></a></td>
-    <td><?php echo   $this->item['created_at'] ?></td>
     <td>
         <a href="#>" 
             class="fs-4 me-1 show_data"
