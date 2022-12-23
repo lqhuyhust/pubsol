@@ -16,7 +16,7 @@
 											<input type="hidden" id="method_<?php echo $item['id'] ?>" value="PUT" name="_method">
 											<div class="input-group mb-3">
 												<input class="form-control rounded-0 border border-1" name="log" value="<?php echo $item['log'] ?>"></input>
-												<button class="btn btn-outline-secondary" type="submit">Edit</button>
+												<button class="btn btn-outline-secondary" type="submit">Apply</button>
 												<button class="btn btn-outline-secondary button-remove" data-id-remove="<?php echo $item['id'];?>">Remove</button>
 											</div>
 										</form>
@@ -29,11 +29,6 @@
 											<button class="btn btn-outline-secondary" type="submit">Add</button>
 										</div>
 									</form>
-								</div>
-								<div class="col-xl-12 col-sm-12 text-center">
-									<a href="<?php echo $this->link_cancel ?>">
-										<button type="button" class="btn btn-outline-secondary">Cancel</button>
-									</a>
 								</div>
 							</div>
 							<?php } ?>

@@ -58,7 +58,7 @@ class AdminRelateNotesVM extends ViewModel
         }
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
-        $title_page_relate_note = 'Relate Note';
+        $title_page_relate_note = 'Related Notes';
 
         $note_exist = $this->container->exists('NoteEntity');
 

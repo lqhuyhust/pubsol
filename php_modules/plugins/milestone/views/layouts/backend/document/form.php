@@ -17,10 +17,7 @@
                                 <?php $this->field('token'); ?>
                                 <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->data && $this->data['id'] ? 'PUT' : 'POST' ?>">
                                 <div class="col-xl-12 col-sm-12 text-center">
-                                    <a href="<?php echo $this->link_list ?>">
-                                        <button type="button" class="btn btn-outline-secondary">Cancel</button>
-                                    </a>
-                                    <button type="submit" class="btn btn-outline-success">Save</button>
+                                    <button type="submit" class="btn btn-outline-success">Apply</button>
                                 </div>
                             </div>
                         </form>
