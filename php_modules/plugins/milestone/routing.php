@@ -46,6 +46,7 @@ return [
     ],
     'relate-notes' => [
         'fnc' => [
+            'post' => 'milestone.note.list',
             'put' => 'milestone.note.update',
             'delete' => 'milestone.note.delete'
         ],

@@ -26,8 +26,7 @@
 											<th>Description</th>
 										</tr>
 									</thead>
-									<tbody>
-										<?php while($this->list->hasRow()) $this->render('backend.relate_note.list.row'); ?> 
+									<tbody id="listRelateNote">
 									</tbody>
 								<?php
 								?>

@@ -87,9 +87,8 @@ class AdminRelateNotesVM extends ViewModel
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('relate-notes/'. $request_id), true);
+        $this->set('link_list_relate_note', $this->router->url('relate-notes/'. $request_id), true);
         $this->set('title_page_relate_note', $title_page_relate_note, true);
-        $this->set('link_form', $this->router->url('relate-note/'. $request_id), true);
-        $this->set('link_note', $this->router->url('note'), true);
         $this->set('token', $this->app->getToken(), true);
     }
 

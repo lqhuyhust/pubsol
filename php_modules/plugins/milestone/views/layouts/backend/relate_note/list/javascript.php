@@ -6,6 +6,38 @@
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
+    function listRelateNote(data)
+    {
+        $.ajax({
+            url: '<?php echo $this->link_list_relate_note ?>',
+            type: 'POST',
+            data: data,
+            success: function(resultData)
+            {
+                var list = '';
+                if (Array.isArray(resultData))
+                {
+                    
+                    resultData.forEach(function(item)
+                    {
+                        list += `
+                        <tr>
+                            <td>
+                                <input class="checkbox-item-relate-note" type="checkbox" name="ids[]" value="${item['id']}">
+                            </td>
+                            <td>
+                                <a href="<?php echo $this->url ?>${item['note_id']}">${item['title']}</a>
+                            </td>
+                            <td>${item['description']}</td>
+                        </tr>
+                        `
+                    });
+                    $("#listRelateNote").html(list);
+                }
+            }
+        })
+    }
+    listRelateNote();
     $(document).ready(function() {
         $("#select_all_relate_note").click( function(){
             $('.checkbox-item-relate-note').prop('checked', this.checked);
@@ -52,12 +84,6 @@
             $('#title').val(title);
             $('#description').val(description);
             
-            $('#form_relate_note').attr('action', '<?php echo $this->link_form;?>/' + id);
-            if(id) {
-                $('#relate_note').val('PUT');
-            } else {
-                $('#relate_note').val('POST');
-            }
         });
     });
 </script>

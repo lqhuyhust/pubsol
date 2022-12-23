@@ -38,9 +38,28 @@ class Note extends Admin
     public function list()
     {
         $this->isLoggedIn();
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.relate_note.list');
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        $result = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
+        $result = $result ? $result : [];
+        foreach ($result as &$item)
+        {
+            $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
+            if ($note_tmp)
+            {
+                $item['title'] = $note_tmp['title'];
+                $item['description'] = strip_tags((string) $note_tmp['description']) ;
+            }
+
+            if (strlen($item['description']) > 100)
+            {
+                $item['description'] = substr($item['description'], 0, 100) .' ...';
+            }
+        }
+        
+        return $this->app->response(
+            $result, 200);
     }
 
     public function add()
