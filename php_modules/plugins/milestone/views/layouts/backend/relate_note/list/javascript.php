@@ -101,5 +101,14 @@
             $('#description').val(description);
             
         });
+        $('#filter_form').on('submit', function (e){
+            e.preventDefault();
+            listRelateNote($(this).serialize());
+        });
     });
+    document.getElementById('clear_filter').onclick = function() {
+        document.getElementById("search").value = "";
+        console.log(true);
+        listRelateNote($('#filter_form').serialize());
+    };
 </script>

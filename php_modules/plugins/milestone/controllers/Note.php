@@ -40,10 +40,11 @@ class Note extends Admin
         $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
+        $search = $this->request->post->get('search', '', 'string');
 
-        $result = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
-        $result = $result ? $result : [];
-        foreach ($result as &$item)
+        $list = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
+        $result = [];
+        foreach ($list as &$item)
         {
             $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
             if ($note_tmp)
@@ -67,8 +68,17 @@ class Note extends Admin
 
                 $item['tags'] = implode(', ', $t1);
             }
+
+            if ($search)
+            {
+                if (strpos($item['title'], $search) === false && strpos($item['description'], $search) === false && strpos($item['tags'], $search) === false )
+                {
+                    continue;
+                }
+            }
+            $result[] = $item;
         }
-        
+
         return $this->app->response(
             $result, 200);
     }
