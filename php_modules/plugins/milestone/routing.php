@@ -30,6 +30,7 @@ return [
     ],
     'tasks' => [
         'fnc' => [
+            'post' => 'milestone.task.list',
             'put' => 'milestone.task.update',
             'delete' => 'milestone.task.delete'
         ],

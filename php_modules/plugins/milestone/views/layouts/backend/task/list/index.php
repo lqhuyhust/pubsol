@@ -13,7 +13,7 @@
 							<div class="row align-items-center">
 								<?php echo $this->render('backend.task.form');?>
 							</div>
-							<form action="<?php echo $this->link_list ?>" method="POST" id="formList">
+							<form action="<?php echo $this->link_list ?>" method="POST" id="formListTask">
 								<input type="hidden" value="<?php echo $this->token ?>" name="token">
             					<input type="hidden" value="DELETE" name="_method">
 								<table id="datatables-buttons" class="table table-striped border-top border-1" style="width:100%">

@@ -22,36 +22,36 @@
                     {
                         list += `
                         <tr>
-                        <td>
-                            <input class="checkbox-item" type="checkbox" name="ids[]" value="<?php echo $this->item['id']; ?>">
-                        </td>
-                        <td>
-                            <a href="#"
-                                class="show_data" 
-                                data-id="<?php echo  $this->item['id'] ?>" 
-                                data-title="<?php echo  $this->item['title']  ?>" 
-                                data-url="<?php echo   $this->item['url'] ?>" 
-                                data-bs-placement="top" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#Popup_form_task">
-                                <?php echo  $this->item['title']  ?>
-                            </a>
-                        </td>
-                        <td><a href="<?php echo $this->item['url']; ?>"><?php echo   $this->item['url'] ?></a></td>
-                        <td><?php echo   $this->item['created_at'] ?></td>
-                        <td>
-                            <a href="#>" 
-                                class="fs-4 me-1 show_data"
-                                data-id="<?php echo  $this->item['id'] ?>" 
-                                data-title="<?php echo  $this->item['title']  ?>" 
-                                data-url="<?php echo   $this->item['url']?>"
-                                data-bs-placement="top" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#Popup_form_task">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                        </td>
-                    </tr>
+                            <td>
+                                <input class="checkbox-item" type="checkbox" name="ids[]" value="${item['id']}">
+                            </td>
+                            <td>
+                                <a href="#"
+                                    class="show_data" 
+                                    data-id="${item['id']}" 
+                                    data-title="${item['title']}" 
+                                    data-url="${item['url']}" 
+                                    data-bs-placement="top" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#Popup_form_task">
+                                    ${item['title']}
+                                </a>
+                            </td>
+                            <td><a href="${item['url']}">${item['url']}</a></td>
+                            <td>${item['created_at']}</td>
+                            <td>
+                                <a href="#>" 
+                                    class="fs-4 me-1 show_data"
+                                    data-id="${item['id']}" 
+                                    data-title="${item['title'] }" 
+                                    data-url="${item['url']}"
+                                    data-bs-placement="top" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#Popup_form_task">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            </td>
+                        </tr>
                         `
                     });
                     $("#listTask").html(list);
@@ -68,7 +68,15 @@
             var result = confirm("You are going to delete 1 record(s). Are you sure ?");
             if (result) {
                 $('#form_delete').attr('action', '<?php echo $this->link_form;?>/' + id);
-                $('#form_delete').submit();
+                $.ajax({
+                    type: 'POST',
+                    url: $('#form_delete').attr('action'),
+                    data: $('#form_delete').serialize(),
+                    success: function (result) {
+                        showMessage(result.result, result.message);
+                        listTask();
+                    }
+                });
             }
             else
             {
@@ -87,7 +95,15 @@
             }
             var result = confirm("You are going to delete " + count + " record(s). Are you sure ?");
             if (result) {
-                $('#formList').submit();
+                $.ajax({
+                    type: 'POST',
+                    url: $('#formListTask').attr('action'),
+                    data: $('#formListTask').serialize(),
+                    success: function (result) {
+                        showMessage(result.result, result.message);
+                        listTask();
+                    }
+                });
             }
             else
             {

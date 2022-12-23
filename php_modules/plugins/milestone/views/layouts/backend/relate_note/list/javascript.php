@@ -79,7 +79,7 @@
                     data: $('#formListRelateNote').serialize(),
                     success: function (result) {
                         showMessage(result.result, result.message);
-                        tinymce.get('description').setContent(result.date);
+                        listRelateNote();
                     }
                 });
             }
