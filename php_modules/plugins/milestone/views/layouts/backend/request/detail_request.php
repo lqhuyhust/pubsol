@@ -50,6 +50,10 @@
         }
 	}
 	
+    $('.request-collapse').on('click', function() {
+        $('.icon-collapse', this).toggleClass('fa-caret-down fa-caret-up');
+    });
+
 	$(document).ready(function() {
 		$('a.sidebar-link').each(function () {
 			var currLink = $(this);

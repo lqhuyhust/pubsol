@@ -1,15 +1,15 @@
 <?php echo $this->render('notification'); ?>
-<div id="version_link">
+<div id="version_link" class="pt-2">
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-12">
-				<a class="w-100 text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listChangeLog" aria-expanded="true" aria-controls="listChangeLog">
+				<a class="w-100 request-collapse text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listChangeLog" aria-expanded="true" aria-controls="listChangeLog">
 					<h2 class="pb-1" >
 						<i class="fa-solid fa-code-branch pe-2"></i>
 						<?php echo $this->title_page_version ?>
 					</h2>
 					<h2 class="ms-auto">
-						<i class="fa-solid fa-caret-down"></i>
+						<i class="icon-collapse fa-solid fa-caret-down"></i>
 					</h2>
 				</a>
 				<?php if ($this->version_latest['id']) { ?>

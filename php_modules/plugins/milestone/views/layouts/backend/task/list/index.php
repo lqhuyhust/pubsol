@@ -3,8 +3,9 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-12">
-				<a class="w-100 text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listTask" aria-expanded="true" aria-controls="listTask">
-					<h2 class="pb-2"><i class="fa-solid fa-list-check pe-2"></i><?php echo $this->title_page_task ?></h2>
+				<a class="request-collapse w-100 text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listTask" aria-expanded="true" aria-controls="listTask">
+					<h2>
+						<i class="fa-solid fa-list-check pe-2"></i><?php echo $this->title_page_task ?></h2>
                     <h2 class="ms-auto">
                         <i class="fa-solid fa-caret-down"></i>
                     </h2>

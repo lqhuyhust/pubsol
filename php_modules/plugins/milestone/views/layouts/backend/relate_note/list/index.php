@@ -1,15 +1,15 @@
 <?php echo $this->render('notification');?>
-<div class="" id="relate_note_link">
+<div class="pt-2" id="relate_note_link">
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
 			<div class="col-12">
-				<a class="w-100 text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listRelateNote" aria-expanded="true" aria-controls="listRelateNote">
+				<a class="w-100 request-collapse text-decoration-none d-flex border-bottom" data-bs-toggle="collapse" type="button" data-bs-target="#listRelateNote" aria-expanded="true" aria-controls="listRelateNote">
 					<h2 class="pb-1" >
 						<i class="fa-solid fa-link pe-2 "></i>
 						<?php echo $this->title_page_relate_note ?>
 					</h2>
 					<h2 class="ms-auto">
-						<i class="fa-solid fa-caret-down"></i>
+						<i class=" icon-collapse fa-solid fa-caret-down"></i>
 					</h2>
 				</a>
 				<div class="collapse" id="listRelateNote">

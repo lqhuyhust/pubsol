@@ -3,13 +3,13 @@
     <div class="container-fluid">
         <div class="row row justify-content-center mx-auto">
             <div class="col-12">
-                <a class="w-100 text-decoration-none d-flex border-bottom " data-bs-toggle="collapse" type="button" data-bs-target="#document_form" aria-expanded="true" aria-controls="document_form">
+                <a class="w-100 request-collapse text-decoration-none d-flex border-bottom " data-bs-toggle="collapse" type="button" data-bs-target="#document_form" aria-expanded="true" aria-controls="document_form">
                     <h2 class="pb-1" >
                     <i class="fa-regular fa-folder-open pe-2"></i>
                         <?php echo $this->title_page_document ?>
                     </h2>
                     <h2 class="ms-auto">
-                        <i class="fa-solid fa-caret-down"></i>
+                        <i class="icon-collapse fa-solid fa-caret-down"></i>
                     </h2>
                 </a>
                 <div class="row pt-3 collapse " id="document_form">
