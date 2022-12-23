@@ -5,7 +5,6 @@
     <td><a href="<?php echo $this->link_detail . '/' . $this->item['id']; ?>"><?php echo  $this->item['title']  ?></a></td>
     <td><?php echo   $this->item['status'] ? 'Active' : 'Inactive';  ?></td>
     <td><?php echo   $this->item['creator'] ?></td>
-    <td><?php echo   $this->item['created_at'] ? date('m-d-Y', strtotime($this->item['created_at'])) : '';  ?></td>
     <td>
         <a class="fs-4 me-1 show_data" 
             href="#"

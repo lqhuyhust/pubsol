@@ -24,7 +24,6 @@
 											<th>Title</th>
 											<th>Status</th>
 											<th>Creator</th>
-											<th>Created At</th>
 											<th>Action</th>
 										</tr>
 									</thead>
