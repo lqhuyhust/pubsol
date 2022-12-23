@@ -19,17 +19,14 @@ class AdminVersionVM extends ViewModel
     protected $alias = 'AdminVersionVM';
     protected $layouts = [
         'layouts.backend.version' => [
-            'form'
+            'form',
+            'setting',
         ],
-        'layouts.backend.version' => [
-            'setting'
-        ]
     ];
 
     public function form()
     {
         $form = new Form($this->getFormFields(), []);
-
         $this->set('form', $form, true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('versions'));
@@ -92,21 +89,21 @@ class AdminVersionVM extends ViewModel
             'version_format_x' => [
                 'text',
                 'showLabel' => false,
-                'placeholder' => 'xx',
+                'placeholder' => '',
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
             'version_format_y' => [
                 'text',
                 'showLabel' => false,
-                'placeholder' => 'xx',
+                'placeholder' => '',
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
             'version_format_z' => [
                 'text',
                 'showLabel' => false,
-                'placeholder' => 'xx',
+                'placeholder' => '',
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',

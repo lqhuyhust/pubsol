@@ -35,7 +35,7 @@ class Setting extends Admin
         foreach ($fields as $key)
         {
             $value = $this->request->post->get($key, '', 'string');
-            if ($value && substr_count('x', $value) != strlen($value))
+            if ($value && substr_count($value, 'x') != strlen($value))
             {
                 $this->session->set('flashMsg', 'Invalid format, version format only \'x\' character');
                 $this->app->redirect( $this->router->url('setting-version'));
