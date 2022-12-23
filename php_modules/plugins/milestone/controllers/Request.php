@@ -119,7 +119,7 @@ class Request extends Admin
         $ids = $this->validateID(); 
         $milestone_id = $this->validateMilestoneID();
         // TODO valid the request input
-
+        $detail_request =  $this->request->post->get('detail_request', '', 'string');
         if(is_numeric($ids) && $ids)
         {
             $title = $this->request->post->get('title', '', 'string');
@@ -137,8 +137,9 @@ class Request extends Admin
             if($try) 
             {
                 $this->session->set('flashMsg', 'Edit Successfully');
+                $link = $detail_request ? 'detail-request/'. $ids : 'requests/'. $milestone_id;
                 $this->app->redirect(
-                    $this->router->url('requests/'. $milestone_id)
+                    $this->router->url($link)
                 );
             }
             else
