@@ -3,10 +3,16 @@
 return [
     
     // '' => 'setting.home.home',
-    'setting'=>[
+    'setting-system'=>[
         'fnc' => [
-            'get' => 'setting.setting.form',
-            'post' => 'setting.setting.save',
+            'get' => 'setting.setting.system',
+            'post' => 'setting.setting.systemSave',
+        ],
+    ],
+    'setting-smtp'=>[
+        'fnc' => [
+            'get' => 'setting.setting.smtp',
+            'post' => 'setting.setting.smtpSave',
         ],
     ],
     'setting/mail-test'=>[

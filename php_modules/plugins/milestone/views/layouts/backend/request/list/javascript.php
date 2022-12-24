@@ -33,6 +33,11 @@
             $('input[name="ids[]"]:checked').each(function() {
                 count++;
             });
+            if (!count)
+            {
+                alert('Please select the record before deleting!')
+                return false;
+            }
             var result = confirm("You are going to delete " + count + " record(s). Are you sure ?");
             if (result) {
                 $('#formList').submit();
@@ -49,11 +54,9 @@
         $(".show_data").click(function() {
             var id = $(this).data('id');
             var title = $(this).data('title');
-            var status = $(this).data('status');
             var description = $(this).data('description');
 
             $('#title').val(title);
-            $('input[name=status][value='+ status +']').prop("checked", true); 
             $('#description').val(description);
 
             $('#form_request').attr('action', '<?php echo $this->link_form;?>/' + id);

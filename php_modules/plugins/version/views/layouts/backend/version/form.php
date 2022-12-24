@@ -1,7 +1,7 @@
+<?php echo $this->render('notification'); ?>
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered " style="max-width: 600px;">
         <div class="modal-content container px-5 pt-5">
-            <?php echo $this->render('message'); ?>
             <form action="" method="post" id="form_version">
                 <div class="row g-3 align-items-center">
                     <div class="row px-0">
@@ -17,6 +17,18 @@
                                 </div>
                                 <div class="col-9">
                                     <?php $this->field('release_date'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row px-0">
+                        <div class="mb-3 col-12 mx-auto">
+                            <div class="row">
+                                <div class="col-3 d-flex align-items-center">
+                                    <label class="form-label fw-bold mb-0">Version</label>
+                                </div>
+                                <div class="col-9">
+                                    <span id="version_number"></span>
                                 </div>
                             </div>
                         </div>

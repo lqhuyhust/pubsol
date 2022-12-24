@@ -15,6 +15,7 @@ tinymce.init({
         "insertdatetime media table contextmenu paste imagetools wordcount"
     ],
     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link mediaadvanced",
+    height: '60vh'
 });
 Javascript;
 

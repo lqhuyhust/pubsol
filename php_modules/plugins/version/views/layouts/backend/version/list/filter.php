@@ -7,6 +7,7 @@
                         <button data-id="" 
                             data-name="" 
                             data-release_date="" 
+                            data-version_number="<?php echo $this->version_number; ?>" 
                             type="button" 
                             class="align-middle btn border border-1 show_data" 
                             data-bs-placement="top" 

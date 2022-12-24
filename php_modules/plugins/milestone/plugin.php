@@ -115,11 +115,11 @@ class plugin extends PluginAbstract
 
         $list = $entity->list(0, 0, ['status = 1']);
         $menu = [
-            [['milestones', 'milestone',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', '', ''],
+            [['milestones', 'milestone', '',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
         ];
         foreach($list as $item)
         {
-            $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', '', 'back-ground-sidebar'];
+            $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="fa-solid fa-business-time"></i>', 'back-ground-sidebar'];
         }
         return $menu;
     }

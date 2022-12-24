@@ -38,7 +38,7 @@ class AdminGroupVM extends ViewModel
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'New User Group' : 'Update User Group', true);
+        $this->set('title_page', $data ? 'Update User Group' : 'New User Group', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('user-groups'));
         $this->set('link_form', $this->router->url('user-group'));
@@ -77,6 +77,7 @@ class AdminGroupVM extends ViewModel
             ],
             'status' => ['option',
                 'type' => 'radio',
+                'showLabel' => false,
                 'formClass' => '',
                 'default' => 1,
                 'options' => [

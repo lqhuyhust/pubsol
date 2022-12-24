@@ -91,7 +91,6 @@ class Request extends Admin
             'milestone_id' => $milestone_id,
             'title' => $title,
             'description' => $description,
-            'status' => $this->request->post->get('status', ''),
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
@@ -108,7 +107,7 @@ class Request extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Success!');
+            $this->session->set('flashMsg', 'Create Successfully!');
             $this->app->redirect(
                 $this->router->url('requests/'. $milestone_id)
             );
@@ -120,23 +119,7 @@ class Request extends Admin
         $ids = $this->validateID(); 
         $milestone_id = $this->validateMilestoneID();
         // TODO valid the request input
-
-        if( is_array($ids) && $ids != null)
-        {
-            // publishment
-            $count = 0; 
-            $action = $this->request->post->get('status', 0, 'string');
-
-            foreach($ids as $id)
-            {
-                $toggle = $this->RequestEntity->toggleStatus($id, $action);
-                $count++;
-            }
-            $this->session->set('flashMsg', $count.' changed record(s)');
-            $this->app->redirect(
-                $this->router->url('requests/'. $milestone_id)
-            );
-        }
+        $detail_request =  $this->request->post->get('detail_request', '', 'string');
         if(is_numeric($ids) && $ids)
         {
             $title = $this->request->post->get('title', '', 'string');
@@ -146,7 +129,6 @@ class Request extends Admin
                 'milestone_id' => $milestone_id,
                 'title' => $title,
                 'description' => $description,
-                'status' => $this->request->post->get('status', ''),
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,
@@ -155,8 +137,9 @@ class Request extends Admin
             if($try) 
             {
                 $this->session->set('flashMsg', 'Edit Successfully');
+                $link = $detail_request ? 'detail-request/'. $ids : 'requests/'. $milestone_id;
                 $this->app->redirect(
-                    $this->router->url('requests/'. $milestone_id)
+                    $this->router->url($link)
                 );
             }
             else

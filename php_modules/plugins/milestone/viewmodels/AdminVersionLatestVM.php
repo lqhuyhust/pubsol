@@ -38,7 +38,7 @@ class AdminVersionLatestVM extends ViewModel
         $list = $list ? $list : [];
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
-        $title_page = 'Version';
+        $title_page = 'Version changelog';
 
         $this->set('list', $list, true);
         $this->set('version_latest', $version_latest);

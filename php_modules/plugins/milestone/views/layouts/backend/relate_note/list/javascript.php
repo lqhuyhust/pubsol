@@ -6,16 +6,56 @@
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
+    function listRelateNote(data)
+    {
+        $.ajax({
+            url: '<?php echo $this->link_list_relate_note ?>',
+            type: 'POST',
+            data: data,
+            success: function(resultData)
+            {
+                var list = '';
+                if (Array.isArray(resultData))
+                {
+                    
+                    resultData.forEach(function(item)
+                    {
+                        list += `
+                        <tr>
+                            <td>
+                                <input class="checkbox-item-relate-note" type="checkbox" name="ids[]" value="${item['id']}">
+                            </td>
+                            <td>
+                                <a target="_blank" href="<?php echo $this->link_note .'/' ?>${item['note_id']}">${item['title']}</a>
+                            </td>
+                            <td>${item['description']}</td>
+                            <td>${item['tags']}</td>
+                        </tr>
+                        `
+                    });
+                    $("#listRelateNote").html(list);
+                }
+            }
+        })
+    }
     $(document).ready(function() {
         $("#select_all_relate_note").click( function(){
             $('.checkbox-item-relate-note').prop('checked', this.checked);
         });
-        $(".button_delete_item_relate_note").click(function() {
+        $(".button_delete_item_relate_note").click(function(e) {
+            e.preventDefault();
             var id = $(this).data('id');
             var result = confirm("You are going to delete 1 record(s). Are you sure ?");
             if (result) {
-                $('#form_delete_relate_note').attr('action', '<?php echo $this->link_form;?>/' + id);
-                $('#form_delete_relate_note').submit();
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo $this->link_form;?>/' + id,
+                    data: $('#form_delete_relate_note').serialize(),
+                    success: function (result) {
+                        showMessage(result.result, result.message);
+                        listRelateNote($('#filter_form').serialize());
+                    }
+                });
             }
             else
             {
@@ -27,9 +67,22 @@
             $('input[name="ids[]"]:checked').each(function() {
                 count++;
             });
+            if (!count)
+            {
+                alert('Please select the record before deleting!')
+                return false;
+            }
             var result = confirm("You are going to delete " + count + " record(s). Are you sure ?");
             if (result) {
-                $('#formListRelateNote').submit();
+                $.ajax({
+                    type: 'POST',
+                    url: $('#formListRelateNote').attr('action'),
+                    data: $('#formListRelateNote').serialize(),
+                    success: function (result) {
+                        showMessage(result.result, result.message);
+                        listRelateNote($('#filter_form').serialize());
+                    }
+                });
             }
             else
             {
@@ -47,12 +100,14 @@
             $('#title').val(title);
             $('#description').val(description);
             
-            $('#form_relate_note').attr('action', '<?php echo $this->link_form;?>/' + id);
-            if(id) {
-                $('#relate_note').val('PUT');
-            } else {
-                $('#relate_note').val('POST');
-            }
+        });
+        $('#filter_form').on('submit', function (e){
+            e.preventDefault();
+            listRelateNote($(this).serialize());
         });
     });
+    document.getElementById('clear_filter').onclick = function() {
+        document.getElementById("search").value = "";
+        listRelateNote($('#filter_form').serialize());
+    };
 </script>

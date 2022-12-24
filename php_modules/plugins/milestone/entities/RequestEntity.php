@@ -38,9 +38,6 @@ class RequestEntity extends Entity
                     'type' => 'text',
                     'null' => 'YES',
                 ],
-                'status' => [
-                    'type' => 'tinyint',
-                ],
                 'created_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',

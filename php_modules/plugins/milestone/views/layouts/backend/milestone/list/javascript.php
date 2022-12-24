@@ -13,6 +13,7 @@
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {
+        $('.toast').toast('show');
         $("#select_all").click( function(){
             $('.checkbox-item').prop('checked', this.checked);
         });
@@ -33,6 +34,11 @@
             $('input[name="ids[]"]:checked').each(function() {
                 count++;
             });
+            if (!count)
+            {
+                alert('Please select the record before deleting!')
+                return false;
+            }
             var result = confirm("You are going to delete " + count + " record(s). Are you sure ?");
             if (result) {
                 $('#formList').submit();

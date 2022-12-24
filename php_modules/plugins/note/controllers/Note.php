@@ -50,6 +50,7 @@ class Note extends Admin {
         $title = $this->request->post->get('title', '', 'string');
         $tags = $this->request->post->get('tags', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
+        $save_close = $this->request->post->get('save_close', '', 'string');
         $files = $this->request->file->get('files', [], 'array');
 
         if (!$title)
@@ -112,9 +113,10 @@ class Note extends Admin {
                     }
                 }
             }
-            $this->session->set('flashMsg', 'Create Success!');
+            $this->session->set('flashMsg', 'Create Successfully!');
+            $link = $save_close ? 'notes' : 'note/'. $newId;
             $this->app->redirect(
-                $this->router->url('note/'. $newId)
+                $this->router->url($link)
             );
         }
     }
@@ -148,6 +150,7 @@ class Note extends Admin {
             $description = $this->request->post->get('description', '', 'string');
             $findOne = $this->NoteEntity->findOne(['title = "'. $title. '"', 'id <> '. $ids]);
             $files = $this->request->file->get('files', [], 'array');
+            $save_close = $this->request->post->get('save_close', '', 'string');
 
             if ($findOne)
             {
@@ -191,8 +194,9 @@ class Note extends Admin {
                     }
                 } 
                 $this->session->set('flashMsg', 'Edit Successfully');
+                $link = $save_close ? 'notes' : 'note/'. $ids;
                 $this->app->redirect(
-                    $this->router->url('note/'. $ids)
+                    $this->router->url($link)
                 );
             }
             else

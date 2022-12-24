@@ -36,4 +36,10 @@ return [
             'post' => 'note.tag.add',
         ]
     ],
+    'setting-connections'=>[
+        'fnc' => [
+            'get' => 'note.setting.connections',
+            'post' => 'note.setting.connectionsSave',
+        ],
+    ],
 ];

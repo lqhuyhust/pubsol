@@ -1,6 +1,6 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="<?php echo $this->url . '/admin'; ?>">
+        <a class="sidebar-brand" href="<?php echo $this->url; ?>">
             <svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
                 <path d="M12 4L20 8.00004L12 12L4 8.00004L12 4Z"></path>
                 <path d="M20 12L12 16L4 12"></path>
@@ -13,7 +13,7 @@
         <ul class="sidebar-nav fs-4">
             <?php
             foreach ($this->menu as $row) {
-                list($allow, $plural, $name, $icon, $submenu, $class) = $row;
+                list($allow, $plural, $name, $icon, $submenu) = $row;
                 $plural_tmp = str_replace('/', '\/', $plural); 
                 preg_match('/^(\/' . $plural_tmp . ')(|\/)$/', $this->path_current, $match);
                 if (is_array($match) && count($match)) {
@@ -48,6 +48,7 @@
                                 preg_match('/^(\/' . $single . ')(|\/([0-9]*?))$/', $this->path_current, $match);
                                 if (is_array($match) && count($match)) {
                                     $sub_actives[$key] = true;
+                                    $check_submenu_active = true;
                                     break;
                                 }
                             }
@@ -55,14 +56,12 @@
                     }
                 }
                 ?>
-                <li class="sidebar-item <?php echo $active && !(is_array($submenu) && $submenu) ? 'active' : ''; ?>">
+                <li class="sidebar-item <?php echo $submenu && (string) $submenu ? $submenu : ''; ?> <?php echo $active && !(is_array($submenu) && $submenu) ? 'active' : ''; ?>">
                     <a href="<?php echo (is_array($submenu) && $submenu) ? '' : $this->link_admin . $plural ?>" 
-                        class="sidebar-link <?php echo $class;  echo (is_array($submenu) && $submenu) ? 'link-collapse' : '';?>" 
-                        <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '" data-bs-toggle="collapse" aria-expanded="true" ' : '' ?> 
+                        class="sidebar-link <?php echo (is_array($submenu) && $submenu) ? 'link-collapse collapsed' : '';?>" 
+                        <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
                     >
-                <?php 
-                ?>
-
+                    
                         <?php echo $icon ?> 
                         <span class="align-middle">
                             <?php echo $name ?>
@@ -72,7 +71,7 @@
                         </span>
                     </a>
                     <?php if (is_array($submenu) && $submenu) : ?>
-                        <ul id="<?php echo $plural; ?>" class="sidebar-dropdown list-unstyled collapse <?php echo $check_submenu_active ? 'show' : ''; ?>" >
+                        <ul id="<?php echo $plural."_tab"; ?>" class="sidebar-dropdown list-unstyled collapse <?php echo $check_submenu_active ? 'show' : ''; ?>" >
                             <?php foreach($submenu as $key => $sub) :
                                 list($allow_sub, $plural_sub, $name_sub, $icon_sub) = $sub;
                              ?>

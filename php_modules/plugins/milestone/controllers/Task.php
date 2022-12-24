@@ -38,9 +38,22 @@ class Task extends Admin
     public function list()
     {
         $this->isLoggedIn();
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.task.list');
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+        $search = $this->request->post->get('search_task', '', 'string');
+        $where = ['request_id' => $request_id];
+        if ($search)
+        {
+            $where[] = "(`title` LIKE '%".$search."%' OR 
+                        `url` LIKE '%".$search."%')";
+
+        }
+
+        $result = $this->TaskEntity->list( 0, 0, $where, 0);
+        $result = $result ? $result : [];
+        
+        return $this->app->response(
+            $result, 200);
     }
 
     public function add()
@@ -66,18 +79,17 @@ class Task extends Admin
         
         if( !$newId )
         {
-            $msg = 'Error: Create Task Failed!';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id .'/0')
-            );
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => 'Create Task Failed!'
+            ],200);
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Task Success!');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'ok',
+                'message' => 'Create Task Successfully!'
+            ],200);
         }
     }
 
@@ -87,12 +99,6 @@ class Task extends Admin
         $request_id = $this->validateRequestID();
         // TODO valid the request input
 
-        if( is_array($ids) && $ids != null)
-        {
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
-        }
         if(is_numeric($ids) && $ids)
         {
             $title = $this->request->post->get('title', '', 'string');
@@ -112,18 +118,17 @@ class Task extends Admin
             
             if($try) 
             {
-                $this->session->set('flashMsg', 'Edit Task Successfully');
-                $this->app->redirect(
-                    $this->router->url('detail-request/'. $request_id), 
-                );
+                return $this->app->response([
+                    'result' => 'ok',
+                    'message' => 'Update Task Successfully!'
+                ],200);
             }
             else
             {
-                $msg = 'Error: Save Task Failed';
-                $this->session->set('flashMsg', $msg);
-                $this->app->redirect(
-                    $this->router->url('detail-request/'. $request_id .'/'. $ids)
-                );
+                return $this->app->response([
+                    'result' => 'ok',
+                    'message' => 'Error: Update Task Failed!'
+                ],200);
             }
         }
     }
@@ -152,11 +157,10 @@ class Task extends Admin
             }
         }  
         
-
-        $this->session->set('flashMsg', $count.' deleted record(s)');
-        $this->app->redirect(
-            $this->router->url('detail-request/'. $request_id), 
-        );
+        return $this->app->response([
+            'result' => 'ok',
+            'message' => $count.' deleted record(s)'
+        ],200);
     }
 
     public function validateID()
@@ -164,7 +168,7 @@ class Task extends Admin
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
         {

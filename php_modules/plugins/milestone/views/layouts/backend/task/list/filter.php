@@ -1,4 +1,4 @@
-<form id="filter_form" class="row pe-0 pb-2" action="<?php echo $this->link_list ?>" method="POST">
+<form id="filter_form_task" class="row pe-0 pb-2" action="<?php echo $this->link_list ?>" method="POST">
     <div class="col-lg-11 col-sm-12">
         <div class="input-group input-group-navbar">
             <div class="pe-2">
@@ -26,6 +26,15 @@
                     </div>
                 </div>
             </div>
+            <div class="pe-2">
+                <?php $this->field('search_task');  ?>
+            </div>
+            <button type='Submit' data-bs-toggle="tooltip" title="Filter" class=" align-middle btn border border-1" type="button">
+                <i class="fa-solid fa-filter"></i>
+            </button>
+            <button data-bs-toggle="tooltip" title="Clear Filter" id="clear_filter_task" class="align-middle btn border border-1 ms-2" type="button">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </button>
         </div>
     </div>
 </form>

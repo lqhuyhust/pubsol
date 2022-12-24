@@ -18,9 +18,15 @@ class Version extends Admin
     {
         $this->isLoggedIn();
         $this->validateVersion();
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.version_latest.list');
+        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_latest = $version_latest ? $version_latest[0] : [];
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+        $list = $this->VersionNoteEntity->list(0,0, ['version_id = '. $version_latest['id'], 'request_id = '. $request_id]);
+        $list = $list ? $list : [];
+
+        return $this->app->response(
+            $list, 200);
     }
 
     public function add()
@@ -34,11 +40,10 @@ class Version extends Admin
         $version_latest = $version_latest ? $version_latest[0] : [];
         if( !$version_latest )
         {
-            $msg = 'Error: Invalid Version!';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => 'Error: Invalid Version!'
+            ],200);
         }
         // TODO: validate new add
         $newId =  $this->VersionNoteEntity->add([
@@ -53,18 +58,18 @@ class Version extends Admin
 
         if( !$newId )
         {
-            $msg = 'Error: Create Version Failed!';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            $msg = 'Error: Create Change log Failed!';
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => $msg
+            ],200);
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Version Success!');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'ok',
+                'message' => 'Create Change log Successfully!'
+            ],200);
         }
     }
 
@@ -76,10 +81,10 @@ class Version extends Admin
 
         if( is_array($ids) && $ids != null)
         {
-            $this->session->set('flashMsg', 'Invalid Version Note');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => 'Invalid Version Note'
+            ],200);
         }
         if(is_numeric($ids) && $ids)
         {
@@ -94,18 +99,17 @@ class Version extends Admin
             
             if($try) 
             {
-                $this->session->set('flashMsg', 'Edit Version Successfully');
-                $this->app->redirect(
-                    $this->router->url('detail-request/'. $request_id)
-                );
+                return $this->app->response([
+                    'result' => 'ok',
+                    'message' => 'Update Change Log Successfully'
+                ],200);
             }
             else
             {
-                $msg = 'Error: Save Version Failed';
-                $this->session->set('flashMsg', $msg);
-                $this->app->redirect(
-                    $this->router->url('detail-request/'. $request_id)
-                );
+                return $this->app->response([
+                    'result' => 'fail',
+                    'message' => 'Update Change Log Failed'
+                ],200);
             }
         }
     }
@@ -134,11 +138,10 @@ class Version extends Admin
             }
         }  
         
-
-        $this->session->set('flashMsg', $count.' deleted record(s)');
-        $this->app->redirect(
-            $this->router->url('detail-request/'. $request_id), 
-        );
+        return $this->app->response([
+            'result' => 'ok',
+            'message' => $count.' deleted record(s)'
+        ],200);
     }
 
     public function validateID()

@@ -22,10 +22,10 @@ class Discussion extends Admin
         $message = $this->request->post->get('message', '', 'string');
         if (!$message)
         {
-            $this->session->set('flashMsg', 'Message discussion can\'t empty!');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => 'Message discussion can\'t empty!',
+            ], 200);
         }
 
         if ($document)
@@ -38,11 +38,11 @@ class Discussion extends Admin
                 'modified_at' => date('Y-m-d H:i:s'),
             ]);
 
-            $msg = $newId ? 'Comment Success' : 'Comment Fail';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
+            return $this->app->response([
+                'result' => 'ok',
+                'message' => $msg,
+            ], 200);
         }
 
         // TODO: validate new add
@@ -57,10 +57,10 @@ class Discussion extends Admin
         if (!$document)
         {
             $msg = 'Comment Fail';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => $msg,
+            ], 200);
         }
         
         $newId = $this->DiscussionEntity->add([
@@ -71,11 +71,11 @@ class Discussion extends Admin
             'modified_at' => date('Y-m-d H:i:s'),
         ]);
 
-        $msg = $newId ? 'Comment Success' : 'Comment Fail';
-        $this->session->set('flashMsg', $msg);
-        $this->app->redirect(
-            $this->router->url('detail-request/'. $request_id)
-        );
+        $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
+        return $this->app->response([
+            'result' => 'ok',
+            'message' => $msg,
+        ], 200);
 
     }
 

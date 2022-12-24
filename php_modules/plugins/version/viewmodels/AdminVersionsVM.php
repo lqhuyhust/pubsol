@@ -57,12 +57,45 @@ class AdminVersionsVM extends ViewModel
             $result = [];
             $total = 0;
         }
+        $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
 
-        $list   = new Listing($result, $total, $limit, $this->getColumns());
+        foreach ($result as &$version) {
+            $tag_exist = $this->container->exists('TagEntity');
+            $note_exist = $this->container->exists('NoteEntity');
+            $total_feedback = 0;
+            if ($tag_exist && $note_exist) {
+                $tag_version = $this->TagEntity->findOne(["`name` = '" . $version['version'] . "'"]);
+                $where = [];
+                if ($tag_feedback && $tag_version) {
+                    $where = array_merge($where, [
+                        "(`tags` = '" . $tag_feedback['id'] . "'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_feedback['id'] . "%'" .
+                            " OR `tags` LIKE '%" . $tag_feedback['id'] . ',' . "%'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_feedback['id'] . ',' . "%' )",
+                        "(`tags` = '" . $tag_version['id'] . "'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_version['id'] . "%'" .
+                            " OR `tags` LIKE '%" . $tag_version['id'] . ',' . "%'" .
+                            " OR `tags` LIKE '%" . ',' . $tag_version['id'] . ',' . "%' )"
+                    ]);
+                    $result_feedback = $this->NoteEntity->list(0, 0, $where, '');
+                    $total_feedback = $this->NoteEntity->getListTotal();
+                }
+            }
+            if($total_feedback) {
+                $version['feedback'] = $total_feedback;
+            } else {
+                $version['feedback'] = 0;
+            }
+        }
+
+        $version_number = $this->VersionModel->getVersion();
+        $list = new Listing($result, $total, $limit, $this->getColumns());
+
         $this->set('list', $list, true);
         $this->set('page', $page, true);
         $this->set('start', $start, true);
         $this->set('sort', $sort, true);
+        $this->set('version_number', $version_number, true);
         $this->set('get_log', $get_log, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);

@@ -38,9 +38,69 @@ class Note extends Admin
     public function list()
     {
         $this->isLoggedIn();
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.relate_note.list');
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+        $search = $this->request->post->get('search', '', 'string');
+
+        $list = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
+        $result = [];
+        foreach ($list as &$item)
+        {
+            $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
+            if ($note_tmp)
+            {
+                $item['title'] = $note_tmp['title'];
+                $item['description'] = strip_tags((string) $note_tmp['description']) ;
+                $item['tags'] = $note_tmp['tags'] ;
+            }
+
+            if (strlen($item['description']) > 100)
+            {
+                $item['description'] = substr($item['description'], 0, 100) .' ...';
+            }
+
+            if (!empty($item['tags'])){
+                $t1 = $where = [];
+                $where[] = "(`id` IN (".$item['tags'].") )";
+                $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
+
+                foreach ($t2 as $i) $t1[] = $i['name'];
+
+                $item['tags'] = implode(', ', $t1);
+            }
+
+            if ($search)
+            {
+                if (strpos($item['title'], $search) === false && strpos($item['description'], $search) === false && strpos($item['tags'], $search) === false )
+                {
+                    continue;
+                }
+            }
+            $result[] = $item;
+        }
+
+        return $this->app->response(
+            $result, 200);
+    }
+
+    public function getNote()
+    {
+        $this->isLoggedIn();
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $request_id]);
+        $where = [];
+        if ($relate_note)
+        {
+            foreach ($relate_note as $note)
+            {
+                $where[] = 'id <> '. $note['note_id'];
+            }
+        }
+        $notes = $this->NoteEntity->list(0 , 0, $where);
+        return $this->app->response(
+            $notes, 200);
     }
 
     public function add()
@@ -57,10 +117,10 @@ class Note extends Admin
             $findOne = $this->RelateNoteEntity->findOne(['note_id = '. $note_id, 'request_id = '. $request_id]);
             if ($findOne)
             {
-                $this->session->set('flashMsg', 'Error: Duplicate Relate Note');
-                $this->app->redirect(
-                    $this->router->url('detail-request/'. $request_id),
-                );
+                return $this->app->response([
+                    'result' => 'fail',
+                    'message' => 'Error: Duplicate Relate Note',
+                ], 200);
             }
         }
 
@@ -74,18 +134,17 @@ class Note extends Admin
 
         if( !$newId )
         {
-            $msg = 'Error: Create Relate Note Failed!';
-            $this->session->set('flashMsg', $msg);
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id .'/0')
-            );
+            return $this->app->response([
+                'result' => 'fail',
+                'message' => 'Error: Create Relate Note Failed!',
+            ], 200);
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Relate Note Success!');
-            $this->app->redirect(
-                $this->router->url('detail-request/'. $request_id)
-            );
+            return $this->app->response([
+                'result' => 'ok',
+                'message' => 'Create Relate Note Successfully!',
+            ], 200);
         }
     }
 
@@ -167,11 +226,10 @@ class Note extends Admin
             }
         }  
         
-
-        $this->session->set('flashMsg', $count.' deleted record(s)');
-        $this->app->redirect(
-            $this->router->url('detail-request/'. $request_id), 
-        );
+        $this->app->response([
+            'result' => 'ok',
+            'message' => $count.' deleted record(s)',
+        ], 200);
     }
 
     public function validateID()
@@ -179,7 +237,7 @@ class Note extends Admin
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
         {

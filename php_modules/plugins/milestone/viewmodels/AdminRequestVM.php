@@ -18,7 +18,8 @@ class AdminRequestVM extends ViewModel
     protected $alias = 'AdminRequestVM';
     protected $layouts = [
         'layouts.backend.request' => [
-            'form'
+            'form',
+            'detail_request',
         ]
     ];
 
@@ -50,38 +51,26 @@ class AdminRequestVM extends ViewModel
                 'placeholder' => 'Enter description',
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
-                'required' => 'required',
-            ],
-            'status' => ['option',
-                'showLabel' => false,
-                'type' => 'radio_inline',
-                'formClass' => '',
-                'default' => 1,
-                'options' => [
-                    ['text'=>'Active', 'value'=>1],
-                    ['text'=>'Inactive', 'value'=>0]
-                ]
             ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
             ],
         ];
 
-        if($this->view->id)
-        {
-            $fields['modified_at'] = ['readonly'];
-            $fields['modified_by'] = ['readonly'];
-            $fields['created_at'] = ['readonly'];
-            $fields['created_by'] = ['readonly'];
-        }
-        else
-        {
-            $fields['modified_at'] = ['hidden'];
-            $fields['modified_by'] = ['hidden'];
-            $fields['created_at'] = ['hidden'];
-            $fields['created_by'] = ['hidden'];
-        }
-
         return $fields;
+    }
+
+    public function detail_request()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+        $this->set('request_id', $request_id, true);
+        $request = $this->RequestEntity->findByPK($request_id);
+        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        
+        $title_page = '<a class="me-2" href="'.$this->router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $this->router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
+        $this->set('link_form_request', $this->router->url('request/'. $milestone['id'] . '/' . $request['id']), true);
+        $this->set('title_page', $title_page, true);
+        $this->set('request', $request, true);
     }
 }

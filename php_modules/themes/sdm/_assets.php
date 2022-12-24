@@ -30,5 +30,8 @@ return [
     'js-bootstrap' => [
         ['__domain__/assets/js/bootstrap.bundle.min.js', [], 'bootstrap', '']
     ],
+    'js-backend' => [
+        ['__domain__/assets/js/app.js', [], 'js-backend', '']
+    ],
 
 ];

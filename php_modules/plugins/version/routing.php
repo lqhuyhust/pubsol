@@ -39,4 +39,10 @@ return [
         ],
         'parameters' => ['version_id','id'],
     ],
+    'setting-version'=>[
+        'fnc' => [
+            'get' => 'version.setting.version',
+            'post' => 'version.setting.versionSave',
+        ],
+    ],
 ];

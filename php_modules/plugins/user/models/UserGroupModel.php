@@ -26,7 +26,7 @@ class UserGroupModel extends Base
         return $try;
     }
 
-    public function removeByUser($object, $user_id)
+    public function removeByUser($user_id)
     {
         $try = true;
         $user_map = $this->UserGroupEntity->list(0, 0, ['user_id' => $user_id]);
@@ -38,7 +38,7 @@ class UserGroupModel extends Base
         return $try;
     }
 
-    public function updateUserMap($object, $data)
+    public function updateUserMap($data)
     {
         $groups_update = $this->request->post->get('groups', [], 'array');
 
@@ -68,7 +68,7 @@ class UserGroupModel extends Base
         return true;
     }
 
-    public function addUserMap($object, $data, $newid)
+    public function addUserMap($newid)
     {
         $groups = $this->request->post->get('groups', [], 'array');
         if ($groups)

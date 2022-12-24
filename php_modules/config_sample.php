@@ -2,13 +2,13 @@
 
 return [ 
     'sitepath' => '',
-    'plugins' => ['milestone', 'version', 'setting', 'user'],
+    'plugins' => ['milestone', 'note', 'version', 'setting', 'user'],
     'theme' => 'sdm',
     'secrect' => 'sid',
     'endpoints' => [
     ],
     'defaultEndpoint' => [
-        'fnc' => 'user.user.list'
+        'fnc' => 'milestone.milestone.list'
     ],
     'db' => [
         'host' => '',
@@ -18,4 +18,5 @@ return [
         'prefix' => '',
     ],
     'extension_allow' => ['png', 'jpg', 'jpeg', 'pdf', 'txt', 'doc', 'docx', 'xlsx'],
+    'redirect_after_login' => 'milestones',
 ];

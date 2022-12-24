@@ -15,7 +15,6 @@
         </a>
     </td>
     <td><a href="<?php echo $this->item['url']; ?>"><?php echo   $this->item['url'] ?></a></td>
-    <td><?php echo   $this->item['created_at'] ?></td>
     <td>
         <a href="#>" 
             class="fs-4 me-1 show_data"
@@ -27,6 +26,5 @@
             data-bs-target="#Popup_form_task">
             <i class="fa-solid fa-pen-to-square"></i>
         </a>
-        <a data-id="<?php echo  $this->item['id'] ?>" style="color:#3b7ddd;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="delete fs-4 ps-1 border-0 bg-transparent button_delete_item"><i class="fa-solid fa-trash"></i></a>
     </td>
 </tr>

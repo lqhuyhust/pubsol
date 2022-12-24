@@ -91,8 +91,10 @@ class Milestone extends Admin
             $this->app->redirect(
                 $this->router->url('milestones')
             );
-        } else {
-            $this->session->set('flashMsg', 'Create Success!');
+        }
+        else
+        {
+            $this->session->set('flashMsg', 'Create Successfully!');
             $this->app->redirect(
                 $this->router->url('milestones')
             );

@@ -24,11 +24,6 @@ class plugin extends PluginAbstract
 { 
     public function register()
     {
-        Dispatcher::register('afterNewUser', 'UserGroupModel', 'addUserMap');
-        Dispatcher::register('afterUpdateUser', 'UserGroupModel', 'updateUserMap');
-        Dispatcher::register('afterRemoveUser', 'UserGroupModel', 'removeByUser');
-        Dispatcher::register('afterRemoveGroup', 'UserGroupModel', 'removeByGroup');
-
         $Validation = new Validation('plugins\user\middlewares\validation');
         MW::register('validation', $Validation);
 
@@ -92,11 +87,32 @@ class plugin extends PluginAbstract
 
     public function registerMenu()
     {
-        return [
-            [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', '', ''],
-            [['user-groups', 'user-group',], 'user-groups', 'Groups', '<i class="fa-solid fa-user-group"></i>', '', ''],
-            [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', '', '']
-        ];
+        $user = AppIns::factory('user');
+        $menu = [];
+        $permissionList = $user->getPermissions($user->get('id'));
+        $menu_user = [];
+
+        if (in_array('user_manager', $permissionList) || in_array('user_read', $permissionList) || in_array('usergroup_manager', $permissionList) || in_array('usergroup_read', $permissionList))
+        {
+            $menu_user = [['users', 'user','user-groups', 'user-group',], 'users', 'Users', '<i class="fa-solid fa-users"></i>', []];
+            if (in_array('user_manager', $permissionList) || in_array('user_read', $permissionList))
+            {
+                $menu_user[4][] = [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', '',];
+            }
+            if (in_array('usergroup_manager', $permissionList) || in_array('usergroup_read', $permissionList))
+            {
+                $menu_user[4][] = [['user-groups', 'user-group',], 'user-groups', 'Groups', '<i class="fa-solid fa-user-group"></i>', ''];
+            }
+        }
+
+        if ($menu_user)
+        {
+            $menu[] = $menu_user;
+        }
+
+        $menu[] = [['profile'], 'profile', 'Profile', '<i class="fa-solid fa-user"></i>', ''];
+        $menu[] = [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', ''];
+        return $menu;
     }
 
     public function getRightAccess()

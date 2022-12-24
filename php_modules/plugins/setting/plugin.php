@@ -73,61 +73,26 @@ class plugin extends PluginAbstract
         }
     }
 
-    public function registerSetting()
-    {
-        return [
-            [
-                'label' => 'System Info',
-                'fields' => [
-                    'admin_mail' => [
-                        'text',
-                        'label' => 'Admin Mail:',
-                        'formClass' => 'form-control',
-                    ],
-                ],
-            ],
-            [
-                'label' => 'SMTP Setting',
-                'fields' => [
-                    'email_host' => [
-                        'text',
-                        'label' => 'Email Host:',
-                        'formClass' => 'form-control',
-                    ],
-                    'email_port' => [
-                        'text',
-                        'label' => 'Email Port:',
-                        'formClass' => 'form-control',
-                    ],
-                    'email_username' => [
-                        'email',
-                        'label' => 'Email:',
-                        'formClass' => 'form-control',
-                    ],
-                    'email_password' => [
-                        'password',
-                        'label' => 'Password Email:',
-                        'formClass' => 'form-control',
-                    ],
-                    'email_from_addr' => [
-                        'email',
-                        'label' => 'From Email:',
-                        'formClass' => 'form-control',
-                    ],
-                    'email_from_name' => [
-                        'text',
-                        'label' => 'From Name:',
-                        'formClass' => 'form-control',
-                    ],
-                ],
-            ]
-        ];
-    }
-
     public function registerMenu()
     {
+        $plugin = AppIns::factory('plugin');
+        $menu  = [
+            [['setting-system'], 'setting-system', 'System', ''],
+            [['setting-smtp'], 'setting-smtp', 'SMTP', ''],
+        ];
+        foreach ($plugin as $name => $plg)
+        {
+            if (method_exists($plg, 'registerSetting'))
+            {
+                $register = $plg->registerSetting();
+                if (is_array($register))
+                {
+                    $menu = array_merge($menu, $register);
+                }
+            }
+        }
         return [
-            [['setting', 'setting',], 'setting', 'Settings', '<i class="fa-solid fa-gear"></i>', '', ''],
+            [['setting', 'setting',], 'setting', 'Settings', '<i class="fa-solid fa-gear"></i>', $menu],
         ];
     }
 }

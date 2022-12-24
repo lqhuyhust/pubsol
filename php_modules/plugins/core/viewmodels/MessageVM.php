@@ -14,7 +14,10 @@ use SPT\View\VM\JDIContainer\ViewModel;
 class MessageVM extends ViewModel
 {
     protected $alias = 'MessageVM';
-    protected $layouts = ['layouts.message|render'];
+    protected $layouts = [
+        'layouts.message|render',
+        'layouts.notification|render',
+    ];
 
     public function render()
     {

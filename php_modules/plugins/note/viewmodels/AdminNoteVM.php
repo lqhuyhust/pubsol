@@ -19,8 +19,11 @@ class AdminNoteVM extends ViewModel
     protected $alias = 'AdminNoteVM';
     protected $layouts = [
         'layouts.backend.note' => [
-            'form'
-        ]
+            'form',
+        ],
+        'layouts.backend.setting' => [
+            'connections',
+        ],
     ];
 
     public function form()
@@ -98,6 +101,59 @@ class AdminNoteVM extends ViewModel
             $fields['created_by'] = ['hidden'];
         }
 
+        return $fields;
+    }
+
+    public function connections()
+    {
+        
+        $fields = $this->getFormFieldsConnection();
+        
+        $data = [];
+        foreach ($fields as $key => $value) {
+            if ($key != 'token') {
+                $data[$key] =  $this->OptionModel->get($key, '');
+            }
+        }
+        $form = new Form($fields, $data);
+
+        $title_page = 'Setting Connections';
+        $this->view->set('fields', $fields, true);
+        $this->view->set('form', $form, true);
+        $this->view->set('title_page', $title_page, true);
+        $this->view->set('data', $data, true);
+        $this->view->set('url', $this->router->url(), true);
+        $this->view->set('link_form', $this->router->url('setting-connections'));
+    }
+
+    public function getFormFieldsConnection()
+    {
+        $fields = [
+            'folder_id' => [
+                'text',
+                'label' => 'Folder ID:',
+                'formClass' => 'form-control',
+            ],
+            'client_id' => [
+                'text',
+                'label' => 'Client ID:',
+                'formClass' => 'form-control',
+            ],
+            'client_secret' => [
+                'text',
+                'label' => 'Client secret',
+                'formClass' => 'form-control',
+            ],
+            'access_token' => [
+                'text',
+                'label' => 'Access Token',
+                'formClass' => 'form-control',
+            ],
+            'token' => ['hidden',
+                'default' => $this->app->getToken(),
+            ],
+        ];
+       
         return $fields;
     }
 }
