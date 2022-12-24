@@ -77,6 +77,10 @@
 					`;
 					$("#listChangeLog").html(list);
 					$('.form_changelog').on('submit', formChangeLogSubmit);
+					$(".button-remove").click(function() {
+						var id = $(this).data('id-remove');
+						$("#method_" + id).val('DELETE');
+					});
 				}
 			}
 		});
