@@ -61,6 +61,7 @@
                         class="sidebar-link <?php echo (is_array($submenu) && $submenu) ? 'link-collapse collapsed' : '';?>" 
                         <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
                     >
+                    
                         <?php echo $icon ?> 
                         <span class="align-middle">
                             <?php echo $name ?>
