@@ -76,7 +76,6 @@ class AdminNotesVM extends ViewModel
         $sort = $sort ? $sort : 'title asc';
 
         $result = $this->NoteEntity->list($start, $limit, $where, $sort);
-        // var_dump($result);
         $total = $this->NoteEntity->getListTotal();
         $data_tags = [];
         foreach ($result as $item) {
@@ -130,7 +129,6 @@ class AdminNotesVM extends ViewModel
     protected $_filter;
     public function filter()
     {
-        // var_dump($this->_filter);die;
         if (null === $this->_filter) :
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'note.search'),
