@@ -29,3 +29,12 @@ ul a.submenu-link{
     width: 100%;
     background-color: #f5f6f7;
 }
+.select2-container {
+    z-index: 9999;
+}
+div > .select2-container{
+    width: 100% !important;
+}
+span.select2-container {
+    z-index:10050;
+}
