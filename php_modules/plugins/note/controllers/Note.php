@@ -247,6 +247,29 @@ class Note extends Admin {
                 } 
                 $this->session->set('flashMsg', 'Updated successfully');
                 $link = $save_close ? 'notes' : 'note/'. $ids;
+
+                // save history note
+                $note_history = [
+                    'title' => $title,
+                    'tags' => $tags,
+                    'note' => $note,
+                    'editor' => $editor,
+                    'description' => $description,
+                    'modified_by' => $this->user->get('id'),
+                    'modified_at' => date('Y-m-d H:i:s'),
+                ];
+
+                $try_note = $this->NoteHistoryEntity->add([
+                    'note_id' => $ids,
+                    'meta_data' => json_encode($note_history),
+                    'created_by' => $this->user->get('id'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                if(!$try_note)
+                {
+                    $this->session->set('flashMsg', 'Updated successfully. An error occurred that the version of the note could not be saved! ');
+                }
                 return $this->app->redirect(
                     $this->router->url($link)
                 );

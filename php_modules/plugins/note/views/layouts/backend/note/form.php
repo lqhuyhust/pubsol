@@ -52,6 +52,11 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <?php $this->field('note'); ?>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="mb-1 col-lg-12 col-sm-12 mx-auto">
+                        <label class="form-label fw-bold">Revision:</label>
+                    </div>
+                </div>
                 <div class="row pt-3" style="display: none">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Tags:</label>
