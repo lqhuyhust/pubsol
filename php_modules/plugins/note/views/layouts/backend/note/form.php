@@ -25,7 +25,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
-                        <div id="content" class=" p-3">
+                        <div id="content" class="p-3">
                             <?php if (isset($this->data['description'])) {
                                 echo $this->data['description'];
                             } ?>
@@ -172,7 +172,6 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         });
         $("#open").click(function() {
             $("#content").toggleClass("d-none");
-            $("#content").toggleClass("border");
         });
         $("#open").click(function() {
             $("#html_editor").toggleClass("d-none");
@@ -308,11 +307,13 @@ $js = <<<Javascript
         if (!$('#sheetToogle').is(":checked"))
         {
             $('#sheet_description_sheetjs').addClass('d-none');
+            $("#content").addClass("border");
             // $('#html_editor').removeClass('d-none');
         }
         else
         {
             $('#html_editor').addClass('d-none');
+            $("#content").removeClass("border");
         }
         $('#sheetToogle').change(function()
         {
