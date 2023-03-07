@@ -1,8 +1,8 @@
 <?php
-$this->theme->add( $this->url .'assets/css/select2.min.css', '', 'select2-css');
-$this->theme->add( $this->url .'assets/css/select2_custom.css', '', 'select2-custom-css');
-$this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
-$this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
+$this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
+$this->theme->add($this->url . 'assets/css/select2_custom.css', '', 'select2-custom-css');
+$this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
+$this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 ?>
 <?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
@@ -25,6 +25,11 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
+                        <div id="content" class="d-none p-3">
+                            <?php if (isset($this->data['description'])) {
+                                echo $this->data['description'];
+                            } ?>
+                        </div>
                     </div>
                 </div>
                 
@@ -40,8 +45,11 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <input type="hidden" name="save_close" id="save_close">
                         <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
                     </div>
-                    <div class="">
+                    <div class="me-2">
                         <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
+                    </div>
+                    <div class="">
+                        <button id="open" type="button" class="btn btn-outline-success">Edit Mode</button>
                     </div>
                 </div>
             </div>
@@ -162,7 +170,14 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
             }
             $('#form_submit').submit();
         });
-        
+        $("#open").click(function() {
+            $("#content").toggleClass("d-none");
+            $("#content").toggleClass("border");
+        });
+        $("#open").click(function() {
+            $("#html_editor").toggleClass("d-none");
+        });
+
     });
     
 </script>
@@ -300,12 +315,14 @@ $js = <<<Javascript
             {
                 $('#html_editor').addClass('d-none');
                 $('#sheet_description_sheetjs').removeClass('d-none');
+                $('#open').addClass('d-none');
                 reRender_description_sheetjs();
             }
             else
             {
                 $('#html_editor').removeClass('d-none');
                 $('#sheet_description_sheetjs').addClass('d-none');
+                $('#open').removeClass('d-none');
             }
         });
         $("#description").attr('rows', 25);
