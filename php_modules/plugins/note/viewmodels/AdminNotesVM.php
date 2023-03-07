@@ -139,6 +139,7 @@ class AdminNotesVM extends ViewModel
             if (strpos($data['search'], ';') == true) {
                 $try = explode(';', $data['search']);
                 $data['search'] = [];
+                $tmp = [];
                 foreach ($try as $key => $value) {
                     $tmp[] = $value;
                 }

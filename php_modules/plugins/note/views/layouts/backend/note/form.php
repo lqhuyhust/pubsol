@@ -21,11 +21,11 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                                 </div>
                             </span>
                         </div>
-                        <div id="html_editor">
+                        <div id="html_editor" class="d-none">
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
-                        <div id="content" class="d-none p-3">
+                        <div id="content" class=" p-3">
                             <?php if (isset($this->data['description'])) {
                                 echo $this->data['description'];
                             } ?>
@@ -48,7 +48,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     <div class="me-2">
                         <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
                     </div>
-                    <div class="">
+                    <div class="" id="mode">
                         <button id="open" type="button" class="btn btn-outline-success">Edit Mode</button>
                     </div>
                 </div>
@@ -177,6 +177,11 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         $("#open").click(function() {
             $("#html_editor").toggleClass("d-none");
         });
+        $("#mode").click(function () {
+        $("#open").fadeOut(function () {
+            $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode').fadeIn();
+        })
+    })
 
     });
     
@@ -303,7 +308,7 @@ $js = <<<Javascript
         if (!$('#sheetToogle').is(":checked"))
         {
             $('#sheet_description_sheetjs').addClass('d-none');
-            $('#html_editor').removeClass('d-none');
+            // $('#html_editor').removeClass('d-none');
         }
         else
         {
