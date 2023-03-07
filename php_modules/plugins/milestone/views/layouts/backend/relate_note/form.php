@@ -67,3 +67,11 @@
         });
     });
 </script>
+<?php
+$js = <<<Javascript
+$(document).ready(function() {
+    $('#note_id').select2({dropdownParent:  "#exampleModalToggle"});
+  });
+Javascript;
+
+$this->theme->addInline('js', $js);
