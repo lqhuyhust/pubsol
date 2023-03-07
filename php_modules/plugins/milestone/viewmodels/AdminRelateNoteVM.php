@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SPT software - ViewModel
  * 
@@ -37,6 +38,15 @@ class AdminRelateNoteVM extends ViewModel
 
     public function getFormFields()
     {
+        $notes = $this->NoteEntity->list(0, 0, [], 'title asc');
+        
+        $options = [];
+        foreach ($notes as $note) {
+            $options[] = [
+                'text' => $note['title'],
+                'value' => $note['id'],
+            ];
+        }
         $fields = [
             'id' => ['hidden'],
             'title' => [
@@ -53,10 +63,10 @@ class AdminRelateNoteVM extends ViewModel
                 'required' => 'required',
             ],
             'note_id' => ['option',
-                'options' => [],
+                'options' => $options,
+                'type' => 'select2',
                 'showLabel' => false,
-                'formClass' => 'form-select rounded-0 border border-1 py-1 fs-4-5',
-                'required' => 'required',
+                'formClass' => 'form-select',
             ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
