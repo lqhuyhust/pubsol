@@ -91,7 +91,7 @@ class Request extends Admin
         // TODO: validate new add
         $newId =  $this->RequestEntity->add([
             'milestone_id' => $milestone_id,
-            'version_id' => $version_latest['id'],
+            'version_id' => $version_latest ? $version_latest['version'] : 0,
             'title' => $title,
             'description' => $description,
             'created_by' => $this->user->get('id'),
@@ -110,7 +110,11 @@ class Request extends Admin
         }
         else
         {
-            $this->session->set('flashMsg', 'Create Successfully!');
+            if(!$version_latest){
+                $this->session->set('flashMsg', 'Create Request Successfully! Please create version first');
+            } else {
+                $this->session->set('flashMsg', 'Create Successfully!');
+            }
             return $this->app->redirect(
                 $this->router->url('requests/'. $milestone_id)
             );
