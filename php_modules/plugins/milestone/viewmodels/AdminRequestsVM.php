@@ -69,7 +69,7 @@ class AdminRequestsVM extends ViewModel
             $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
         }
 
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'id desc');
+        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
