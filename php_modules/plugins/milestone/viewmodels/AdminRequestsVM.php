@@ -70,7 +70,7 @@ class AdminRequestsVM extends ViewModel
         }
 
         $version_lastest = $this->VersionEntity->list(0, 1, [], 'id desc');
-        $version_lastest = $version_lastest ? $version_lastest[0]['id'] : '0.0.0';
+        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         
