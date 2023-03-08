@@ -39,7 +39,6 @@ class AdminVersionLatestVM extends ViewModel
         }
 
         $tmp_request = $this->RequestEntity->findOne(['id' => $request_id]);
-        // var_dump($tmp_request['version_id']);
 
         $list = $this->VersionNoteEntity->list(0,0, ['version_id = '. $version_latest['id'], 'request_id = '. $request_id]);
         $list = $list ? $list : [];
