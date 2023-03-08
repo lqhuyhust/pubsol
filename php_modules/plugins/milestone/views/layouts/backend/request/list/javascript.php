@@ -14,7 +14,8 @@
     };
     $(document).ready(function() {
         $("#select_all").click( function(){
-            $('.checkbox-item').prop('checked', this.checked);
+            $('.checkbox-item:not(:disabled)').prop('checked', this.checked);
+            
         });
         $(".button_delete_item").click(function() {
             var id = $(this).data('id');
