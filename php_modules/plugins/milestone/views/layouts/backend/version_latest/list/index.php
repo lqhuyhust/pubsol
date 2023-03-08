@@ -19,10 +19,13 @@
 								<form class="form_changelog" action="<?php echo $this->link_form . '/' . $item['id']; ?>" method="post">
 									<input type="hidden" value="<?php echo $this->token ?>" name="token">
 									<input type="hidden" id="method_<?php echo $item['id'] ?>" value="PUT" name="_method">
+									
 									<div class="input-group mb-3">
 										<input class="form-control rounded-0 border border-1" name="log" value="<?php echo $item['log'] ?>"></input>
+										<?php if(!$this->status) {?>
 										<button class="btn btn-outline-secondary" type="submit">Apply</button>
 										<button class="btn btn-outline-secondary button-remove" data-id-remove="<?php echo $item['id']; ?>">Remove</button>
+										<?php } ?>
 									</div>
 								</form>
 							<?php endforeach; ?>
@@ -31,7 +34,9 @@
 								<input type="hidden" value="POST" name="_method">
 								<div class="input-group mb-3">
 									<input class="form-control rounded-0 border border-1" name="log"></input>
+									<?php if(!$this->status) {?>
 									<button class="btn btn-outline-secondary" type="submit">Add</button>
+									<?php } ?>
 								</div>
 							</form>
 						</div>

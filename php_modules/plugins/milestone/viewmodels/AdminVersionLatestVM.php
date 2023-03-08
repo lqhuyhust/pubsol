@@ -46,8 +46,20 @@ class AdminVersionLatestVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = $version_latest ?  'Version changelog : '.$tmp_request['version_id'] : 'Version changelog';
 
+        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
+        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
+        foreach($tmp_request as $item) {
+        }
+        if ($version_lastest > $item['version_id']) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
         $this->set('list', $list, true);
         $this->set('version_latest', $version_latest);
+        $this->set('status', $status);
         $this->set('url', $this->router->url(), true);
         $this->set('link_list', $this->router->url('request-version/'. $request_id), true);
         $this->set('link_cancel', $this->router->url('detail-request/'. $request_id), true);
