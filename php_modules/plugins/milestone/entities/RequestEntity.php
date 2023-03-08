@@ -31,8 +31,7 @@ class RequestEntity extends Entity
                     'option' => 'unsigned',
                 ],
                 'version_id' => [
-                    'type' => 'int',
-                    'option' => 'unsigned',
+                    'type' => 'text',
                 ],
                 'title' => [
                     'type' => 'varchar',
