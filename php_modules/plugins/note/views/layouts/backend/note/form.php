@@ -52,11 +52,23 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <?php $this->field('note'); ?>
                     </div>
                 </div>
+                <?php if ($this->data && !$this->data_version) : ?>
                 <div class="row">
                     <div class="mb-1 col-lg-12 col-sm-12 mx-auto">
-                        <label class="form-label fw-bold">Revision:</label>
+                        <label data-bs-target="#listRevision" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="listRevision" class="form-label fw-bold"><i class="fa-solid fa-clock-rotate-left"></i> Revision: <?php echo count($this->data['versions']);?></label>
+                    </div>
+                    <div class="collapse mb-2" id="listRevision">
+                        <ul class="list-group list-group-flush">
+                            <?php foreach($this->data['versions'] as $item) : ?>
+                            <li class="list-group-item">
+                                <a href="<?php echo $this->link_form. '/'. $this->id .'?version='.$item['id']?>">Modified At: <?php echo $item['created_at'] ?> by <?php echo $item['created_by'] ?></a>
+                            </li>
+                            <?php endforeach;?>
+                        </ul>
+                        
                     </div>
                 </div>
+                <?php endif; ?>
                 <div class="row pt-3" style="display: none">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Tags:</label>
