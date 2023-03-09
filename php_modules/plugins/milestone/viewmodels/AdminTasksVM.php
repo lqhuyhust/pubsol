@@ -65,7 +65,9 @@ class AdminTasksVM extends ViewModel
         $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $item) {
         }
-        if ($version_lastest > $item['version_id']) {
+        if(strcmp($item['version_id'], '0') == 0) {
+            $status = false;
+        } elseif ($version_lastest > $item['version_id']) {
             $status = true;
         } else {
             $status = false;
