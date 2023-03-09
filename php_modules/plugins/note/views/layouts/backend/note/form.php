@@ -7,8 +7,13 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 <?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
-        <div class="row g-3">
-            <div class="col-lg-8 col-sm-12">
+        <div class="row">
+            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end" style="box-shadow: inherit;">
+                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle">
+                    <i class="hamburger align-self-center"></i>
+                </a>
+            </nav>
+            <div id="col-8" class="col-lg-8 col-sm-12">
                 <input id="input_title" type="hidden" class="d-none" name="title" required>
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
@@ -50,7 +55,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12">
+            <div id="col-4" class="col-lg-4 col-sm-12">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Note:</label>
@@ -215,8 +220,11 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#apply_header").toggleClass("d-none");
             });
         }
+        $("#sidebarToggle").click(function() {
+            $("#col-8").toggleClass("col-lg-12 col-sm-12");
+            $("#col-4").toggleClass("col-lg-0 col-sm-12 d-none");
+        });
     });
-    
 </script>
 <?php
 $js = <<<Javascript
