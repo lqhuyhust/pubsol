@@ -19,7 +19,7 @@ class VersionModel extends Base
         $version_level = (int) $this->OptionModel->get('version_level', 1);
         $version_level_deep = (int) $this->OptionModel->get('version_level_deep', 1);
 
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $this->VersionEntity->list(0, 1, [], 'id desc');
         $current_version = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         
         $vParts = explode('.', $current_version);
