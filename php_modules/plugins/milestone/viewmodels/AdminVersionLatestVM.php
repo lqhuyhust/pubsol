@@ -26,9 +26,9 @@ class AdminVersionLatestVM extends ViewModel
     {
         $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_latest = $version_latest ? $version_latest[0] : [];
-        if(!$version_latest){
-            $this->session->set('flashMsg', 'Not Found Version');
-        }
+        // if(!$version_latest){
+        //     $this->session->set('flashMsg', 'Not Found Version');
+        // }
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
         $this->set('request_id', $request_id, true);
@@ -44,7 +44,12 @@ class AdminVersionLatestVM extends ViewModel
         $list = $list ? $list : [];
         $request = $this->RequestEntity->findByPK($request_id);
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
-        $title_page = $version_latest ?  'Version changelog : '.$tmp_request['version_id'] : 'Version changelog';
+        
+        if($version_latest && $tmp_request['version_id']) {
+            $title_page = 'Version changelog (Version: '. $tmp_request['version_id'].')';
+        } else {
+            $title_page = 'Version changelog (Please create Version first)';
+        }
 
         $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
