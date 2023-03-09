@@ -174,6 +174,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#content").addClass("border");
             $("#save_and_close").addClass("d-none");
             $("#apply").addClass("d-none");
+            $("#save_and_close_header").addClass("d-none");
+            $("#apply_header").addClass("d-none");
             
             $("#mode").click(function () {
                 $("#open").text(($("#open").text() == 'View Mode') ? 'Edit Mode' : 'View Mode');
@@ -185,6 +187,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#check_mode").toggleClass("d-none");
                 $("#save_and_close").toggleClass("d-none");
                 $("#apply").toggleClass("d-none");
+                $("#save_and_close_header").toggleClass("d-none");
+                $("#apply_header").toggleClass("d-none");
             });
         } else {
 
@@ -193,6 +197,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#content").removeClass("border");
             $("#save_and_close").removeClass("d-none");
             $("#apply").removeClass("d-none");
+            $("#save_and_close_header").removeClass("d-none");
+            $("#apply_header").removeClass("d-none");
 
             $("#mode").click(function () {
                 $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode');
@@ -205,6 +211,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#content").toggleClass("border");
                 $("#save_and_close").toggleClass("d-none");
                 $("#apply").toggleClass("d-none");
+                $("#save_and_close_header").toggleClass("d-none");
+                $("#apply_header").toggleClass("d-none");
             });
         }
     });

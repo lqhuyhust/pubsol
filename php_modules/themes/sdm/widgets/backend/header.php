@@ -13,10 +13,10 @@
                 </a>
             </div>
             <div class="me-2">
-                <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
+                <button id="save_and_close_header" type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
             </div>
             <div class="me-2">
-                <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
+                <button id="apply_header" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
             </div>
             <script>
                 var url = window.location.pathname;
