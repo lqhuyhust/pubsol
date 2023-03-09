@@ -30,7 +30,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
-                        <div id="content" class="p-3 d-none">
+                        <div id="content" class="p-3 d-none text-break">
                             <?php if (isset($this->data['description'])) {
                                 echo $this->data['description'];
                             } ?>
