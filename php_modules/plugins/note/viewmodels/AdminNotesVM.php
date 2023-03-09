@@ -55,6 +55,7 @@ class AdminNotesVM extends ViewModel
         } elseif (is_array($search)) {
             foreach ($search as $key => $value) {
                 foreach ($value as $k => $v) {
+                    $tags = [];
                     $tags = $this->TagEntity->list(0, 0, ["`name` = '" . $v . "'"]);
                     if ($tags) {
                         foreach ($tags as $tag) {
@@ -78,6 +79,15 @@ class AdminNotesVM extends ViewModel
         $result = $this->NoteEntity->list($start, $limit, $where, $sort);
         $total = $this->NoteEntity->getListTotal();
         $data_tags = [];
+        
+        if (!$result) {
+            $result = [];
+            $total = 0;
+            if (!empty($search)) {
+                $this->session->set('flashMsg', 'Notes not found');
+            }
+        }
+
         foreach ($result as $item) {
             if (!empty($item['tags'])) {
                 $t1 = $where = [];
@@ -88,16 +98,7 @@ class AdminNotesVM extends ViewModel
                         $t1[] = $i['name'];
                     }
                 }
-
-
                 $data_tags[$item['id']] = implode(',', $t1);
-            }
-        }
-        if (!$result) {
-            $result = [];
-            $total = 0;
-            if (!empty($search)) {
-                $this->session->set('flashMsg', 'Notes not found');
             }
         }
 
