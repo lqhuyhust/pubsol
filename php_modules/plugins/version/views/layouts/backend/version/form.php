@@ -1,20 +1,4 @@
 <?php echo $this->render('notification'); ?>
-<div class="modal fade" id="exampleModalToggle1" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Notice</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Create new version, requests in old version will be disabled.
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Continue</button>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered " style="max-width: 600px;">
         <div class="modal-content container px-5 pt-5">
@@ -69,7 +53,7 @@
                                 <button type="button" class="btn btn-outline-secondary fs-4" data-bs-dismiss="modal">Cancel</button>
                             </div>
                             <div class="">
-                                <button type="submit" class="btn btn-outline-success fs-4">Save</button>
+                                <button id="save" type="submit" class="btn btn-outline-success fs-4">Save</button>
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,7 @@
                             class="align-middle btn border border-1 show_data" 
                             data-bs-placement="top" 
                             data-bs-toggle="modal" 
-                            data-bs-target="#exampleModalToggle1">
+                            data-bs-target="#exampleModalToggle">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
