@@ -21,6 +21,12 @@ return [
         ],
         'parameters' => ['id'],
     ],
+    'note/version' => [
+        'fnc' => [
+            'delete' => 'note.version.delete'
+        ],
+        'parameters' => ['id'],
+    ],
     'note' => [
         'fnc' => [
             'get' => 'note.note.detail',

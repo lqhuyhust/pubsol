@@ -60,8 +60,9 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     <div class="collapse mb-2" id="listRevision">
                         <ul class="list-group list-group-flush">
                             <?php foreach($this->data['versions'] as $item) : ?>
-                            <li class="list-group-item">
+                            <li class="list-group-item d-flex">
                                 <a href="<?php echo $this->link_form. '/'. $this->id .'?version='.$item['id']?>">Modified At: <?php echo $item['created_at'] ?> by <?php echo $item['created_by'] ?></a>
+                                <a href="#" class="clear-version ms-auto" data-version-id="<?php echo $item['id']?>"><i class="fa-solid fa-trash"></i></a>
                             </li>
                             <?php endforeach;?>
                         </ul>
@@ -311,6 +312,20 @@ $js = <<<Javascript
         {
             $('#html_editor').addClass('d-none');
         }
+
+        $('.clear-version').on('click', function(){
+            var result = confirm("You are going to delete 1 record(s). Are you sure ?");
+            if (result) {
+                var version_id = $(this).data('version-id');
+                $('#form_submit').attr('action', '{$this->link_form}/version/' + version_id);
+                $('input[name="_method"').val('DELETE');
+                $('#form_submit').submit();
+            }
+            else
+            {
+                return false;
+            }
+        });
         $('#sheetToogle').change(function()
         {
             if ($(this).is(":checked"))
