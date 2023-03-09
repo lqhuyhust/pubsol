@@ -40,7 +40,7 @@ class Version extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Add Version Failed!'
             ],200);
         }
 
@@ -91,7 +91,7 @@ class Version extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Update Version Failed!'
             ],200);
         }
         // TODO valid the request input
@@ -140,7 +140,7 @@ class Version extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Delete Version Failed!'
             ],200);
         }
 
@@ -228,7 +228,9 @@ class Version extends Admin
         $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $item) {
         }
-        if ($version_lastest > $item['version_id']) {
+        if(strcmp($item['version_id'], '0') == 0) {
+            return false;
+        } elseif ($version_lastest > $item['version_id']) {
             return true;
         } else {
             return false;

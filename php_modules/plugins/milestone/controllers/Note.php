@@ -93,7 +93,7 @@ class Note extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Get Note Failed!'
             ],200);
         }
 
@@ -120,7 +120,7 @@ class Note extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Add Note Failed!'
             ],200);
         }
         //check title sprint
@@ -173,7 +173,7 @@ class Note extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Update Note Failed!'
             ],200);
         }
 
@@ -236,7 +236,7 @@ class Note extends Admin
         if($tmp_check) {
             return $this->app->response([
                 'result' => 'fail',
-                'message' => 'Delete Task Failed!'
+                'message' => 'Delete Note Failed!'
             ],200);
         }
 
@@ -312,7 +312,9 @@ class Note extends Admin
         $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $item) {
         }
-        if ($version_lastest > $item['version_id']) {
+        if(strcmp($item['version_id'], '0') == 0) {
+            return false;
+        } elseif ($version_lastest > $item['version_id']) {
             return true;
         } else {
             return false;
