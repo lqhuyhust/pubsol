@@ -14,6 +14,7 @@
         <?php $description = $this->item['description'] ? $this->item['description'] : ''; ?>
         <?php echo  strlen(strip_tags($description)) > 50 ? substr(strip_tags($description), 0, 50) .'...' : $description;  ?>
     </td>
+    <td><?php echo $this->item['version_id'] ? $this->item['version_id'] : '0';?></td>
     <td><?php echo   $this->item['creator'] ?></td>
     <?php if(!$status) { ?>
     <td>
