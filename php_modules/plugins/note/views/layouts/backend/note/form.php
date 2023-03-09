@@ -181,6 +181,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#apply").addClass("d-none");
             $("#save_and_close_header").addClass("d-none");
             $("#apply_header").addClass("d-none");
+            $("#col-8").addClass("col-lg-12");
+            $("#col-4").addClass("col-lg-0 d-none");
             
             $("#mode").click(function () {
                 $("#open").text(($("#open").text() == 'View Mode') ? 'Edit Mode' : 'View Mode');
@@ -194,6 +196,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#apply").toggleClass("d-none");
                 $("#save_and_close_header").toggleClass("d-none");
                 $("#apply_header").toggleClass("d-none");
+                $("#col-8").toggleClass("col-lg-12");
+                $("#col-4").toggleClass("col-lg-0 d-none");
             });
         } else {
 
@@ -204,6 +208,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#apply").removeClass("d-none");
             $("#save_and_close_header").removeClass("d-none");
             $("#apply_header").removeClass("d-none");
+            $("#col-8").removeClass("col-lg-12");
+            $("#col-4").removeClass("col-lg-0 d-none");
 
             $("#mode").click(function () {
                 $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode');
@@ -218,11 +224,13 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#apply").toggleClass("d-none");
                 $("#save_and_close_header").toggleClass("d-none");
                 $("#apply_header").toggleClass("d-none");
+                $("#col-8").toggleClass("col-lg-12");
+                $("#col-4").toggleClass("col-lg-0 d-none");
             });
         }
         $("#sidebarToggle").click(function() {
-            $("#col-8").toggleClass("col-lg-12 col-sm-12");
-            $("#col-4").toggleClass("col-lg-0 col-sm-12 d-none");
+            $("#col-8").toggleClass("col-lg-12");
+            $("#col-4").toggleClass("col-lg-0 d-none");
         });
     });
 </script>
