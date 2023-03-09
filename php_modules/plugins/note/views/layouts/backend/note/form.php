@@ -9,8 +9,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
         <div class="row">
             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end" style="box-shadow: inherit;">
-                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle">
-                    <i class="hamburger align-self-center"></i>
+                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
+                    <i class="fa-solid fa-bars fs-2 "></i>
                 </a>
             </nav>
             <div id="col-8" class="col-lg-8 col-sm-12">
