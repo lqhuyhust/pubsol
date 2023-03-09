@@ -50,5 +50,6 @@
         $('#limit').on("change", function (e) {
             $('#filter_form').submit()
         });
+        
     });
 </script>

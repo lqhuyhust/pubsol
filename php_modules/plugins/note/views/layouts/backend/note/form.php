@@ -15,7 +15,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <div class="fw-bold d-flex  mb-2">
                             <span class="me-auto">Description:</span> 
                             <span>
-                                <div class="form-check form-switch mb-0">
+                                <div id="check_mode" class="form-check form-switch mb-0 d-none">
                                     <input class="form-check-input" type="checkbox" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
                                     <label class="form-check-label" for="sheetToogle">Sheet Editor</label>
                                 </div>
@@ -25,7 +25,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
-                        <div id="content" class="p-3">
+                        <div id="content" class="p-3 d-none">
                             <?php if (isset($this->data['description'])) {
                                 echo $this->data['description'];
                             } ?>
@@ -43,13 +43,10 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     </div>
                     <div class="me-2">
                         <input type="hidden" name="save_close" id="save_close">
-                        <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
+                        <button id="save_and_close" type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
                     </div>
                     <div class="me-2">
-                        <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
-                    </div>
-                    <div class="" id="mode">
-                        <button id="open" type="button" class="btn btn-outline-success">Edit Mode</button>
+                        <button id="apply" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
                     </div>
                 </div>
             </div>
@@ -170,18 +167,46 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             }
             $('#form_submit').submit();
         });
-        $("#open").click(function() {
-            $("#content").toggleClass("d-none");
-        });
-        $("#open").click(function() {
-            $("#html_editor").toggleClass("d-none");
-        });
-        $("#mode").click(function () {
-        $("#open").fadeOut(function () {
-            $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode').fadeIn();
-        })
-    })
 
+        if(id != 0) {
+            
+            $("#content").removeClass("d-none");
+            $("#content").addClass("border");
+            $("#save_and_close").addClass("d-none");
+            $("#apply").addClass("d-none");
+            
+            $("#mode").click(function () {
+                $("#open").text(($("#open").text() == 'View Mode') ? 'Edit Mode' : 'View Mode');
+            });
+
+            $("#open").click(function () {
+                $("#content").toggleClass("d-none");
+                $("#html_editor").toggleClass("d-none");
+                $("#check_mode").toggleClass("d-none");
+                $("#save_and_close").toggleClass("d-none");
+                $("#apply").toggleClass("d-none");
+            });
+        } else {
+
+            $("#html_editor").removeClass("d-none");
+            $("#check_mode").removeClass("d-none");
+            $("#content").removeClass("border");
+            $("#save_and_close").removeClass("d-none");
+            $("#apply").removeClass("d-none");
+
+            $("#mode").click(function () {
+                $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode');
+            });
+
+            $("#open").click(function () {
+                $("#content").toggleClass("d-none");
+                $("#html_editor").toggleClass("d-none");
+                $("#check_mode").toggleClass("d-none");
+                $("#content").toggleClass("border");
+                $("#save_and_close").toggleClass("d-none");
+                $("#apply").toggleClass("d-none");
+            });
+        }
     });
     
 </script>
@@ -307,13 +332,10 @@ $js = <<<Javascript
         if (!$('#sheetToogle').is(":checked"))
         {
             $('#sheet_description_sheetjs').addClass('d-none');
-            $("#content").addClass("border");
-            // $('#html_editor').removeClass('d-none');
         }
         else
         {
             $('#html_editor').addClass('d-none');
-            $("#content").removeClass("border");
         }
         $('#sheetToogle').change(function()
         {

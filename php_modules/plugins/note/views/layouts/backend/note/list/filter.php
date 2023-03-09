@@ -4,7 +4,7 @@
             <div class="pe-2">
                 <div class="row">
                     <div class="col-auto">
-                        <a href="<?php echo $this->link_form .'/0';?>" class="align-middle btn border border-1" type="button">
+                        <a data-id="" href="<?php echo $this->link_form .'/0';?>" class="align-middle btn border border-1 show_data" type="button">
                             <i class="fa-solid fa-plus"></i>
                         </a>
                     </div>
