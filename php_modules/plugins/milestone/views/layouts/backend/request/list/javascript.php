@@ -56,9 +56,13 @@
             var id = $(this).data('id');
             var title = $(this).data('title');
             var description = $(this).data('description');
+            var deadline_at = $(this).data('deadline_at');
+            var finished_at = $(this).data('finished_at');
 
             $('#title').val(title);
             $('#description').val(description);
+            $('#deadline_at').val(deadline_at);
+            $('#finished_at').val(finished_at);
 
             $('#form_request').attr('action', '<?php echo $this->link_form;?>/' + id);
             if(id) {
