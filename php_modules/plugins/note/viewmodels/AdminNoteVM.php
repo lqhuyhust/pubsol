@@ -69,10 +69,17 @@ class AdminNoteVM extends ViewModel
             $data_tags = $this->TagEntity->list(0, 1000, $where);
         }
         $attachments = $this->AttachmentEntity->list(0, 0, ['note_id = '. $id]);
-        $form = new Form($this->getFormFields(), $data);
 
+        if ($data && $data['editor'] == 'presenter')
+        {
+            $data['description_presenter'] = $data['description'];
+        }
+
+        $form = new Form($this->getFormFields(), $data);
+        $view_mode = $data ? 'true' : '';
         $this->set('form', $form, true);
         $this->set('data', $data, true);
+        $this->set('view_mode', $view_mode, true);
         $this->set('data_tags', $data_tags, true);
         $this->set('data_version', $data_version, true);
         $this->set('version', $version, true);

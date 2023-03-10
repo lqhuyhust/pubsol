@@ -15,20 +15,20 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <div class="fw-bold d-flex  mb-2">
                             <span class="me-auto">Description:</span> 
                             <span>
-                                <div id="check_mode" class="form-check form-switch me-2 mb-0 d-none">
+                                <div class="button-editor-mode form-check form-switch me-2 mb-0">
                                     <input class="form-check-input" type="radio" <?php echo ( !$this->data || $this->data && $this->data['editor'] == 'tynimce') ? 'checked' : ''; ?> name="editor" id="tynimceToogle" value="tynimce">
                                     <label class="form-check-label" for="tynimceToogle">Tynimce Mode</label>
                                 </div>
                             </span>
                             <span>
-                                <div id="check_mode" class="form-check me-2 form-switch mb-0">
+                                <div class=" button-editor-mode form-check me-2 form-switch mb-0">
                                     <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
                                     <label class="form-check-label" for="sheetToogle">Sheet Mode</label>
                                 </div>
                             </span>
                             <span>
-                                <div id="check_mode" class="form-check form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="PresenterToogle" value="presenter">
+                                <div class="button-editor-mode form-check form-switch mb-0">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'presenter') ? 'checked' : ''; ?> name="editor" id="PresenterToogle" value="presenter">
                                     <label class="form-check-label" for="PresenterToogle">Presenter Mode</label>
                                 </div>
                             </span>
@@ -172,8 +172,9 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
     }
 </style>
 <script>
+    var view_mode = '<?php echo $this->view_mode ?>';
     $(document).ready(function(e) {
-
+        var editor = '<?php echo $this->data ? $this->data['editor'] : '' ?>';
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
             $("#save_close").val(1);
@@ -210,44 +211,16 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $('#form_submit').submit();
         });
 
-        if(id != 0) {
-            
-            $("#content").removeClass("d-none");
-            $("#content").addClass("border");
+        if(view_mode) {
             $("#save_and_close").addClass("d-none");
             $("#apply").addClass("d-none");
             $("#save_and_close_header").addClass("d-none");
             $("#apply_header").addClass("d-none");
             $("#col-8").addClass("col-lg-12");
             $("#col-4").addClass("col-lg-0 d-none");
-            
-            $("#mode").click(function () {
-                $("#open").text(($("#open").text() == 'View Mode') ? 'Edit Mode' : 'View Mode');
-            });
-            $("#open").click(function() {
-                if (!$('#sheetToogle').is(":checked")) {
-                    $("#content").toggleClass("d-none");
-                    $("#html_editor").toggleClass("d-none");
-                } else {
-                    $("#content").addClass("d-none");
-                    $("#html_editor").addClass("d-none");
-                }
-                if ($("#open").text() != 'View Mode') {
-                    $("#col-8").removeClass("col-lg-12");
-                    $("#col-4").removeClass("col-lg-0 d-none");
-                } else {
-                    $("#col-8").addClass("col-lg-12");
-                    $("#col-4").addClass("col-lg-0 d-none");
-                }
-                $("#check_mode").toggleClass("d-none");
-                $("#save_and_close").toggleClass("d-none");
-                $("#apply").toggleClass("d-none");
-                $("#save_and_close_header").toggleClass("d-none");
-                $("#apply_header").toggleClass("d-none");
-                window.dispatchEvent(new Event('resize'));
-            });
+            $(".button-editor-mode").addClass('d-none');
+            openModeEditor();
         } else {
-
             $("#html_editor").removeClass("d-none");
             $("#check_mode").removeClass("d-none");
             $("#content").removeClass("border");
@@ -255,42 +228,79 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#apply").removeClass("d-none");
             $("#save_and_close_header").removeClass("d-none");
             $("#apply_header").removeClass("d-none");
-
-            $("#mode").click(function () {
-                $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode');
-            });
-
-            $("#open").click(function() {
-                if (!$('#sheetToogle').is(":checked")) {
-                    $("#content").toggleClass("d-none");
-                    $("#html_editor").toggleClass("d-none");
-                } else {
-                    $("#content").addClass("d-none");
-                    $("#html_editor").addClass("d-none");
-                } 
-                if ($("#open").text() != 'Edit Mode') {
-                    $("#col-8").addClass("col-lg-12");
-                    $("#col-4").addClass("col-lg-0 d-none");
-                } else {
-                    $("#col-8").removeClass("col-lg-12");
-                    $("#col-4").removeClass("col-lg-0 d-none");
-                }
-                $("#check_mode").toggleClass("d-none");
-                $("#content").toggleClass("border");
-                $("#save_and_close").toggleClass("d-none");
-                $("#apply").toggleClass("d-none");
-                $("#save_and_close_header").toggleClass("d-none");
-                $("#apply_header").toggleClass("d-none");
-                
-                window.dispatchEvent(new Event('resize'));
-            });
+            openModeEditor();
         }
+
+        $("#mode").click(function () {
+            if(view_mode)
+            {
+                view_mode = '';
+                $("#open").text('View Mode');
+                $("#content").addClass("d-none");
+                $("#col-8").removeClass("col-lg-12");
+                $("#col-4").removeClass("col-lg-0 d-none");
+                $(".button-editor-mode").removeClass("d-none");
+                $("#save_and_close").removeClass("d-none");
+                $("#apply").removeClass("d-none");
+                $("#save_and_close_header").removeClass("d-none");
+                $("#apply_header").removeClass("d-none");
+                window.dispatchEvent(new Event('resize'));
+                openModeEditor();
+            }
+            else
+            {
+                view_mode = 'true';
+                $(".button-editor-mode").addClass("d-none");
+                $("#open").text('Edit Mode');
+                $("#col-8").addClass("col-lg-12");
+                $("#col-4").addClass("col-lg-0 d-none");
+                window.dispatchEvent(new Event('resize'));
+                $("#save_and_close").addClass("d-none");
+                $("#apply").addClass("d-none");
+                $("#save_and_close_header").addClass("d-none");
+                $("#apply_header").addClass("d-none");
+            }
+        });
+        
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
             $("#col-4").toggleClass("col-lg-0 d-none");
             window.dispatchEvent(new Event('resize'));
         });
     });
+
+    function openModeEditor() {
+        var value = $('input[name="editor"]:checked').val();
+        if (value=='tynimce')
+        {
+            if (view_mode)
+            {
+                $("#content").removeClass("d-none");
+                $("#content").addClass("border");
+            }
+            else
+            {
+                $('#html_editor').removeClass('d-none');
+                $('#sheet_description_sheetjs').addClass('d-none');
+                $('#presenter_editor').addClass('d-none');
+            }
+        }
+
+        if (value=='sheetjs')
+        {
+            $('#html_editor').addClass('d-none');
+            $('#sheet_description_sheetjs').removeClass('d-none');
+            $('#presenter_editor').addClass('d-none');
+        }
+
+        if (value=='presenter')
+        {
+            $('#html_editor').addClass('d-none');
+            $('#sheet_description_sheetjs').addClass('d-none');
+            $('#presenter_editor').removeClass('d-none');
+            reRender();
+        }
+    }
 </script>
 <?php
 $js = <<<Javascript
@@ -437,28 +447,7 @@ $js = <<<Javascript
         });
         $('input[name="editor"]').change(function()
         {
-            var value = $('input[name="editor"]:checked').val();
-            if (value=='tynimce')
-            {
-                $('#html_editor').removeClass('d-none');
-                $('#sheet_description_sheetjs').addClass('d-none');
-                $('#presenter_editor').addClass('d-none');
-            }
-
-            if (value=='sheetjs')
-            {
-                $('#html_editor').addClass('d-none');
-                $('#sheet_description_sheetjs').removeClass('d-none');
-                $('#presenter_editor').addClass('d-none');
-            }
-
-            if (value=='presenter')
-            {
-                $('#html_editor').addClass('d-none');
-                $('#sheet_description_sheetjs').addClass('d-none');
-                $('#presenter_editor').removeClass('d-none');
-                reRender();
-            }
+            openModeEditor();
         });
         $("#description").attr('rows', 25);
         $(".button_delete_item").click(function() {

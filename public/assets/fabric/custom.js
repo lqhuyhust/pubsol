@@ -223,11 +223,17 @@ $(document).ready(function(){
         if (activeObject)
         {
             activeObject.set('fill', $(this).val());
-            objects = activeObject.getObjects();
-            objects.forEach(element => {
-                element.set('fill', $(this).val());
-                element.set('stroke', $(this).val());
-            });
+
+            if (typeof activeObject.getObjects === "function")
+            {
+                objects = activeObject.getObjects();
+                objects.forEach(element => {
+                    element.set('fill', $(this).val());
+                    element.set('stroke', $(this).val());
+                });
+            }
+            
+            console.log('tea');
             canvas.requestRenderAll();
         }
         canvas.renderAll();

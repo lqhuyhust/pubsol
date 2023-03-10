@@ -169,7 +169,6 @@ class Note extends Admin {
             $note = $this->request->post->get('note', '', 'string');
             $editor = $this->request->post->get('editor', 'html', 'string');
 
-            var_dump($description_presenter); die;
             $listTag = explode(',', $tags);
             $tags_tmp = [];
             foreach($listTag as $tag)
@@ -204,6 +203,11 @@ class Note extends Admin {
                 $description = base64_decode($description_sheetjs);
             }
 
+            if ($editor == 'presenter')
+            {
+                $description = $description_presenter;
+            }
+
             if ($findOne)
             {
                 $this->session->set('flashMsg', 'Error: Title already used! ');
@@ -222,7 +226,7 @@ class Note extends Admin {
                 'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,
             ]);
-
+            
             if($try)
             {
                 if ($files && is_array($files['name']) && $files['name'][0])

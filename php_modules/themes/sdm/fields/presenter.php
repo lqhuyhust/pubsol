@@ -76,7 +76,8 @@ if(!isset($presenter))
         if (data)
         {
             data = JSON.parse(data);
-            Import(data[0]);
+            console.log(data);
+            Import(data);
         }
     });
 </script>
