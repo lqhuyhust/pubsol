@@ -36,7 +36,7 @@ class AdminDocumentVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = 'Document';
 
-        $history = $this->DocumentHistoryEntity->list(0,0,['document_id = '.$data['id']]);
+        $history = $this->DocumentHistoryEntity->list(0,0,['document_id = '.$data['id']], 'id DESC');
         if($history)
         {
             foreach($history as &$item)

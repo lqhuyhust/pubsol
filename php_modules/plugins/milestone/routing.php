@@ -67,6 +67,8 @@ return [
     ],
     'document/version' => [
         'fnc' => [
+            'get' => 'milestone.documenthistory.detail',
+            'post' => 'milestone.documenthistory.rollback',
             'delete' => 'milestone.documenthistory.delete',
         ],
         'parameters' => ['id'],

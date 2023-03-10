@@ -14,21 +14,57 @@ use SPT\MVC\JDIContainer\MVController;
 
 class Documenthistory extends Admin 
 {
-    public function rollback()
+    public function detail()
     {
         $this->isLoggedIn();
-        $request_id = $this->validateRequestID();
-        $request = $this->RequestEntity->findByPK($request_id);
-        if (!$request)
+        $id = $this->validateID();
+        
+        $result = '';
+        $document = $this->DocumentHistoryEntity->findByPK($id);
+        if ($document)
         {
-            $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
+            $result = $document['description'];
         }
-        $this->app->set('layout', 'backend.document.form');
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
+
+        return $this->app->response([
+            'result' => $result,
+        ],200);
+    }
+
+    public function rollback()
+    {
+        $id = $this->validateID();
+        $document = $this->DocumentHistoryEntity->findByPK($id);
+        if ($document)
+        {
+            $try = $this->DocumentEntity->update([
+                'id' => $document['document_id'],
+                'description' => $document['description'],
+            ]);
+            if ($try)
+            {
+                $remove_list = $this->DocumentHistoryEntity->list(0, 0, ['id > '. $id, 'document_id = '. $document['document_id']]);
+                if ($remove_list)
+                {
+                    foreach($remove_list as $item)
+                    {
+                        $this->DocumentHistoryEntity->remove($item['id']);
+                    } 
+                }
+                
+                return $this->app->response([
+                    'result' => 'ok',
+                    'message' => 'Update Successfully',
+                    'description' => $document['description'],
+                ],200);
+            }
+            
+        }
+
+        return $this->app->response([
+            'result' => 'fail',
+            'message' => 'Update Failed'
+        ],200);
     }
 
     public function delete()

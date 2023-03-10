@@ -115,7 +115,7 @@ class Document extends Admin
         $result = [];
         if ($document)
         {
-            $list = $this->DocumentHistoryEntity->list(0 ,0 ,['document_id' => $document['id']]);
+            $list = $this->DocumentHistoryEntity->list(0 ,0 ,['document_id' => $document['id']], 'id DESC');
             if ($list)
             {
                 foreach($list as &$item)
