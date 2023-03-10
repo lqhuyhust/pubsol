@@ -72,7 +72,10 @@
                         <h4>History:</h4>
                         <ul class="list-group list-group-flush" id="document_history">
                             <?php foreach ($this->history as $item) : ?>
-                                <li class="list-group-item">Edited at <?php echo $item['modified_at']; ?></li>
+                                <li class="list-group-item">
+                                    <a href="#" class="openHistory" data-id="<?php echo $item['id']; ?>">Modified at <?php echo $item['modified_at']; ?> by <?php echo $item['modified_by']; ?></a>
+                                    <a href="#" class="ps-3 clear-version ms-auto" data-version-id="<?php echo $item['id']?>"><i class="fa-solid fa-trash"></i></a>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -82,6 +85,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function loadHistory(data)
     {
@@ -98,13 +102,17 @@
                     resultData.forEach(function(item)
                     {
                         list += `
-                        <li class="list-group-item">Edited at ${item['modified_at']}</li>
+                        <li class="list-group-item">
+                            <a href="#" class="openHistory" data-id="${item['id']}">Modified at ${item['modified_at']} by ${item['modified_by']}</a>
+                            <a href="#" class="ps-3 clear-version ms-auto" data-version-id="${item['id']}"><i class="fa-solid fa-trash"></i></a>
+                        </li>
                         `
                     });
                     $("#document_history").html(list);
+                    clear_version();
                 }
             }
-        })
+        });
     }
     function loadDiscussion(data)
     {
@@ -153,6 +161,41 @@
             }
         })
     }
+
+    function clear_version()
+    {
+        $('.clear-version').on('click', function(e){
+            e.preventDefault();
+            var result = confirm("You are going to delete 1 record(s). Are you sure ?");
+            if (result) {
+                var id = $(this).data('version-id');
+                var form = new FormData();
+
+                form.append("_method", 'DELETE');
+                console.log(form);
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo $this->url . 'document/version/';?>' + id,
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result.result == 'ok')
+                        {
+                            $('#description').val('');
+                        }
+                        showMessage(result.result, result.message);
+                        loadHistory();
+                    }
+                });
+            }
+            else
+            {
+                return false;
+            }
+        });
+    }
+
     $(document).ready(function() {
         $("#description").attr('rows', 25);
         $('.request-collapse-document').click(function(){
@@ -189,6 +232,8 @@
                 }
             });
         });
+
+        clear_version();
     });
     
 </script>

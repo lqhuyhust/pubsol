@@ -65,6 +65,12 @@ return [
         ],
         'parameters' => ['request_id'],
     ],
+    'document/version' => [
+        'fnc' => [
+            'delete' => 'milestone.documenthistory.delete',
+        ],
+        'parameters' => ['id'],
+    ],
     'document' => [
         'fnc' => [
             'post' => 'milestone.document.save',

@@ -30,6 +30,10 @@ class DocumentHistoryEntity extends Entity
                     'type' => 'int',
                     'option' => 'unsigned',
                 ],
+                'description' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
                 'modified_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',
