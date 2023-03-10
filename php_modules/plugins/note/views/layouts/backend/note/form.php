@@ -188,9 +188,14 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#open").text(($("#open").text() == 'View Mode') ? 'Edit Mode' : 'View Mode');
             });
 
-            $("#open").click(function () {
-                $("#content").toggleClass("d-none");
-                $("#html_editor").toggleClass("d-none");
+            $("#open").click(function() {
+                if (!$('#sheetToogle').is(":checked")) {
+                    $("#content").toggleClass("d-none");
+                    $("#html_editor").toggleClass("d-none");
+                } else {
+                    $("#content").addClass("d-none");
+                    $("#html_editor").addClass("d-none");
+                }
                 $("#check_mode").toggleClass("d-none");
                 $("#save_and_close").toggleClass("d-none");
                 $("#apply").toggleClass("d-none");
@@ -198,6 +203,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#apply_header").toggleClass("d-none");
                 $("#col-8").toggleClass("col-lg-12");
                 $("#col-4").toggleClass("col-lg-0 d-none");
+                window.dispatchEvent(new Event('resize'));
             });
         } else {
 
@@ -215,9 +221,14 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode');
             });
 
-            $("#open").click(function () {
-                $("#content").toggleClass("d-none");
-                $("#html_editor").toggleClass("d-none");
+            $("#open").click(function() {
+                if (!$('#sheetToogle').is(":checked")) {
+                    $("#content").toggleClass("d-none");
+                    $("#html_editor").toggleClass("d-none");
+                } else {
+                    $("#content").addClass("d-none");
+                    $("#html_editor").addClass("d-none");
+                }
                 $("#check_mode").toggleClass("d-none");
                 $("#content").toggleClass("border");
                 $("#save_and_close").toggleClass("d-none");
@@ -226,11 +237,13 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#apply_header").toggleClass("d-none");
                 $("#col-8").toggleClass("col-lg-12");
                 $("#col-4").toggleClass("col-lg-0 d-none");
+                window.dispatchEvent(new Event('resize'));
             });
         }
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
             $("#col-4").toggleClass("col-lg-0 d-none");
+            window.dispatchEvent(new Event('resize'));
         });
     });
 </script>
@@ -360,6 +373,8 @@ $js = <<<Javascript
         else
         {
             $('#html_editor').addClass('d-none');
+            $('#content').addClass('d-none');
+            window.dispatchEvent(new Event('resize'));
         }
         $('#sheetToogle').change(function()
         {
@@ -367,14 +382,12 @@ $js = <<<Javascript
             {
                 $('#html_editor').addClass('d-none');
                 $('#sheet_description_sheetjs').removeClass('d-none');
-                $('#open').addClass('d-none');
                 reRender_description_sheetjs();
             }
             else
             {
                 $('#html_editor').removeClass('d-none');
                 $('#sheet_description_sheetjs').addClass('d-none');
-                $('#open').removeClass('d-none');
             }
         });
         $("#description").attr('rows', 25);
