@@ -265,6 +265,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
             $("#col-4").toggleClass("col-lg-0 d-none");
+            reRender();
             window.dispatchEvent(new Event('resize'));
         });
     });
