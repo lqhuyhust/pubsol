@@ -15,9 +15,21 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <div class="fw-bold d-flex  mb-2">
                             <span class="me-auto">Description:</span> 
                             <span>
-                                <div id="check_mode" class="form-check form-switch mb-0 d-none">
-                                    <input class="form-check-input" type="checkbox" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
-                                    <label class="form-check-label" for="sheetToogle">Sheet Editor</label>
+                                <div id="check_mode" class="form-check form-switch me-2 mb-0 d-none">
+                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || $this->data && $this->data['editor'] == 'tynimce') ? 'checked' : ''; ?> name="editor" id="tynimceToogle" value="tynimce">
+                                    <label class="form-check-label" for="tynimceToogle">Tynimce Mode</label>
+                                </div>
+                            </span>
+                            <span>
+                                <div id="check_mode" class="form-check me-2 form-switch mb-0">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
+                                    <label class="form-check-label" for="sheetToogle">Sheet Mode</label>
+                                </div>
+                            </span>
+                            <span>
+                                <div id="check_mode" class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="PresenterToogle" value="presenter">
+                                    <label class="form-check-label" for="PresenterToogle">Presenter Mode</label>
                                 </div>
                             </span>
                             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end py-0" style="box-shadow: inherit;">
@@ -30,6 +42,9 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
+                        <div id="presenter_editor" class="d-none">
+                            <?php $this->field('description_presenter'); ?>
+                        </div>
                         <div id="content" class="p-3 d-none text-break">
                             <?php if (isset($this->data['description'])) {
                                 echo $this->data['description'];
@@ -172,6 +187,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $('input#title').focus();
                 return false;
             }
+            var json_data = canvas.toJSON();
+            $('#description').val(JSON.stringify(json_data));
             $('#form_submit').submit();
         });
 
@@ -188,6 +205,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $('input#title').focus();
                 return false;
             }
+            var json_data = canvas.toJSON();
+            $('#description_presenter').val(JSON.stringify(json_data));
             $('#form_submit').submit();
         });
 
@@ -416,18 +435,29 @@ $js = <<<Javascript
                 return false;
             }
         });
-        $('#sheetToogle').change(function()
+        $('input[name="editor"]').change(function()
         {
-            if ($(this).is(":checked"))
-            {
-                $('#html_editor').addClass('d-none');
-                $('#sheet_description_sheetjs').removeClass('d-none');
-                reRender_description_sheetjs();
-            }
-            else
+            var value = $('input[name="editor"]:checked').val();
+            if (value=='tynimce')
             {
                 $('#html_editor').removeClass('d-none');
                 $('#sheet_description_sheetjs').addClass('d-none');
+                $('#presenter_editor').addClass('d-none');
+            }
+
+            if (value=='sheetjs')
+            {
+                $('#html_editor').addClass('d-none');
+                $('#sheet_description_sheetjs').removeClass('d-none');
+                $('#presenter_editor').addClass('d-none');
+            }
+
+            if (value=='presenter')
+            {
+                $('#html_editor').addClass('d-none');
+                $('#sheet_description_sheetjs').addClass('d-none');
+                $('#presenter_editor').removeClass('d-none');
+                reRender();
             }
         });
         $("#description").attr('rows', 25);

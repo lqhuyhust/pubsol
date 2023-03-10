@@ -13,6 +13,17 @@ if(!isset($presenter))
     </div>
     <div class="col-12">
         <div class="container-fluid text-center my-3">
+            <a class="btn btn-primary me-3 previous-button" onclick=""><i class="fa-solid fa-chevron-left"></i>
+            </a>
+            <a class="btn btn-primary me-3 next-button" onclick=""><i class="fa-solid fa-chevron-right"></i>
+            </a>
+            <a class="btn btn-primary me-3" onclick=""><i class="fa-solid fa-plus"></i>
+            </a>
+            <a class="btn btn-danger me-3" onclick=""><i class="fa-solid fa-trash"></i>
+            </a>
+        </div>
+        <div class="container-fluid text-center my-3">
+            
             <a class="btn btn-primary me-3" onclick="addText()">Add Text
             </a>
             <a class="btn btn-primary me-3" onclick="addRect()">Add Rectangle
@@ -23,7 +34,7 @@ if(!isset($presenter))
             </a>
             <a class="btn btn-primary me-3" onclick="addImage()">Add Image
             </a>
-            <a class="btn btn-danger me-3" onclick="remove()">Remove
+            <a class="btn btn-danger me-3 selector-remove-button d-none" onclick="remove()">Remove
             </a>
         </div>
         <div class="container-fluid text-center my-3 d-none" id="editPosition">
@@ -58,12 +69,14 @@ if(!isset($presenter))
         </div>
     </div>
 </div>
+<input name="<?php echo $this->field->name ?>" type="hidden" id="<?php echo $this->field->id ?>" value="<?php echo $this->field->value?>" />
 <script>
+    var data = '<?php echo $this->field->value; ?>';
     $(document).ready(function(){
-        var data = '<?php echo $this->field->value; ?>';
         if (data)
         {
-            Import(data);
+            data = JSON.parse(data);
+            Import(data[0]);
         }
     });
 </script>

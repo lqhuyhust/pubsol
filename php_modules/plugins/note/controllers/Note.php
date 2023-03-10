@@ -162,12 +162,14 @@ class Note extends Admin {
             $tags = $this->request->post->get('tags', '', 'string');
             $description = $this->request->post->get('description', '', 'string');
             $description_sheetjs = $this->request->post->get('description_sheetjs', '', 'string');
+            $description_presenter = $this->request->post->get('description_presenter', '', 'string');
             $findOne = $this->NoteEntity->findOne(['title = "'. $title. '"', 'id <> '. $ids]);
             $files = $this->request->file->get('files', [], 'array');
             $save_close = $this->request->post->get('save_close', '', 'string');
             $note = $this->request->post->get('note', '', 'string');
             $editor = $this->request->post->get('editor', 'html', 'string');
 
+            var_dump($description_presenter); die;
             $listTag = explode(',', $tags);
             $tags_tmp = [];
             foreach($listTag as $tag)

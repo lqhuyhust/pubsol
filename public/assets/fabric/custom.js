@@ -116,6 +116,14 @@ function addImage()
     $('#addImageModal').modal('show');
 }
 
+function reRender()
+{
+    canvas.setDimensions({
+        width: $("#editor-canvas").width(),
+        height: 600
+    });
+}
+
 function remove()
 {
     let activeObjects = canvas.getActiveObjects();
@@ -141,10 +149,12 @@ function updateInfo()
         }
         $('input[name="fill_color"]').val(color);
         $('#editPosition').removeClass('d-none');
+        $('.selector-remove-button').removeClass('d-none');
     }
     else
     {
         $('#editPosition').addClass('d-none');
+        $('.selector-remove-button').addClass('d-none');
         $('#editColor').addClass('d-none');
     }
     
