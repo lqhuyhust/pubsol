@@ -8,11 +8,6 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
         <div class="row">
-            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end" style="box-shadow: inherit;">
-                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
-                    <i class="fa-solid fa-bars fs-2 "></i>
-                </a>
-            </nav>
             <div id="col-8" class="col-lg-8 col-sm-12">
                 <input id="input_title" type="hidden" class="d-none" name="title" required>
                 <div class="row">
@@ -25,6 +20,11 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                                     <label class="form-check-label" for="sheetToogle">Sheet Editor</label>
                                 </div>
                             </span>
+                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end py-0" style="box-shadow: inherit;">
+                                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
+                                    <i class="fa-solid fa-bars fs-2 "></i>
+                                </a>
+                            </nav>
                         </div>
                         <div id="html_editor" class="d-none">
                             <?php $this->field('description'); ?>
