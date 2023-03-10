@@ -23,6 +23,8 @@ return [
     ],
     'note/version' => [
         'fnc' => [
+            'get' => 'note.version.detail',
+            'post' => 'note.version.rollback',
             'delete' => 'note.version.delete'
         ],
         'parameters' => ['id'],

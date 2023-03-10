@@ -30,7 +30,7 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 
                 <div class="d-flex g-3 flex-row align-items-end m-0 pb-3 justify-content-center">
                     <?php $this->field('token'); ?>
-                    <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
+                    <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo 'POST' ?>">
                     <div class="me-2">
                         <a href="<?php echo $this->link_list ?>">
                             <button type="button" class="btn btn-outline-secondary">Cancel</button>
@@ -38,10 +38,7 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     </div>
                     <div class="me-2">
                         <input type="hidden" name="save_close" id="save_close">
-                        <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
-                    </div>
-                    <div class="">
-                        <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
+                        <button type="submit" class="btn btn-outline-success btn_save_close">Rollback</button>
                     </div>
                 </div>
             </div>
@@ -52,24 +49,6 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <?php $this->field('note'); ?>
                     </div>
                 </div>
-                <?php if ($this->data && !$this->data_version) : ?>
-                <div class="row">
-                    <div class="mb-1 col-lg-12 col-sm-12 mx-auto">
-                        <label data-bs-target="#listRevision" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="listRevision" class="form-label fw-bold"><i class="fa-solid fa-clock-rotate-left"></i> Revision: <?php echo count($this->data['versions']);?></label>
-                    </div>
-                    <div class="collapse mb-2" id="listRevision">
-                        <ul class="list-group list-group-flush">
-                            <?php foreach($this->data['versions'] as $item) : ?>
-                            <li class="list-group-item d-flex">
-                                <a href="<?php echo $this->link_form. '/version/'.$item['id']?>">Modified At: <?php echo $item['created_at'] ?> by <?php echo $item['created_by'] ?></a>
-                                <a href="#" class="clear-version ms-auto" data-version-id="<?php echo $item['id']?>"><i class="fa-solid fa-trash"></i></a>
-                            </li>
-                            <?php endforeach;?>
-                        </ul>
-                        
-                    </div>
-                </div>
-                <?php endif; ?>
                 <div class="row pt-3" style="display: none">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Tags:</label>
@@ -87,60 +66,12 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         </select>
                     </div>
                 </div>
-                <label class="form-label fw-bold pt-2">Attachments:</label>
-                <input name="files[]" type="file" multiple id="file" class="form-control">
-                <div class="d-flex flex-wrap pt-4">
-                    <?php foreach ($this->attachments as $item) :
-                        $extension = @end(explode('.', $item['path']));
-                        if (in_array($extension, ['png', 'jpg', 'jpeg'])) {
-                            $path = file_exists(PUBLIC_PATH . $item['path']) ? $this->url . $item['path'] : $this->url . 'media/default/default_image.png';
-                        }
-                        elseif($extension == 'pdf')
-                        {
-                            $path = $this->url . 'media/default/default_pdf.png';
-                        }
-                        elseif(in_array($extension, ['doc', 'docx']))
-                        {
-                            $path = $this->url . 'media/default/default_doc.png';
-                        } 
-                        elseif(in_array($extension, ['xlsx', 'csv']))
-                        {
-                            $path = $this->url . 'media/default/default_excel.png';
-                        }
-                        else
-                        {
-                            $path = $this->url . 'media/default/default_file.png';
-                        }
-                        ?>
-                        <div class="card border shadow-none d-flex flex-column me-2 justify-content-center" style="width: auto;">
-                            <a href="<?php echo file_exists(PUBLIC_PATH. $item['path'] ) ? $this->url . $item['path'] : '' ?>" target="_blank" class="h-100 my-2 px-2 mx-auto" title="<?php echo $item['name']; ?>" style="">
-                                <img style="height: 120px; max-width: 100%;" src="<?php echo $path ?>" alt="<?php echo $item['name']; ?>">
-                            </a>
-                            <div class="card-body d-flex">
-                                <p class="card-text fw-bold m-0 me-2"><?php echo $item['name']; ?> </p>
-                                <a data-id="<?php echo $item['id']?>" class="ms-auto me-2 button_download_item fs-4"><i class="fa-solid fa-download"></i></a>
-                                <a data-id="<?php echo $item['id']?>" class="ms-auto button_delete_item fs-4"><i class="fa-solid fa-trash"></i></a>
-                            </div>
-                        </div>
-                        <div class="d-block">
-                            
-                        </div>
-                    <?php endforeach; ?>
-                </div>
             </div>
 
         </div>
         
     </form>
 </div>
-<form class="hidden" method="POST" id="form_delete">
-    <input type="hidden" value="<?php echo $this->token ?>" name="token">
-    <input type="hidden" value="DELETE" name="_method">
-</form>
-<form class="hidden" method="POST" id="form_download">
-    <input type="hidden" value="<?php echo $this->token ?>" name="token">
-    <input type="hidden" value="POST" name="_method">
-</form>
 <style>
     span.select2 {
         width: 100% !important;
@@ -151,36 +82,20 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
 
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
-            $("#save_close").val(1);
-            $('input#input_title').val($('input#title').val());
-            if (!$('input#title').val())
+            var result = confirm("You are going to rollback. Are you sure ?");
+            if (result) {
+                $("#save_close").val(1);
+                $('#form_submit').submit();
+            }
+            else
             {
-                alert("Please enter a valid Title");
-                $('html, body').animate({
-                    scrollTop: 0
-                });
-                $('input#title').focus();
                 return false;
             }
-            $('#form_submit').submit();
+            
+            
         });
 
-        $(".btn_apply").click(function(e) {
-            e.preventDefault();
-            $("#save_close").val(0);
-            $('input#input_title').val($('input#title').val());
-            if (!$('input#title').val())
-            {
-                alert("Please enter a valid Title");
-                $('html, body').animate({
-                    scrollTop: 0
-                });
-                $('input#title').focus();
-                return false;
-            }
-            $('#form_submit').submit();
-        });
-        
+
     });
     
 </script>
@@ -346,17 +261,6 @@ $js = <<<Javascript
             var result = confirm("You are going to delete 1 file(s) attchament. Are you sure ?");
             if (result) {
                 $('#form_delete').attr('action', '{$this->link_form_attachment}' + id);
-                $('#form_delete').submit();
-            }
-            else
-            {
-                return false;
-            }
-        });
-        $(".button_download_item").click(function() {
-            var id = $(this).data('id');
-            if (id) {
-                $('#form_delete').attr('action', '{$this->link_form_download_attachment}' + id);
                 $('#form_delete').submit();
             }
             else
