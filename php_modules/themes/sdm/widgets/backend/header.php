@@ -13,10 +13,26 @@
                 </a>
             </div>
             <div class="me-2">
-                <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
+                <button id="save_and_close_header" type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
             </div>
-            <div class="">
-                <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
+            <div class="me-2">
+                <button id="apply_header" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
+            </div>
+            <script>
+                var url = window.location.pathname;
+                var id = url.substring(url.lastIndexOf('/') + 1);
+                if (id != 0) {
+                    var tmp = 'Edit Mode';
+                } else {
+                    var tmp = 'View Mode';
+                }
+            </script>
+            <div class="" id="mode">
+                <button id="open" type="button" class="btn btn-outline-success">
+                    <script>
+                        document.write(tmp)
+                    </script>
+                </button>
             </div>
         </div>
 

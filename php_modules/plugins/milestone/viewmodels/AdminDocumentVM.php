@@ -56,10 +56,24 @@ class AdminDocumentVM extends ViewModel
             $item['user'] = $user_tmp ? $user_tmp['name'] : '';
         }
 
+        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
+        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
+        foreach($tmp_request as $tmp_item) {
+        }
+        if(strcmp($tmp_item['version_id'], '0') == 0) {
+            $status = false;
+        } elseif ($version_lastest > $tmp_item['version_id']) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
         $this->set('form', $form, true);
         $this->set('data', $data, true);
         $this->set('history', $history ? $history : []);
         $this->set('discussion', $discussion ? $discussion : []);
+        $this->set('status', $status, true);
         $this->set('editor', $editor);
         $this->set('user_id', $this->user->get('id'));
         $this->set('title_page_document', $title_page, true);

@@ -22,10 +22,11 @@
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center m-0">
-                                    <?php $this->field('token'); ?>
+                                    <?php $this->field('token'); if(!$this->status) {?>
                                     <div class="col-xl-12 col-sm-12 text-center">
                                         <button type="submit" class="btn btn-outline-success">Apply</button>
                                     </div>
+                                    <?php } ?>
                                 </div>
                             </form>
                         <?php else :
@@ -64,7 +65,9 @@
                                     <div class="form-notch-trailing"></div>
                                 </div>
                             </div>
-                            <button type="submit" class="mt-2 btn btn-info btn-rounded float-end">Comment</button>
+                            <?php if(!$this->status) {?>
+                                <button type="submit" class="mt-2 btn btn-info btn-rounded float-end">Comment</button>
+                            <?php } ?>
                         </form>
                     </div>
                     <div class="col-12">

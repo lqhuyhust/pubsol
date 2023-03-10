@@ -16,9 +16,11 @@
                             <div class="col-6 text-end pe-0">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                             </div>
+                            <?php if(!$this->status) {?>
                             <div class="col-6 text-end pe-0">
                                 <button type="submit" class="btn btn-outline-success">Save</button>
                             </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -67,3 +69,11 @@
         });
     });
 </script>
+<?php
+$js = <<<Javascript
+$(document).ready(function() {
+    $('#note_id').select2({dropdownParent:  "#exampleModalToggle"});
+  });
+Javascript;
+
+$this->theme->addInline('js', $js);

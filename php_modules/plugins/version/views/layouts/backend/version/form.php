@@ -53,7 +53,7 @@
                                 <button type="button" class="btn btn-outline-secondary fs-4" data-bs-dismiss="modal">Cancel</button>
                             </div>
                             <div class="">
-                                <button type="submit" class="btn btn-outline-success fs-4">Save</button>
+                                <button id="save" type="submit" class="btn btn-outline-success fs-4">Save</button>
                             </div>
                         </div>
                     </div>

@@ -68,9 +68,14 @@ class AdminRequestsVM extends ViewModel
             $user_tmp = $this->UserEntity->findByPK($item['created_by']);
             $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
         }
+
+        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
+
+        $list   = new Listing($result, $total, $limit, $this->getColumns());
         
-        $list   = new Listing($result, $total, $limit, $this->getColumns() );
         $this->set('list', $list, true);
+        $this->set('version_lastest', $version_lastest, true);
         $this->set('page', $page, true);
         $this->set('start', $start, true);
         $this->set('sort', $sort, true);
