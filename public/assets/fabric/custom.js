@@ -2,7 +2,7 @@ var canvas;
 var activeObject;
 function initCanvas(element)
 {
-    canvas = this.__canvas = new fabric.Canvas('c');
+    canvas = this.__canvas = new fabric.Canvas('canvas');
     canvas.setDimensions({
         width: element.width(),
         height: 600
@@ -61,6 +61,7 @@ function addArrow(){
     var objs = [line, triangle];
 
     var alltogetherObj = new fabric.Group(objs);
+    alltogetherObj.set('fill', '#ff0000');
     canvas.add(alltogetherObj);
     canvas.setActiveObject(alltogetherObj);
 }
@@ -86,8 +87,7 @@ function Save() {
     localStorage.setItem("data", JSON.stringify(json));
 }
 
-function Import() {
-    var data = localStorage.getItem('data');
+function Import(data) {
     canvas.loadFromJSON(data, function() {
         canvas.renderAll();
     });
@@ -132,13 +132,15 @@ canvas.on('selection:cleared', updateInfo);
 function updateInfo()
 {
     activeObject = canvas.getActiveObject();
-    console.log(activeObject);
     if(activeObject)
     {
         color = activeObject.get('fill');
-        opacity = activeObject.get('opacity') * 100;
+        if (color != 'rgb(0,0,0)'){
+            $('#editColor').removeClass('d-none');
+            $('#color-fill').text(color);
+        }
+        $('input[name="fill_color"]').val(color);
         $('#editPosition').removeClass('d-none');
-        $('#editColor').removeClass('d-none');
     }
     else
     {
@@ -202,6 +204,27 @@ $(document).ready(function(){
         fabric.Image.fromURL(image, (img) => {
             canvas.add(img); 
         });
+        $('input[name="add_image"]').val('');
         $('#addImageModal').modal('hide');
     })
+
+    $('input[name="fill_color"]').change(function(){
+        activeObject = canvas.getActiveObject();
+        if (activeObject)
+        {
+            activeObject.set('fill', $(this).val());
+            objects = activeObject.getObjects();
+            objects.forEach(element => {
+                element.set('fill', $(this).val());
+                element.set('stroke', $(this).val());
+            });
+            canvas.requestRenderAll();
+        }
+        canvas.renderAll();
+    });
+
+    canvas.setDimensions({
+        width: $("#editor-canvas").width(),
+        height: 600
+    });
 });

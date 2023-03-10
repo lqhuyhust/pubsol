@@ -99,6 +99,11 @@ class AdminNoteVM extends ViewModel
                 'showLabel' => false,
                 'formClass' => 'field-sheetjs',
             ],
+            'description_presenter' => [
+                'presenter',
+                'showLabel' => false,
+                'formClass' => 'field-presenter',
+            ],
             'note' => [
                 'textarea',
                 'showLabel' => false,
