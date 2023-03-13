@@ -259,6 +259,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $("#apply").addClass("d-none");
                 $("#save_and_close_header").addClass("d-none");
                 $("#apply_header").addClass("d-none");
+                openModeEditor();
             }
         });
         
@@ -278,6 +279,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             {
                 $("#content").removeClass("d-none");
                 $("#content").addClass("border");
+                $('#html_editor').addClass('d-none');
             }
             else
             {

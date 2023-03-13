@@ -61,6 +61,7 @@ class AdminNoteVM extends ViewModel
             }
 
             $data['versions'] = $versions;
+            $data['editor'] = $data['editor'] == 'html' ? 'tynimce' : $data['editor'];
         }
         
         $data_tags = [];
@@ -69,7 +70,7 @@ class AdminNoteVM extends ViewModel
             $data_tags = $this->TagEntity->list(0, 1000, $where);
         }
         $attachments = $this->AttachmentEntity->list(0, 0, ['note_id = '. $id]);
-
+        
         if ($data && $data['editor'] == 'presenter')
         {
             $data['description_presenter'] = $data['description'];
