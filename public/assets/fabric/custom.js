@@ -2,27 +2,35 @@ var canvas;
 var activeObject;
 function initCanvas(element)
 {
-    canvas = this.__canvas = new fabric.Canvas('canvas');
+    if (!canvas)
+    {
+        canvas = new fabric.Canvas('canvas');
+    }
     canvas.setDimensions({
         width: element.width(),
         height: 600
     });
 
     canvas.setBackgroundColor('#565656', canvas.renderAll.bind(canvas));
+    canvas.on('selection:updated', updateInfo);
+    canvas.on('selection:created', updateInfo);
+    canvas.on('selection:cleared', updateInfo);
 }
 initCanvas($('#editor-canvas'));
+
 // create a rect object
 
 function addRect(){
     var rect = new fabric.Rect({
         left: canvas.width / 2,
         top: canvas.height / 2,
-        fill: '#ffa726',
+        fill: 'transparent',
         width: 100,
         height: 100,
         originX: 'center',
         originY: 'center',
-        strokeWidth: 0
+        stroke: '#000000',
+        strokeWidth: 1
     });
     canvas.add(rect);
     canvas.setActiveObject(rect);
@@ -32,11 +40,12 @@ function addCircle() {
     var circl = new fabric.Circle({
         left: canvas.width / 2,
         top: canvas.height / 2,
-        fill: '#26a69a',
+        fill: 'transparent',
         radius: 50,
         originX: 'center',
         originY: 'center',
-        strokeWidth: 0
+        stroke: '#000000',
+        strokeWidth: 1
     });
     canvas.add(circl);
     canvas.setActiveObject(circl);
@@ -82,14 +91,10 @@ function renderIcon(ctx, left, top, styleOverride, fabricObject) {
     ctx.restore();
 }
 
-function Save() {
-    var json = canvas.toJSON();
-    localStorage.setItem("data", JSON.stringify(json));
-}
-
 function Import(data) {
     canvas.loadFromJSON(data, function() {
         canvas.renderAll();
+        reRender();
     });
 }
 
@@ -98,7 +103,7 @@ function addText()
     let text = new fabric.IText('Text', {
         left: canvas.width / 2,
         top: canvas.height / 2,
-        fill: '#e0f7fa',
+        fill: '#000000',
         fontFamily: 'sans-serif',
         hasRotatingPoint: false,
         centerTransform: true,
@@ -118,10 +123,25 @@ function addImage()
 
 function reRender()
 {
-    canvas.setDimensions({
-        width: $("#editor-canvas").width(),
-        height: 600
-    });
+    backgroundImage = canvas.backgroundImage;
+    var current_width = $("#editor-canvas").width();
+    var current_height = $("#editor-canvas").height();
+    if (backgroundImage)
+    {
+        let width = backgroundImage.getScaledWidth();
+        let height = backgroundImage.getScaledHeight();
+
+        canvas.setDimensions({
+            width:  width,
+            height: height
+        });
+    }
+    else{
+        canvas.setDimensions({
+            width: $("#editor-canvas").width(),
+            height: 600
+        });
+    }
 }
 
 function remove()
@@ -133,21 +153,38 @@ function remove()
     }
 }
 
-canvas.on('selection:updated', updateInfo);
-canvas.on('selection:created', updateInfo);
-canvas.on('selection:cleared', updateInfo);
-
 function updateInfo()
 {
     activeObject = canvas.getActiveObject();
     if(activeObject)
     {
         color = activeObject.get('fill');
-        if (color != 'rgb(0,0,0)'){
-            $('#editColor').removeClass('d-none');
-            $('#color-fill').text(color);
+        if (activeObject.type == 'image')
+        {
+            $('.change-color').addClass('d-none');
+            $('.change-border-color').addClass('d-none');
         }
+        else if(activeObject.type == 'i-text')
+        {
+            $('.change-color').removeClass('d-none');
+            $('.change-border-color').addClass('d-none');
+        }
+        else if(activeObject.type == 'circle' || activeObject.type == 'rect')
+        {
+            $('.change-color').removeClass('d-none');
+            $('.change-border-color').removeClass('d-none');
+
+            var border = activeObject.get('stroke');
+            $('input[name="fill_border_color"]').val(border);
+            $('#border-color-fill').text(border);
+        }
+        else{
+            $('.change-color').removeClass('d-none');
+            $('.change-border-color').addClass('d-none');
+        }
+        
         $('input[name="fill_color"]').val(color);
+        $('#color-fill').text(color);
         $('#editPosition').removeClass('d-none');
         $('.selector-remove-button').removeClass('d-none');
     }
@@ -158,6 +195,26 @@ function updateInfo()
         $('#editColor').addClass('d-none');
     }
     
+}
+
+function loadPagination(totalPage = 0, index = 0)
+{
+    $('.next-button').removeClass('d-none');
+    $('.previous-button').removeClass('d-none');
+
+    $('.index-page-canvas').text(index);
+    $('.total-page-canvas').text(totalPage);
+
+
+    if (!totalPage || !index || totalPage == 1 || index == 1) 
+    {
+        $('.previous-button').addClass('d-none');
+    }
+
+    if (!totalPage || index == totalPage) 
+    {
+        $('.next-button').addClass('d-none');
+    }
 }
 
 function sendToBack()
@@ -212,7 +269,11 @@ $(document).ready(function(){
     $('.import-image').on('click', function(){
         var image = $('input[name="add_image"]').val();
         fabric.Image.fromURL(image, (img) => {
-            canvas.add(img); 
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+                scaleX: canvas.width / img.width,
+                scaleY: canvas.width / img.width
+            });
+            reRender();
         });
         $('input[name="add_image"]').val('');
         $('#addImageModal').modal('hide');
@@ -223,7 +284,7 @@ $(document).ready(function(){
         if (activeObject)
         {
             activeObject.set('fill', $(this).val());
-
+            $('#color-fill').text($(this).val());
             if (typeof activeObject.getObjects === "function")
             {
                 objects = activeObject.getObjects();
@@ -233,14 +294,24 @@ $(document).ready(function(){
                 });
             }
             
-            console.log('tea');
             canvas.requestRenderAll();
         }
         canvas.renderAll();
     });
 
-    canvas.setDimensions({
-        width: $("#editor-canvas").width(),
-        height: 600
+    $('input[name="fill_border_color"]').change(function(){
+        activeObject = canvas.getActiveObject();
+        if (activeObject)
+        {
+            activeObject.set('stroke', $(this).val());
+            $('#border-color-fill').text($(this).val());
+            canvas.requestRenderAll();
+        }
+        canvas.renderAll();
     });
+
+    // canvas.setDimensions({
+    //     width: $("#editor-canvas").width(),
+    //     height: 600
+    // });
 });

@@ -8,18 +8,24 @@ if(!isset($presenter))
 }
 ?>
 <div class="row">
-    <div class="col-12" id="editor-canvas">
+    <div class="col-12 overflow-auto" id="editor-canvas" >
         <canvas id="canvas"></canvas>
     </div>
     <div class="col-12">
         <div class="container-fluid text-center my-3">
-            <a class="btn btn-primary me-3 previous-button" onclick=""><i class="fa-solid fa-chevron-left"></i>
+            <span class="index-page-canvas">
+            </span> / 
+            <span class="total-page-canvas">
+            </span>
+        </div>
+        <div class="container-fluid text-center my-3">
+            <a class="btn btn-primary me-3 previous-button"><i class="fa-solid fa-chevron-left"></i>
             </a>
-            <a class="btn btn-primary me-3 next-button" onclick=""><i class="fa-solid fa-chevron-right"></i>
+            <a class="btn btn-primary me-3 next-button"><i class="fa-solid fa-chevron-right"></i>
             </a>
-            <a class="btn btn-primary me-3" onclick=""><i class="fa-solid fa-plus"></i>
+            <a class="btn btn-primary me-3 add-button"><i class="fa-solid fa-plus"></i>
             </a>
-            <a class="btn btn-danger me-3" onclick=""><i class="fa-solid fa-trash"></i>
+            <a class="btn btn-danger me-3 remove-button"><i class="fa-solid fa-trash"></i>
             </a>
         </div>
         <div class="container-fluid text-center my-3">
@@ -47,13 +53,19 @@ if(!isset($presenter))
             <a class="btn btn-primary" onclick="sendToBack()">⇓
             </a>
             <div class="d-flex justify-content-center mt-3">
-                <input class="me-3" type="color" name="fill_color">
-                <h3>Fill: <span id="color-fill"></span></h3>
+                <div class="change-color d-flex me-3">
+                    <input class="me-3" type="color" name="fill_color">
+                    <h3>Color: <span id="color-fill"></span></h3>.
+                </div>
+                <div class="change-border-color d-flex">
+                    <input class="me-3" type="color" name="fill_border_color">
+                    <h3>Border Color: <span id="border-color-fill"></span></h3>.
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="addImageModal" aria-hidden="true" aria-labelledby="addImageModalLabel" tabindex="-1">
+<div class="modal fade" id="addImageModal" aria-hidden="true" aria-labelledby="addImageModalLabel" tabcanvas_index="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
@@ -69,15 +81,70 @@ if(!isset($presenter))
         </div>
     </div>
 </div>
-<input name="<?php echo $this->field->name ?>" type="hidden" id="<?php echo $this->field->id ?>" value="<?php echo $this->field->value?>" />
+<input name="<?php echo $this->field->name ?>" type="hidden" id="<?php echo $this->field->id ?>" value='<?php echo $this->field->value ?>' />
 <script>
-    var data = '<?php echo $this->field->value; ?>';
+    var data_canvas = $('#description_presenter').val();
+    data_canvas = JSON.parse(data_canvas);
+    var total_page_canvas = 1;
+    var canvas_index = 1;
     $(document).ready(function(){
-        if (data)
+
+        
+        if (data_canvas)
         {
-            data = JSON.parse(data);
-            console.log(data);
-            Import(data);
+            total_page_canvas = data_canvas.lenght;
+            Import(JSON.parse(data_canvas[canvas_index]));
         }
+        else
+        {
+            data_canvas = [];
+        }
+
+        loadPagination(total_page_canvas, canvas_index);
+        $('.remove-button').on('click', function(){
+            var result = confirm("You are going to delete 1 item. Are you sure ?");
+            if (result) {
+                data_canvas = data_canvas.splice(canvas_index);
+                if (total_page_canvas > 1)
+                {
+                    total_page_canvas--;
+                }
+                canvas.clear();
+                initCanvas($('#editor-canvas'));
+                reRender();
+            }
+            else
+            {
+                return false;
+            }
+        })
+
+        $('.add-button').on('click', function(){
+            data_canvas[canvas_index] = JSON.stringify(canvas.toJSON());
+            total_page_canvas++;
+            canvas_index++;
+            canvas.clear();
+            initCanvas($('#editor-canvas'));
+            reRender();
+            loadPagination(total_page_canvas, canvas_index);
+        });
+
+        $('.previous-button').on("click", function()
+        {
+            data_canvas[canvas_index] = JSON.stringify(canvas.toJSON());
+            canvas_index--;
+            loadPagination(total_page_canvas, canvas_index);
+            var content = JSON.parse(data_canvas[canvas_index]);
+            Import(content);
+        });
+
+        $('.next-button').on("click", function()
+        {
+            data_canvas[canvas_index] = JSON.stringify(canvas.toJSON());
+            canvas_index++;
+            loadPagination(total_page_canvas, canvas_index);
+            var content = JSON.parse(data_canvas[canvas_index]);
+            Import(content);
+        });
     });
 </script>

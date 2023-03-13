@@ -188,8 +188,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $('input#title').focus();
                 return false;
             }
-            var json_data = canvas.toJSON();
-            $('#description').val(JSON.stringify(json_data));
+            data_canvas[canvas_index] = canvas.toJSON();
+            $('#description_presenter').val(JSON.stringify(data_canvas));
             $('#form_submit').submit();
         });
 
@@ -206,8 +206,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 $('input#title').focus();
                 return false;
             }
-            var json_data = canvas.toJSON();
-            $('#description_presenter').val(JSON.stringify(json_data));
+            data_canvas[canvas_index] = canvas.toJSON();
+            $('#description_presenter').val(JSON.stringify(data_canvas));
             $('#form_submit').submit();
         });
 
