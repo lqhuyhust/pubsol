@@ -46,6 +46,7 @@ class AdminNoteHistoryVM extends ViewModel
         if ($data)
         {
             $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
+            $data['description_presenter'] = $data['description'];
             $versions = $this->NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
             $versions = $versions ? $versions : [];
 
@@ -65,9 +66,11 @@ class AdminNoteHistoryVM extends ViewModel
         }
         $attachments = $this->AttachmentEntity->list(0, 0, ['note_id = '. $id]);
         $form = new Form($this->getFormFields(), $data);
+        $view_mode = true;
 
         $this->set('form', $form, true);
         $this->set('data', $data, true);
+        $this->set('view_mode', $view_mode, true);
         $this->set('data_tags', $data_tags, true);
         $this->set('version', $version, true);
         $this->set('attachments', $attachments);
@@ -91,6 +94,11 @@ class AdminNoteHistoryVM extends ViewModel
                 'sheetjs',
                 'showLabel' => false,
                 'formClass' => 'field-sheetjs',
+            ],
+            'description_presenter' => [
+                'presenter',
+                'showLabel' => false,
+                'formClass' => 'field-presenter',
             ],
             'note' => [
                 'textarea',

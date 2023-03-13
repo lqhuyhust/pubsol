@@ -18,7 +18,7 @@ if(!isset($presenter))
             <span class="total-page-canvas">
             </span>
         </div>
-        <div class="container-fluid text-center my-3">
+        <div class="container-fluid text-center my-3" id="fabric_slide_menu">
             <a class="btn btn-primary me-3 previous-button"><i class="fa-solid fa-chevron-left"></i>
             </a>
             <a class="btn btn-primary me-3 next-button"><i class="fa-solid fa-chevron-right"></i>
@@ -28,7 +28,7 @@ if(!isset($presenter))
             <a class="btn btn-danger me-3 remove-button"><i class="fa-solid fa-trash"></i>
             </a>
         </div>
-        <div class="container-fluid text-center my-3">
+        <div class="container-fluid text-center my-3" id="fabric_tool_menu">
             
             <a class="btn btn-primary me-3" onclick="addText()">Add Text
             </a>
@@ -84,16 +84,15 @@ if(!isset($presenter))
 <input name="<?php echo $this->field->name ?>" type="hidden" id="<?php echo $this->field->id ?>" value='<?php echo $this->field->value ?>' />
 <script>
     var data_canvas = $('#description_presenter').val();
-    data_canvas = JSON.parse(data_canvas);
+    data_canvas = data_canvas ? JSON.parse(data_canvas) : [];
     var total_page_canvas = 1;
-    var canvas_index = 1;
+    var canvas_index = 0;
     $(document).ready(function(){
 
-        
-        if (data_canvas)
+        if (data_canvas && data_canvas.length)
         {
-            total_page_canvas = data_canvas.lenght;
-            Import(JSON.parse(data_canvas[canvas_index]));
+            total_page_canvas = data_canvas.length;
+            Import(data_canvas[canvas_index]);
         }
         else
         {
@@ -112,6 +111,7 @@ if(!isset($presenter))
                 canvas.clear();
                 initCanvas($('#editor-canvas'));
                 reRender();
+                loadPagination(total_page_canvas, canvas_index);
             }
             else
             {
@@ -120,7 +120,7 @@ if(!isset($presenter))
         })
 
         $('.add-button').on('click', function(){
-            data_canvas[canvas_index] = JSON.stringify(canvas.toJSON());
+            data_canvas[canvas_index] = canvas.toJSON();
             total_page_canvas++;
             canvas_index++;
             canvas.clear();
@@ -131,19 +131,19 @@ if(!isset($presenter))
 
         $('.previous-button').on("click", function()
         {
-            data_canvas[canvas_index] = JSON.stringify(canvas.toJSON());
+            data_canvas[canvas_index] = canvas.toJSON();
             canvas_index--;
             loadPagination(total_page_canvas, canvas_index);
-            var content = JSON.parse(data_canvas[canvas_index]);
+            var content = data_canvas[canvas_index];
             Import(content);
         });
 
         $('.next-button').on("click", function()
         {
-            data_canvas[canvas_index] = JSON.stringify(canvas.toJSON());
+            data_canvas[canvas_index] = canvas.toJSON();
             canvas_index++;
             loadPagination(total_page_canvas, canvas_index);
-            var content = JSON.parse(data_canvas[canvas_index]);
+            var content = data_canvas[canvas_index];
             Import(content);
         });
     });

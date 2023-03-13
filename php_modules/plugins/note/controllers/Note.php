@@ -51,6 +51,7 @@ class Note extends Admin {
         $tags = $this->request->post->get('tags', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
         $description_sheetjs = $this->request->post->get('description_sheetjs', '', 'string');
+        $description_presenter = $this->request->post->get('description_presenter', '', 'string');
         $save_close = $this->request->post->get('save_close', '', 'string');
         $files = $this->request->file->get('files', [], 'array');
         $note = $this->request->post->get('note', '', 'string');
@@ -78,6 +79,11 @@ class Note extends Admin {
         if ($editor == 'sheetjs')
         {
             $description = base64_decode($description_sheetjs);
+        }
+
+        if ($editor == 'presenter')
+        {
+            $description = $description_presenter;
         }
 
         if (!$title)

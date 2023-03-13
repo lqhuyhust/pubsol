@@ -1,30 +1,55 @@
 <?php
-$this->theme->add( $this->url .'assets/css/select2.min.css', '', 'select2-css');
-$this->theme->add( $this->url .'assets/css/select2_custom.css', '', 'select2-custom-css');
-$this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
-$this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
+$this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
+$this->theme->add($this->url . 'assets/css/select2_custom.css', '', 'select2-custom-css');
+$this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
+$this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 ?>
 <?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
-        <div class="row g-3">
-            <div class="col-lg-8 col-sm-12">
+        <div class="row">
+            <div id="col-8" class="col-lg-8 col-sm-12">
                 <input id="input_title" type="hidden" class="d-none" name="title" required>
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <div class="fw-bold d-flex  mb-2">
                             <span class="me-auto">Description:</span> 
                             <span>
-                                <div class="form-check form-switch mb-0">
-                                    <input class="form-check-input" type="checkbox" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
-                                    <label class="form-check-label" for="sheetToogle">Sheet Editor</label>
+                                <div class="button-editor-mode form-check form-switch me-2 mb-0">
+                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || $this->data && $this->data['editor'] == 'tynimce') ? 'checked' : ''; ?> name="editor" id="tynimceToogle" value="tynimce">
+                                    <label class="form-check-label" for="tynimceToogle">Tynimce Mode</label>
                                 </div>
                             </span>
+                            <span>
+                                <div class=" button-editor-mode form-check me-2 form-switch mb-0">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
+                                    <label class="form-check-label" for="sheetToogle">Sheet Mode</label>
+                                </div>
+                            </span>
+                            <span>
+                                <div class="button-editor-mode form-check form-switch mb-0">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'presenter') ? 'checked' : ''; ?> name="editor" id="PresenterToogle" value="presenter">
+                                    <label class="form-check-label" for="PresenterToogle">Presenter Mode</label>
+                                </div>
+                            </span>
+                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end py-0" style="box-shadow: inherit;">
+                                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
+                                    <i class="fa-solid fa-bars fs-2 "></i>
+                                </a>
+                            </nav>
                         </div>
-                        <div id="html_editor">
+                        <div id="html_editor" class="d-none">
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
+                        <div id="presenter_editor" class="d-none">
+                            <?php $this->field('description_presenter'); ?>
+                        </div>
+                        <div id="content" class="p-3 d-none text-break">
+                            <?php if (isset($this->data['description'])) {
+                                echo $this->data['description'];
+                            } ?>
+                        </div>
                     </div>
                 </div>
                 
@@ -42,7 +67,7 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12">
+            <div id="col-4" class="col-lg-4 col-sm-12">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Note:</label>
@@ -78,7 +103,15 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
     }
 </style>
 <script>
+    var view_mode = '<?php echo $this->view_mode ?>';
     $(document).ready(function(e) {
+        var editor = '<?php echo $this->data ? $this->data['editor'] : '' ?>';
+        fabric.Object.prototype.selectable = false;
+        canvas.selection = false;
+        $('#editPosition').html('');
+        $('#fabric_tool_menu').html('');
+        $('#fabric_slide_menu .add-button').remove();
+        $('#fabric_slide_menu .remove-button').remove();
 
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
@@ -95,9 +128,67 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
             
         });
 
+        if(view_mode) {
+            $("#save_and_close").addClass("d-none");
+            $("#apply").addClass("d-none");
+            $("#save_and_close_header").addClass("d-none");
+            $("#apply_header").addClass("d-none");
+            $("#col-8").addClass("col-lg-12");
+            $("#col-4").addClass("col-lg-0 d-none");
+            $(".button-editor-mode").addClass('d-none');
+            openModeEditor();
+        } else {
+            $("#html_editor").removeClass("d-none");
+            $("#check_mode").removeClass("d-none");
+            $("#content").removeClass("border");
+            $("#save_and_close").removeClass("d-none");
+            $("#apply").removeClass("d-none");
+            $("#save_and_close_header").removeClass("d-none");
+            $("#apply_header").removeClass("d-none");
+            openModeEditor();
+        }
 
+        $("#sidebarToggle").click(function() {
+            $("#col-8").toggleClass("col-lg-12");
+            $("#col-4").toggleClass("col-lg-0 d-none");
+            reRender();
+            window.dispatchEvent(new Event('resize'));
+        });
     });
-    
+
+    function openModeEditor() {
+        var value = $('input[name="editor"]:checked').val();
+        if (value=='tynimce')
+        {
+            if (view_mode)
+            {
+                $("#content").removeClass("d-none");
+                $("#content").addClass("border");
+                $('#html_editor').addClass('d-none');
+            }
+            else
+            {
+                $('#html_editor').removeClass('d-none');
+                $('#sheet_description_sheetjs').addClass('d-none');
+                $('#presenter_editor').addClass('d-none');
+            }
+        }
+
+        if (value=='sheetjs')
+        {
+            $('#html_editor').addClass('d-none');
+            $('#sheet_description_sheetjs').removeClass('d-none');
+            $('#presenter_editor').addClass('d-none');
+        }
+
+        if (value=='presenter')
+        {
+            $('#html_editor').addClass('d-none');
+            $('#sheet_description_sheetjs').addClass('d-none');
+            $('#presenter_editor').removeClass('d-none');
+            reRender();
+        }
+    }
 </script>
 <?php
 $js = <<<Javascript
@@ -221,11 +312,12 @@ $js = <<<Javascript
         if (!$('#sheetToogle').is(":checked"))
         {
             $('#sheet_description_sheetjs').addClass('d-none');
-            $('#html_editor').removeClass('d-none');
         }
         else
         {
             $('#html_editor').addClass('d-none');
+            $('#content').addClass('d-none');
+            window.dispatchEvent(new Event('resize'));
         }
 
         $('.clear-version').on('click', function(){
@@ -241,19 +333,9 @@ $js = <<<Javascript
                 return false;
             }
         });
-        $('#sheetToogle').change(function()
+        $('input[name="editor"]').change(function()
         {
-            if ($(this).is(":checked"))
-            {
-                $('#html_editor').addClass('d-none');
-                $('#sheet_description_sheetjs').removeClass('d-none');
-                reRender_description_sheetjs();
-            }
-            else
-            {
-                $('#html_editor').removeClass('d-none');
-                $('#sheet_description_sheetjs').addClass('d-none');
-            }
+            openModeEditor();
         });
         $("#description").attr('rows', 25);
         $(".button_delete_item").click(function() {
