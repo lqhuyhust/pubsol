@@ -19,8 +19,9 @@
     <td><?php echo   $this->item['creator'] ?></td>
     <td><?php echo   date('Y-m-d', strtotime($this->item['deadline_at'])) ?></td>
     <td><?php echo   date('Y-m-d', strtotime($this->item['finished_at'])) ?></td>
-    <td><?php echo $status ? 'Enabled' : 'Disabled';?></td>
+    <td><?php echo $status ? 'Disabled' : 'Enabled';?></td>
     <td>
+        <?php if(!$status) { ?>
         <a class="fs-4 me-1 show_data" 
             href="#"
             data-id="<?php echo  $this->item['id'] ?>" 
@@ -33,6 +34,7 @@
             data-bs-target="#exampleModalToggle">
             <i class="fa-solid fa-pen-to-square"></i>
         </a>
+         <?php } ?>
     </td>
     <td></td>
 </tr>
