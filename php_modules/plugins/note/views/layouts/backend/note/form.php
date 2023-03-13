@@ -112,6 +112,12 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         </select>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
+                        <label class="form-label fw-bold">Parent Note:</label>
+                        <?php $this->field('parent_note'); ?>
+                    </div>
+                </div>
                 <label class="form-label fw-bold pt-2">Attachments:</label>
                 <input name="files[]" type="file" multiple id="file" class="form-control">
                 <div class="d-flex flex-wrap pt-4">
