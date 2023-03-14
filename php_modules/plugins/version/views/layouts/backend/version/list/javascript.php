@@ -61,12 +61,18 @@
             $('#description').val(description);
             document.getElementById('version_number').innerHTML = version_number;
 
-            $('#form_version').attr('action', '<?php echo $this->link_form;?>/' + id);
-            if(id) {
-                $('#version').val('PUT');
-            } else {
-                $('#version').val('POST');
-            }
+            $('#save').click(function() {
+                if(id == 0) {
+                    var notice = 'Create new version, requests in old version will be disabled.';
+                    if (confirm(notice) == true) {
+                        $('#form_version').attr('action', '<?php echo $this->link_form; ?>/' + id);
+                        $('#version').val('POST');
+                    }
+                } else {
+                        $('#form_version').attr('action', '<?php echo $this->link_form; ?>/' + id);
+                        $('#version').val('PUT');
+                }
+            });
         });
     });
 </script>

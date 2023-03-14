@@ -54,6 +54,7 @@ class Note extends Admin {
         $save_close = $this->request->post->get('save_close', '', 'string');
         $files = $this->request->file->get('files', [], 'array');
         $note = $this->request->post->get('note', '', 'string');
+        $parent_note = $this->request->post->get('parent_note', '', 'string');
         $editor = $this->request->post->get('editor', 'html', 'string');
 
         $listTag = explode(',', $tags);
@@ -103,6 +104,7 @@ class Note extends Admin {
             'tags' => $tags,
             'note' => $note,
             'editor' => $editor,
+            'parent_note' => $parent_note,
             'description' => $description,
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -166,6 +168,7 @@ class Note extends Admin {
             $files = $this->request->file->get('files', [], 'array');
             $save_close = $this->request->post->get('save_close', '', 'string');
             $note = $this->request->post->get('note', '', 'string');
+            $parent_note = $this->request->post->get('parent_note', '', 'string');
             $editor = $this->request->post->get('editor', 'html', 'string');
 
             $listTag = explode(',', $tags);
@@ -214,6 +217,7 @@ class Note extends Admin {
                 'title' => $title,
                 'tags' => $tags,
                 'note' => $note,
+                'parent_note' => $parent_note,
                 'editor' => $editor,
                 'description' => $description,
                 'modified_by' => $this->user->get('id'),

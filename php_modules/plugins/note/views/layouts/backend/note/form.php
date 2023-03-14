@@ -1,30 +1,40 @@
 <?php
-$this->theme->add( $this->url .'assets/css/select2.min.css', '', 'select2-css');
-$this->theme->add( $this->url .'assets/css/select2_custom.css', '', 'select2-custom-css');
-$this->theme->add( $this->url. 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
-$this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
+$this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
+$this->theme->add($this->url . 'assets/css/select2_custom.css', '', 'select2-custom-css');
+$this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
+$this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 ?>
 <?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
-        <div class="row g-3">
-            <div class="col-lg-8 col-sm-12">
+        <div class="row">
+            <div id="col-8" class="col-lg-8 col-sm-12">
                 <input id="input_title" type="hidden" class="d-none" name="title" required>
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <div class="fw-bold d-flex  mb-2">
                             <span class="me-auto">Description:</span> 
                             <span>
-                                <div class="form-check form-switch mb-0">
+                                <div id="check_mode" class="form-check form-switch mb-0 d-none">
                                     <input class="form-check-input" type="checkbox" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
                                     <label class="form-check-label" for="sheetToogle">Sheet Editor</label>
                                 </div>
                             </span>
+                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end py-0" style="box-shadow: inherit;">
+                                <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
+                                    <i class="fa-solid fa-bars fs-2 "></i>
+                                </a>
+                            </nav>
                         </div>
-                        <div id="html_editor">
+                        <div id="html_editor" class="d-none">
                             <?php $this->field('description'); ?>
                         </div>
                         <?php $this->field('description_sheetjs'); ?>
+                        <div id="content" class="p-3 d-none text-break">
+                            <?php if (isset($this->data['description'])) {
+                                echo $this->data['description'];
+                            } ?>
+                        </div>
                     </div>
                 </div>
                 
@@ -38,14 +48,14 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     </div>
                     <div class="me-2">
                         <input type="hidden" name="save_close" id="save_close">
-                        <button type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
+                        <button id="save_and_close" type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
                     </div>
-                    <div class="">
-                        <button type="submit" class="btn btn-outline-success btn_apply">Apply</button>
+                    <div class="me-2">
+                        <button id="apply" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12">
+            <div id="col-4" class="col-lg-4 col-sm-12">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Note:</label>
@@ -67,6 +77,12 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
                                 <option selected="selected" value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
+                        <label class="form-label fw-bold">Parent Note:</label>
+                        <?php $this->field('parent_note'); ?>
                     </div>
                 </div>
                 <label class="form-label fw-bold pt-2">Attachments:</label>
@@ -162,9 +178,88 @@ $this->theme->add( $this->url.'assets/tinymce/tinymce.min.js', '', 'tinymce');
             }
             $('#form_submit').submit();
         });
-        
+
+        if(id != 0) {
+            
+            $("#content").removeClass("d-none");
+            $("#content").addClass("border");
+            $("#save_and_close").addClass("d-none");
+            $("#apply").addClass("d-none");
+            $("#save_and_close_header").addClass("d-none");
+            $("#apply_header").addClass("d-none");
+            $("#col-8").addClass("col-lg-12");
+            $("#col-4").addClass("col-lg-0 d-none");
+            
+            $("#mode").click(function () {
+                $("#open").text(($("#open").text() == 'View Mode') ? 'Edit Mode' : 'View Mode');
+            });
+            $("#open").click(function() {
+                if (!$('#sheetToogle').is(":checked")) {
+                    $("#content").toggleClass("d-none");
+                    $("#html_editor").toggleClass("d-none");
+                } else {
+                    $("#content").addClass("d-none");
+                    $("#html_editor").addClass("d-none");
+                }
+                if ($("#open").text() != 'View Mode') {
+                    $("#col-8").removeClass("col-lg-12");
+                    $("#col-4").removeClass("col-lg-0 d-none");
+                } else {
+                    $("#col-8").addClass("col-lg-12");
+                    $("#col-4").addClass("col-lg-0 d-none");
+                }
+                $("#check_mode").toggleClass("d-none");
+                $("#save_and_close").toggleClass("d-none");
+                $("#apply").toggleClass("d-none");
+                $("#save_and_close_header").toggleClass("d-none");
+                $("#apply_header").toggleClass("d-none");
+                window.dispatchEvent(new Event('resize'));
+            });
+        } else {
+
+            $("#html_editor").removeClass("d-none");
+            $("#check_mode").removeClass("d-none");
+            $("#content").removeClass("border");
+            $("#save_and_close").removeClass("d-none");
+            $("#apply").removeClass("d-none");
+            $("#save_and_close_header").removeClass("d-none");
+            $("#apply_header").removeClass("d-none");
+
+            $("#mode").click(function () {
+                $("#open").text(($("#open").text() == 'Edit Mode') ? 'View Mode' : 'Edit Mode');
+            });
+
+            $("#open").click(function() {
+                if (!$('#sheetToogle').is(":checked")) {
+                    $("#content").toggleClass("d-none");
+                    $("#html_editor").toggleClass("d-none");
+                } else {
+                    $("#content").addClass("d-none");
+                    $("#html_editor").addClass("d-none");
+                } 
+                if ($("#open").text() != 'Edit Mode') {
+                    $("#col-8").addClass("col-lg-12");
+                    $("#col-4").addClass("col-lg-0 d-none");
+                } else {
+                    $("#col-8").removeClass("col-lg-12");
+                    $("#col-4").removeClass("col-lg-0 d-none");
+                }
+                $("#check_mode").toggleClass("d-none");
+                $("#content").toggleClass("border");
+                $("#save_and_close").toggleClass("d-none");
+                $("#apply").toggleClass("d-none");
+                $("#save_and_close_header").toggleClass("d-none");
+                $("#apply_header").toggleClass("d-none");
+                
+                window.dispatchEvent(new Event('resize'));
+            });
+        }
+        $("#sidebarToggle").click(function() {
+            $("#col-8").toggleClass("col-lg-12");
+            $("#col-4").toggleClass("col-lg-0 d-none");
+            window.dispatchEvent(new Event('resize'));
+        });
     });
-    
 </script>
 <?php
 $js = <<<Javascript
@@ -288,11 +383,12 @@ $js = <<<Javascript
         if (!$('#sheetToogle').is(":checked"))
         {
             $('#sheet_description_sheetjs').addClass('d-none');
-            $('#html_editor').removeClass('d-none');
         }
         else
         {
             $('#html_editor').addClass('d-none');
+            $('#content').addClass('d-none');
+            window.dispatchEvent(new Event('resize'));
         }
         $('#sheetToogle').change(function()
         {

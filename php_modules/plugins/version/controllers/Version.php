@@ -85,6 +85,12 @@ class Version extends Admin
             'modified_at' => date('Y-m-d H:i:s')
         ]);
 
+        $tmp_version = $this->VersionEntity->findOne(['name = "'. $name. '"']);
+        if($tmp_version) {
+            $try = $this->RequestEntity->update([
+                'version_id' => $tmp_version['version'],
+            ], ['version_id = "0"']);
+        }
         if( !$newId )
         {
             $msg = 'Error: Created failed!';

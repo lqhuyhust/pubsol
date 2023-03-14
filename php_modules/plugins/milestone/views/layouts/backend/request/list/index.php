@@ -23,6 +23,7 @@
 											</th>
 											<th>Title</th>
 											<th>Description</th>
+											<th>Version</th>
 											<th>Creator</th>
 											<th>Action</th>
 										</tr>

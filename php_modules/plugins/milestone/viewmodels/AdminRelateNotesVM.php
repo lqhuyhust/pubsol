@@ -90,16 +90,31 @@ class AdminRelateNotesVM extends ViewModel
                 $item['description'] = substr($item['description'], 0, 100) .' ...';
             }
         }
-        $list   = new Listing($result, $total, $limit, $this->getColumns() );
+
+        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
+        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
+        foreach($tmp_request as $tmp_item) {
+        }
+        if(strcmp($tmp_item['version_id'], '0') == 0) {
+            $status = false;
+        } elseif ($version_lastest > $tmp_item['version_id']) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
+        $list   = new Listing($result, $total, $limit, $this->getColumns());
         $this->set('list', $list, true);
         $this->set('page', $page, true);
         $this->set('start', $start, true);
+        $this->set('status', $status, true);
         $this->set('sort', $sort, true);
         $this->set('user_id', $this->user->get('id'), true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('relate-notes/'. $request_id), true);
+        $this->set('link_list', $this->router->url('relate-notes/' . $request_id), true);
         $this->set('link_note', $this->router->url('note'), true);
-        $this->set('link_list_relate_note', $this->router->url('relate-notes/'. $request_id), true);
+        $this->set('link_list_relate_note', $this->router->url('relate-notes/' . $request_id), true);
         $this->set('title_page_relate_note', $title_page_relate_note, true);
         $this->set('token', $this->app->getToken(), true);
     }

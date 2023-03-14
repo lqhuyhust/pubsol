@@ -61,6 +61,22 @@ class AdminNoteVM extends ViewModel
 
     public function getFormFields()
     {
+        $urlVars = $this->request->get('urlVars');
+        $id = (int) $urlVars['id'];
+        $this->set('id', $id, true);
+
+        $notes = $this->NoteEntity->list(0, 0, ['`parent_note` = "0" AND `id` != '.$id], 'title asc');
+        
+        $options[] = [
+            'text' => 'Select Note',
+            'value' => '0',
+        ];
+        foreach ($notes as $note) {
+            $options[] = [
+                'text' => $note['title'],
+                'value' => $note['id'],
+            ];
+        }
         $fields = [
             'description' => [
                 'tinymce',
@@ -95,6 +111,12 @@ class AdminNoteVM extends ViewModel
                 'showLabel' => false,
                 'placeholder' => 'Tags',
                 'formClass' => 'form-control',
+            ],
+            'parent_note' => ['option',
+                'options' => $options,
+                'type' => 'select2',
+                'showLabel' => false,
+                'formClass' => 'form-select',
             ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
