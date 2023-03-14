@@ -23,6 +23,7 @@ class plugin extends PluginAbstract
         return [
             'viewmodels' => [
                 'alias' => [
+                    'App\plugins\note\viewmodels\AdminNoteHistoryVM' => 'AdminNoteHistoryVM',
                     'App\plugins\note\viewmodels\AdminNoteVM' => 'AdminNoteVM',
                     'App\plugins\note\viewmodels\AdminNotesVM' => 'AdminNotesVM',
                 ],

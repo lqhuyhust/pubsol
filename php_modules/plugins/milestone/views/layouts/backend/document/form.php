@@ -75,13 +75,32 @@
                         <h4>History:</h4>
                         <ul class="list-group list-group-flush" id="document_history">
                             <?php foreach ($this->history as $item) : ?>
-                                <li class="list-group-item">Edited at <?php echo $item['modified_at']; ?></li>
+                                <li class="list-group-item">
+                                    <a href="#" class="openHistory" data-id="<?php echo $item['id']; ?>" data-modified_at="<?php echo $item['modified_at']; ?>">Modified at <?php echo $item['modified_at']; ?> by <?php echo $item['modified_by']; ?></a>
+                                    <a href="#" class="ps-3 clear-version ms-auto" data-version-id="<?php echo $item['id']?>"><i class="fa-solid fa-trash"></i></a>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>
             </div>
             
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openHistory" aria-hidden="true" aria-labelledby="openHistoryLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="historyLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="historyDescription">
+            </div>
+            <input type="hidden" name="rollback_id">
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="submit_rollback">RollBack</button>
+            </div>
         </div>
     </div>
 </div>
@@ -101,13 +120,17 @@
                     resultData.forEach(function(item)
                     {
                         list += `
-                        <li class="list-group-item">Edited at ${item['modified_at']}</li>
+                        <li class="list-group-item">
+                            <a href="#" class="openHistory" data-id="${item['id']}" data-modified_at="${item['modified_at']}">Modified at ${item['modified_at']} by ${item['modified_by']}</a>
+                            <a href="#" class="ps-3 clear-version ms-auto" data-version-id="${item['id']}"><i class="fa-solid fa-trash"></i></a>
+                        </li>
                         `
                     });
                     $("#document_history").html(list);
+                    loadEventHistory();
                 }
             }
-        })
+        });
     }
     function loadDiscussion(data)
     {
@@ -156,6 +179,58 @@
             }
         })
     }
+
+    function loadEventHistory()
+    {
+        $('.clear-version').on('click', function(e){
+            e.preventDefault();
+            var result = confirm("You are going to delete 1 record(s). Are you sure ?");
+            if (result) {
+                var id = $(this).data('version-id');
+                var form = new FormData();
+
+                form.append("_method", 'DELETE');
+                console.log(form);
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo $this->url . 'document/version/';?>' + id,
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result.result == 'ok')
+                        {
+                            $('#description').val('');
+                        }
+                        showMessage(result.result, result.message);
+                        loadHistory();
+                    }
+                });
+            }
+            else
+            {
+                return false;
+            }
+        });
+
+        $('.openHistory').on('click', function (e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            var modified = $(this).data('modified_at');
+
+            $.ajax({
+                type: 'GET',
+                url: '<?php echo $this->url . 'document/version/';?>' + id,
+                success: function (result) {
+                    $('#historyDescription').html(result.result);
+                }
+            });
+            $('input[name="rollback_id"]').val(id);
+            $('#openHistory').modal('show');
+            $('#historyLabel').text(modified);
+        });
+    }
+
     $(document).ready(function() {
         $("#description").attr('rows', 25);
         $('.request-collapse-document').click(function(){
@@ -179,6 +254,32 @@
             });
         });
 
+        $('#submit_rollback').on('click', function(e){
+            e.preventDefault();
+            var result = confirm("You are going to rollback. Are you sure ?");
+            var id = $('input[name="rollback_id"]').val()
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo $this->url . 'document/version/';?>' + id,
+                    success: function (result) {
+                        if (result.result == 'ok')
+                        {
+                            tinyMCE.activeEditor.setContent(result.description);
+                        } 
+                        showMessage(result.result, result.message);
+                        loadHistory();
+                        $('#openHistory').modal('hide');
+
+                    }
+                });
+            }
+            else
+            {
+                return false;
+            }
+        });
+        
         $("#form_comment").on('submit', function(e){
             e.preventDefault();
             $.ajax({
@@ -192,6 +293,8 @@
                 }
             });
         });
+
+        loadEventHistory();
     });
     
 </script>

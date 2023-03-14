@@ -23,8 +23,10 @@
 											</th>
 											<th>Title</th>
 											<th>Description</th>
-											<th>Version</th>
 											<th>Creator</th>
+											<th>Deadline at</th>
+											<th>Finished at</th>
+											<th>Status</th>
 											<th>Action</th>
 										</tr>
 									</thead>

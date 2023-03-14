@@ -51,6 +51,7 @@ class Note extends Admin {
         $tags = $this->request->post->get('tags', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
         $description_sheetjs = $this->request->post->get('description_sheetjs', '', 'string');
+        $description_presenter = $this->request->post->get('description_presenter', '', 'string');
         $save_close = $this->request->post->get('save_close', '', 'string');
         $files = $this->request->file->get('files', [], 'array');
         $note = $this->request->post->get('note', '', 'string');
@@ -79,6 +80,11 @@ class Note extends Admin {
         if ($editor == 'sheetjs')
         {
             $description = base64_decode($description_sheetjs);
+        }
+
+        if ($editor == 'presenter')
+        {
+            $description = $description_presenter;
         }
 
         if (!$title)
@@ -164,6 +170,7 @@ class Note extends Admin {
             $tags = $this->request->post->get('tags', '', 'string');
             $description = $this->request->post->get('description', '', 'string');
             $description_sheetjs = $this->request->post->get('description_sheetjs', '', 'string');
+            $description_presenter = $this->request->post->get('description_presenter', '', 'string');
             $findOne = $this->NoteEntity->findOne(['title = "'. $title. '"', 'id <> '. $ids]);
             $files = $this->request->file->get('files', [], 'array');
             $save_close = $this->request->post->get('save_close', '', 'string');
@@ -205,6 +212,11 @@ class Note extends Admin {
                 $description = base64_decode($description_sheetjs);
             }
 
+            if ($editor == 'presenter')
+            {
+                $description = $description_presenter;
+            }
+
             if ($findOne)
             {
                 $this->session->set('flashMsg', 'Error: Title already used! ');
@@ -224,7 +236,7 @@ class Note extends Admin {
                 'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,
             ]);
-
+            
             if($try)
             {
                 if ($files && is_array($files['name']) && $files['name'][0])
@@ -251,6 +263,29 @@ class Note extends Admin {
                 } 
                 $this->session->set('flashMsg', 'Updated successfully');
                 $link = $save_close ? 'notes' : 'note/'. $ids;
+
+                // save history note
+                $note_history = [
+                    'title' => $title,
+                    'tags' => $tags,
+                    'note' => $note,
+                    'editor' => $editor,
+                    'description' => $description,
+                    'modified_by' => $this->user->get('id'),
+                    'modified_at' => date('Y-m-d H:i:s'),
+                ];
+
+                $try_note = $this->NoteHistoryEntity->add([
+                    'note_id' => $ids,
+                    'meta_data' => json_encode($note_history),
+                    'created_by' => $this->user->get('id'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+
+                if(!$try_note)
+                {
+                    $this->session->set('flashMsg', 'Updated successfully. An error occurred that the version of the note could not be saved! ');
+                }
                 return $this->app->redirect(
                     $this->router->url($link)
                 );

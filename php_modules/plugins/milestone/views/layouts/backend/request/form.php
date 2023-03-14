@@ -11,6 +11,22 @@
                     </div>
                     <div class="row px-0 mb-3">
                         <div class="col-12 d-flex align-items-center">
+                            <label class="form-label fw-bold mb-2">Deadline</label>
+                        </div>
+                        <div class="col-12">
+                            <?php $this->field('deadline_at'); ?>
+                        </div>
+                    </div>
+                    <div class="row px-0 mb-3">
+                        <div class="col-12 d-flex align-items-center">
+                            <label class="form-label fw-bold mb-2">Finished</label>
+                        </div>
+                        <div class="col-12">
+                            <?php $this->field('finished_at'); ?>
+                        </div>
+                    </div>
+                    <div class="row px-0 mb-3">
+                        <div class="col-12 d-flex align-items-center">
                             <label class="form-label fw-bold mb-2">Description</label>
                         </div>
                         <div class="col-12">

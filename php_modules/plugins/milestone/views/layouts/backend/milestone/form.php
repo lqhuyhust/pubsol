@@ -59,7 +59,7 @@
                 <div class="row g-3 ">
                     <div class="col-12 d-flex justify-content-end mb-4">
                         <?php $this->field('token'); ?>
-                        <input class="form-control rounded-0 border border-1" id="milstone" type="hidden" name="_method" value="POST">
+                        <input class="form-control rounded-0 border border-1" id="milestone" type="hidden" name="_method" value="POST">
                         <div class="me-2">
                             <button type="button" class="btn btn-outline-secondary fs-4" data-bs-dismiss="modal">Cancel</button>
                         </div>

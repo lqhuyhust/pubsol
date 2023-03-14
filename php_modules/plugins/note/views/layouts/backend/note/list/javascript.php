@@ -3,7 +3,6 @@
     <input type="hidden" value="DELETE" name="_method">
 </form>
 <script>
-    console.log('this is page notes');
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }

@@ -8,13 +8,13 @@
  * 
  */
 
-namespace App\plugins\milestone\entities;
+namespace App\plugins\note\entities;
 
 use SPT\Storage\DB\Entity;
 
-class DocumentHistoryEntity extends Entity
+class NoteHistoryEntity extends Entity
 {
-    protected $table = '#__document_history';
+    protected $table = '#__note_history';
     protected $pk = 'id';
 
     public function getFields()
@@ -26,23 +26,20 @@ class DocumentHistoryEntity extends Entity
                     'option' => 'unsigned',
                     'extra' => 'auto_increment',
                 ],
-                'document_id' => [
+                'note_id' => [
                     'type' => 'int',
-                    'option' => 'unsigned',
                 ],
-                'description' => [
+                'meta_data'=> [
                     'type' => 'text',
-                    'null' => 'YES',
                 ],
-                'modified_at' => [
+                'created_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',
                 ],
-                'modified_by' => [
+                'created_by' => [
                     'type' => 'int',
                     'option' => 'unsigned',
                 ],
         ];
     }
-
 }

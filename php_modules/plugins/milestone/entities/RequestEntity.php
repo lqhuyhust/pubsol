@@ -41,6 +41,14 @@ class RequestEntity extends Entity
                     'type' => 'text',
                     'null' => 'YES',
                 ],
+                'deadline_at' => [
+                    'type' => 'datetime',
+                    'null' => 'YES',
+                ],
+                'finished_at' => [
+                    'type' => 'datetime',
+                    'null' => 'YES',
+                ],
                 'created_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',

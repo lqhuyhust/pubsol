@@ -36,7 +36,18 @@ class AdminDocumentVM extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page = 'Document';
 
-        $history = $this->DocumentHistoryEntity->list(0,0,['document_id = '.$data['id']]);
+        $history = $this->DocumentHistoryEntity->list(0,0,['document_id = '.$data['id']], 'id DESC');
+        if($history)
+        {
+            foreach($history as &$item)
+            {
+                $user_tmp = $this->UserEntity->findByPK($item['modified_by']);
+                if ($user_tmp)
+                {
+                    $item['modified_by'] = $user_tmp['name'];
+                }
+            }
+        }
         $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $data['id']], 'sent_at asc');
         $discussion = $discussion ? $discussion : [];
         foreach ($discussion as &$item)
