@@ -73,7 +73,7 @@ function addRect() {
         originX: 'center',
         originY: 'center',
         stroke: '#ff0000',
-        strokeWidth: 5,
+        strokeWidth: 3,
         strokeUniform: true,
     });
     canvas.add(rect);
@@ -89,7 +89,7 @@ function addCircle() {
         originX: 'center',
         originY: 'center',
         stroke: '#ff0000',
-        strokeWidth: 5,
+        strokeWidth: 3,
         strokeUniform: true,
     });
     canvas.add(circl);
