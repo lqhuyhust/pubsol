@@ -72,8 +72,9 @@ function addRect() {
         height: 100,
         originX: 'center',
         originY: 'center',
-        stroke: '#000000',
-        strokeWidth: 1
+        stroke: '#ff0000',
+        strokeWidth: 5,
+        strokeUniform: true,
     });
     canvas.add(rect);
     canvas.setActiveObject(rect);
@@ -87,8 +88,9 @@ function addCircle() {
         radius: 50,
         originX: 'center',
         originY: 'center',
-        stroke: '#000000',
-        strokeWidth: 1
+        stroke: '#ff0000',
+        strokeWidth: 5,
+        strokeUniform: true,
     });
     canvas.add(circl);
     canvas.setActiveObject(circl);
