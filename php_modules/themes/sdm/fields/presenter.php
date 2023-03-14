@@ -103,7 +103,8 @@ if(!isset($presenter))
         $('.remove-button').on('click', function(){
             var result = confirm("You are going to delete 1 item. Are you sure ?");
             if (result) {
-                data_canvas = data_canvas.splice(canvas_index);
+                var tmp = data_canvas.splice(canvas_index, 1);
+                console.log(data_canvas);
                 if (total_page_canvas > 1)
                 {
                     total_page_canvas--;
