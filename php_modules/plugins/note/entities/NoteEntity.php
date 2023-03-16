@@ -52,10 +52,6 @@ class NoteEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 1000,
                 ],
-                'parent_note' => [
-                    'type' => 'int',
-                    'option' => 'unsigned',
-                ],
                 'created_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',
