@@ -362,6 +362,8 @@ class Note extends Admin {
         }
 
         $search = $this->request->get->get('search', '', 'string');
+        $ignore = $this->request->get->get('ignore', '', 'string');
+
         $where = [];
         if ($search)
         {
@@ -379,9 +381,14 @@ class Note extends Admin {
             $where = [implode(" OR ", $where)];
         }
 
+        if ($ignore)
+        {
+            $where[] = 'id NOT IN('.$ignore.')';
+        }
+
         $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
         $result = $result ? $result : [];
-        
+
         return $this->app->response(
         [
             'status'  => 'success',
