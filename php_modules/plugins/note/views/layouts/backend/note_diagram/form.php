@@ -3,7 +3,7 @@ $this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
 $this->theme->add($this->url . 'assets/css/select2_custom.css', '', 'select2-custom-css');
 $this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
 $this->theme->add($this->url . 'assets/treejs/js/jstree.min.js', '', 'treejs');
-$this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_style');
+$this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style');
 ?>
 <?php echo $this->render('notification'); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
