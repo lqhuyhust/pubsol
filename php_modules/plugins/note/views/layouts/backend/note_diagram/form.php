@@ -10,7 +10,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
         <div class="row">
             <div class="col-lg-12 col-sm-12">
-                <input id="input_title" type="hidden" class="d-none" name="title" required>
+                <input id="input_title" type="hidden" class="d-none" name="title">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto d-flex">
                         <button class="btn btn-outline-success me-3 add-note-button">Add</button>
@@ -31,22 +31,17 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
                 </div>
             </div>
         </div>
-        
+        <?php $this->field('notes'); ?>
+        <?php $this->field('config'); ?>
+        <input type="hidden" name="save_close" id="save_close">
     </form>
 </div>
-<form class="hidden" method="POST" id="form_delete">
-    <input type="hidden" value="<?php echo $this->token ?>" name="token">
-    <input type="hidden" value="DELETE" name="_method">
-</form>
-<form class="hidden" method="POST" id="form_download">
-    <input type="hidden" value="<?php echo $this->token ?>" name="token">
-    <input type="hidden" value="POST" name="_method">
-</form>
 <script>
     var view_mode = '<?php echo $this->view_mode ?>';
     var ignore = [];
     $(document).ready(function(e) {
-        var editor = '<?php echo $this->data ? $this->data['editor'] : '' ?>';
+        var data = '<?php echo $this->data ? $this->data['config'] : ''; ?>';
+        data = data ? JSON.parse(data) : [];
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
             $("#save_close").val(1);
@@ -60,8 +55,9 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
                 $('input#title').focus();
                 return false;
             }
-            data_canvas[canvas_index] = canvas.toJSON();
-            $('#description_presenter').val(JSON.stringify(data_canvas));
+            var config = $('#tree_root').jstree().get_json();
+            $('#config').val(JSON.stringify(config));
+            $('#notes').val(ignore.toString());
             $('#form_submit').submit();
         });
 
@@ -78,8 +74,9 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
                 $('input#title').focus();
                 return false;
             }
-            data_canvas[canvas_index] = canvas.toJSON();
-            $('#description_presenter').val(JSON.stringify(data_canvas));
+            var config = $('#tree_root').jstree().get_json();
+            $('#config').val(JSON.stringify(config));
+            $('#notes').val(ignore.toString());
             $('#form_submit').submit();
         });
 
@@ -106,7 +103,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
                 "animation" : 0,
                 "check_callback" : true,
                 "themes" : { "stripes" : true },
-                'data' : [],
+                'data' : data,
             },
             "types" : {
                 "note" : {

@@ -30,6 +30,14 @@ class NoteDiagramEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
+                'notes' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
+                'config' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
                 'created_at' => [
                     'type' => 'datetime',
                     'null' => 'YES',

@@ -21,7 +21,7 @@ class NoteEntity extends Entity
     {
         return [
                 'id' => [
-                    'type' => 'int',
+                    'type' => 'bigint',
                     'pk' => 1,
                     'option' => 'unsigned',
                     'extra' => 'auto_increment',
