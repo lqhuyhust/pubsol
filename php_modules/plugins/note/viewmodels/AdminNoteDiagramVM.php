@@ -32,10 +32,8 @@ class AdminNoteDiagramVM extends ViewModel
         $data = $id ? $this->NoteDiagramEntity->findByPK($id) : [];
 
         $form = new Form($this->getFormFields(), $data);
-        $view_mode = $data ? 'true' : '';
         $this->set('form', $form, true);
         $this->set('data', $data, true);
-        $this->set('view_mode', $view_mode, true);
         $this->set('title_page_edit', $data && $data['title'] ? $data['title'] : 'New Diagrams', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_note', $this->router->url('note/'), true);

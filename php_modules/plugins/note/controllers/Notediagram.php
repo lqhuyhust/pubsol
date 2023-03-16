@@ -50,6 +50,7 @@ class Notediagram extends Admin {
         $title = $this->request->post->get('title', '', 'string');
         $notes = $this->request->post->get('notes', '', 'string');
         $config = $this->request->post->get('config', '', 'string');
+        $save_close = $this->request->post->get('save_close', '', 'string');
 
         if (!$title)
         {
@@ -99,6 +100,7 @@ class Notediagram extends Admin {
             $title = $this->request->post->get('title', '', 'string');
             $config = $this->request->post->get('config', '', 'string');
             $notes = $this->request->post->get('notes', '', 'string');
+            $save_close = $this->request->post->get('save_close', '', 'string');
 
             if (!$title)
             {
@@ -121,6 +123,9 @@ class Notediagram extends Admin {
             {
                 $this->session->set('flashMsg', 'Updated successfully');
                 $link = $save_close ? 'note-diagrams' : 'note-diagram/'. $ids;
+                return $this->app->redirect(
+                    $this->router->url($link)
+                );
             }
             else
             {
