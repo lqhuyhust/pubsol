@@ -9,6 +9,11 @@ return [
             'delete' => 'note.note.delete'
         ]
     ],
+    'note/search' => [
+        'fnc' => [
+            'get' => 'note.note.search',
+        ]
+    ],
     'note-diagrams' => [
         'fnc' => [
             'get' => 'note.notediagram.list',

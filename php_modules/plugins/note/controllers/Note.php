@@ -348,4 +348,45 @@ class Note extends Admin {
 
         return $id;
     }
+
+    public function search()
+    {
+        if (!$this->user->get('id'))
+        {
+            return $this->app->response(
+            [
+                'status'  => 'fail',
+                'data'    => $this->user->get('id'),
+                'message' => 'You are not allow.',
+            ]);
+        }
+
+        $search = $this->request->get->get('search', '', 'string');
+        $where = [];
+        if ($search)
+        {
+            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
+            $where[] = "(`note` LIKE '%" . $search . "%')";
+            $where[] = "(`title` LIKE '%" . $search . "%')";
+            if ($tags) {
+                foreach ($tags as $tag) {
+                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
+                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
+                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
+                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
+                }
+            }
+            $where = [implode(" OR ", $where)];
+        }
+
+        $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
+        $result = $result ? $result : [];
+        
+        return $this->app->response(
+        [
+            'status'  => 'success',
+            'data'    => $result,
+            'message' => '',
+        ]);
+    }
 }

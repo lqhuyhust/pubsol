@@ -38,9 +38,9 @@ class AdminNoteDiagramVM extends ViewModel
         $this->set('view_mode', $view_mode, true);
         $this->set('title_page_edit', $data && $data['title'] ? $data['title'] : 'New Diagrams', true);
         $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $data_version ? $this->router->url('note/'. $id) : $this->router->url('notes'), true);
+        $this->set('link_list', $this->router->url('notes'), true);
         $this->set('link_form', $this->router->url('note'), true);
-        $this->set('link_tag', $this->router->url('tag'));
+        $this->set('link_search', $this->router->url('note/search'));
     }
 
     public function getFormFields()
@@ -57,6 +57,14 @@ class AdminNoteDiagramVM extends ViewModel
                 'placeholder' => 'New Title',
                 'formClass' => 'form-control border-0 border-bottom fs-2 py-0',
                 'required' => 'required',
+            ],
+            'notes' => [
+                'option',
+                'type' => 'multiselect',
+                'showLabel' => false,
+                'options' => [],
+                'placeholder' => 'Select Notes',
+                'formClass' => 'form-control',
             ],
             'token' => ['hidden',
                 'default' => $this->app->getToken(),
