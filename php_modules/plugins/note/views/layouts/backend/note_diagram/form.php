@@ -95,9 +95,6 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
             }
 
             $('#notes').val(null).trigger('change');
-            // $('#jstree').jstree().create_node('#' ,  { "id" : "ajson5", "text" : "newly added" }, "last", function(){
-            //     alert("done");
-            // });
         })
 
         function createNote(item)
@@ -122,7 +119,6 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
             ],
             "contextmenu":{         
                 "items": function(node) {
-                    var tree = $("#tree").jstree(true);
                     return {
                         "Open": {
                             "separator_before": false,
@@ -138,7 +134,12 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
                             "separator_after": false,
                             "label": "Remove",
                             "action": function (obj) { 
-                                tree.jstree('delete_node', node);
+                                $('#tree_root').jstree().delete_node(node);
+                                var index = ignore.indexOf(node.id);
+                                if (index !== -1)
+                                {
+                                    ignore.splice(index, 1);
+                                }
                             }
                         }
                     };
