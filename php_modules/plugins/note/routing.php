@@ -9,6 +9,14 @@ return [
             'delete' => 'note.note.delete'
         ]
     ],
+    'note-diagrams' => [
+        'fnc' => [
+            'get' => 'note.notediagram.list',
+            'post' => 'note.notediagram.list',
+            'put' => 'note.notediagram.update',
+            'delete' => 'note.notediagram.delete'
+        ]
+    ],
     'attachment' => [
         'fnc' => [
             'delete' => 'note.attachment.delete'
@@ -26,6 +34,15 @@ return [
             'get' => 'note.version.detail',
             'post' => 'note.version.rollback',
             'delete' => 'note.version.delete'
+        ],
+        'parameters' => ['id'],
+    ],
+    'note-diagram' => [
+        'fnc' => [
+            'get' => 'note.notediagram.detail',
+            'post' => 'note.notediagram.add',
+            'put' => 'note.notediagram.update',
+            'delete' => 'note.notediagram.delete'
         ],
         'parameters' => ['id'],
     ],

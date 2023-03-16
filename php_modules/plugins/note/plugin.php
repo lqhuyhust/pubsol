@@ -26,6 +26,8 @@ class plugin extends PluginAbstract
                     'App\plugins\note\viewmodels\AdminNoteHistoryVM' => 'AdminNoteHistoryVM',
                     'App\plugins\note\viewmodels\AdminNoteVM' => 'AdminNoteVM',
                     'App\plugins\note\viewmodels\AdminNotesVM' => 'AdminNotesVM',
+                    'App\plugins\note\viewmodels\AdminNoteDiagramVM' => 'AdminNoteDiagramVM',
+                    'App\plugins\note\viewmodels\AdminNoteDiagramsVM' => 'AdminNoteDiagramsVM',
                 ],
             ],
             'models' => [
@@ -88,6 +90,7 @@ class plugin extends PluginAbstract
     {
         return [
             [['notes', 'note',], 'notes', 'Notes', '<i class="fa-solid fa-clipboard"></i>', '', ''],
+            [['note-diagrams', 'note-diagram',], 'note-diagrams', 'Note Diagrams', '<i class="fa-solid fa-diagram-project"></i>', '', ''],
         ];
     }
 }
