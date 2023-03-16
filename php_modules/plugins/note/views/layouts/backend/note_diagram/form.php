@@ -124,23 +124,15 @@ $this->theme->add($this->url . 'assets/treejs/css/style.min.css', '', 'treejs_st
                 "items": function(node) {
                     var tree = $("#tree").jstree(true);
                     return {
-                        "Create": {
+                        "Open": {
                             "separator_before": false,
                             "separator_after": false,
-                            "label": "Create",
+                            "label": "Open",
                             "action": function (obj) { 
-                                node = tree.jstree('create_node', node);
-                                tree.jstree('edit', node);
+                                var detail_link = '<?php echo $this->link_note ?>' + node.id;
+                                window.open(detail_link);
                             }
                         },
-                        "Rename": {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "Rename",
-                            "action": function (obj) { 
-                                tree.jstree('edit', node);
-                            }
-                        },                         
                         "Remove": {
                             "separator_before": false,
                             "separator_after": false,
