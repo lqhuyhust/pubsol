@@ -26,9 +26,10 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                 </div>
             </div>
             <div class="col-lg-8 col-sm-12 d-none" id="related_request">
-                <div class="d-flex justify-content-between">
-                    <h3>Related Request</h3>
-                    <button type="button" id="close_request" class="btn btn-outline-secondary">Close</button>
+                <div class="d-flex mb-2">
+                    <h3>Related Request: </h3>
+                    <h3 class="ms-1" id="name_node"></h3>
+                    <a id="link_node" target="_blank" type="button" id="close_request" class="btn btn-outline-success mx-2">Open Detail</a>
                 </div>
                 <table id="request-table" class="table table-striped border-top border-1" style="width:100%">
                     <thead>
@@ -108,7 +109,9 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
         })
 
         function createNote(item) {
-            $('#tree_root').jstree().create_node('#', {
+            var node = $('#tree_root').jstree().get_selected();
+            var index = node && node[0] ? node[0] : '#';
+            $('#tree_root').jstree().create_node(index, {
                 "id": item.id,
                 "text": item.text
             }, "last");
@@ -132,60 +135,17 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                 "state", "types", "wholerow"
             ],
             "contextmenu": {
+                "trigger": 'hover',
                 "items": function(node) {
                     return {
-                        "Open": {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "Open",
-                            "action": function(obj) {
-                                var detail_link = '<?php echo $this->link_note ?>' + node.id;
-                                window.open(detail_link);
-                            }
-                        },
-                        "Related_Request": {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "Related Request",
-                            "action": function(obj) {
-                                var detail_link = '<?php echo $this->link_request .'/' ?>' + node.id;
-                                $.ajax({  
-                                    type: 'GET',  
-                                    url: detail_link, 
-                                    data: {},
-                                    success: function(response) {
-                                        if (response.status == 'success')
-                                        {
-                                            var data = response.data;
-                                            $('#related_request').addClass('d-none');
-
-                                            $('#body_related_request').html('');
-                                            data.forEach(function(item) {
-                                                console.log(item);
-                                                var link_detail = '<?php echo $this->link_detail_request . '/'; ?>' + item.id;
-                                                $('#body_related_request').append(`
-                                                    <tr>
-                                                        <td><a target="_blank" href="${link_detail}" >${item.title}</a></td>
-                                                        <td>${item.deadline_at}</td>
-                                                        <td>${item.finished_at}</td>
-                                                    </tr>
-                                                `);
-                                            })
-                                            if (data.length == 0)
-                                            {
-                                                alert('No related request!');
-                                            }
-                                            else{
-                                                $('#related_request').removeClass('d-none');
-                                            }
-                                        }
-                                        else{
-                                            alert(response.message)
-                                        }
-                                    }
-                                });
-                            }
-                        },
+                        // "Open": {
+                        //     "separator_before": false,
+                        //     "separator_after": false,
+                        //     "label": "Open",
+                        //     "action": function(obj) {
+                        //         window.open(detail_link);
+                        //     }
+                        // },
                         "Remove": {
                             "separator_before": false,
                             "separator_after": false,
@@ -202,7 +162,51 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                 }
             }
         });
+        if (data.length == 0)
+        {
+            createNote({'id': '-1', 'text': 'ROOT'});
+        }
+        $('#tree_root').on('select_node.jstree', function (even, node){
+            node = node.node;
+            var detail_link = '<?php echo $this->link_request .'/' ?>' + node.id;
+            var node_detail = '<?php echo $this->link_note ?>' + node.id;
 
+            $('#name_node').text(node.text);
+            $('#link_node').attr('href', node_detail);
+            if (node.id == '-1')
+            {
+                return true;
+            }
+            $.ajax({  
+                type: 'GET',  
+                url: detail_link, 
+                data: {},
+                success: function(response) {
+                    if (response.status == 'success')
+                    {
+                        var data = response.data;
+                        $('#related_request').addClass('d-none');
+
+                        $('#body_related_request').html('');
+                        data.forEach(function(item) {
+                            console.log(item);
+                            var link_detail = '<?php echo $this->link_detail_request . '/'; ?>' + item.id;
+                            $('#body_related_request').append(`
+                                <tr>
+                                    <td><a target="_blank" href="${link_detail}" >${item.title}</a></td>
+                                    <td>${item.deadline_at}</td>
+                                    <td>${item.finished_at}</td>
+                                </tr>
+                            `);
+                        })
+                        $('#related_request').removeClass('d-none');
+                    }
+                    else{
+                        alert(response.message)
+                    }
+                }
+            });
+        })
         var new_tags = [];
         $("#notes").select2({
             matcher: matchCustom,
