@@ -9,7 +9,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
 <div class="container-fluid align-items-center row justify-content-center mx-auto pt-3">
     <form enctype="multipart/form-data" action="<?php echo $this->link_form . '/' . $this->id ?>" method="post" id="form_submit">
         <div class="row">
-            <div class="col-lg-12 col-sm-12">
+            <div class="col-lg-4 col-sm-12">
                 <input id="input_title" type="hidden" class="d-none" name="title">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto d-flex">
@@ -20,14 +20,9 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                        <div class="text-center">
-                            <h3>Tree</h3>
-                        </div>
-                        <div id="tree_root">
-                        </div>
-                    </div>
+            </div>
+            <div class="mb-3 col-lg-8 col-sm-12 mx-auto">
+                <div id="tree_root">
                 </div>
             </div>
         </div>

@@ -31,6 +31,17 @@ class AdminNoteDiagramVM extends ViewModel
 
         $data = $id ? $this->NoteDiagramEntity->findByPK($id) : [];
 
+        if ($data && $data['config'])
+        {
+            $config = json_decode($data['config'], true);
+            if (is_array($config))
+            {
+                $config = $this->NoteDiagramModel->convertConfig($config);
+            }
+            
+            $data['config'] = json_encode($config);
+        }
+
         $form = new Form($this->getFormFields(), $data);
         $this->set('form', $form, true);
         $this->set('data', $data, true);
