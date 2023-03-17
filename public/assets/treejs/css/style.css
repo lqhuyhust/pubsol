@@ -17,6 +17,7 @@
   white-space: nowrap;
   padding: 0 4px 0 1px;
   margin: 0;
+  font-size: 18px;
   vertical-align: top;
 }
 .jstree-anchor:focus {
@@ -387,18 +388,18 @@
   background: linear-gradient(to bottom, #beebff 0%, #a8e4ff 100%);
 }
 .jstree-default .jstree-node {
-  min-height: 24px;
-  line-height: 24px;
+  min-height: 30px;
+  line-height: 30px;
   margin-left: 24px;
   min-width: 24px;
 }
 .jstree-default .jstree-anchor {
-  line-height: 24px;
-  height: 24px;
+  line-height: 30px;
+  height: 30x;
 }
 .jstree-default .jstree-icon {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   line-height: 24px;
 }
 .jstree-default .jstree-icon:empty {
@@ -410,7 +411,7 @@
   margin-right: 24px;
 }
 .jstree-default .jstree-wholerow {
-  height: 24px;
+  height: 30px;
 }
 .jstree-default .jstree-node,
 .jstree-default .jstree-icon {
@@ -433,17 +434,21 @@
   background-position: -68px -4px;
 }
 .jstree-default .jstree-themeicon {
-  background-position: -260px -4px;
+  background-position: -260px -1px;
 }
 .jstree-default > .jstree-no-dots .jstree-node,
 .jstree-default > .jstree-no-dots .jstree-leaf > .jstree-ocl {
-  background: transparent;
+  /* background: transparent; */
+}
+
+.jstree-default > .jstree-no-dots .jstree-node{
+  background-color: white;
 }
 .jstree-default > .jstree-no-dots .jstree-open > .jstree-ocl {
-  background-position: -36px -4px;
+  /* background-position: -36px -4px; */
 }
 .jstree-default > .jstree-no-dots .jstree-closed > .jstree-ocl {
-  background-position: -4px -4px;
+  /* background-position: -4px -4px; */
 }
 .jstree-default .jstree-disabled {
   background: transparent;

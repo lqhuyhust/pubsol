@@ -32,7 +32,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                                     <label class="form-check-label" for="PresenterToogle">Presenter Mode</label>
                                 </div>
                             </span>
-                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end py-0" style="box-shadow: inherit;">
+                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
                                     <i class="fa-solid fa-bars fs-2 "></i>
                                 </a>
@@ -216,8 +216,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#apply").addClass("d-none");
             $("#save_and_close_header").addClass("d-none");
             $("#apply_header").addClass("d-none");
-            $("#col-8").addClass("col-lg-12");
-            $("#col-4").addClass("col-lg-0 d-none");
+            // $("#col-8").addClass("col-lg-12");
+            // $("#col-4").addClass("col-lg-0 d-none");
             $(".button-editor-mode").addClass('d-none');
             openModeEditor();
         } else {
