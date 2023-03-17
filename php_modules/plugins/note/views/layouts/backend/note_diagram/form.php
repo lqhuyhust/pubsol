@@ -165,7 +165,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                                                 var link_detail = '<?php echo $this->link_detail_request . '/'; ?>' + item.id;
                                                 $('#body_related_request').append(`
                                                     <tr>
-                                                        <td><a href="${link_detail}" >${item.title}</a></td>
+                                                        <td><a target="_blank" href="${link_detail}" >${item.title}</a></td>
                                                         <td>${item.deadline_at}</td>
                                                         <td>${item.finished_at}</td>
                                                     </tr>
