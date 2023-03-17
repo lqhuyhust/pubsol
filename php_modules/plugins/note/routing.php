@@ -14,6 +14,12 @@ return [
             'get' => 'note.note.search',
         ]
     ],
+    'note/request' => [
+        'fnc' => [
+            'get' => 'note.note.request',
+        ],
+        'parameters' => ['id'],
+    ],
     'note-diagrams' => [
         'fnc' => [
             'get' => 'note.notediagram.list',

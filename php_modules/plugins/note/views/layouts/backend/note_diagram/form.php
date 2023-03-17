@@ -20,10 +20,27 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="mb-3 col-lg-8 col-sm-12 mx-auto">
-                <div id="tree_root">
+                <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
+                    <div id="tree_root">
+                    </div>
                 </div>
+            </div>
+            <div class="col-lg-8 col-sm-12 d-none" id="related_request">
+                <div class="d-flex justify-content-between">
+                    <h3>Related Request</h3>
+                    <button type="button" id="close_request" class="btn btn-outline-secondary">Close</button>
+                </div>
+                <table id="request-table" class="table table-striped border-top border-1" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Deadline at</th>
+                            <th>Finished at</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body_related_request">
+                    </tbody>
+                </table>
             </div>
         </div>
         <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
@@ -41,8 +58,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             e.preventDefault();
             $("#save_close").val(1);
             $('input#input_title').val($('input#title').val());
-            if (!$('input#title').val())
-            {
+            if (!$('input#title').val()) {
                 alert("Please enter a valid Title");
                 $('html, body').animate({
                     scrollTop: 0
@@ -60,8 +76,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             e.preventDefault();
             $("#save_close").val(0);
             $('input#input_title').val($('input#title').val());
-            if (!$('input#title').val())
-            {
+            if (!$('input#title').val()) {
                 alert("Please enter a valid Title");
                 $('html, body').animate({
                     scrollTop: 0
@@ -75,11 +90,14 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             $('#form_submit').submit();
         });
 
-        $('.add-note-button').on('click', function(e){
+        $("#close_request").click(function(e){
+            e.preventDefault();
+            $('#related_request').addClass('d-none');
+        });
+        $('.add-note-button').on('click', function(e) {
             e.preventDefault();
             var notes_selected = $('#notes').select2('data');
-            if (notes_selected && Array.isArray(notes_selected))
-            {
+            if (notes_selected && Array.isArray(notes_selected)) {
                 notes_selected.forEach(function(item, index) {
                     ignore.push(item.id);
                     createNote(item);
@@ -89,47 +107,93 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             $('#notes').val(null).trigger('change');
         })
 
-        function createNote(item)
-        {
-            $('#tree_root').jstree().create_node('#' ,  { "id" : item.id, "text" : item.text }, "last");
+        function createNote(item) {
+            $('#tree_root').jstree().create_node('#', {
+                "id": item.id,
+                "text": item.text
+            }, "last");
         }
         $('#tree_root').jstree({
-            "core" : {
-                "animation" : 0,
-                "check_callback" : true,
-                "themes" : { "stripes" : true },
-                'data' : data,
+            "core": {
+                "animation": 0,
+                "check_callback": true,
+                "themes": {
+                    "stripes": true
+                },
+                'data': data,
             },
-            "types" : {
-                "note" : {
-                    "valid_children" : ["note"]
+            "types": {
+                "note": {
+                    "valid_children": ["note"]
                 },
             },
-            "plugins" : [
+            "plugins": [
                 "contextmenu", "dnd", "search",
                 "state", "types", "wholerow"
             ],
-            "contextmenu":{         
+            "contextmenu": {
                 "items": function(node) {
                     return {
                         "Open": {
                             "separator_before": false,
                             "separator_after": false,
                             "label": "Open",
-                            "action": function (obj) { 
+                            "action": function(obj) {
                                 var detail_link = '<?php echo $this->link_note ?>' + node.id;
                                 window.open(detail_link);
+                            }
+                        },
+                        "Related_Request": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Related Request",
+                            "action": function(obj) {
+                                var detail_link = '<?php echo $this->link_request .'/' ?>' + node.id;
+                                $.ajax({  
+                                    type: 'GET',  
+                                    url: detail_link, 
+                                    data: {},
+                                    success: function(response) {
+                                        if (response.status == 'success')
+                                        {
+                                            var data = response.data;
+                                            $('#related_request').addClass('d-none');
+
+                                            $('#body_related_request').html('');
+                                            data.forEach(function(item) {
+                                                console.log(item);
+                                                var link_detail = '<?php echo $this->link_detail_request . '/'; ?>' + item.id;
+                                                $('#body_related_request').append(`
+                                                    <tr>
+                                                        <td><a href="${link_detail}" >${item.title}</a></td>
+                                                        <td>${item.deadline_at}</td>
+                                                        <td>${item.finished_at}</td>
+                                                    </tr>
+                                                `);
+                                            })
+                                            if (data.length == 0)
+                                            {
+                                                alert('No related request!');
+                                            }
+                                            else{
+                                                $('#related_request').removeClass('d-none');
+                                            }
+                                        }
+                                        else{
+                                            alert(response.message)
+                                        }
+                                    }
+                                });
                             }
                         },
                         "Remove": {
                             "separator_before": false,
                             "separator_after": false,
                             "label": "Remove",
-                            "action": function (obj) { 
+                            "action": function(obj) {
                                 $('#tree_root').jstree().delete_node(node);
                                 var index = ignore.indexOf(node.id);
-                                if (index !== -1)
-                                {
+                                if (index !== -1) {
                                     ignore.splice(index, 1);
                                 }
                             }
@@ -191,5 +255,4 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             return null;
         }
     });
-    
 </script>

@@ -396,4 +396,38 @@ class Note extends Admin {
             'message' => '',
         ]);
     }
+
+    public function request()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $id = (int) $urlVars['id'];
+        if (!$id || !$this->user->get('id'))
+        {
+            return $this->app->response(
+            [
+                'status'  => 'fail',
+                'data'    => $this->user->get('id'),
+                'message' => 'You are not allow.',
+            ]);
+        }
+        $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
+        $result = [];
+        foreach($list as &$item)
+        {
+            $request = $this->RequestEntity->findByPK($item['id']);
+            if ($request)
+            {
+                $request['deadline_at'] = $request['deadline_at'] && $request['deadline_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['deadline_at'])) : '';
+                $request['finished_at'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['finished_at'])) : '';
+                $result[] = $request;
+            }
+        }
+        
+        return $this->app->response(
+        [
+            'status'  => 'success',
+            'data'    => $result,
+            'message' => '',
+        ]);
+    }
 }

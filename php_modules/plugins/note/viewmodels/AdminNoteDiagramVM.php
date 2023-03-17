@@ -48,6 +48,8 @@ class AdminNoteDiagramVM extends ViewModel
         $this->set('title_page_edit', $data && $data['title'] ? $data['title'] : 'New Diagrams', true);
         $this->set('url', $this->router->url(), true);
         $this->set('link_note', $this->router->url('note/'), true);
+        $this->set('link_request', $this->router->url('note/request'), true);
+        $this->set('link_detail_request', $this->router->url('detail-request'), true);
         $this->set('link_list', $this->router->url('note-diagrams'), true);
         $this->set('link_form', $this->router->url('note-diagram'), true);
         $this->set('link_search', $this->router->url('note/search'));
