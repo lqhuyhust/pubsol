@@ -138,14 +138,6 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                 "trigger": 'hover',
                 "items": function(node) {
                     return {
-                        // "Open": {
-                        //     "separator_before": false,
-                        //     "separator_after": false,
-                        //     "label": "Open",
-                        //     "action": function(obj) {
-                        //         window.open(detail_link);
-                        //     }
-                        // },
                         "Remove": {
                             "separator_before": false,
                             "separator_after": false,
