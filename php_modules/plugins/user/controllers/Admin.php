@@ -22,6 +22,10 @@ class Admin extends Controller
         $this->container = $app->getContainer();
         $this->user = $this->container->get('user');
         $this->response = $this->container->get('response');
+        $this->session = $this->container->get('session');
+        $this->UserEntity = $this->container->get('UserEntity');
+        $this->GroupEntity = $this->container->get('GroupEntity');
+        $this->UserGroupEntity = $this->container->get('UserGroupEntity');
     }
 
     public function isLoggedIn()
