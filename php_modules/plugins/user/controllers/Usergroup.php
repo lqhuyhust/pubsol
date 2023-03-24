@@ -10,8 +10,6 @@
 
 namespace App\plugins\user\controllers;
 
-use SPT\Middleware\Dispatcher as MW;
-
 class Usergroup extends Admin 
 {
     public function list()

@@ -10,16 +10,26 @@
 
 namespace App\plugins\user\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\Controller;
+use SPT\Application\IApp;
+use SPT\Response;
 
-class Admin extends MVController 
+class Admin extends Controller 
 {
+    public function __construct(IApp $app)
+    {
+        parent::__construct($app);
+        $this->container = $app->getContainer();
+        $this->user = $this->container->get('user');
+        $this->response = $this->container->get('response');
+    }
+
     public function isLoggedIn()
     {
         if( !$this->user->get('id') )
         {
-            return $this->app->redirect(
-                $this->router->url(
+            return $this->response->redirect(
+                $this->app->url(
                     'login'
                 )
             );

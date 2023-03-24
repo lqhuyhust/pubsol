@@ -8,12 +8,18 @@
  * 
  */
 
-namespace App\plugins\core\controllers;
+namespace App\plugins\user\controllers;
 
-use SPT\Web\MVC\Controller;
+use SPT\Web\user\Controller;
 
 class home extends Controller
 {
+    public function test()
+    {
+        $this->set('ctlr_var', 123123);
+        $this->app->set('layout', 'home');
+    }
+ 
     public function display()
     {
         $this->app->set('format', 'html');

@@ -10,17 +10,14 @@
 
 namespace App\plugins\user\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
-use SPT\Middleware\Dispatcher as MW;
-
 class User extends Admin 
 {
     public function gate()
     {
         if( $this->user->get('id') )
         {
-            return $this->app->redirect(
-                $this->router->url('users')
+            return $this->response->redirect(
+                $this->app->url('users')
             );
         }
         $this->app->set('format', 'html');
@@ -41,24 +38,24 @@ class User extends Admin
             {
                 $this->session->set('flashMsg', 'Error: User has been block');
                 $this->user->logout();
-                return $this->app->redirect(
-                    $this->router->url('login')
+                return $this->response->redirect(
+                    $this->app->url('login')
                 );
             }
             else
             {
                 $this->session->set('flashMsg', 'Hello!!!');
                 $redirect_after_login = $this->config->exists('redirect_after_login') ? $this->config->redirect_after_login : ''; 
-                return $this->app->redirect(
-                    $this->router->url($redirect_after_login)
+                return $this->response->redirect(
+                    $this->app->url($redirect_after_login)
                 );
             }
         }
         else
         {
             $this->session->set('flashMsg', 'Username and Password invalid.');
-            return $this->app->redirect(
-                $this->router->url('login')
+            return $this->response->redirect(
+                $this->app->url('login')
             );
         }
     }
@@ -74,8 +71,8 @@ class User extends Admin
         if(!empty($id) && !$existUser) 
         {
             $this->session->set('flashMsg', "Invalid user");
-            return $this->app->redirect(
-                $this->router->url('users')
+            return $this->response->redirect(
+                $this->app->url('users')
             );
         }
 
@@ -105,8 +102,8 @@ class User extends Admin
         {
             $msg = $this->session->get('validate', '');
             $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
-                $this->router->url('profile')
+            return $this->response->redirect(
+                $this->app->url('profile')
             );
         }
 
@@ -127,8 +124,8 @@ class User extends Admin
         else
         {
             $this->session->set('flashMsg', 'Error: Confirm Password Invalid');
-            return $this->app->redirect(
-                $this->router->url('user/'.$id)
+            return $this->response->redirect(
+                $this->app->url('user/'.$id)
             );
         }
 
@@ -140,16 +137,16 @@ class User extends Admin
         {
             $this->session->set('flashMsg', 'Updated Successfully');
             $link = $save_close ? '' : 'profile';
-            return $this->app->redirect(
-                $this->router->url($link)
+            return $this->response->redirect(
+                $this->app->url($link)
             );
         }
         else
         {
             $msg = 'Error: Updated Fail';
             $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
-                $this->router->url('profile')
+            return $this->response->redirect(
+                $this->app->url('profile')
             );
         }
     }
@@ -167,8 +164,8 @@ class User extends Admin
         $this->user->logout();
 
         $this->session->set('flashMsg', 'Bye Bye');
-        return $this->app->redirect(
-            $this->router->url('login')
+        return $this->response->redirect(
+            $this->app->url('login')
         );
     }
 
@@ -181,8 +178,8 @@ class User extends Admin
         {
             $msg = $this->session->get('validate', '');
             $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
-                $this->router->url('user/0')
+            return $this->response->redirect(
+                $this->app->url('user/0')
             );
         }
 
@@ -190,8 +187,8 @@ class User extends Admin
         if($this->request->post->get('password', '') != $this->request->post->get('confirm_password', ''))
         {
             $this->session->set('flashMsg', 'Error: Confirm Password Invalid');
-            return $this->app->redirect(
-                $this->router->url('user/0')
+            return $this->response->redirect(
+                $this->app->url('user/0')
             );
         }
 
@@ -212,8 +209,8 @@ class User extends Admin
         {
             $msg = 'Error: Created Fail';
             $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
-                $this->router->url('user/0')
+            return $this->response->redirect(
+                $this->app->url('user/0')
             );
         }
         else
@@ -221,8 +218,8 @@ class User extends Admin
             $this->UserGroupModel->addUserMap($newId);
             $this->session->set('flashMsg', 'Created Successfully');
             $link = $save_close ? 'users' : 'user/'. $newId;
-            return $this->app->redirect(
-                $this->router->url($link)
+            return $this->response->redirect(
+                $this->app->url($link)
             );
         }
     }
@@ -241,8 +238,8 @@ class User extends Admin
             if ($ids == $this->user->get('id') && (!in_array('user_manager', $access) || !in_array('usergroup_manager', $access)))
             {
                 $this->session->set('flashMsg', 'Error: You can\'t delete your access group');
-                return $this->app->redirect(
-                    $this->router->url('user/'. $ids)
+                return $this->response->redirect(
+                    $this->app->url('user/'. $ids)
                 );
             }
 
@@ -251,8 +248,8 @@ class User extends Admin
             {
                 $msg = $this->session->get('validate', '');
                 $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
-                    $this->router->url('user/'. $ids)
+                return $this->response->redirect(
+                    $this->app->url('user/'. $ids)
                 );
             }
 
@@ -276,8 +273,8 @@ class User extends Admin
             else
             {
                 $this->session->set('flashMsg', 'Error: Confirm Password Invalid');
-                return $this->app->redirect(
-                    $this->router->url('user/'.$ids)
+                return $this->response->redirect(
+                    $this->app->url('user/'.$ids)
                 );
             }
 
@@ -291,16 +288,16 @@ class User extends Admin
                 $this->UserGroupModel->updateUserMap($user);
                 $this->session->set('flashMsg', 'Updated Successfully');
                 $link = $save_close ? 'users' : 'user/'. $ids;
-                return $this->app->redirect(
-                    $this->router->url($link)
+                return $this->response->redirect(
+                    $this->app->url($link)
                 );
             }
             else
             {
                 $msg = 'Error: Save Failed';
                 $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
-                    $this->router->url('user/'. $ids)
+                return $this->response->redirect(
+                    $this->app->url('user/'. $ids)
                 );
             }
         }
@@ -318,8 +315,8 @@ class User extends Admin
                 if( $id == $this->user->get('id') )
                 {
                     $this->session->set('flashMsg', 'Error: You can\'t delete yourself.');
-                    return $this->app->redirect(
-                        $this->router->url('users'),
+                    return $this->response->redirect(
+                        $this->app->url('users'),
                     );
                 }
 
@@ -336,8 +333,8 @@ class User extends Admin
             if( $userID === $this->user->get('id') )
             {
                 $this->session->set('flashMsg', 'Error: You can\'t delete yourself.');
-                return $this->app->redirect(
-                    $this->router->url()
+                return $this->response->redirect(
+                    $this->app->url()
                 );
             }
             //Delete file in source
@@ -350,8 +347,8 @@ class User extends Admin
         
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return $this->app->redirect(
-            $this->router->url('users'), 
+        return $this->response->redirect(
+            $this->app->url('users'), 
         );
     }
 
@@ -368,8 +365,8 @@ class User extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid user');
-            return $this->app->redirect(
-                $this->router->url('users'),
+            return $this->response->redirect(
+                $this->app->url('users'),
             );
         }
 
