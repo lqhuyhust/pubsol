@@ -26,7 +26,7 @@ class AdminUsersVM extends ViewModel
 
     public function list()
     {
-        $filter = $this->filter()['filter'];
+        $filter = $this->filter()['form'];
         $request = $this->container->get('request');
         $user = $this->container->get('user');
         $UserEntity = $this->container->get('UserEntity');
@@ -131,7 +131,7 @@ class AdminUsersVM extends ViewModel
             $this->_filter = $filter;
         endif;
 
-        return ['filter' => $this->_filter];
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
