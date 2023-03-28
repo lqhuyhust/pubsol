@@ -10,14 +10,13 @@
 
 namespace App\plugins\core\viewmodels;  
 
-use SPT\View\VM\JDIContainer\ViewModel; 
-use SPT\Util;
+use SPT\Web\MVVM\ViewModel;
 
 class PaginationVM extends ViewModel
 {
     protected $alias = 'PaginationVM';
 
-    public function register()
+    public static function register()
     {
         return ['layouts.pagination'];
     }

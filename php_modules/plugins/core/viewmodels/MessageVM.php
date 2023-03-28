@@ -9,13 +9,13 @@
  */
 namespace App\plugins\core\viewmodels; 
 
-use SPT\View\VM\JDIContainer\ViewModel; 
+use SPT\Web\MVVM\ViewModel;
 
 class MessageVM extends ViewModel
 {
     protected $alias = 'MessageVM';
 
-    public function register()
+    public static function register()
     {
         return [
             'layouts.message|render',
