@@ -24,7 +24,7 @@ $this->theme->prepareAssets([
             <?php echo $this->renderLayout($this->mainLayout) ?>
         </div>
     </div>
-<?php $this->theme->echo('js'); ?>
-<?php $this->theme->echo('inlineJs'); ?>
+<?php $this->theme->echo('js', $this->getVar('url', '')); ?>
+<?php $this->theme->echo('inlineJs', $this->getVar('url', '')); ?>
 </body>
 </html>
