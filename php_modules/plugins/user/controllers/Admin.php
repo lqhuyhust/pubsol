@@ -12,14 +12,15 @@ namespace App\plugins\user\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
 use SPT\Application\IApp;
+use SPT\Response;
 
 class Admin extends Controller 
 {
     public function isLoggedIn()
     {
-        if( !$this->container->get('user')->get('id') )
+        if( !$this->user->get('id') )
         {
-            return $this->container->get('response')->redirect(
+            return Response::redirect(
                 $this->app->url(
                     'login'
                 )
