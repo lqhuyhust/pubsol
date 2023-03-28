@@ -18,17 +18,15 @@ class AdminUsersVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.user' => [
-                'list',
-                'list.row',
-                'list.filter'
-            ]
+            'layouts.backend.user.list',
+            'layouts.backend.user.list.row',
+            'layouts.backend.user.list.filter'
         ];
     }
 
     public function list()
     {
-        $filter = $this->filter();
+        $filter = $this->filter()['filter'];
         $request = $this->container->get('request');
         $user = $this->container->get('user');
         $UserEntity = $this->container->get('UserEntity');
@@ -100,7 +98,7 @@ class AdminUsersVM extends ViewModel
             'link_list' => $router->url('users'), true,
             'link_form' => $router->url('user'), true,
             'title_page' => 'User Manager',
-            'token' => $this->container->get('token'),
+            'token' => $this->container->get('token')->getToken(),
         ];
     }
 
@@ -130,14 +128,10 @@ class AdminUsersVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-
-            foreach($data as $k=>$v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['filter' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -205,5 +199,26 @@ class AdminUsersVM extends ViewModel
             'item' => $row,
             'index' => $viewData['list']->getIndex(),
         ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

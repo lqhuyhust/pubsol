@@ -26,7 +26,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php while($this->list->hasRow()) $this->render('backend.user.list.row', []); ?> 
+										<?php while($this->list->hasRow()) echo $this->render('backend.user.list.row', []); ?> 
 									</tbody>
 								<?php
 								?>
