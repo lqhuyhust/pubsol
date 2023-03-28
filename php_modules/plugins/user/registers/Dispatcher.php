@@ -2,6 +2,7 @@
 namespace App\plugins\user\registers;
 
 use SPT\Application\IApp;
+use SPT\Response;
 
 class Dispatcher
 {
@@ -12,18 +13,16 @@ class Dispatcher
         $app->loadPlugins('middleware', 'AfterRouting');
 
         $controller = 'App\plugins\user\controllers\\'. $cName;
-        if(class_exists($controller))
+        if(!class_exists($controller))
         {
-            $controller = new $controller($app);
-            $controller->{$fName}();
-
-            switch($app->get('format', ''))
-            {
-                default:
-                case 'html': $controller->toHtml(); break;
-                case 'ajax': $controller->toAjax(); break;
-                case 'json': $controller->toJson(); break;
-            }
+            throw new \Exception('Invalid controller '. $cName);
         }
+
+        $controller = new $controller($app);
+        $controller->{$fName}();
+        $format = $app->get('format', 'html');
+        $fName = 'to'. ucfirst($format);
+        $content = $controller->{$fName}();
+        Response::_200($content);
     }
 }
