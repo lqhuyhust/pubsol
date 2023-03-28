@@ -29,13 +29,19 @@ class AdminUsersVM extends ViewModel
     public function list()
     {
         $filter = $this->filter();
+        $request = $this->container->get('request');
+        $user = $this->container->get('user');
+        $UserEntity = $this->container->get('UserEntity');
+        $UserGroupEntity = $this->container->get('UserGroupEntity');
+        $session = $this->container->get('session');
+        $router = $this->container->get('router');
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
         $filter_group = $filter->getField('group')->value;
-        $page   = $this->request->get->get('page', 1, 'int');
+        $page   = $request->get->get('page', 1, 'int');
         if ($page <= 0) $page = 1;
 
         $where = [];
@@ -56,7 +62,7 @@ class AdminUsersVM extends ViewModel
         $sort = $sort ? $sort : 'name ASC';
         if ($filter_group)
         {
-            $user_map = $this->UserGroupEntity->list(0, 0, ['group_id' => $filter_group]);
+            $user_map = $UserGroupEntity->list(0, 0, ['group_id' => $filter_group]);
             $where_group[] = 0;
             foreach($user_map as $map)
             {
@@ -66,8 +72,8 @@ class AdminUsersVM extends ViewModel
             $where[] = 'id IN ('. implode(',', $where_group) . ')';
         }
 
-        $result = $this->UserEntity->list( $start, $limit, $where, $sort);
-        $total = $this->UserEntity->getListTotal();
+        $result = $UserEntity->list( $start, $limit, $where, $sort);
+        $total = $UserEntity->getListTotal();
 
         if (!$result)
         {
@@ -75,26 +81,27 @@ class AdminUsersVM extends ViewModel
             $total = 0;
             if ($where)
             {
-                $this->session->set('flashMsg', 'User note found');
+                $session->set('flashMsg', 'User note found');
             }
         }
 
         foreach( $result as $key => &$value )
         {
-            $result[$key]['groups'] = $this->UserEntity->getGroups($value['id']);
+            $result[$key]['groups'] = $UserEntity->getGroups($value['id']);
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
-        $this->set('list', $list, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('users'), true);
-        $this->set('title_page', 'User Manager', true);
-        $this->set('link_form', $this->router->url('user'), true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'list' => $list,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'link_list' => $router->url('users'), true,
+            'link_form' => $router->url('user'), true,
+            'title_page' => 'User Manager',
+            'token' => $this->container->get('token'),
+        ];
     }
 
     public function getColumns()
@@ -135,7 +142,7 @@ class AdminUsersVM extends ViewModel
 
     public function getFilterFields()
     {
-        $groups = $this->GroupEntity->list(0, 0, [], 'name asc');
+        $groups = $this->container->get('GroupEntity')->list(0, 0, [], 'name asc');
         $options = [
             ['text' => 'Select Group', 'value' => ''],
         ];
@@ -191,10 +198,12 @@ class AdminUsersVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
     }
 }

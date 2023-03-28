@@ -18,18 +18,19 @@ class AdminUserVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.user' => [
-                'login',
-                'form',
-                'profile',
-            ]
+            'layouts.backend.user.login',
+            'layouts.backend.user.form',
+            'layouts.backend.user.profile',
         ];
     }
 
-    public function login()
+    public function login($layoutData, &$viewData)
     {
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_login', $this->router->url('login'), true);
+        $app = $this->container->get('app');
+        return [
+            'url' =>  $app->url(),
+            'link_login' =>  $app->url('login'),
+        ];
     }
 
     public function form()
