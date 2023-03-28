@@ -10,7 +10,7 @@
 
 namespace App\plugins\milestone\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
 
 class Documenthistory extends Admin 
 {

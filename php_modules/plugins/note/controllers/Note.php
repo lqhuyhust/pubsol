@@ -10,7 +10,7 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
 
 class Note extends Admin {
     public function detail()

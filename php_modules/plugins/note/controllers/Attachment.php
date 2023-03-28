@@ -10,7 +10,7 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
 
 class Attachment extends Admin {
     public function delete()

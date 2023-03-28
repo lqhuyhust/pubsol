@@ -11,7 +11,7 @@
 
 namespace App\plugins\milestone\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
 
 class Milestone extends Admin
 {
