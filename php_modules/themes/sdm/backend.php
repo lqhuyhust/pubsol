@@ -25,9 +25,9 @@ $this->theme->prepareAssets([
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     <div class="wrapper">
-        <?php echo $this->render('widgets.backend.sidebar'); ?>
+        <?php echo $this->renderWidget('backend.sidebar'); ?>
         <div class="main">
-            <?php echo $this->render('widgets.backend.header'); ?>
+            <?php echo $this->renderWidget('backend.header'); ?>
 
             <main class="content p-0">
                 <?php echo $this->renderLayout($this->mainLayout) ?>
