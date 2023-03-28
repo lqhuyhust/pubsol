@@ -10,29 +10,16 @@
 
 namespace App\plugins\user\controllers;
 
-use SPT\Web\MVVM\Controller;
+use SPT\Web\MVVM\ControllerContainer as Controller;
 use SPT\Application\IApp;
-use SPT\Response;
 
 class Admin extends Controller 
 {
-    public function __construct(IApp $app)
-    {
-        parent::__construct($app);
-        $this->container = $app->getContainer();
-        $this->user = $this->container->get('user');
-        $this->response = $this->container->get('response');
-        $this->session = $this->container->get('session');
-        $this->UserEntity = $this->container->get('UserEntity');
-        $this->GroupEntity = $this->container->get('GroupEntity');
-        $this->UserGroupEntity = $this->container->get('UserGroupEntity');
-    }
-
     public function isLoggedIn()
     {
-        if( !$this->user->get('id') )
+        if( !$this->container->get('user')->get('id') )
         {
-            return $this->response->redirect(
+            return $this->container->get('response')->redirect(
                 $this->app->url(
                     'login'
                 )
