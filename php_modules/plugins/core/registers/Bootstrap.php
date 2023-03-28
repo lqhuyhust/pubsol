@@ -20,7 +20,6 @@ class Bootstrap
         static::prepareDB($app);
         static::prepareToken($app);
         static::prepareSession($app);
-        static::prepareResponse($app);
     }
 
     public static function prepareDB(IApp $app)
@@ -48,13 +47,6 @@ class Bootstrap
         $container = $app->getContainer();
         $token = new Token($app);
         $container->set('token', $token);
-    }
-    
-    public static function prepareResponse(IApp $app)
-    {
-        $container = $app->getContainer();
-        $response = new Response();
-        $container->set('response', $response);
     }
 
     public static function prepareSession(IApp $app)
