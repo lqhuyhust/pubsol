@@ -5,7 +5,7 @@ use SPT\Application\IApp;
 
 class Middleware
 {
-    public static function AfterRouting( IApp $app )
+    public static function afterRouting( IApp $app )
     {
     }
 }

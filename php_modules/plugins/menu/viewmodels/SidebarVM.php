@@ -23,14 +23,13 @@ class SideBarVM extends ViewModel
 
     public function sidebar()
     {
-        $menu = [];
-        $this->app->loadPlugin('menu', 'register');
-        $menu = $this->menu;
-
-        // $this->set('path_current', $this->router->get('actualPath')); 
-        // $this->set('logout_link', $this->router->url('logout')); 
-        // $this->set('link_admin', $this->router->url('')); 
-        // $this->set('menu', $menu);
-        // $this->set('u_type', $this->user->get('u_type'), true);
+        $menu = $this->container->exists('menu') ? $this->container->get('menu') : [];
+        $router = $this->container->get('router');
+        return [
+            'path_current' => $router->get('actualPath'),
+            'logout_link' => $router->url('logout'),
+            'link_admin' => $router->url(''),
+            'menu' => $menu,
+        ];
     }
 }
