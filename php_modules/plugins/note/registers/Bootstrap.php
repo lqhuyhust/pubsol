@@ -8,6 +8,5 @@ class Bootstrap
     public static function initialize( IApp $app)
     {
         // prepare note
-        $container = $app->getContainer();
     }
 }
