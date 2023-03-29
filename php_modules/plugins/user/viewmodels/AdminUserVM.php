@@ -35,33 +35,42 @@ class AdminUserVM extends ViewModel
 
     public function form()
     {
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
+        $request = $this->container->get('request');
+        $UserEntity = $this->container->get('UserEntity');
+        $router = $this->container->get('router');
 
-        $data = $id ? $this->UserEntity->findByPK($id) : [];
+        $urlVars = $request->get('urlVars');
+        $id = (int) $urlVars['id'];
+
+        $data = $id ? $UserEntity->findByPK($id) : [];
         if ($data)
         {
             $data['password'] = '';
-            $groups = $this->UserEntity->getGroups($data['id']);
+            $groups = $UserEntity->getGroups($data['id']);
             foreach ($groups as $group)
             {
                 $data['groups'][] = $group['group_id'];
             }
         }
-        $form = new Form($this->getFormFields(), $data);
+        $form = new Form($this->getFormFields($id), $data);
 
-        $this->set('form', $form, true);
-        $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'Update User' : 'New User', true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('users'));
-        $this->set('link_form', $this->router->url('user'));
+        return [
+           'id' => $id,
+           'form' => $form,
+           'data' => $data,
+           'title_page' => $data ? 'Update User' : 'New User',
+           'url' => $router->url(),
+           'link_list' => $router->url('users'),
+           'link_form' => $router->url('user'),
+        ];
     }
 
-    public function getFormFields()
+    public function getFormFields($id)
     {
-        $groups = $this->GroupEntity->list(0, 0, [], 'name asc');
+        $GroupEntity = $this->container->get('GroupEntity');
+        $token = $this->container->get('token');
+        
+        $groups = $GroupEntity->list(0, 0, [], 'name asc');
         $options = [];
         foreach ($groups as $group)
         {
@@ -119,11 +128,11 @@ class AdminUserVM extends ViewModel
                 'formClass' => 'form-select',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $token->getToken(),
             ],
         ];
 
-        if($this->view->id)
+        if($id)
         {
             $fields['modified_at'] = ['readonly'];
             $fields['modified_by'] = ['readonly'];
@@ -146,13 +155,13 @@ class AdminUserVM extends ViewModel
     public function profile()
     {
         $id = $this->user->get('id');
-        $data = $id ? $this->UserEntity->findByPK($id) : [];
+        $data = $id ? $UserEntity->findByPK($id) : [];
         if ($data)
         {
             $data['password'] = '';
             $data['groups'] = [];
 
-            $groups = $this->UserEntity->getGroups($data['id']);
+            $groups = $UserEntity->getGroups($data['id']);
             foreach ($groups as $group)
             {
                 $data['groups'][] = $group['group_name'];

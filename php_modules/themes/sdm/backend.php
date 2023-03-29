@@ -8,7 +8,7 @@ $this->theme->prepareAssets([
     // 'js-bootstrap',
     'js-backend',
 ]);
-
+$content = $this->renderLayout($this->mainLayout);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +30,7 @@ $this->theme->prepareAssets([
             <?php echo $this->renderWidget('backend.header'); ?>
 
             <main class="content p-0">
-                <?php echo $this->renderLayout($this->mainLayout) ?>
+                <?php echo $content; ?>
             </main>
 
         </div>
