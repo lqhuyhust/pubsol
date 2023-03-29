@@ -8,26 +8,6 @@
  * 
  */
 
-// define( 'APP_PATH', __DIR__ . '/../php_modules/');
-
-// require APP_PATH.'/../vendor/autoload.php';
-
-// use SPT\App\Instance as AppIns;
-// use Joomla\DI\Container;
-// use App\libraries\appPlg;
-
-// /**
-//  * Running application
-//  */
-// AppIns::bootstrap( new appPlg(new Container),[
-//     'app' => APP_PATH,
-//     'config' => APP_PATH. '/config.php', 
-//     'plugin' => APP_PATH. '//plugins/', 
-//     'theme' => APP_PATH. 'themes/', 
-// ]);
-
-// AppIns::main()->execute();
-
 define( 'APP_PATH', __DIR__ . '/../');
 define('PUBLIC_PATH', __DIR__ . '/');
 define('MEDIA_PATH', PUBLIC_PATH. 'media/');
