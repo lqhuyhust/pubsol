@@ -18,23 +18,29 @@ class AdminGroupsVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.usergroup' => [
-                'list',
-                'list.row',
-                'list.filter'
-            ]
+            'layouts.backend.usergroup.list',
+            'layouts.backend.usergroup.list.row',
+            'layouts.backend.usergroup.list.filter'
         ];
     }
 
     public function list()
     {
-        $filter = $this->filter();
+        $request = $this->container->get('request');
+        $token = $this->container->get('token');
+        $UserGroupEntity = $this->container->get('UserGroupEntity');
+        $router = $this->container->get('router');
+        $GroupEntity = $this->container->get('GroupEntity');
+        $UserModel = $this->container->get('UserModel');
+        $session = $this->container->get('session');
+        $user = $this->container->get('user');
+        $filter = $this->filter()['form'];
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
-        $page   = $this->request->get->get('page', 1, 'int');
+        $page   = $request->get->get('page', 1, 'int');
 
         if ($page <= 0) $page = 1;
 
@@ -51,8 +57,8 @@ class AdminGroupsVM extends ViewModel
 
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'name ASC';
-        $result = $this->GroupEntity->list( $start, $limit, $where, $sort);
-        $total = $this->GroupEntity->getListTotal();
+        $result = $GroupEntity->list( $start, $limit, $where, $sort);
+        $total = $GroupEntity->getListTotal();
 
         if (!$result)
         {
@@ -60,19 +66,19 @@ class AdminGroupsVM extends ViewModel
             $total = 0;
             if( !empty($search) )
             {
-                $this->session->set('flashMsg', 'Groups not found');
+                $session->set('flashMsg', 'Groups not found');
             }
         }
 
         foreach($result as &$group) {
             //get users in group
-            $userIn = $this->UserGroupEntity->getUserActive($group['id']);
-            $userInGroup = $this->UserGroupEntity->getListTotal();
+            $userIn = $UserGroupEntity->getUserActive($group['id']);
+            $userInGroup = $UserGroupEntity->getListTotal();
             $group['user_in'] = $userInGroup;
 
             //get Right Access
             $group['access'] = (array) json_decode($group['access']);
-            $keys = $this->UserModel->getRightAccess();
+            $keys = [];//$UserModel->getRightAccess();
             foreach($group['access'] as $key => $value)
             {
                 if (!in_array($value, $keys))
@@ -83,16 +89,20 @@ class AdminGroupsVM extends ViewModel
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
-        $this->set('list', $list, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('user-groups'), true);
-        $this->set('title_page', 'User Group Manager', true);
-        $this->set('link_form', $this->router->url('user-group'), true);
-        $this->set('token', $this->app->getToken(), true);
+
+        return [
+            'list' => $list,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('user-groups'),
+            'title_page' => 'User Group Manager',
+            'link_form' => $router->url('user-group'),
+            'token' => $token->getToken(),
+        ];
+        
     }
 
     public function getColumns()
@@ -118,13 +128,10 @@ class AdminGroupsVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-            foreach($data as $k=>$v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
 
@@ -167,10 +174,33 @@ class AdminGroupsVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }
