@@ -42,4 +42,4 @@
         </div>
     </div>
 </form>
-<?php echo $this->render('backend.task.list.javascript'); ?>
+<?php echo $this->render('backend.task.list.javascript', []); ?>

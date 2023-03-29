@@ -47,4 +47,4 @@
         </div>
     </div>
 </form>
-<?php echo $this->render('backend.request.list.javascript'); ?>
+<?php echo $this->render('backend.request.list.javascript', []); ?>

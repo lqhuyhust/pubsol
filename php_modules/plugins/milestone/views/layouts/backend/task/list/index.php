@@ -1,4 +1,4 @@
-<?php echo $this->render('notification');?>
+<?php echo $this->render('notification', []);?>
 <div class="pt-2" id="task_link">
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
@@ -12,10 +12,10 @@
                 </a>
 				<div class="collapse" id="collapseTask">
 					<div class="row align-items-center pt-3">
-						<?php echo $this->render('backend.task.list.filter');?>
+						<?php echo $this->render('backend.task.list.filter', []);?>
 					</div>
 					<div class="row align-items-center">
-						<?php echo $this->render('backend.task.form');?>
+						<?php echo $this->render('backend.task.form', []);?>
 					</div>
 					<form action="<?php echo $this->link_list ?>" method="POST" id="formListTask">
 						<input type="hidden" value="<?php echo $this->token ?>" name="token">
@@ -32,7 +32,7 @@
 								</tr>
 							</thead>
 							<tbody id="listTask">
-								<?php while($this->list->hasRow()) $this->render('backend.task.list.row'); ?> 
+								<?php while($this->list->hasRow()) echo $this->render('backend.task.list.row', ['item' => $this->list->getRow(), 'index' => $this->list->getIndex()]); ?> 
 							</tbody>
 						<?php
 						?>

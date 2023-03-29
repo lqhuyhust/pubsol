@@ -20,34 +20,39 @@ class AdminVersionLatestVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.version_latest' => [
-                'list'
-            ]
+            'layouts.backend.version_latest.list',
         ];
     }
 
     public function list()
     {
-        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $request = $this->container->get('request');
+        $router = $this->container->get('router');
+        $session = $this->container->get('session');
+        $VersionEntity = $this->container->get('VersionEntity');
+        $RequestEntity = $this->container->get('RequestEntity');
+        $VersionNoteEntity = $this->container->get('VersionNoteEntity');
+        $MilestoneEntity = $this->container->get('MilestoneEntity');
+
+        $version_latest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_latest = $version_latest ? $version_latest[0] : [];
         // if(!$version_latest){
         //     $this->session->set('flashMsg', 'Not Found Version');
         // }
-        $urlVars = $this->request->get('urlVars');
+        $urlVars = $request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
-        $this->set('request_id', $request_id, true);
 
         if (!$version_latest)
         {
             $version_latest['id'] = 0;
         }
 
-        $tmp_request = $this->RequestEntity->findOne(['id' => $request_id]);
+        $tmp_request = $RequestEntity->findOne(['id' => $request_id]);
 
-        $list = $this->VersionNoteEntity->list(0,0, ['version_id = '. $version_latest['id'], 'request_id = '. $request_id]);
+        $list = $VersionNoteEntity->list(0,0, ['version_id = '. $version_latest['id'], 'request_id = '. $request_id]);
         $list = $list ? $list : [];
-        $request = $this->RequestEntity->findByPK($request_id);
-        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        $request = $RequestEntity->findByPK($request_id);
+        $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         
         if($version_latest && $tmp_request['version_id']) {
             $title_page = 'Version changelog : '. $tmp_request['version_id'];
@@ -55,9 +60,9 @@ class AdminVersionLatestVM extends ViewModel
             $title_page = 'Version changelog (Please create Version first)';
         }
 
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
+        $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $item) {
         }
         if(strcmp($item['version_id'], '0') == 0) {
@@ -68,15 +73,19 @@ class AdminVersionLatestVM extends ViewModel
             $status = false;
         }
 
-        $this->set('list', $list, true);
-        $this->set('version_latest', $version_latest);
-        $this->set('status', $status);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('request-version/'. $request_id), true);
-        $this->set('link_cancel', $this->router->url('detail-request/'. $request_id), true);
-        $this->set('title_page_version', $title_page, true);
-        $this->set('link_form', $this->router->url('request-version/'. $request_id), true);
-        $this->set('token', $this->app->getToken(), true);
+        var_dump($version_lastest);
+        return [
+            'request_id', $request_id,
+            'list', $list,
+            'version_latest', $version_latest,
+            'status', $status,
+            'url', $router->url(),
+            'link_list', $router->url('request-version/'. $request_id),
+            'link_cancel', $router->url('detail-request/'. $request_id),
+            'title_page_version', $title_page,
+            'link_form', $router->url('request-version/'. $request_id),
+            'token', $this->container->get('token')->getToken(),
+        ];
     }
 
 }

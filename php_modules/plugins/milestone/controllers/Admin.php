@@ -11,6 +11,7 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Admin extends Controller 
 {
@@ -18,7 +19,7 @@ class Admin extends Controller
     {
         if( !$this->user->get('id') )
         {
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url(
                     'login'
                 )

@@ -11,6 +11,7 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Documenthistory extends Admin 
 {
@@ -26,9 +27,9 @@ class Documenthistory extends Admin
             $result = $document['description'];
         }
 
-        return $this->app->response([
-            'result' => $result,
-        ],200);
+        $this->app->set('format', 'json');
+        $this->set('result', $result);
+        return ;
     }
 
     public function rollback()
@@ -52,19 +53,19 @@ class Documenthistory extends Admin
                     } 
                 }
                 
-                return $this->app->response([
-                    'result' => 'ok',
-                    'message' => 'Update Successfully',
-                    'description' => $document['description'],
-                ],200);
+                $this->app->set('format', 'json');
+                $this->set('result', 'ok');
+                $this->set('message', 'Update Successfully');
+                $this->set('description', $document['description']);
+                return ;
             }
             
         }
 
-        return $this->app->response([
-            'result' => 'fail',
-            'message' => 'Update Failed'
-        ],200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'fail');
+        $this->set('message', 'Update Failed');
+        return ;
     }
 
     public function delete()
@@ -90,10 +91,10 @@ class Documenthistory extends Admin
             }
         }  
         
-        return $this->app->response([
-            'result' => 'ok',
-            'message' => $count.' deleted record(s)'
-        ],200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('message', $count.' deleted record(s)');
+        return ;
     }
 
     public function validateID()
@@ -108,7 +109,7 @@ class Documenthistory extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid document');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url(),
             );
         }

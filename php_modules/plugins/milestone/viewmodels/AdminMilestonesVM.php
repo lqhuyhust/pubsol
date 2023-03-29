@@ -20,23 +20,27 @@ class AdminMilestonesVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.milestone' => [
-                'list',
-                'list.row',
-                'list.filter'
-            ]
+            'layouts.backend.milestone.list',
+            'layouts.backend.milestone.list.row',
+            'layouts.backend.milestone.list.filter',
         ];
     }
     
     public function list()
     {
-        $filter = $this->filter();
+        $request = $this->container->get('request');
+        $session = $this->container->get('session');
+        $user = $this->container->get('user');
+        $router = $this->container->get('router');
+        $MilestoneEntity = $this->container->get('MilestoneEntity');
+
+        $filter = $this->filter()['form'];
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
         $status = $filter->getField('status')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
@@ -55,29 +59,31 @@ class AdminMilestonesVM extends ViewModel
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->MilestoneEntity->list( $start, $limit, $where, $sort);
-        $total = $this->MilestoneEntity->getListTotal();
+        $result = $MilestoneEntity->list( $start, $limit, $where, $sort);
+        $total = $MilestoneEntity->getListTotal();
         if (!$result)
         {
             $result = [];
             $total = 0;
             if( !empty($search) )
             {
-                $this->session->set('flashMsg', 'Not Found Milestone');
+                $session->set('flashMsg', 'Not Found Milestone');
             }
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
-        $this->set('list', $list, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('milestones'), true);
-        $this->set('title_page', 'Milestone Manager', true);
-        $this->set('link_form', $this->router->url('milestone'), true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'list' => $list,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('milestones'),
+            'title_page' => 'Milestone Manager',
+            'link_form' => $router->url('milestone'),
+            'token' => $this->container->get('token')->getToken(),
+        ];
     }
 
     public function getColumns()
@@ -103,14 +109,11 @@ class AdminMilestonesVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
 
-            foreach($data as $k=>$v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -150,10 +153,33 @@ class AdminMilestonesVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

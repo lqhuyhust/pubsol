@@ -11,6 +11,7 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Task extends Admin 
 {
@@ -26,7 +27,7 @@ class Task extends Admin
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Task");
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('detail-request/'. $request_id)
             );
         }
@@ -51,9 +52,10 @@ class Task extends Admin
 
         $result = $this->TaskEntity->list( 0, 0, $where, 0);
         $result = $result ? $result : [];
-        
-        return $this->app->response(
-            $result, 200);
+
+        $this->app->set('format', 'json');
+        $this->set('result', $result);
+        return ;
     }
 
     public function add()
@@ -62,10 +64,10 @@ class Task extends Admin
         $request_id = $this->validateRequestID();
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Create Task Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Create Task Failed!');
+            return ;
         }
 
         $title = $this->request->post->get('title', '', 'string');
@@ -86,17 +88,17 @@ class Task extends Admin
         
         if( !$newId )
         {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Create Task Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Create Task Failed!');
+            return ;
         }
         else
         {
-            return $this->app->response([
-                'result' => 'ok',
-                'message' => 'Create Task Successfully!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'ok');
+            $this->set('message', 'Create Task Successfully!');
+            return ;
         }
     }
 
@@ -106,10 +108,10 @@ class Task extends Admin
         $request_id = $this->validateRequestID();
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Update Task Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Update Task Failed!');
+            return ;
         }
         // TODO valid the request input
 
@@ -132,17 +134,17 @@ class Task extends Admin
             
             if($try) 
             {
-                return $this->app->response([
-                    'result' => 'ok',
-                    'message' => 'Update Task Successfully!'
-                ],200);
+                $this->app->set('format', 'json');
+                $this->set('result', 'ok');
+                $this->set('message', 'Update Task Successfully!');
+                return ;
             }
             else
             {
-                return $this->app->response([
-                    'result' => 'ok',
-                    'message' => 'Error: Update Task Failed!'
-                ],200);
+                $this->app->set('format', 'json');
+                $this->set('result', 'ok');
+                $this->set('message', 'Error: Update Task Failed!');
+                return ;
             }
         }
     }
@@ -153,10 +155,10 @@ class Task extends Admin
         $request_id = $this->validateRequestID();
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Delete Task Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Delete Task Failed!');
+            return ;
         }
         $count = 0;
         if( is_array($ids))
@@ -178,10 +180,10 @@ class Task extends Admin
             }
         }  
         
-        return $this->app->response([
-            'result' => 'ok',
-            'message' => $count.' deleted record(s)'
-        ],200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('message', $count.' deleted record(s)');
+        return ;
     }
 
     public function validateID()
@@ -197,7 +199,7 @@ class Task extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid Task');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('detail-request/'. $request_id),
             );
         }
@@ -215,7 +217,7 @@ class Task extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('milestones'),
             );
         }

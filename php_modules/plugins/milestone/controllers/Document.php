@@ -11,6 +11,7 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Document extends Admin 
 {
@@ -22,7 +23,7 @@ class Document extends Admin
         if (!$request)
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('milestones')
             );
         }
@@ -38,10 +39,10 @@ class Document extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Save Document Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Save Document Failed!');
+            return ;
         }
 
         $description = $this->request->post->get('description', '', 'string');
@@ -75,10 +76,10 @@ class Document extends Admin
         {
             $msg = 'Error: Update Document Failed!';
 
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => $msg,
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', $msg);
+            return ;
         }
         else
         {
@@ -89,10 +90,10 @@ class Document extends Admin
                 'modified_at' => date('Y-m-d H:i:s')
             ]);
 
-            return $this->app->response([
-                'result' => 'ok',
-                'message' => 'Update Document Successfully!',
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'ok');
+            $this->set('message', 'Update Document Successfully!');
+            return ;
         }
     }
 
@@ -106,7 +107,7 @@ class Document extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('milestones'),
             );
         }
@@ -139,8 +140,10 @@ class Document extends Admin
             $result = $list ? $list : [];
         }
 
-        return $this->app->response(
-            $result, 200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('list', $result);
+        return ;
     }
 
     public function getComment()
@@ -164,8 +167,10 @@ class Document extends Admin
             $result = $discussion ? $discussion : [];
         }
 
-        return $this->app->response(
-            $result, 200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('list', $result);
+        return ;
     }
 
     public function checkVersion($request_id)

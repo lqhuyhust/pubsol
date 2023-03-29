@@ -11,6 +11,7 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Note extends Admin 
 {
@@ -26,7 +27,7 @@ class Note extends Admin
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Relate Note");
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('detail-request/'. $request_id)
             );
         }
@@ -79,8 +80,9 @@ class Note extends Admin
             $result[] = $item;
         }
 
-        return $this->app->response(
-            $result, 200);
+        $this->app->set('format', 'json');
+        $this->set('result', $result);
+        return ;
     }
 
     public function getNote()
@@ -91,10 +93,10 @@ class Note extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Get Note Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Get Note Failed!');
+            return ;
         }
 
         $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $request_id]);
@@ -107,8 +109,9 @@ class Note extends Admin
             }
         }
         $notes = $this->NoteEntity->list(0 , 0, $where);
-        return $this->app->response(
-            $notes, 200);
+        $this->app->set('format', 'json');
+        $this->set('result', $notes);
+        return ;
     }
 
     public function add()
@@ -118,10 +121,10 @@ class Note extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Add Note Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Add Note Failed!');
+            return ;
         }
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
@@ -133,10 +136,10 @@ class Note extends Admin
             $findOne = $this->RelateNoteEntity->findOne(['note_id = '. $note_id, 'request_id = '. $request_id]);
             if ($findOne)
             {
-                return $this->app->response([
-                    'result' => 'fail',
-                    'message' => 'Error: Duplicate Relate Note',
-                ], 200);
+                $this->app->set('format', 'json');
+                $this->set('result', 'fail');
+                $this->set('message', 'Error: Duplicate Relate Note');
+                return ;
             }
         }
 
@@ -150,17 +153,17 @@ class Note extends Admin
 
         if( !$newId )
         {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Error: Create Relate Note Failed!',
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Error: Create Relate Note Failed!');
+            return ;
         }
         else
         {
-            return $this->app->response([
-                'result' => 'ok',
-                'message' => 'Create Relate Note Successfully!',
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'ok');
+            $this->set('message', 'Create Relate Note Successfully!');
+            return ;
         }
     }
 
@@ -171,17 +174,17 @@ class Note extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Update Note Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Update Note Failed!');
+            return ;
         }
 
         // TODO valid the request input
 
         if( is_array($ids) && $ids != null)
         {
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('detail-request/'. $request_id)
             );
         }
@@ -197,7 +200,7 @@ class Note extends Admin
                 if ($findOne)
                 {
                     $this->session->set('flashMsg', 'Error: Duplicate Relate Note');
-                    return $this->app->redirect(
+                    return Response::redirect(
                         $this->router->url('detail-request/'. $request_id),
                     );
                 }
@@ -212,7 +215,7 @@ class Note extends Admin
             if($try) 
             {
                 $this->session->set('flashMsg', 'Edit Relate Note Successfully');
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('detail-request/'. $request_id), 
                 );
             }
@@ -220,7 +223,7 @@ class Note extends Admin
             {
                 $msg = 'Error: Save Relate Note Failed';
                 $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('detail-request/'. $request_id .'/'. $ids)
                 );
             }
@@ -234,10 +237,10 @@ class Note extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Delete Note Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Delete Note Failed!');
+            return ;
         }
 
         $count = 0;
@@ -260,10 +263,10 @@ class Note extends Admin
             }
         }  
         
-        return $this->app->response([
-            'result' => 'ok',
-            'message' => $count.' deleted record(s)',
-        ], 200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('message', $count.' deleted record(s)');
+        return ;
     }
 
     public function validateID()
@@ -279,7 +282,7 @@ class Note extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid Relate Note');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('detail-request/'. $request_id),
             );
         }
@@ -297,7 +300,7 @@ class Note extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('admin'),
             );
         }
