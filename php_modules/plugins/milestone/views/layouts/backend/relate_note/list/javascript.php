@@ -15,10 +15,9 @@
             success: function(resultData)
             {
                 var list = '';
-                if (Array.isArray(resultData))
+                if (Array.isArray(resultData.result))
                 {
-                    
-                    resultData.forEach(function(item)
+                    resultData.result.forEach(function(item)
                     {
                         list += `
                         <tr>

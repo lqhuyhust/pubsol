@@ -21,9 +21,12 @@ class Dispatcher
         }
 
         $controller = new $controller($app);
-        $controller->set('url', $app->url());
         $controller->{$fName}();
         $format = $app->get('format', 'html');
+        if ($format != 'json')
+        {
+            $controller->set('url', $app->url());
+        }
         $fName = 'to'. ucfirst($format);
         $content = $controller->{$fName}();
         Response::_200($content);

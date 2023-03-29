@@ -22,6 +22,7 @@ class AdminRelateNotesVM extends ViewModel
         return [
             'layouts.backend.relate_note.list',
             'layouts.backend.relate_note.list.filter',
+            'layouts.backend.relate_note.list.javascript',
         ];
     
     }
@@ -129,6 +130,27 @@ class AdminRelateNotesVM extends ViewModel
             'link_note' => $router->url('note'),
             'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
             'title_page_relate_note' => $title_page_relate_note,
+            'token' => $this->container->get('token')->getToken(),
+        ];
+    }
+
+    public function javascript()
+    {
+        $request =  $this->container->get('request');
+        $user =  $this->container->get('user');
+        $token =  $this->container->get('token');
+        $router =  $this->container->get('router');
+
+        $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        return [
+            'request_id' => $request_id,
+            'link_list' => $router->url('relate-notes/' . $request_id),
+            'link_form' => $router->url('relate-note/'. $request_id),
+            'link_note' => $router->url('note'),
+            'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
             'token' => $this->container->get('token')->getToken(),
         ];
     }
