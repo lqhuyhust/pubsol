@@ -23,7 +23,8 @@ class SideBarVM extends ViewModel
 
     public function sidebar()
     {
-        $menu = $this->container->exists('menu') ? $this->container->get('menu') : [];
+        $menu_active = $this->container->exists('menu_active') ? $this->container->get('menu_active') : 'menu';
+        $menu = $this->container->exists($menu_active) ? $this->container->get($menu_active) : [];
         $router = $this->container->get('router');
         return [
             'path_current' => $router->get('actualPath'),
