@@ -154,7 +154,10 @@ class AdminUserVM extends ViewModel
 
     public function profile()
     {
-        $id = $this->user->get('id');
+        $user = $this->container->get('user');
+        $UserEntity = $this->container->get('UserEntity');
+        $router = $this->container->get('router');
+        $id = $user->get('id');
         $data = $id ? $UserEntity->findByPK($id) : [];
         if ($data)
         {
@@ -171,12 +174,14 @@ class AdminUserVM extends ViewModel
         
         $form = new Form($this->getFormFieldsProfile(), $data);
 
-        $this->set('form', $form, true);
-        $this->set('data', $data, true);
-        $this->set('title_page', 'My Profile', true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('profile'));
-        $this->set('link_form', $this->router->url('profile'));
+        return [
+            'form' => $form,
+            'data' => $data,
+            'title_page' => 'My Profile',
+            'url' => $router->url(),
+            'link_list' => $router->url('profile'),
+            'link_form' => $router->url('profile'),
+        ];
     }
 
     public function getFormFieldsProfile()
@@ -217,7 +222,7 @@ class AdminUserVM extends ViewModel
                 'showLabel' => false,
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 
