@@ -11,7 +11,6 @@ class Dispatcher
         $app->loadPlugins('entity', 'loadEntity');
         $app->loadPlugins('user', 'loadUser');
         $app->loadPlugins('model', 'loadModel');
-        $app->loadPlugins('menu', 'registerMenu');
         $app->loadPlugins('middleware', 'AfterRouting');
 
         $controller = 'App\plugins\setting\controllers\\'. $cName;

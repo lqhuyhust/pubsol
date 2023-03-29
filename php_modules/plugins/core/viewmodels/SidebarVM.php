@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\menu\viewmodels;  
+namespace App\plugins\core\viewmodels;  
 
 use SPT\Web\MVVM\ViewModel;
 
@@ -23,6 +23,9 @@ class SideBarVM extends ViewModel
 
     public function sidebar()
     {
+        $app = $this->container->get('app');
+        $app->loadPlugins('menu', 'registerMenu');
+        
         $menu_active = $this->container->exists('menu_active') ? $this->container->get('menu_active') : 'menu';
         $menu = $this->container->exists($menu_active) ? $this->container->get($menu_active) : [];
         $router = $this->container->get('router');
