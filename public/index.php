@@ -9,9 +9,6 @@
  */
 
 // define( 'APP_PATH', __DIR__ . '/../php_modules/');
-// define('PUBLIC_PATH', __DIR__ . '/');
-// define('MEDIA_PATH', PUBLIC_PATH. 'media/');
-// define('SPT_PATH_TEMP', PUBLIC_PATH);
 
 // require APP_PATH.'/../vendor/autoload.php';
 
@@ -32,6 +29,9 @@
 // AppIns::main()->execute();
 
 define( 'APP_PATH', __DIR__ . '/../');
+define('PUBLIC_PATH', __DIR__ . '/');
+define('MEDIA_PATH', PUBLIC_PATH. 'media/');
+define('SPT_PATH_TEMP', PUBLIC_PATH);
 
 require APP_PATH. 'vendor/autoload.php';
 
