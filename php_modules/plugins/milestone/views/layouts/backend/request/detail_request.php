@@ -1,7 +1,7 @@
 
 <?php echo $this->render('layouts.backend.relate_note.list', []); ?>
 <?php echo $this->render('layouts.backend.document.form', []); ?>
-<?php //echo $this->render('layouts.backend.task.list', []); ?>
+<?php echo $this->render('layouts.backend.task.list', []); ?>
 <?php //echo $this->render('layouts.backend.version_latest.list', []); ?>
 <div class="toast message-toast" id="message_ajax">
     <div id="message_form" class="d-flex message-body ">

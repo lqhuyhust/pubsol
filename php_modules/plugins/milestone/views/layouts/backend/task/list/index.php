@@ -12,7 +12,7 @@
                 </a>
 				<div class="collapse" id="collapseTask">
 					<div class="row align-items-center pt-3">
-						<?php echo $this->render('backend.task.list.filter', []);?>
+						<?php echo $this->render('backend.task.list.filter', ['link_list' => $this->link_list, 'link_form' => $this->link_form, 'status' => $this->status]);?>
 					</div>
 					<div class="row align-items-center">
 						<?php echo $this->render('backend.task.form', []);?>
@@ -32,7 +32,7 @@
 								</tr>
 							</thead>
 							<tbody id="listTask">
-								<?php while($this->list->hasRow()) echo $this->render('backend.task.list.row', ['item' => $this->list->getRow(), 'index' => $this->list->getIndex()]); ?> 
+								<?php while($this->list->hasRow()) echo $this->render('backend.task.list.row', ['item' => $this->list->getRow(), 'index' => $this->list->getIndex(), 'status' => $this->status]); ?> 
 							</tbody>
 						<?php
 						?>

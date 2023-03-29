@@ -34,7 +34,7 @@
 								</tr>
 							</thead>
 							<tbody id="listRelateNote">
-								<?php while($this->list->hasRow()) echo $this->render('backend.relate_note.list.row', ['item' => $this->list->getRow(), 'index' => $this->list->getIndex()]); ?> 
+								<?php while($this->list->hasRow()) echo $this->render('backend.relate_note.list.row', ['item' => $this->list->getRow(), 'index' => $this->list->getIndex(), 'link_note' => $this->link_note]); ?> 
 							</tbody>
 						<?php
 						?>
