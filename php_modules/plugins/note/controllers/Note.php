@@ -354,12 +354,11 @@ class Note extends Admin {
     {
         if (!$this->user->get('id'))
         {
-            return Response::_200(
-            [
-                'status'  => 'fail',
-                'data'    => $this->user->get('id'),
-                'message' => 'You are not allow.',
-            ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , $this->user->get('id'));
+            $this->set('message' , 'You are not allow.');
+            return true;
         }
 
         $search = $this->request->get->get('search', '', 'string');
@@ -390,12 +389,11 @@ class Note extends Admin {
         $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
         $result = $result ? $result : [];
 
-        return Response::_200(
-        [
-            'status'  => 'success',
-            'data'    => $result,
-            'message' => '',
-        ]);
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $result);
+        $this->set('message' , '');
+        return;
     }
 
     public function request()
@@ -404,12 +402,11 @@ class Note extends Admin {
         $id = (int) $urlVars['id'];
         if (!$id || !$this->user->get('id'))
         {
-            return Response::_200(
-            [
-                'status'  => 'fail',
-                'data'    => $this->user->get('id'),
-                'message' => 'You are not allow.',
-            ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , $this->user->get('id'));
+            $this->set('message' , 'You are not allow.');
+            return;
         }
         $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
         $result = [];
@@ -424,11 +421,10 @@ class Note extends Admin {
             }
         }
         
-        return Response::_200(
-        [
-            'status'  => 'success',
-            'data'    => $result,
-            'message' => '',
-        ]);
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $result);
+        $this->set('message' , '');
+        return;
     }
 }

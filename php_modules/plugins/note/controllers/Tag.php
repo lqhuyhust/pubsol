@@ -28,12 +28,11 @@ class Tag extends Admin {
         }
 
         $data = $this->TagEntity->list(0,100, $where);
-        return Response::_200(
-            [
-                'status'  => 'success',
-                'data'    => $data,
-                'message' => '',
-            ]);
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $data);
+        $this->set('message' , '');
+        return;
     }
 
     public function add()
@@ -41,23 +40,21 @@ class Tag extends Admin {
         $name = $this->request->post->get('name', '', 'string');
 
         if (empty($name)){
-            return Response::_200(
-                [
-                    'status'  => 'fail',
-                    'data'    => '',
-                    'message' => 'Name invalid',
-                ]);
+
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , '');
+            $this->set('message' , 'Name invalid');
+            return;
         }
 
         $findOne = $this->TagEntity->findOne(['name = "'. $name. '"']);
         if (!empty($findOne)){
-            return Response::_200(
-                [
-                    'status'  => 'fail',
-                    'data'    => '',
-                    'message' => 'Error: Title is already in use!',
-                ]
-            );
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , '');
+            $this->set('message' , 'Error: Title is already in use!');
+            return;
         }
 
         $newId =  $this->TagEntity->add([
@@ -65,19 +62,17 @@ class Tag extends Admin {
         ]);
 
         if ($newId){
-            return Response::_200(
-                [
-                    'status'  => 'success',
-                    'data'    => ['id' => $newId, 'name' => $name],
-                    'message' => 'Create Tag sucess',
-                ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'success');
+            $this->set('data' , ['id' => $newId, 'name' => $name]);
+            $this->set('message' , 'Create Tag sucess');
+            return;
         } else {
-            return Response::_200(
-                [
-                    'status'  => 'fail',
-                    'data'    => '',
-                    'message' => 'Error: Create Tag fail!',
-                ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , '');
+            $this->set('message' , 'Error: Create Tag fail!');
+            return; 
         }
     }
 }
