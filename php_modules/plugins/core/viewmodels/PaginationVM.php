@@ -31,6 +31,7 @@ class PaginationVM extends ViewModel
             $router = $this->container->get('router');
             $total = $list->getTotal();
             return [
+                'total' => $total,
                 'page' => $request->get->get('page', 1),
                 'totalPage' => $list->getTotalPage(),
                 'limit' => $list->getLimit(),
