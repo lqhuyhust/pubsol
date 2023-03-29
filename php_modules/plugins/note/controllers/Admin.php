@@ -11,6 +11,7 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Admin extends Controller 
 {
@@ -18,8 +19,8 @@ class Admin extends Controller
     {
         if( !$this->user->get('id') )
         {
-            return $this->app->redirect(
-                $this->router->url(
+            return Response::redirect(
+                $this->app->url(
                     'login'
                 )
             );
