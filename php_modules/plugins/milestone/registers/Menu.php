@@ -42,7 +42,9 @@ class Menu
             {
                 $menu[] = [[], 'detail-request/'. $request_id.'#version_link', 'Versions', '<i class="fa-solid fa-code-branch"></i>', '', ''];
             }
-            return $menu;
+            $container->set('menu_active', 'request_menu');
+            $container->set('request_menu', $menu);
+            return ;
         }
 
         $list = $entity->list(0, 0, ['status = 1']);
