@@ -15,6 +15,7 @@ class Menu
             [['versions', 'version', 'version-notes', 'version-feedback'], 'versions', 'Versions', '<i class="fa-solid fa-code-branch"></i>', ''],
         ];
 
-        $container->set('menu', array_merge($menu_root, $menu));
+        $menu_root[5] = isset($menu_root[5]) ? array_merge($menu_root[5], $menu) : $menu;
+        $container->set('menu', $menu_root);
     }
 }

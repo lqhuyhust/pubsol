@@ -31,8 +31,9 @@ class Menu
             $app->set('menu_type', 'milestone');
             $urlVars = $request->get('urlVars');
             $request_id = (int) $urlVars['request_id'];
-            
-            $menu = [
+            $menu = [];
+
+            $menu[1] = [
                 [['detail-request/'. $request_id], 'detail-request/'. $request_id.'#relate_note_link', 'Relate Notes', '<i class="fa-solid fa-link"></i>', '', ''],
                 [[], 'detail-request/'. $request_id.'#document_link', 'Document', '<i class="fa-regular fa-folder-open"></i>', '', ''],
                 [[], 'detail-request/'. $request_id.'#task_link', 'Tasks', '<i class="fa-solid fa-list-check"></i>', '', ''],
@@ -40,7 +41,7 @@ class Menu
 
             if ($version)
             {
-                $menu[] = [[], 'detail-request/'. $request_id.'#version_link', 'Versions', '<i class="fa-solid fa-code-branch"></i>', '', ''];
+                $menu[1][] = [[], 'detail-request/'. $request_id.'#version_link', 'Versions', '<i class="fa-solid fa-code-branch"></i>', '', ''];
             }
             $container->set('menu_active', 'request_menu');
             $container->set('request_menu', $menu);
@@ -56,6 +57,7 @@ class Menu
             $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="me-4 pe-2"></i>', 'back-ground-sidebar'];
         }
 
-        $container->set('menu', array_merge($menu_root, $menu));
+        $menu_root[1] = isset($menu_root[1]) ? array_merge($menu_root[1], $menu) : $menu;
+        $container->set('menu', $menu_root);
     }
 }

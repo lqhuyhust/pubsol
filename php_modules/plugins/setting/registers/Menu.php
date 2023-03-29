@@ -9,7 +9,7 @@ class Menu
     public static function registerMenu( IApp $app )
     {
         $container = $app->getContainer();
-        $menu = $container->exists('menu') ? $container->get('menu') : [];
+        $menu_root = $container->exists('menu') ? $container->get('menu') : [];
 
         $app->loadPlugins('setting', 'registerSetting');
         $menu_setting = [];
@@ -24,6 +24,7 @@ class Menu
         ]);
         $menu[] = [['setting', 'setting',], 'setting', 'Settings', '<i class="fa-solid fa-gear"></i>', $menu_setting];
 
-        $container->set('menu', $menu);
+        $menu_root[10] = isset($menu_root[10]) ? array_merge($menu_root[10], $menu) : $menu;
+        $container->set('menu', $menu_root);
     }
 }

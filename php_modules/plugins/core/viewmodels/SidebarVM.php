@@ -27,7 +27,14 @@ class SideBarVM extends ViewModel
         $app->loadPlugins('menu', 'registerMenu');
         
         $menu_active = $this->container->exists('menu_active') ? $this->container->get('menu_active') : 'menu';
-        $menu = $this->container->exists($menu_active) ? $this->container->get($menu_active) : [];
+        $menu_root = $this->container->exists($menu_active) ? $this->container->get($menu_active) : [];
+        ksort($menu_root);
+        $menu = [];
+        foreach($menu_root as $menu_items)
+        {
+            $menu = array_merge($menu, $menu_items);
+        }
+
         $router = $this->container->get('router');
         return [
             'path_current' => $router->get('actualPath'),
