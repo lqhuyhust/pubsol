@@ -23,7 +23,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php while($this->list->hasRow()) $this->render('backend.note.list.row', []); ?>
+										<?php while($this->list->hasRow()) echo $this->render('backend.note.list.row', []); ?>
 									</tbody>
 								<?php
 								?>

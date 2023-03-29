@@ -11,6 +11,7 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Version extends Admin {
     
@@ -33,14 +34,14 @@ class Version extends Admin {
                     $this->NoteHistoryEntity->remove($item['id']);
                 }
 
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note/'. $data['id'])
                 );
             }
         }
 
         $this->session->set('flashMsg', 'Error: Update Fail');
-        return $this->app->redirect(
+        return Response::redirect(
             $this->router->url('note/'. $data['id'])
         );
     }
@@ -57,7 +58,7 @@ class Version extends Admin {
         if(!empty($id) && !$exist)
         {
             $this->session->set('flashMsg', "Invalid note");
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('notes')
             );
         }
@@ -84,7 +85,7 @@ class Version extends Admin {
 
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return $this->app->redirect(
+        return Response::redirect(
             $link
         );
     }
@@ -102,7 +103,7 @@ class Version extends Admin {
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid version');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('notes'),
             );
         }

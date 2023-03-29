@@ -16,7 +16,7 @@ use SPT\Response;
 class Tag extends Admin {
     public function list()
     {
-//        $this->isLoggedIn();
+        $this->isLoggedIn();
 
         $name = $this->request->get->get('search', '', 'string');
 
@@ -28,7 +28,7 @@ class Tag extends Admin {
         }
 
         $data = $this->TagEntity->list(0,100, $where);
-        return $this->app->response(
+        return Response::_200(
             [
                 'status'  => 'success',
                 'data'    => $data,
@@ -36,11 +36,12 @@ class Tag extends Admin {
             ]);
     }
 
-    public function add(){
+    public function add()
+    {
         $name = $this->request->post->get('name', '', 'string');
 
         if (empty($name)){
-            return $this->app->response(
+            return Response::_200(
                 [
                     'status'  => 'fail',
                     'data'    => '',
@@ -50,7 +51,7 @@ class Tag extends Admin {
 
         $findOne = $this->TagEntity->findOne(['name = "'. $name. '"']);
         if (!empty($findOne)){
-            return $this->app->response(
+            return Response::_200(
                 [
                     'status'  => 'fail',
                     'data'    => '',
@@ -64,14 +65,14 @@ class Tag extends Admin {
         ]);
 
         if ($newId){
-            return $this->app->response(
+            return Response::_200(
                 [
                     'status'  => 'success',
                     'data'    => ['id' => $newId, 'name' => $name],
                     'message' => 'Create Tag sucess',
                 ]);
         } else {
-            return $this->app->response(
+            return Response::_200(
                 [
                     'status'  => 'fail',
                     'data'    => '',
