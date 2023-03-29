@@ -42,7 +42,7 @@ class Version extends Admin
         if($tmp_check) {
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('result', 'Add Version Failed!');
+            $this->set('message', 'Add Version Failed!');
             return ;
         }
 
@@ -53,7 +53,7 @@ class Version extends Admin
         {
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('result', 'Error: Invalid Version!');
+            $this->set('message', 'Error: Invalid Version!');
             return ;
         }
         // TODO: validate new add
@@ -72,14 +72,14 @@ class Version extends Admin
             $msg = 'Error: Create Change log Failed!';
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('result', $msg);
+            $this->set('message', $msg);
             return ;
         }
         else
         {
             $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('result', 'Create Change log Successfully!');
+            $this->set('result', 'ok');
+            $this->set('message', 'Create Change log Successfully!');
             return ;
         }
     }
@@ -93,7 +93,7 @@ class Version extends Admin
         if($tmp_check) {
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('result', 'Update Version Failed!');
+            $this->set('message', 'Update Version Failed!');
             return ;
         }
         // TODO valid the request input
@@ -102,7 +102,7 @@ class Version extends Admin
         {
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('result', 'Invalid Version Note');
+            $this->set('message', 'Invalid Version Note');
             return ;
         }
         if(is_numeric($ids) && $ids)
@@ -120,14 +120,14 @@ class Version extends Admin
             {
                 $this->app->set('format', 'json');
                 $this->set('result', 'ok');
-                $this->set('result', 'Update Change Log Successfully');
+                $this->set('message', 'Update Change Log Successfully');
                 return ;
             }
             else
             {
                 $this->app->set('format', 'json');
                 $this->set('result', 'fail');
-                $this->set('result', 'Update Change Log Failed');
+                $this->set('message', 'Update Change Log Failed');
                 return ;
             }
         }
@@ -142,7 +142,7 @@ class Version extends Admin
         if($tmp_check) {
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('result', 'Delete Version Failed!');
+            $this->set('message', 'Delete Version Failed!');
             return ;
         }
 
@@ -168,7 +168,7 @@ class Version extends Admin
         
         $this->app->set('format', 'json');
         $this->set('result', 'ok');
-        $this->set('result', $count.' deleted record(s)');
+        $this->set('message', $count.' deleted record(s)');
         return ;
     }
 

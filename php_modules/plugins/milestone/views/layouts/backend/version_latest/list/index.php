@@ -55,9 +55,9 @@
 			data: data,
 			success: function(resultData) {
 				var list = '';
-				if (Array.isArray(resultData)) {
+				if (Array.isArray(resultData.result)) {
 
-					resultData.forEach(function(item) {
+					resultData.result.forEach(function(item) {
 						list += `
 						<form class="form_changelog" action="<?php echo $this->link_form . '/' ?>${item['id']}" method="post">
 							<input type="hidden" value="<?php echo $this->token ?>" name="token">

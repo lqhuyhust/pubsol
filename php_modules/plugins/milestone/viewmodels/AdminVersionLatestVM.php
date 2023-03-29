@@ -73,18 +73,17 @@ class AdminVersionLatestVM extends ViewModel
             $status = false;
         }
 
-        var_dump($version_lastest);
         return [
-            'request_id', $request_id,
-            'list', $list,
-            'version_latest', $version_latest,
-            'status', $status,
-            'url', $router->url(),
-            'link_list', $router->url('request-version/'. $request_id),
-            'link_cancel', $router->url('detail-request/'. $request_id),
-            'title_page_version', $title_page,
-            'link_form', $router->url('request-version/'. $request_id),
-            'token', $this->container->get('token')->getToken(),
+            'request_id' => $request_id,
+            'list' => $list,
+            'version_latest' => $version_latest,
+            'status' => $status,
+            'url' => $router->url(),
+            'link_list' => $router->url('request-version/'. $request_id),
+            'link_cancel' => $router->url('detail-request/'. $request_id),
+            'title_page_version' => $title_page,
+            'link_form' => $router->url('request-version/'. $request_id),
+            'token' => $this->container->get('token')->getToken(),
         ];
     }
 
