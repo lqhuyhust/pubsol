@@ -1,4 +1,4 @@
-<?php echo $this->render('notification'); ?>
+<?php echo $this->render('notification', []); ?>
 <div class="container-fluid align-items-center row justify-content-center mx-auto ">
     <form enctype='multipart/form-data' action="<?php echo  $this->link_form ?>" method="POST">
         <div class="d-flex mt-2 justify-content-center mb-3">

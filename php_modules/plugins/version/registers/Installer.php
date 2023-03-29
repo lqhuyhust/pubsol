@@ -7,7 +7,7 @@ class Installer
 {
     public static function name()
     {
-        return 'Plugin note';
+        return 'Plugin version';
     }
 
     public static function detail()

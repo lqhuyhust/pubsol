@@ -13,7 +13,7 @@ namespace App\plugins\version\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminFeedbackVM extends ViewModel
 {
@@ -22,32 +22,36 @@ class AdminFeedbackVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.feedback' => [
-                'list',
-                'list.row',
-                'list.filter',
-            ]
+            'layouts.backend.feedback.list',
+            'layouts.backend.feedback.list.row',
+            'layouts.backend.feedback.list.filter',
         ];
     }
     
     public function list()
     {
-        $filter = $this->filter();
-        $urlVars = $this->request->get('urlVars');
+        $request  = $this->container->get('request');
+        $TagEntity  = $this->container->get('TagEntity');
+        $VersionEntity  = $this->container->get('VersionEntity');
+        $NoteEntity  = $this->container->get('NoteEntity');
+        $session  = $this->container->get('session');
+        $router  = $this->container->get('router');
+
+        $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
         $version_id = (int) $urlVars['version_id'];
-        $this->set('version_id', $version_id, true);
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
 
         if (!empty($search)) 
         {
-            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%". $search ."%' "]);
+            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%". $search ."%' "]);
             $where[] = "(`description` LIKE '%". $search ."%')";
             $where[] = "(`note` LIKE '%". $search ."%')";
             $where[] = "(`title` LIKE '%". $search ."%')";
@@ -67,14 +71,14 @@ class AdminFeedbackVM extends ViewModel
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $version = $this->VersionEntity->findByPK($version_id);
+        $version = $VersionEntity->findByPK($version_id);
         $tag_exist = $this->container->exists('TagEntity');
         $note_exist = $this->container->exists('NoteEntity');
         $result = [];
         if ($tag_exist && $note_exist && $version) {
             
-            $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
-            $tag_version = $this->TagEntity->findOne(["`name` = '". $version['version']."'"]);
+            $tag_feedback = $TagEntity->findOne(["`name` = 'feedback'"]);
+            $tag_version = $TagEntity->findOne(["`name` = '". $version['version']."'"]);
             if ($tag_feedback && $tag_version)
             {
                 $where = array_merge($where, [
@@ -87,8 +91,8 @@ class AdminFeedbackVM extends ViewModel
                     " OR `tags` LIKE '%" . $tag_version['id'] . ',' . "%'" .
                     " OR `tags` LIKE '%" . ',' . $tag_version['id'] . ',' . "%' )"
                 ]);
-                $result = $this->NoteEntity->list($start, $limit, $where, $sort);
-                $total = $this->NoteEntity->getListTotal();
+                $result = $NoteEntity->list($start, $limit, $where, $sort);
+                $total = $NoteEntity->getListTotal();
             }
         }
         $data_tags = [];
@@ -96,7 +100,7 @@ class AdminFeedbackVM extends ViewModel
             if (!empty($item['tags'])){
                 $t1 = $where = [];
                 $where[] = "(`id` IN (".$item['tags'].") )";
-                $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
+                $t2 = $TagEntity->list(0, 1000, $where,'','`name`');
 
                 foreach ($t2 as $i) {
                     if($i['name'] != $tag_feedback['name'] && $i['name'] != $tag_version['name']) {
@@ -111,22 +115,25 @@ class AdminFeedbackVM extends ViewModel
             $result = [];
             $total = 0;
             $mgs = $search ? 'Feedback not found!' : '';
-            $this->session->set('flashMsg', $mgs);
+            $session->set('flashMsg', $mgs);
         }
 
         
 
         $list = new Listing($result, $total, $limit, $this->getColumns());
         $version = $version ? $version : ['name' => ''];
-        $title_page = $version['name'] ? '<a href="'. $this->router->url('versions/').'" >Version: '.$version['name'].'</a> >> Feedback ' : 'Feedback';
+        $title_page = $version['name'] ? '<a href="'. $router->url('versions/').'" >Version: '.$version['name'].'</a> >> Feedback ' : 'Feedback';
 
-        $this->set('list', $list, true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('data_tags', $data_tags, true);
-        $this->set('link_cancel', $this->router->url('versions'), true);
-        $this->set('title_page', $title_page, true);
-        $this->set('link_form', $this->router->url('note'), true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'list' => $list,
+            'url' => $router->url(),
+            'version_id' => $version_id,
+            'data_tags' => $data_tags,
+            'link_cancel' => $router->url('versions'),
+            'title_page' => $title_page,
+            'link_form' => $router->url('note'),
+            'token' => $this->container->get('token')->getToken(),
+        ];
     }
     public function getColumns()
     {
@@ -149,14 +156,10 @@ class AdminFeedbackVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-
-            foreach ($data as $k => $v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -189,10 +192,33 @@ class AdminFeedbackVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

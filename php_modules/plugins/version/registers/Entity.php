@@ -9,7 +9,7 @@ class Entity
     public static function loadEntity( IApp $app )
     {
         $container = $app->getContainer();
-        $path = $app->getPluginPath().'note/entities';
+        $path = $app->getPluginPath().'version/entities';
         $namespace = $app->getNamespace().'\plugins\version\entities';
         $inners = Loader::findClass($path, $namespace);
         foreach($inners as $class)

@@ -13,7 +13,7 @@ namespace App\plugins\version\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminVersionsVM extends ViewModel
 {
@@ -22,22 +22,27 @@ class AdminVersionsVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.version' => [
-                'list',
-                'list.row',
-                'list.filter'
-            ]
+            'layouts.backend.version.list',
+            'layouts.backend.version.list.row',
+            'layouts.backend.version.list.filter',
         ];
     }
 
     public function list()
     {
-        $filter = $this->filter();
+        $request = $this->container->get('request');
+        $session = $this->container->get('session');
+        $router = $this->container->get('router');
+        $VersionEntity = $this->container->get('VersionEntity');
+        $VersionNoteEntity = $this->container->get('VersionNoteEntity');
+        $VersionModel = $this->container->get('VersionModel');
+
+        $filter = $this->filter()['form'];
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
@@ -53,26 +58,29 @@ class AdminVersionsVM extends ViewModel
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'created_at desc';
 
-        $result = $this->VersionEntity->list($start, $limit, $where, $sort);
-        $total = $this->VersionEntity->getListTotal();
+        $result = $VersionEntity->list($start, $limit, $where, $sort);
+        $total = $VersionEntity->getListTotal();
 
         $get_log = [];
-        $get_log = $this->VersionNoteEntity->list(0, 0, $where, 0);
+        $get_log = $VersionNoteEntity->list(0, 0, $where, 0);
 
         if (!$result) {
             $result = [];
             $total = 0;
             $mgs = $search ? 'Version not found!' : '';
-            $this->session->set('flashMsg', $mgs);
+            $session->set('flashMsg', $mgs);
         }
-        $tag_feedback = $this->TagEntity->findOne(["`name` = 'feedback'"]);
+
+        $tag_exist = $this->container->exists('TagEntity');
+        $note_exist = $this->container->exists('NoteEntity');
+        $TagEntity = $this->container->get('TagEntity');
+        $NoteEntity = $this->container->get('NoteEntity');
+        $tag_feedback = $TagEntity->findOne(["`name` = 'feedback'"]);
 
         foreach ($result as &$version) {
-            $tag_exist = $this->container->exists('TagEntity');
-            $note_exist = $this->container->exists('NoteEntity');
             $total_feedback = 0;
             if ($tag_exist && $note_exist) {
-                $tag_version = $this->TagEntity->findOne(["`name` = '" . $version['version'] . "'"]);
+                $tag_version = $TagEntity->findOne(["`name` = '" . $version['version'] . "'"]);
                 $where = [];
                 if ($tag_feedback && $tag_version) {
                     $where = array_merge($where, [
@@ -85,8 +93,8 @@ class AdminVersionsVM extends ViewModel
                             " OR `tags` LIKE '%" . $tag_version['id'] . ',' . "%'" .
                             " OR `tags` LIKE '%" . ',' . $tag_version['id'] . ',' . "%' )"
                     ]);
-                    $result_feedback = $this->NoteEntity->list(0, 0, $where, '');
-                    $total_feedback = $this->NoteEntity->getListTotal();
+                    $result_feedback = $NoteEntity->list(0, 0, $where, '');
+                    $total_feedback = $NoteEntity->getListTotal();
                 }
             }
             if($total_feedback) {
@@ -96,22 +104,24 @@ class AdminVersionsVM extends ViewModel
             }
         }
 
-        $version_number = $this->VersionModel->getVersion();
+        $version_number = $VersionModel->getVersion();
         $list = new Listing($result, $total, $limit, $this->getColumns());
-
-        $this->set('list', $list, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('version_number', $version_number, true);
-        $this->set('get_log', $get_log, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('versions'), true);
-        $this->set('title_page', 'Version Manager', true);
-        $this->set('link_form', $this->router->url('version'), true);
-        $this->set('link_form_detail', $this->router->url('version-notes'), true);
-        $this->set('token', $this->app->getToken(), true);
+        $user = $this->container->get('user');
+        return [
+            'list' => $list,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'version_number' => $version_number,
+            'get_log' => $get_log,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('versions'),
+            'title_page' => 'Version Manager',
+            'link_form' => $router->url('version'),
+            'link_form_detail' => $router->url('version-notes'),
+            'token' => $this->container->get('token')->getToken(),
+        ];
     }
 
     public function getColumns()
@@ -136,14 +146,10 @@ class AdminVersionsVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-
-            foreach ($data as $k => $v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -178,10 +184,33 @@ class AdminVersionsVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

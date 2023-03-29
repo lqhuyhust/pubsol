@@ -11,6 +11,7 @@
 namespace App\plugins\version\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Feedback extends Admin 
 {
@@ -33,7 +34,7 @@ class Feedback extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Version');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('versions'),
             );
         }
