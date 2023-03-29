@@ -39,4 +39,4 @@
         </div>
     </div>
 </form>
-<?php echo $this->render('backend.note_diagram.list.javascript'); ?>
+<?php echo $this->render('backend.note_diagram.list.javascript', []); ?>

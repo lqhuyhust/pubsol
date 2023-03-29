@@ -22,27 +22,32 @@ class AdminNoteDiagramsVM extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.note_diagram' => [
-                'list',
-                'list.row',
-                'list.filter'
-            ]
+            'layouts.backend.note_diagram.list',
+            'layouts.backend.note_diagram.list.row',
+            'layouts.backend.note_diagram.list.filter'
         ];
     }
 
     public function list()
     {
-        $filter = $this->filter();
+        $request = $this->container->get('request');
+        $TagEntity = $this->container->get('TagEntity');
+        $NoteDiagramEntity = $this->container->get('NoteDiagramEntity');
+        $session = $this->container->get('session');
+        $user = $this->container->get('user');
+        $router = $this->container->get('router');
+
+        $filter = $this->filter()['form'];
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
 
         if (!empty($search) && is_string($search)) {
-            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
+            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
             $where[] = "(`description` LIKE '%" . $search . "%')";
             $where[] = "(`note` LIKE '%" . $search . "%')";
             $where[] = "(`title` LIKE '%" . $search . "%')";
@@ -60,15 +65,15 @@ class AdminNoteDiagramsVM extends ViewModel
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->NoteDiagramEntity->list($start, $limit, $where, $sort);
-        $total = $this->NoteDiagramEntity->getListTotal();
+        $result = $NoteDiagramEntity->list($start, $limit, $where, $sort);
+        $total = $NoteDiagramEntity->getListTotal();
         $data_tags = [];
         
         if (!$result) {
             $result = [];
             $total = 0;
             if (!empty($search)) {
-                $this->session->set('flashMsg', 'Note Diagram not found');
+                $session->set('flashMsg', 'Note Diagram not found');
             }
         }
 
@@ -76,7 +81,7 @@ class AdminNoteDiagramsVM extends ViewModel
             if (!empty($item['tags'])) {
                 $t1 = $where = [];
                 $where[] = "(`id` IN (" . $item['tags'] . ") )";
-                $t2 = $this->TagEntity->list(0, 0, $where, '', '`name`');
+                $t2 = $TagEntity->list(0, 0, $where, '', '`name`');
                 if ($t2) {
                     foreach ($t2 as $i) {
                         $t1[] = $i['name'];
@@ -87,17 +92,19 @@ class AdminNoteDiagramsVM extends ViewModel
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
-        $this->set('list', $list, true);
-        $this->set('data_tags', $data_tags, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('note-diagrams'), true);
-        $this->set('title_page', 'Note Diagarm', true);
-        $this->set('link_form', $this->router->url('note-diagram'), true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'list' => $list,
+            'data_tags' => $data_tags,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('note-diagrams'),
+            'title_page' => 'Note Diagarm',
+            'link_form' => $router->url('note-diagram'),
+            'token' => $this->container->get('token')->getToken(),
+        ];
     }
 
     public function getColumns()
@@ -130,14 +137,10 @@ class AdminNoteDiagramsVM extends ViewModel
                 $data['search'][] = $tmp;
             }
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-
-            foreach ($data as $k => $v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -181,11 +184,13 @@ class AdminNoteDiagramsVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
     }
 
     public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
