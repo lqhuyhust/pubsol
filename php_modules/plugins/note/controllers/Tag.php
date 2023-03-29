@@ -11,6 +11,7 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Tag extends Admin {
     public function list()

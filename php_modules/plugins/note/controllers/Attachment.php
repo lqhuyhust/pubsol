@@ -11,6 +11,7 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Attachment extends Admin {
     public function delete()
@@ -26,19 +27,19 @@ class Attachment extends Admin {
             }
             else
             {
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note/'. $item['note_id']),
                 );
             }
             $this->session->set('flashMsg', $count.' deleted file(s)');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note/'. $item['note_id']),
             );
         }
         else
         {
             $this->session->set('flashMsg', 'Invalid Attachment');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('notes'),
             );
         }
@@ -54,7 +55,7 @@ class Attachment extends Admin {
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Attachment');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('notes'),
             );
         }
@@ -84,13 +85,13 @@ class Attachment extends Admin {
             }
 
             $this->session->set('flashMsg', 'Not Found File Attachment!');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note/'. $item['note_id']),
             );
         }
 
         $this->session->set('flashMsg', 'Invalid Attachment!');
-        return $this->app->redirect(
+        return Response::redirect(
             $this->router->url('notes'),
         );
         
