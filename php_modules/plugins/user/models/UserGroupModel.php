@@ -112,6 +112,28 @@ class UserGroupModel extends Base
         
         if (!in_array('user_manager', $user_access) || !in_array('usergroup_manager', $user_access))
         {
+            // return false;
+        }
+
+        return true;
+    }
+
+    public function validate($id = 0)
+    {
+        $name = $this->request->post->get('name', '', 'string');
+
+        if(!empty($name)) 
+        {
+            $find = $this->GroupEntity->findOne(['name' => $name]);
+            if ($find && $find['id'] != $id)
+            {
+                $this->session->set('validate', "Error: Group Name already exists");
+                return false;
+            }
+        } 
+        else 
+        {
+            $this->session->set('validate', "Error: Group name can't empty");
             return false;
         }
 
