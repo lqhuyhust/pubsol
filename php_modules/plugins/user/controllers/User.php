@@ -182,7 +182,7 @@ class User extends Admin
     {
         $this->isLoggedIn();
         $save_close = $this->request->post->get('save_close', '', 'string');
-        $try = MW::fire('validation', ['ValidateUser'], []);
+        $try = $this->UserModel->validate();
         if (!$try)
         {
             $msg = $this->session->get('validate', '');
@@ -237,7 +237,16 @@ class User extends Admin
     {
         $ids = $this->validateID(); 
         $save_close = $this->request->post->get('save_close', '', 'string');
-       
+        $try = $this->UserModel->validate($ids);
+        if (!$try)
+        {
+            $msg = $this->session->get('validate', '');
+            $this->session->set('flashMsg', $msg);
+            return Response::redirect(
+                $this->app->url('user/'. $ids)
+            );
+        }
+
         // TODO valid the request input
         $groups = $this->request->post->get('groups', [], 'array');
         $access = $this->UserModel->getAccessByGroup($groups);
@@ -247,16 +256,6 @@ class User extends Admin
             if ($ids == $this->user->get('id') && (!in_array('user_manager', $access) || !in_array('usergroup_manager', $access)))
             {
                 $this->session->set('flashMsg', 'Error: You can\'t delete your access group');
-                return Response::redirect(
-                    $this->app->url('user/'. $ids)
-                );
-            }
-
-            $try = MW::fire('validation', ['ValidateUser'], []);
-            if (!$try)
-            {
-                $msg = $this->session->get('validate', '');
-                $this->session->set('flashMsg', $msg);
                 return Response::redirect(
                     $this->app->url('user/'. $ids)
                 );

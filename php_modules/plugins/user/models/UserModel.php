@@ -35,7 +35,7 @@ class UserModel extends Base
         return $access;
     }
 
-    public function validate($id)
+    public function validate($id = null)
     {
         $password = $this->request->post->get('password', '', 'string');
         $username = $this->request->post->get('username', '', 'string');
