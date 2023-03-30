@@ -25,8 +25,11 @@ class NoteDiagramModel extends Base
                 $item['text'] = $note['title'];
             }
             else{
-                unset($config[$key]);
-                continue;
+                if ($item['id'] != '-1')
+                {
+                    unset($config[$key]);
+                    continue;
+                }
             }
 
             if (isset($item['children']) && $item['children'])
@@ -36,5 +39,24 @@ class NoteDiagramModel extends Base
         }
 
         return $config;
+    }
+
+    public function findNotes($config)
+    {
+        $notes = [];
+        foreach($config as $key => &$item)
+        {
+            if ($item['id'])
+            {
+                $notes[] = $item['id'];
+            }
+
+            if (isset($item['children']) && $item['children'])
+            {
+                $notes = array_merge($notes, $this->findNotes($item['children']) ) ;
+            }
+        }
+
+        return $notes;
     }
 }

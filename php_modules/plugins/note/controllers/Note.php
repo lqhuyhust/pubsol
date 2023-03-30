@@ -378,7 +378,7 @@ class Note extends Admin {
                         " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
                 }
             }
-            $where = [implode(" OR ", $where)];
+            $where = ['('. implode(" OR ", $where). ')'];
         }
 
         if ($ignore)

@@ -36,7 +36,7 @@ class AdminNoteDiagramVM extends ViewModel
         $id = (int) $urlVars['id'];
 
         $data = $id ? $NoteDiagramEntity->findByPK($id) : [];
-
+        $ignore = [];
         if ($data && $data['config'])
         {
             $config = json_decode($data['config'], true);
@@ -45,6 +45,7 @@ class AdminNoteDiagramVM extends ViewModel
                 $config = $NoteDiagramModel->convertConfig($config);
             }
             $data['config'] = json_encode($config);
+            $ignore = $NoteDiagramModel->findNotes($config);
         }
 
         $form = new Form($this->getFormFields(), $data);
@@ -52,6 +53,7 @@ class AdminNoteDiagramVM extends ViewModel
             'id' => $id,
             'form' => $form,
             'data' => $data,
+            'ignore' => $ignore,
             'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Diagrams',
             'url' => $router->url(),
             'link_note' => $router->url('note/'),
