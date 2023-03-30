@@ -137,6 +137,10 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             "contextmenu": {
                 "trigger": 'hover',
                 "items": function(node) {
+                    if (node.id == '-1')
+                    {
+                        return {};
+                    }
                     return {
                         "Remove": {
                             "separator_before": false,
