@@ -55,7 +55,6 @@ class Note extends Admin {
         $save_close = $this->request->post->get('save_close', '', 'string');
         $files = $this->request->file->get('files', [], 'array');
         $note = $this->request->post->get('note', '', 'string');
-        $parent_note = $this->request->post->get('parent_note', '', 'string');
         $editor = $this->request->post->get('editor', 'html', 'string');
 
         $listTag = explode(',', $tags);
@@ -110,7 +109,6 @@ class Note extends Admin {
             'tags' => $tags,
             'note' => $note,
             'editor' => $editor,
-            'parent_note' => $parent_note,
             'description' => $description,
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -175,7 +173,6 @@ class Note extends Admin {
             $files = $this->request->file->get('files', [], 'array');
             $save_close = $this->request->post->get('save_close', '', 'string');
             $note = $this->request->post->get('note', '', 'string');
-            $parent_note = $this->request->post->get('parent_note', '', 'string');
             $editor = $this->request->post->get('editor', 'html', 'string');
 
             $listTag = explode(',', $tags);
@@ -229,7 +226,6 @@ class Note extends Admin {
                 'title' => $title,
                 'tags' => $tags,
                 'note' => $note,
-                'parent_note' => $parent_note,
                 'editor' => $editor,
                 'description' => $description,
                 'modified_by' => $this->user->get('id'),
@@ -351,5 +347,87 @@ class Note extends Admin {
         }
 
         return $id;
+    }
+
+    public function search()
+    {
+        if (!$this->user->get('id'))
+        {
+            return $this->app->response(
+            [
+                'status'  => 'fail',
+                'data'    => $this->user->get('id'),
+                'message' => 'You are not allow.',
+            ]);
+        }
+
+        $search = $this->request->get->get('search', '', 'string');
+        $ignore = $this->request->get->get('ignore', '', 'string');
+
+        $where = [];
+        if ($search)
+        {
+            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
+            $where[] = "(`note` LIKE '%" . $search . "%')";
+            $where[] = "(`title` LIKE '%" . $search . "%')";
+            if ($tags) {
+                foreach ($tags as $tag) {
+                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
+                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
+                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
+                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
+                }
+            }
+            $where = [implode(" OR ", $where)];
+        }
+
+        if ($ignore)
+        {
+            $where[] = 'id NOT IN('.$ignore.')';
+        }
+
+        $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
+        $result = $result ? $result : [];
+
+        return $this->app->response(
+        [
+            'status'  => 'success',
+            'data'    => $result,
+            'message' => '',
+        ]);
+    }
+
+    public function request()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $id = (int) $urlVars['id'];
+        if (!$id || !$this->user->get('id'))
+        {
+            return $this->app->response(
+            [
+                'status'  => 'fail',
+                'data'    => $this->user->get('id'),
+                'message' => 'You are not allow.',
+            ]);
+        }
+        $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
+        $result = [];
+        foreach($list as &$item)
+        {
+            $request = $this->RequestEntity->findByPK($item['id']);
+            if ($request)
+            {
+                $request['deadline_at'] = $request['deadline_at'] && $request['deadline_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['deadline_at'])) : '';
+                $request['finished_at'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['finished_at'])) : '';
+                $result[] = $request;
+            }
+        }
+        
+        return $this->app->response(
+        [
+            'status'  => 'success',
+            'data'    => $result,
+            'message' => '',
+        ]);
     }
 }

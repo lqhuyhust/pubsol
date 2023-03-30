@@ -18,6 +18,7 @@
             <div class="me-2">
                 <button id="apply_header" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
             </div>
+            <?php if ($this->view_mode): ?>
             <script>
                 var url = window.location.pathname;
                 var id = url.substring(url.lastIndexOf('/') + 1);
@@ -34,6 +35,7 @@
                     </script>
                 </button>
             </div>
+            <?php endif; ?>
         </div>
 
     <?php } else { ?>

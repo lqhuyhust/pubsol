@@ -12,16 +12,16 @@ namespace App\plugins\note\entities;
 
 use SPT\Storage\DB\Entity;
 
-class NoteEntity extends Entity
+class NoteDiagramEntity extends Entity
 {
-    protected $table = '#__notes';
+    protected $table = '#__note_diagrams';
     protected $pk = 'id';
 
     public function getFields()
     {
         return [
                 'id' => [
-                    'type' => 'bigint',
+                    'type' => 'int',
                     'pk' => 1,
                     'option' => 'unsigned',
                     'extra' => 'auto_increment',
@@ -30,27 +30,13 @@ class NoteEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
-                'file' => [
-                    'type' => 'varchar',
-                    'limit' => 255,
-                    'null' => 'YES',
-                ],
-                'description' => [
-                    'type' => 'longtext',
-                    'null' => 'YES',
-                ],
-                'note' => [
+                'notes' => [
                     'type' => 'text',
                     'null' => 'YES',
                 ],
-                'editor' => [
-                    'type' => 'varchar',
-                    'limit' => 100,
+                'config' => [
+                    'type' => 'text',
                     'null' => 'YES',
-                ],
-                'tags' => [
-                    'type' => 'varchar',
-                    'limit' => 1000,
                 ],
                 'created_at' => [
                     'type' => 'datetime',

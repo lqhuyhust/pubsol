@@ -32,7 +32,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                                     <label class="form-check-label" for="PresenterToogle">Presenter Mode</label>
                                 </div>
                             </span>
-                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex justify-content-end py-0" style="box-shadow: inherit;">
+                            <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
                                     <i class="fa-solid fa-bars fs-2 "></i>
                                 </a>
@@ -110,12 +110,6 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                                 <option selected="selected" value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                        <label class="form-label fw-bold">Parent Note:</label>
-                        <?php $this->field('parent_note'); ?>
                     </div>
                 </div>
                 <label class="form-label fw-bold pt-2">Attachments:</label>
@@ -222,8 +216,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#apply").addClass("d-none");
             $("#save_and_close_header").addClass("d-none");
             $("#apply_header").addClass("d-none");
-            $("#col-8").addClass("col-lg-12");
-            $("#col-4").addClass("col-lg-0 d-none");
+            // $("#col-8").addClass("col-lg-12");
+            // $("#col-4").addClass("col-lg-0 d-none");
             $(".button-editor-mode").addClass('d-none');
             openModeEditor();
         } else {
