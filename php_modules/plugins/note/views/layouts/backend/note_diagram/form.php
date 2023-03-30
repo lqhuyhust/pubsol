@@ -28,8 +28,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             <div class="col-lg-8 col-sm-12 d-none" id="related_request">
                 <div class="d-flex mb-2">
                     <h3>Related Request: </h3>
-                    <h3 class="ms-1" id="name_node"></h3>
-                    <a id="link_node" target="_blank" type="button" id="close_request" class="btn btn-outline-success mx-2">Open Detail</a>
+                    <h3 class="ms-1" id="name_node"><a id="link_node" target="_blank" type="button" id="close_request" class=""></a></h3>
                 </div>
                 <table id="request-table" class="table table-striped border-top border-1" style="width:100%">
                     <thead>
@@ -51,7 +50,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
     </form>
 </div>
 <script>
-    var ignore = [];
+    var ignore = <?php echo json_encode($this->ignore) ?>;
     $(document).ready(function(e) {
         var data = '<?php echo $this->data ? $this->data['config'] : ''; ?>';
         data = data ? JSON.parse(data) : [];
@@ -110,7 +109,8 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
 
         function createNote(item) {
             var node = $('#tree_root').jstree().get_selected();
-            var index = node && node[0] ? node[0] : '#';
+            var index = node && node[0] ? node[0] : '-1';
+            index = item.id == '-1' ? '#' : index;
             $('#tree_root').jstree().create_node(index, {
                 "id": item.id,
                 "text": item.text
@@ -126,7 +126,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                 'data': data,
             },
             "types": {
-                "note": {
+                 "note": {
                     "valid_children": ["note"]
                 },
             },
@@ -161,9 +161,9 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
         $('#tree_root').on('select_node.jstree', function (even, node){
             node = node.node;
             var detail_link = '<?php echo $this->link_request .'/' ?>' + node.id;
-            var node_detail = '<?php echo $this->link_note ?>' + node.id;
+            var node_detail = '<?php echo $this->link_note ?>/' + node.id;
 
-            $('#name_node').text(node.text);
+            $('#link_node').text(node.text);
             $('#link_node').attr('href', node_detail);
             if (node.id == '-1')
             {
