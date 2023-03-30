@@ -91,6 +91,7 @@ class Note extends Admin
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
+        $search = $this->request->post->get('search', '', 'post');
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
             $this->app->set('format', 'json');
@@ -107,6 +108,10 @@ class Note extends Admin
             {
                 $where[] = 'id <> '. $note['note_id'];
             }
+        }
+        if ($search)
+        {
+            $where[] = "title like '%". $search ."%'";
         }
         $notes = $this->NoteEntity->list(0 , 0, $where);
         $this->app->set('format', 'json');
@@ -128,28 +133,42 @@ class Note extends Admin
         }
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
-        $note_id = $this->request->post->get('note_id', 0, 'string');
+        $notes = $this->request->post->get('note_id', [], 'array');
         $description = $this->request->post->get('description', '', 'string');
-
-        if ($note_id)
+        
+        if (is_array($notes))
         {
-            $findOne = $this->RelateNoteEntity->findOne(['note_id = '. $note_id, 'request_id = '. $request_id]);
-            if ($findOne)
+            foreach($notes as $note_id)
             {
-                $this->app->set('format', 'json');
-                $this->set('result', 'fail');
-                $this->set('message', 'Error: Duplicate Relate Note');
-                return ;
+                if ($note_id)
+                {
+                    $findOne = $this->RelateNoteEntity->findOne(['note_id = '. $note_id, 'request_id = '. $request_id]);
+                    if ($findOne)
+                    {
+                        $this->app->set('format', 'json');
+                        $this->set('result', 'fail');
+                        $this->set('message', 'Error: Duplicate Relate Note');
+                        return ;
+                    }
+                }
             }
         }
+        
+        if (is_array($notes))
+        {
+            foreach($notes as $note_id)
+            {
+                $newId =  $this->RelateNoteEntity->add([
+                    'request_id' => $request_id,
+                    'title' => $title,
+                    'note_id' => $note_id,
+                    'description' => $description,
+                ]);
 
+                if (!$newId) break;
+            }
+        }
         // TODO: validate new add
-        $newId =  $this->RelateNoteEntity->add([
-            'request_id' => $request_id,
-            'title' => $title,
-            'note_id' => $note_id,
-            'description' => $description,
-        ]);
 
         if( !$newId )
         {

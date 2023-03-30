@@ -1,3 +1,8 @@
+<?php 
+$this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
+$this->theme->add($this->url . 'assets/css/select2_custom.css', '', 'select2-custom-css');
+$this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
+?>
 <?php echo $this->render('notification', []); ?>
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered " style="max-width: 600px;">
@@ -6,7 +11,8 @@
                 <div class="row px-0">
                     <div class="mb-3 col-12 mx-auto">
                         <label class="form-label fw-bold">Note:</label>
-                        <?php $this->field('note_id'); ?>
+                        <select multiple name="note_id[]" id="note_id" class="d-none">
+                        </select>
                     </div>
                 </div>
                 <div class="row g-3 align-items-center m-0">
@@ -18,7 +24,7 @@
                             </div>
                             <?php if(!$this->status) {?>
                             <div class="col-6 text-end pe-0">
-                                <button type="submit" class="btn btn-outline-success">Save</button>
+                                <button type="submit" class="btn btn-outline-success">Add</button>
                             </div>
                             <?php } ?>
                         </div>
@@ -29,28 +35,59 @@
     </div>
 </div>
 <script>
-    function listNote(data)
-    {
-        $.ajax({
-            url: '<?php echo $this->url. 'get-notes/'. $this->request_id ?>',
-            type: 'POST',
-            data: data,
-            success: function(resultData)
-            {
-                var list = '<option value="" selected="selected">Select Note</option>';
-                if (Array.isArray(resultData))
-                {
-                    resultData.forEach(function(item)
-                    {
-                        list += `<option value="${item['id']}">${item['title']}</option>`;
-                    });
-                    $("#note_id").html(list);
-                }
-            }
-        })
-    }
-    listNote();
     $(document).ready(function() {
+        $("#note_id").select2({
+            matcher: matchCustom,
+            placeholder: 'Select Notes',
+            minimumInputLength: 1,
+            multiple: true,
+            dropdownParent : "#exampleModalToggle",
+            closeOnSelect: false,
+            ajax: {
+                url: '<?php echo $this->url. 'get-notes/'. $this->request_id ?>',
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term,
+                    };
+                },
+                processResults: function(data, params) {
+                    let items = [];
+                    let list = data.result;
+                    if (Array.isArray(list) && list.length > 0) {
+                        list.forEach(function(item) {
+                            items.push({
+                                id: item.id,
+                                text: item.title
+                            })
+                        })
+                    }
+
+                    return {
+                        results: items,
+                        pagination: {
+                            more: false
+                        }
+                    };
+                },
+                cache: true
+            },
+        });
+
+        function matchCustom(params, data) {
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            if (typeof data.text === 'undefined') {
+                return null;
+            }
+
+            // Return `null` if the term should not be displayed
+            return null;
+        }
         $("#form_relate_note").on('submit', function(e){
             e.preventDefault();
             $.ajax({
@@ -60,20 +97,12 @@
                 success: function (result) {
                     modal = bootstrap.Modal.getInstance($('#exampleModalToggle'))
                     modal.hide();
-                    $('#note_id').val('');
+                    $('#note_id').val(null).trigger('change');
                     showMessage(result.result, result.message);
                     listRelateNote($('#filter_form').serialize());
-                    listNote();
                 }
             });
         });
     });
 </script>
 <?php
-$js = <<<Javascript
-$(document).ready(function() {
-    $('#note_id').select2({dropdownParent:  "#exampleModalToggle"});
-  });
-Javascript;
-
-$this->theme->addInline('js', $js);
