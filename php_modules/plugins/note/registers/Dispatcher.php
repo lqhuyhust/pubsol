@@ -12,6 +12,7 @@ class Dispatcher
         $app->loadPlugins('user', 'loadUser');
         $app->loadPlugins('model', 'loadModel');
         $app->loadPlugins('middleware', 'AfterRouting');
+        $cName = ucfirst($cName);
 
         $controller = 'App\plugins\note\controllers\\'. $cName;
         if(!class_exists($controller))
