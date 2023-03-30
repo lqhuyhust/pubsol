@@ -10,7 +10,8 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Setting extends Admin
 {
@@ -41,6 +42,6 @@ class Setting extends Admin
 
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        return $this->app->redirect( $this->router->url('setting-connections'));
+        return Response::redirect( $this->router->url('setting-connections'));
     }
 }

@@ -14,32 +14,41 @@ namespace App\plugins\note\viewmodels;
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
-use SPT\Util;
 
 class AdminNotesVM extends ViewModel
 {
     protected $alias = 'AdminNotesVM';
-    protected $layouts = [
-        'layouts.backend.note' => [
-            'list',
-            'list.row',
-            'list.filter'
-        ]
-    ];
+
+    public static function register()
+    {
+        return [
+            'layouts.backend.note.list',
+            'layouts.backend.note.list.row',
+            'layouts.backend.note.list.filter'
+        ];
+    }
 
     public function list()
     {
-        $filter = $this->filter();
+        $request = $this->container->get('request');
+        $TagEntity = $this->container->get('TagEntity');
+        $NoteEntity = $this->container->get('NoteEntity');
+        $session = $this->container->get('session');
+        $router = $this->container->get('router');
+        $token = $this->container->get('token');
+        $user = $this->container->get('user');
+
+        $filter = $this->filter()['form'];
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
 
         if (!empty($search) && is_string($search)) {
-            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
+            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
             $where[] = "(`description` LIKE '%" . $search . "%')";
             $where[] = "(`note` LIKE '%" . $search . "%')";
             $where[] = "(`title` LIKE '%" . $search . "%')";
@@ -56,7 +65,7 @@ class AdminNotesVM extends ViewModel
             foreach ($search as $key => $value) {
                 foreach ($value as $k => $v) {
                     $tags = [];
-                    $tags = $this->TagEntity->list(0, 0, ["`name` = '" . $v . "'"]);
+                    $tags = $TagEntity->list(0, 0, ["`name` = '" . $v . "'"]);
                     if ($tags) {
                         foreach ($tags as $tag) {
                             $where[] = 
@@ -76,15 +85,15 @@ class AdminNotesVM extends ViewModel
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->NoteEntity->list($start, $limit, $where, $sort);
-        $total = $this->NoteEntity->getListTotal();
+        $result = $NoteEntity->list($start, $limit, $where, $sort);
+        $total = $NoteEntity->getListTotal();
         $data_tags = [];
         
         if (!$result) {
             $result = [];
             $total = 0;
             if (!empty($search)) {
-                $this->session->set('flashMsg', 'Notes not found');
+                $session->set('flashMsg', 'Notes not found');
             }
         }
 
@@ -92,7 +101,7 @@ class AdminNotesVM extends ViewModel
             if (!empty($item['tags'])) {
                 $t1 = $where = [];
                 $where[] = "(`id` IN (" . $item['tags'] . ") )";
-                $t2 = $this->TagEntity->list(0, 0, $where, '', '`name`');
+                $t2 = $TagEntity->list(0, 0, $where, '', '`name`');
                 if ($t2) {
                     foreach ($t2 as $i) {
                         $t1[] = $i['name'];
@@ -103,17 +112,19 @@ class AdminNotesVM extends ViewModel
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
-        $this->set('list', $list, true);
-        $this->set('data_tags', $data_tags, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('notes'), true);
-        $this->set('title_page', 'Note Manager', true);
-        $this->set('link_form', $this->router->url('note'), true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'list' => $list,
+            'data_tags' => $data_tags,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('notes'),
+            'title_page' => 'Note Manager',
+            'link_form' => $router->url('note'),
+            'token' => $token->getToken(),
+        ];
     }
 
     public function getColumns()
@@ -147,14 +158,11 @@ class AdminNotesVM extends ViewModel
                 $data['search'][] = $tmp;
             }
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
 
-            foreach ($data as $k => $v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -198,10 +206,33 @@ class AdminNotesVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex(),
+        ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

@@ -17,42 +17,51 @@ use SPT\View\Gui\Form;
 class AdminNoteDiagramVM extends ViewModel
 {
     protected $alias = 'AdminNoteDiagramVM';
-    protected $layouts = [
-        'layouts.backend.note_diagram' => [
-            'form',
-        ],
-    ];
+
+    public static function register()
+    {
+        return [
+            'layouts.backend.note_diagram.form'
+        ];
+    }
 
     public function form()
     {
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
+        $request = $this->container->get('request');
+        $NoteDiagramEntity = $this->container->get('NoteDiagramEntity');
+        $NoteDiagramModel = $this->container->get('NoteDiagramModel');
+        $router = $this->container->get('router');
 
-        $data = $id ? $this->NoteDiagramEntity->findByPK($id) : [];
+        $urlVars = $request->get('urlVars');
+        $id = (int) $urlVars['id'];
+
+        $data = $id ? $NoteDiagramEntity->findByPK($id) : [];
 
         if ($data && $data['config'])
         {
             $config = json_decode($data['config'], true);
             if (is_array($config))
             {
-                $config = $this->NoteDiagramModel->convertConfig($config);
+                $config = $NoteDiagramModel->convertConfig($config);
             }
-            
             $data['config'] = json_encode($config);
         }
 
         $form = new Form($this->getFormFields(), $data);
-        $this->set('form', $form, true);
-        $this->set('data', $data, true);
-        $this->set('title_page_edit', $data && $data['title'] ? $data['title'] : 'New Diagrams', true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_note', $this->router->url('note/'), true);
-        $this->set('link_request', $this->router->url('note/request'), true);
-        $this->set('link_detail_request', $this->router->url('detail-request'), true);
-        $this->set('link_list', $this->router->url('note-diagrams'), true);
-        $this->set('link_form', $this->router->url('note-diagram'), true);
-        $this->set('link_search', $this->router->url('note/search'));
+        return [
+            'id' => $id,
+            'form' => $form,
+            'data' => $data,
+            'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Diagrams',
+            'url' => $router->url(),
+            'link_note' => $router->url('note/'),
+            'link_request' => $router->url('note/request'),
+            'link_detail_request' => $router->url('detail-request'),
+            'link_list' => $router->url('note-diagrams'),
+            'link_form' => $router->url('note-diagram'),
+            'link_search' => $router->url('note/search'),
+        ];
+        
     }
 
     public function getFormFields()
@@ -77,7 +86,7 @@ class AdminNoteDiagramVM extends ViewModel
                 'hidden',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 

@@ -8,7 +8,7 @@ $this->theme->prepareAssets([
     // 'js-bootstrap',
     'js-backend',
 ]);
-
+$content = $this->renderLayout($this->mainLayout);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,25 +18,25 @@ $this->theme->prepareAssets([
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SDM</title>
 
-    <?php $this->theme->echo('css', $this->url) ?>
-    <?php $this->theme->echo('topJs', $this->url) ?>
-    <?php $this->theme->echo('inlineCss', $this->url) ?>
+    <?php $this->theme->echo('css', $this->getVar('url', '')) ?>
+    <?php $this->theme->echo('topJs', $this->getVar('url', '')) ?>
+    <?php $this->theme->echo('inlineCss', $this->getVar('url', '')) ?>
 </head>
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     <div class="wrapper">
-        <?php echo $this->render('widgets.backend.sidebar'); ?>
+        <?php echo $this->renderWidget('backend.sidebar'); ?>
         <div class="main">
-            <?php echo $this->render('widgets.backend.header'); ?>
+            <?php echo $this->renderWidget('backend.header'); ?>
 
             <main class="content p-0">
-                <?php echo $this->theme->getBody(); ?>
+                <?php echo $content; ?>
             </main>
 
         </div>
     </div>
-    <?php $this->theme->echo('js', $this->url) ?>
-    <?php $this->theme->echo('inlineJs', $this->url) ?>
+    <?php $this->theme->echo('js', $this->getVar('url', '')) ?>
+    <?php $this->theme->echo('inlineJs', $this->getVar('url', '')) ?>
 </body>
 
 </html>

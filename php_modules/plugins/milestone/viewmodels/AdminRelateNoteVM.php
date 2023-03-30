@@ -12,33 +12,41 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminRelateNoteVM extends ViewModel
 {
     protected $alias = 'AdminRelateNoteVM';
-    protected $layouts = [
-        'layouts.backend.relate_note' => [
-            'form'
-        ]
-    ];
 
+    public static function register()
+    {
+        return [
+            'layouts.backend.relate_note.form'
+        ];
+    }
+    
     public function form()
     {
-        $urlVars = $this->request->get('urlVars');
+        $request = $this->container->get('request');
+        $router = $this->container->get('router');
+
+        $urlVars = $request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
         $form = new Form($this->getFormFields(), []);
 
-        $this->set('form', $form, true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('relate-notes/'. $request_id));
-        $this->set('link_form', $this->router->url('relate-note/'. $request_id));
+        return [
+            'form' => $form,
+            'url' => $router->url(),
+            'link_list' => $router->url('relate-notes/'. $request_id),
+            'link_form' => $router->url('relate-note/'. $request_id),
+        ];
     }
 
     public function getFormFields()
     {
-        $notes = $this->NoteEntity->list(0, 0, [], 'title asc');
+        $NoteEntity = $this->container->get('NoteEntity');
+        $notes = $NoteEntity->list(0, 0, [], 'title asc');
         
         $options = [];
         foreach ($notes as $note) {
@@ -69,7 +77,7 @@ class AdminRelateNoteVM extends ViewModel
                 'formClass' => 'form-select',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 

@@ -10,7 +10,8 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Notediagram extends Admin {
     public function detail()
@@ -25,7 +26,7 @@ class Notediagram extends Admin {
         if(!empty($id) && !$exist)
         {
             $this->session->set('flashMsg', "Invalid note diagram");
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note-diagrams')
             );
         }
@@ -55,7 +56,7 @@ class Notediagram extends Admin {
         if (!$title)
         {
             $this->session->set('flashMsg', 'Error: Title is required! ');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note-diagram/0')
             );
         }
@@ -75,7 +76,7 @@ class Notediagram extends Admin {
         {
             $msg = 'Error: Created Failed!';
             $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note-diagram/0')
             );
         }
@@ -83,7 +84,7 @@ class Notediagram extends Admin {
         {
             $this->session->set('flashMsg', 'Created Successfully!');
             $link = $save_close ? 'note-diagrams' : 'note-diagram/'. $newId;
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url($link)
             );
         }
@@ -105,7 +106,7 @@ class Notediagram extends Admin {
             if (!$title)
             {
                 $this->session->set('flashMsg', 'Error: Title is required! ');
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note-diagram/0')
                 );
             }
@@ -123,7 +124,7 @@ class Notediagram extends Admin {
             {
                 $this->session->set('flashMsg', 'Updated successfully');
                 $link = $save_close ? 'note-diagrams' : 'note-diagram/'. $ids;
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url($link)
                 );
             }
@@ -131,7 +132,7 @@ class Notediagram extends Admin {
             {
                 $msg = 'Error: Updated failed';
                 $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note-diagram/'. $ids)
                 );
             }
@@ -164,7 +165,7 @@ class Notediagram extends Admin {
 
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return $this->app->redirect(
+        return Response::redirect(
             $this->router->url('note-diagrams'),
         );
     }
@@ -182,7 +183,7 @@ class Notediagram extends Admin {
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid note diagram');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note-diagrams'),
             );
         }

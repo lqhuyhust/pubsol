@@ -10,9 +10,10 @@
 
 namespace App\plugins\setting\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Setting extends MVController
+class Setting extends Controller
 {
     public function form()
     {
@@ -46,7 +47,7 @@ class Setting extends MVController
 
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        return $this->app->redirect( $this->router->url('setting-system'));
+        return Response::redirect( $this->router->url('setting-system'));
     }
 
     public function smtp()
@@ -78,14 +79,14 @@ class Setting extends MVController
 
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        return $this->app->redirect( $this->router->url('setting-smtp'));
+        return Response::redirect( $this->router->url('setting-smtp'));
     }
 
     public function isLoggedIn()
     {
         if( !$this->user->get('id') )
         {
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url(
                     'login'
                 )
@@ -101,7 +102,7 @@ class Setting extends MVController
         if (!$admin_mail)
         {
             $this->session->set('flashMsg', 'Error: Enter admin email before testing');
-            return $this->app->redirect( $this->router->url('setting'));
+            return Response::redirect( $this->router->url('setting'));
         }
 
         $try = $this->EmailModel->send($admin_mail, 'Admin', 'This is mail test', 'Mail Test');
@@ -109,6 +110,6 @@ class Setting extends MVController
         {
             $this->session->set('flashMsg', 'Sent Mail Successfully');
         }
-        return $this->app->redirect( $this->router->url('setting-smtp'));
+        return Response::redirect( $this->router->url('setting-smtp'));
     }
 }

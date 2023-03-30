@@ -10,7 +10,8 @@
 
 namespace App\plugins\milestone\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Discussion extends Admin 
 {
@@ -21,20 +22,20 @@ class Discussion extends Admin
         
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Add Discussion Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Add Discussion Failed!');
+            return ;
         }
 
         $document = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
         $message = $this->request->post->get('message', '', 'string');
         if (!$message)
         {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Message discussion can\'t empty!',
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Message discussion can\'t empty!');
+            return;
         }
 
         if ($document)
@@ -48,10 +49,10 @@ class Discussion extends Admin
             ]);
 
             $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
-            return $this->app->response([
-                'result' => 'ok',
-                'message' => $msg,
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'ok');
+            $this->set('message', $msg);
+            return;
         }
 
         // TODO: validate new add
@@ -66,10 +67,10 @@ class Discussion extends Admin
         if (!$document)
         {
             $msg = 'Comment Fail';
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => $msg,
-            ], 200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', $msg);
+            return ;
         }
         
         $newId = $this->DiscussionEntity->add([
@@ -81,10 +82,10 @@ class Discussion extends Admin
         ]);
 
         $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
-        return $this->app->response([
-            'result' => 'ok',
-            'message' => $msg,
-        ], 200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('message', $msg);
+        return;
 
     }
 
@@ -98,7 +99,7 @@ class Discussion extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('milestones'),
             );
         }

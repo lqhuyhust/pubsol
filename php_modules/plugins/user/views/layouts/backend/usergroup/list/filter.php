@@ -42,4 +42,4 @@
         </div>
     </div>
 </form>
-<?php echo $this->render('backend.usergroup.list.javascript'); ?>
+<?php echo $this->render('backend.usergroup.list.javascript', []); ?>

@@ -10,27 +10,36 @@
 
 namespace App\plugins\core\viewmodels;  
 
-use SPT\View\VM\JDIContainer\ViewModel; 
-use SPT\Util;
+use SPT\Web\MVVM\ViewModel;
 
 class PaginationVM extends ViewModel
 {
     protected $alias = 'PaginationVM';
-    protected $layouts = ['layouts.pagination'];
 
-    public function pagination()
+    public static function register()
+    {
+        return ['layouts.pagination'];
+    }
+
+    public function pagination($layoutData, $viewData)
     {
         $total = 0;
-        if( $this->view->exists('list') )
+        if( isset($viewData['list']) )
         {
-            $total = $this->view->list->getTotal();
-
-            $this->set('page', $this->request->get->get('page', 1));
-            $this->set('totalPage', $this->view->list->getTotalPage());
-            $this->set('limit', $this->view->list->getLimit());
-            $this->set('path_current', $this->router->get('actualPath')); 
+            $list = $viewData['list'];
+            $request = $this->container->get('request');
+            $router = $this->container->get('router');
+            $total = $list->getTotal();
+            return [
+                'total' => $total,
+                'page' => $request->get->get('page', 1),
+                'totalPage' => $list->getTotalPage(),
+                'limit' => $list->getLimit(),
+                'path_current' => $router->get('actualPath'),
+            ];
         }
-
-        $this->set('total', $total);
+        return [
+            'total' => 0,
+        ];
     }
 }

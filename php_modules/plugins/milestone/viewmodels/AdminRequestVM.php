@@ -11,29 +11,37 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminRequestVM extends ViewModel
 {
     protected $alias = 'AdminRequestVM';
-    protected $layouts = [
-        'layouts.backend.request' => [
-            'form',
-            'detail_request',
-        ]
-    ];
+
+    public static function register()
+    {
+        return [
+            'layouts.backend.request.form',
+            'layouts.backend.request.detail_request',
+        ];
+    }
 
     public function form()
     {
-        $urlVars = $this->request->get('urlVars');
+        $request = $this->container->get('request');
+        $router = $this->container->get('router');
+
+        $urlVars = $request->get('urlVars');
         
         $milestone_id = (int) $urlVars['milestone_id'];
         
         $form = new Form($this->getFormFields(), []);
-        $this->set('form', $form, true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('requests/'. $milestone_id));
-        $this->set('link_form', $this->router->url('request/'. $milestone_id));
+
+        return [
+            'form', $form,
+            'url', $router->url(),
+            'link_list', $router->url('requests/'. $milestone_id),
+            'link_form', $router->url('request/'. $milestone_id),
+        ];
     }
 
     public function getFormFields()
@@ -63,7 +71,7 @@ class AdminRequestVM extends ViewModel
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 
@@ -72,15 +80,22 @@ class AdminRequestVM extends ViewModel
 
     public function detail_request()
     {
-        $urlVars = $this->request->get('urlVars');
+        $request = $this->container->get('request');
+        $router = $this->container->get('router');
+        $RequestEntity = $this->container->get('RequestEntity');
+        $MilestoneEntity = $this->container->get('MilestoneEntity');
+
+        $urlVars = $request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
-        $this->set('request_id', $request_id, true);
-        $request = $this->RequestEntity->findByPK($request_id);
-        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        $request = $RequestEntity->findByPK($request_id);
+        $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         
-        $title_page = '<a class="me-2" href="'.$this->router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $this->router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
-        $this->set('link_form_request', $this->router->url('request/'. $milestone['id'] . '/' . $request['id']), true);
-        $this->set('title_page', $title_page, true);
-        $this->set('request', $request, true);
+        $title_page = '<a class="me-2" href="'.$router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
+        return [
+            'request_id' => $request_id,
+            'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),
+            'title_page' => $title_page,
+            'request' => $request,
+        ];
     }
 }

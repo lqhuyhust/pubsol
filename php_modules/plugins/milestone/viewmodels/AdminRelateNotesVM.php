@@ -11,31 +11,43 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
-use SPT\Util;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminRelateNotesVM extends ViewModel
 {
     protected $alias = 'AdminRelateNotesVM';
-    protected $layouts = [
-        'layouts.backend.relate_note' => [
-            'list',
-            'list.row',
-            'list.filter'
-        ]
-    ];
+    
+    public static function register()
+    {
+        return [
+            'layouts.backend.relate_note.list',
+            'layouts.backend.relate_note.list.filter',
+            'layouts.backend.relate_note.list.javascript',
+        ];
+    
+    }
 
     public function list()
     {
-        $filter = $this->filter();
-        $urlVars = $this->request->get('urlVars');
+        $request =  $this->container->get('request');
+        $NoteEntity =  $this->container->get('NoteEntity');
+        $session =  $this->container->get('session');
+        $user =  $this->container->get('user');
+        $token =  $this->container->get('token');
+        $router =  $this->container->get('router');
+        $RequestEntity =  $this->container->get('RequestEntity');
+        $RelateNoteEntity =  $this->container->get('RelateNoteEntity');
+        $MilestoneEntity =  $this->container->get('MilestoneEntity');
+        $VersionEntity =  $this->container->get('VersionEntity');
+
+        $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
-        $this->set('request_id', $request_id, true);
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
@@ -49,15 +61,15 @@ class AdminRelateNotesVM extends ViewModel
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->RelateNoteEntity->list( 0, 0, $where, 0);
-        $total = $this->RelateNoteEntity->getListTotal();
+        $result = $RelateNoteEntity->list( 0, 0, $where, 0);
+        $total = $RelateNoteEntity->getListTotal();
         if (!$result)
         {
             $result = [];
             $total = 0;
         }
-        $request = $this->RequestEntity->findByPK($request_id);
-        $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        $request = $RequestEntity->findByPK($request_id);
+        $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page_relate_note = 'Related Notes';
 
         $note_exist = $this->container->exists('NoteEntity');
@@ -66,7 +78,7 @@ class AdminRelateNotesVM extends ViewModel
         {
             if ($note_exist)
             {
-                $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
+                $note_tmp = $NoteEntity->findByPK($item['note_id']);
                 if ($note_tmp)
                 {
                     $item['title'] = $note_tmp['title'];
@@ -91,9 +103,9 @@ class AdminRelateNotesVM extends ViewModel
             }
         }
 
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
+        $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $tmp_item) {
         }
         if(strcmp($tmp_item['version_id'], '0') == 0) {
@@ -105,18 +117,42 @@ class AdminRelateNotesVM extends ViewModel
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
-        $this->set('list', $list, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('status', $status, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('relate-notes/' . $request_id), true);
-        $this->set('link_note', $this->router->url('note'), true);
-        $this->set('link_list_relate_note', $this->router->url('relate-notes/' . $request_id), true);
-        $this->set('title_page_relate_note', $title_page_relate_note, true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'request_id' => $request_id,
+            'list' => $list,
+            'page' => $page,
+            'start' => $start,
+            'status' => $status,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('relate-notes/' . $request_id),
+            'link_note' => $router->url('note'),
+            'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
+            'title_page_relate_note' => $title_page_relate_note,
+            'token' => $this->container->get('token')->getToken(),
+        ];
+    }
+
+    public function javascript()
+    {
+        $request =  $this->container->get('request');
+        $user =  $this->container->get('user');
+        $token =  $this->container->get('token');
+        $router =  $this->container->get('router');
+
+        $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        return [
+            'request_id' => $request_id,
+            'link_list' => $router->url('relate-notes/' . $request_id),
+            'link_form' => $router->url('relate-note/'. $request_id),
+            'link_note' => $router->url('note'),
+            'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
+            'token' => $this->container->get('token')->getToken(),
+        ];
     }
 
     public function getColumns()
@@ -141,14 +177,10 @@ class AdminRelateNotesVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-
-            foreach($data as $k=>$v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -178,10 +210,24 @@ class AdminRelateNotesVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

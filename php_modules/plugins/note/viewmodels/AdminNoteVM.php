@@ -17,20 +17,27 @@ use SPT\View\Gui\Form;
 class AdminNoteVM extends ViewModel
 {
     protected $alias = 'AdminNoteVM';
-    protected $layouts = [
-        'layouts.backend.note' => [
-            'form',
-        ],
-        'layouts.backend.setting' => [
-            'connections',
-        ],
-    ];
 
+    public static function register()
+    {
+        return [
+            'layouts.backend.note.form',
+            'layouts.backend.setting.connections'
+        ];
+    }
+    
     public function form()
     {
+        $request = $this->container->get('request');
+        $NoteEntity = $this->container->get('NoteEntity');
+        $NoteHistoryEntity = $this->container->get('NoteHistoryEntity');
+        $UserEntity = $this->container->get('UserEntity');
+        $TagEntity = $this->container->get('TagEntity');
+        $AttachmentEntity = $this->container->get('AttachmentEntity');
+        $router = $this->container->get('router');
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
         $version = $this->request->get->get('version', 0);
 
         $data = $id ? $this->NoteEntity->findByPK($id) : [];
@@ -78,20 +85,25 @@ class AdminNoteVM extends ViewModel
 
         $form = new Form($this->getFormFields(), $data);
         $view_mode = $data ? 'true' : '';
-        $this->set('form', $form, true);
-        $this->set('data', $data, true);
-        $this->set('view_mode', $view_mode, true);
-        $this->set('data_tags', $data_tags, true);
-        $this->set('data_version', $data_version, true);
-        $this->set('version', $version, true);
-        $this->set('attachments', $attachments);
-        $this->set('title_page_edit', $data && $data['title'] ? $data['title'] : 'New Note', true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $data_version ? $this->router->url('note/'. $id) : $this->router->url('notes'), true);
-        $this->set('link_form', $this->router->url('note'), true);
-        $this->set('link_form_attachment', $this->router->url('attachment'));
-        $this->set('link_form_download_attachment', $this->router->url('download/attachment'));
-        $this->set('link_tag', $this->router->url('tag'));
+
+        return [
+            'id' => $id,
+            'form' => $form,
+            'data' => $data,
+            'view_mode' => $view_mode,
+            'data_tags' => $data_tags,
+            'data_version' => $data_version,
+            'version' => $version,
+            'attachments' => $attachments,
+            'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Note',
+            'url' => $router->url(),
+            'link_list' => $data_version ? $router->url('note/'. $id) : $router->url('notes'),
+            'link_form' => $router->url('note'),
+            'link_form_attachment' => $router->url('attachment'),
+            'link_form_download_attachment' => $router->url('download/attachment'),
+            'link_tag' => $router->url('tag'),
+        ];
+        
     }
 
     public function getFormFields()
@@ -137,7 +149,7 @@ class AdminNoteVM extends ViewModel
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 
@@ -148,7 +160,8 @@ class AdminNoteVM extends ViewModel
     {
         
         $fields = $this->getFormFieldsConnection();
-        
+        $router = $this->container->get('router');
+
         $data = [];
         foreach ($fields as $key => $value) {
             if ($key != 'token') {
@@ -158,12 +171,14 @@ class AdminNoteVM extends ViewModel
         $form = new Form($fields, $data);
 
         $title_page = 'Setting Connections';
-        $this->view->set('fields', $fields, true);
-        $this->view->set('form', $form, true);
-        $this->view->set('title_page', $title_page, true);
-        $this->view->set('data', $data, true);
-        $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_form', $this->router->url('setting-connections'));
+        return [
+            'fields' => $fields,
+            'form' => $form,
+            'title_page' => $title_page,
+            'data' => $data,
+            'url' => $router->url(),
+            'link_form' => $router->url('setting-connections'),
+        ];
     }
 
     public function getFormFieldsConnection()
@@ -190,7 +205,7 @@ class AdminNoteVM extends ViewModel
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
        

@@ -10,12 +10,13 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Tag extends Admin {
     public function list()
     {
-//        $this->isLoggedIn();
+        $this->isLoggedIn();
 
         $name = $this->request->get->get('search', '', 'string');
 
@@ -27,35 +28,33 @@ class Tag extends Admin {
         }
 
         $data = $this->TagEntity->list(0,100, $where);
-        return $this->app->response(
-            [
-                'status'  => 'success',
-                'data'    => $data,
-                'message' => '',
-            ]);
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $data);
+        $this->set('message' , '');
+        return;
     }
 
-    public function add(){
+    public function add()
+    {
         $name = $this->request->post->get('name', '', 'string');
 
         if (empty($name)){
-            return $this->app->response(
-                [
-                    'status'  => 'fail',
-                    'data'    => '',
-                    'message' => 'Name invalid',
-                ]);
+
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , '');
+            $this->set('message' , 'Name invalid');
+            return;
         }
 
         $findOne = $this->TagEntity->findOne(['name = "'. $name. '"']);
         if (!empty($findOne)){
-            return $this->app->response(
-                [
-                    'status'  => 'fail',
-                    'data'    => '',
-                    'message' => 'Error: Title is already in use!',
-                ]
-            );
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , '');
+            $this->set('message' , 'Error: Title is already in use!');
+            return;
         }
 
         $newId =  $this->TagEntity->add([
@@ -63,19 +62,17 @@ class Tag extends Admin {
         ]);
 
         if ($newId){
-            return $this->app->response(
-                [
-                    'status'  => 'success',
-                    'data'    => ['id' => $newId, 'name' => $name],
-                    'message' => 'Create Tag sucess',
-                ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'success');
+            $this->set('data' , ['id' => $newId, 'name' => $name]);
+            $this->set('message' , 'Create Tag sucess');
+            return;
         } else {
-            return $this->app->response(
-                [
-                    'status'  => 'fail',
-                    'data'    => '',
-                    'message' => 'Error: Create Tag fail!',
-                ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , '');
+            $this->set('message' , 'Error: Create Tag fail!');
+            return; 
         }
     }
 }

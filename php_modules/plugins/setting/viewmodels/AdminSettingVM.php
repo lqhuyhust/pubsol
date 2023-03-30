@@ -11,40 +11,47 @@
 
 namespace App\plugins\setting\viewmodels;
 
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\MVVM\ViewModel;
 use SPT\View\Gui\Form;
 
 class AdminSettingVM extends ViewModel
 {
     protected $alias = 'AdminSettingVM';
-    protected $layouts = [
-        'layouts.backend.setting' => [
-            'system',
-            'smtp',
-        ]
-    ];
+    
+    public static function register()
+    {
+        return [
+            'layouts.backend.setting.system',
+            'layouts.backend.setting.smtp',
+        ];
+    }
 
     public function system()
     {
-        
+        $OptionModel = $this->container->get('OptionModel');
+        $router = $this->container->get('router');
+
         $fields = $this->getFormFields();
         
         $data = [];
         foreach ($fields as $key => $value) {
             if ($key != 'token') {
-                $data[$key] =  $this->OptionModel->get($key, '');
+                $data[$key] =  $OptionModel->get($key, '');
             }
         }
         $form = new Form($this->getFormFields(), $data);
 
         $title_page = 'Setting System';
-        $this->view->set('fields', $fields, true);
-        $this->view->set('form', $form, true);
-        $this->view->set('title_page', $title_page, true);
-        $this->view->set('data', $data, true);
-        $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_form', $this->router->url('setting-system'));
-        $this->view->set('link_mail_test', $this->router->url('setting/mail-test'));
+
+        return [
+            'fields' => $fields,
+            'form' => $form,
+            'title_page' => $title_page,
+            'data' => $data,
+            'url' => $router->url(),
+            'link_form' => $router->url('setting-system'),
+            'link_mail_test' => $router->url('setting/mail-test'),
+        ];
     }
 
     public function getFormFields()
@@ -56,7 +63,7 @@ class AdminSettingVM extends ViewModel
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
        
@@ -65,25 +72,29 @@ class AdminSettingVM extends ViewModel
 
     public function smtp()
     {
-        
+        $OptionModel = $this->container->get('OptionModel');
+        $router = $this->container->get('router');
+
         $fields = $this->getFormFieldsSMTP();
         
         $data = [];
         foreach ($fields as $key => $value) {
             if ($key != 'token') {
-                $data[$key] =  $this->OptionModel->get($key, '');
+                $data[$key] =  $OptionModel->get($key, '');
             }
         }
         $form = new Form($fields, $data);
 
         $title_page = 'Setting SMTP';
-        $this->view->set('fields', $fields, true);
-        $this->view->set('form', $form, true);
-        $this->view->set('title_page', $title_page, true);
-        $this->view->set('data', $data, true);
-        $this->view->set('url', $this->router->url(), true);
-        $this->view->set('link_form', $this->router->url('setting-smtp'));
-        $this->view->set('link_mail_test', $this->router->url('setting/mail-test'));
+        return [
+            'fields' => $fields,
+            'form' => $form,
+            'title_page' => $title_page,
+            'data' => $data,
+            'url' => $router->url(),
+            'link_form' => $router->url('setting-smtp'),
+            'link_mail_test' => $router->url('setting/mail-test'),
+        ];
     }
 
     public function getFormFieldsSMTP()
@@ -120,7 +131,7 @@ class AdminSettingVM extends ViewModel
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
        

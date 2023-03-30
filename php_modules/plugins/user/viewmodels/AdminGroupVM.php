@@ -11,42 +11,47 @@ namespace App\plugins\user\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
-use SPT\Util;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminGroupVM extends ViewModel
 {
-    protected $alias = 'AdminGroupVM';
-    protected $layouts = [
-        'layouts.backend.usergroup' => [
-            'form'
-        ]
-    ];
+    public static function register()
+    {
+        return [
+            'layouts.backend.usergroup.form'
+        ];
+    }
 
     public function form()
     {
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-        $this->view->set('id', $id, true);
+        $request = $this->container->get('request');
+        $GroupEntity = $this->container->get('GroupEntity');
+        $router = $this->container->get('router');
 
-        $data = $id ? $this->GroupEntity->findByPK($id) : [];
+        $urlVars = $request->get('urlVars');
+        $id = (int) $urlVars['id'];
+
+        $data = $id ? $GroupEntity->findByPK($id) : [];
         if (isset($data['access']) && $data['access'])
         {
             $data['access'] = (array) json_decode($data['access']);
         }
-        $form = new Form($this->getFormFields(), $data);
+        $form = new Form($this->getFormFields($id), $data);
 
-        $this->set('form', $form, true);
-        $this->set('data', $data, true);
-        $this->set('title_page', $data ? 'Update User Group' : 'New User Group', true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('user-groups'));
-        $this->set('link_form', $this->router->url('user-group'));
+        return [
+            'id' => $id,
+            'form' => $form,
+            'data' => $data,
+            'title_page' => $data ? 'Update User Group' : 'New User Group',
+            'url' => $router->url(),
+            'link_list' => $router->url('user-groups'),
+            'link_form' => $router->url('user-group'),
+        ];
     }
 
-    public function getFormFields()
+    public function getFormFields($id)
     {
-        $key_access = $this->UserModel->getRightAccess();
+        $key_access = [];//$this->UserModel->getRightAccess();
         $option = [];
         foreach ($key_access as $key)
         {
@@ -86,11 +91,11 @@ class AdminGroupVM extends ViewModel
                 ]
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 
-        if($this->view->id)
+        if($id)
         {
             $fields['modified_at'] = ['readonly'];
             $fields['modified_by'] = ['readonly'];

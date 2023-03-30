@@ -11,31 +11,39 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
-use SPT\Util;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminRequestsVM extends ViewModel
 {
     protected $alias = 'AdminRequestsVM';
-    protected $layouts = [
-        'layouts.backend.request' => [
-            'list',
-            'list.row',
-            'list.filter'
-        ]
-    ];
+    public static function register()
+    {
+        return [
+            'layouts.backend.request.list',
+            'layouts.backend.request.list.row',
+            'layouts.backend.request.list.filter',
+        ];
+    }
 
     public function list()
     {
-        $filter = $this->filter();
-        $urlVars = $this->request->get('urlVars');
+        $request = $this->container->get('request');
+        $session = $this->container->get('session');
+        $router = $this->container->get('router');
+        $RequestEntity = $this->container->get('RequestEntity');
+        $MilestoneEntity = $this->container->get('MilestoneEntity');
+        $UserEntity = $this->container->get('UserEntity');
+        $VersionEntity = $this->container->get('VersionEntity');
+        $user = $this->container->get('user');
+
+        $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
         $milestone_id = (int) $urlVars['milestone_id'];
-        $this->set('milestone_id', $milestone_id, true);
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
-        $page   = $this->request->get->get('page', 1);
+        $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
@@ -49,43 +57,47 @@ class AdminRequestsVM extends ViewModel
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $this->RequestEntity->list( $start, $limit, $where, $sort);
-        $total = $this->RequestEntity->getListTotal();
+        $result = $RequestEntity->list( $start, $limit, $where, $sort);
+        $total = $RequestEntity->getListTotal();
         if (!$result)
         {
             $result = [];
             $total = 0;
             if( !empty($search) )
             {
-                $this->session->set('flashMsg', 'Not Found Request');
+                $session->set('flashMsg', 'Not Found Request');
             }
         }
-        $milestone = $this->MilestoneEntity->findByPK($milestone_id);
+        $milestone = $MilestoneEntity->findByPK($milestone_id);
         $title_page = $milestone ? $milestone['title'] .' - Request List' : 'Request List';
 
         foreach($result as &$item)
         {
-            $user_tmp = $this->UserEntity->findByPK($item['created_by']);
+            $user_tmp = $UserEntity->findByPK($item['created_by']);
             $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
         }
 
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         
-        $this->set('list', $list, true);
-        $this->set('version_lastest', $version_lastest, true);
-        $this->set('page', $page, true);
-        $this->set('start', $start, true);
-        $this->set('sort', $sort, true);
-        $this->set('user_id', $this->user->get('id'), true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('requests/'. $milestone_id), true);
-        $this->set('title_page', $title_page, true);
-        $this->set('link_form', $this->router->url('request/'. $milestone_id), true);
-        $this->set('link_detail', $this->router->url('detail-request'), true);
-        $this->set('token', $this->app->getToken(), true);
+        return [
+            'milestone_id' => $milestone_id,
+            'list' => $list,
+            'version_lastest' => $version_lastest,
+            'page' => $page,
+            'start' => $start,
+            'sort' => $sort,
+            'user_id' => $user->get('id'),
+            'url' => $router->url(),
+            'link_list' => $router->url('requests/'. $milestone_id),
+            'title_page' => $title_page,
+            'link_form' => $router->url('request/'. $milestone_id),
+            'link_detail' => $router->url('detail-request'),
+            'token' => $this->container->get('token')->getToken(),
+    
+        ];
     }
 
     public function getColumns()
@@ -109,14 +121,10 @@ class AdminRequestsVM extends ViewModel
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-            $this->set('form', ['filter' => $filter], true);
-            $this->set('dataform', $data, true);
-
-            foreach($data as $k=>$v) $this->set($k, $v);
             $this->_filter = $filter;
         endif;
 
-        return $this->_filter;
+        return ['form' => $this->_filter];
     }
 
     public function getFilterFields()
@@ -146,10 +154,33 @@ class AdminRequestsVM extends ViewModel
         ];
     }
 
-    public function row()
+    public function row($layoutData, $viewData)
     {
-        $row = $this->view->list->getRow();
-        $this->set('item', $row);
-        $this->set('index', $this->view->list->getIndex());
+        $row = $viewData['list']->getRow();
+        return [
+            'item' => $row,
+            'index' => $viewData['list']->getIndex()
+        ];
+    }
+
+    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
+    {
+        if(empty($sessionName)) $sessionName = $key;
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
+
+        $old = $session->get($sessionName, $default);
+
+        if( !is_object( $request->{$request_type} ) )
+        {
+            $var = null;
+        }
+        else
+        {
+            $var = $request->{$request_type}->get($key, $old, $format);
+            $session->set($sessionName, $var);
+        }
+
+        return $var;
     }
 }

@@ -11,26 +11,30 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
-use SPT\Util;
+use SPT\Web\MVVM\ViewModel;
 
 class AdminMilestoneVM extends ViewModel
 {
     protected $alias = 'AdminMilestoneVM';
-    protected $layouts = [
-        'layouts.backend.milestone' => [
-            'form'
-        ]
-    ];
 
+    public static function register()
+    {
+        return [
+            'layouts.backend.milestone.form'
+        ];
+    }
+    
     public function form()
     {
+        $router = $this->container->get('router');
         $form = new Form($this->getFormFields(), []);
 
-        $this->set('form', $form, true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('milestones'));
-        $this->set('link_form', $this->router->url('milestone'));
+        return [
+            'form' => $form,
+            'url' => $router->url(),
+            'link_list' => $router->url('milestones'),
+            'link_form' => $router->url('milestone'),
+        ];
     }
 
     public function getFormFields()
@@ -68,24 +72,9 @@ class AdminMilestoneVM extends ViewModel
                 ]
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
-
-        if($this->view->id)
-        {
-            $fields['modified_at'] = ['readonly'];
-            $fields['modified_by'] = ['readonly'];
-            $fields['created_at'] = ['readonly'];
-            $fields['created_by'] = ['readonly'];
-        }
-        else
-        {
-            $fields['modified_at'] = ['hidden'];
-            $fields['modified_by'] = ['hidden'];
-            $fields['created_at'] = ['hidden'];
-            $fields['created_by'] = ['hidden'];
-        }
 
         return $fields;
     }

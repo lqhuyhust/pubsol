@@ -10,7 +10,8 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Note extends Admin {
     public function detail()
@@ -25,7 +26,7 @@ class Note extends Admin {
         if(!empty($id) && !$exist)
         {
             $this->session->set('flashMsg', "Invalid note");
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('notes')
             );
         }
@@ -89,7 +90,7 @@ class Note extends Admin {
         if (!$title)
         {
             $this->session->set('flashMsg', 'Error: Title is required! ');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note/0')
             );
         }
@@ -98,7 +99,7 @@ class Note extends Admin {
         if ($findOne)
         {
             $this->session->set('flashMsg', 'Error: Title already used! ');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note/0')
             );
         }
@@ -120,7 +121,7 @@ class Note extends Admin {
         {
             $msg = 'Error: Created Failed!';
             $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('note/0')
             );
         }
@@ -142,7 +143,7 @@ class Note extends Admin {
                     $try = $this->AttachmentModel->upload($file, $newId);
                     if (!$try)
                     {
-                        return $this->app->redirect(
+                        return Response::redirect(
                             $this->router->url('note/'. $newId)
                         );
                     }
@@ -150,7 +151,7 @@ class Note extends Admin {
             }
             $this->session->set('flashMsg', 'Created Successfully!');
             $link = $save_close ? 'notes' : 'note/'. $newId;
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url($link)
             );
         }
@@ -199,7 +200,7 @@ class Note extends Admin {
             if (!$title)
             {
                 $this->session->set('flashMsg', 'Error: Title is required! ');
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note/0')
                 );
             }
@@ -217,7 +218,7 @@ class Note extends Admin {
             if ($findOne)
             {
                 $this->session->set('flashMsg', 'Error: Title already used! ');
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note/'. $ids)
                 );
             }
@@ -251,7 +252,7 @@ class Note extends Admin {
                         $try = $this->AttachmentModel->upload($file, $ids);
                         if (!$try)
                         {
-                            return $this->app->redirect(
+                            return Response::redirect(
                                 $this->router->url('note/'. $ids)
                             );
                         }
@@ -282,7 +283,7 @@ class Note extends Admin {
                 {
                     $this->session->set('flashMsg', 'Updated successfully. An error occurred that the version of the note could not be saved! ');
                 }
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url($link)
                 );
             }
@@ -290,7 +291,7 @@ class Note extends Admin {
             {
                 $msg = 'Error: Updated failed';
                 $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
+                return Response::redirect(
                     $this->router->url('note/'. $ids)
                 );
             }
@@ -323,7 +324,7 @@ class Note extends Admin {
 
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return $this->app->redirect(
+        return Response::redirect(
             $this->router->url('notes'),
         );
     }
@@ -341,7 +342,7 @@ class Note extends Admin {
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid note');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('notes'),
             );
         }
@@ -353,12 +354,11 @@ class Note extends Admin {
     {
         if (!$this->user->get('id'))
         {
-            return $this->app->response(
-            [
-                'status'  => 'fail',
-                'data'    => $this->user->get('id'),
-                'message' => 'You are not allow.',
-            ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , $this->user->get('id'));
+            $this->set('message' , 'You are not allow.');
+            return true;
         }
 
         $search = $this->request->get->get('search', '', 'string');
@@ -389,12 +389,11 @@ class Note extends Admin {
         $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
         $result = $result ? $result : [];
 
-        return $this->app->response(
-        [
-            'status'  => 'success',
-            'data'    => $result,
-            'message' => '',
-        ]);
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $result);
+        $this->set('message' , '');
+        return;
     }
 
     public function request()
@@ -403,12 +402,11 @@ class Note extends Admin {
         $id = (int) $urlVars['id'];
         if (!$id || !$this->user->get('id'))
         {
-            return $this->app->response(
-            [
-                'status'  => 'fail',
-                'data'    => $this->user->get('id'),
-                'message' => 'You are not allow.',
-            ]);
+            $this->app->set('format', 'json');
+            $this->set('status' , 'fail');
+            $this->set('data' , $this->user->get('id'));
+            $this->set('message' , 'You are not allow.');
+            return;
         }
         $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
         $result = [];
@@ -423,11 +421,10 @@ class Note extends Admin {
             }
         }
         
-        return $this->app->response(
-        [
-            'status'  => 'success',
-            'data'    => $result,
-            'message' => '',
-        ]);
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $result);
+        $this->set('message' , '');
+        return;
     }
 }

@@ -10,7 +10,7 @@
 
 namespace App\plugins\user\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base; 
 
 class UserModel extends Base 
 { 
@@ -35,7 +35,7 @@ class UserModel extends Base
         return $access;
     }
 
-    public function validate($id)
+    public function validate($id = null)
     {
         $password = $this->request->post->get('password', '', 'string');
         $username = $this->request->post->get('username', '', 'string');

@@ -1,4 +1,4 @@
-<?php echo $this->render('notification');?>
+<?php echo $this->render('notification', []);?>
 <div class="main">
 	<main class="content p-0 ">
 		<div class="container-fluid p-0">
@@ -7,10 +7,10 @@
 					<div class="card border-0 shadow-none">
 						<div class="card-body">
                         <div class="row align-items-center">
-								<?php echo $this->render('backend.request.list.filter');?>
+								<?php echo $this->render('backend.request.list.filter', []);?>
 							</div>
 							<div class="row align-items-center">
-								<?php echo $this->render('backend.request.form');?>
+								<?php echo $this->render('backend.request.form', []);?>
 							</div>
 							<form action="<?php echo $this->link_list ?>" method="POST" id="formList">
 								<input type="hidden" value="<?php echo $this->token ?>" name="token">
@@ -31,14 +31,14 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php while($this->list->hasRow()) $this->render('backend.request.list.row'); ?> 
+										<?php while($this->list->hasRow()) echo $this->render('backend.request.list.row', []); ?> 
 									</tbody>
 								<?php
 								?>
 								</table>
 							</form>
 							<div class="row g-3 align-items-center">
-								<?php echo $this->render('pagination'); ?>
+								<?php echo $this->render('pagination', []); ?>
 							</div>
 						</div>
 					</div>

@@ -10,7 +10,8 @@
 
 namespace App\plugins\milestone\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
 class Version extends Admin 
 {
@@ -25,8 +26,9 @@ class Version extends Admin
         $list = $this->VersionNoteEntity->list(0,0, ['version_id = '. $version_latest['id'], 'request_id = '. $request_id]);
         $list = $list ? $list : [];
 
-        return $this->app->response(
-            $list, 200);
+        $this->app->set('format', 'json');
+        $this->set('result', $list);
+        return ;
     }
 
     public function add()
@@ -38,10 +40,10 @@ class Version extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Add Version Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Add Version Failed!');
+            return ;
         }
 
         $log = $this->request->post->get('log', '', 'string');
@@ -49,10 +51,10 @@ class Version extends Admin
         $version_latest = $version_latest ? $version_latest[0] : [];
         if( !$version_latest )
         {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Error: Invalid Version!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Error: Invalid Version!');
+            return ;
         }
         // TODO: validate new add
         $newId =  $this->VersionNoteEntity->add([
@@ -68,17 +70,17 @@ class Version extends Admin
         if( !$newId )
         {
             $msg = 'Error: Create Change log Failed!';
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => $msg
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', $msg);
+            return ;
         }
         else
         {
-            return $this->app->response([
-                'result' => 'ok',
-                'message' => 'Create Change log Successfully!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'ok');
+            $this->set('message', 'Create Change log Successfully!');
+            return ;
         }
     }
 
@@ -89,19 +91,19 @@ class Version extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Update Version Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Update Version Failed!');
+            return ;
         }
         // TODO valid the request input
 
         if( is_array($ids) && $ids != null)
         {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Invalid Version Note'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Invalid Version Note');
+            return ;
         }
         if(is_numeric($ids) && $ids)
         {
@@ -116,17 +118,17 @@ class Version extends Admin
             
             if($try) 
             {
-                return $this->app->response([
-                    'result' => 'ok',
-                    'message' => 'Update Change Log Successfully'
-                ],200);
+                $this->app->set('format', 'json');
+                $this->set('result', 'ok');
+                $this->set('message', 'Update Change Log Successfully');
+                return ;
             }
             else
             {
-                return $this->app->response([
-                    'result' => 'fail',
-                    'message' => 'Update Change Log Failed'
-                ],200);
+                $this->app->set('format', 'json');
+                $this->set('result', 'fail');
+                $this->set('message', 'Update Change Log Failed');
+                return ;
             }
         }
     }
@@ -138,10 +140,10 @@ class Version extends Admin
 
         $tmp_check = $this->checkVersion($request_id);
         if($tmp_check) {
-            return $this->app->response([
-                'result' => 'fail',
-                'message' => 'Delete Version Failed!'
-            ],200);
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Delete Version Failed!');
+            return ;
         }
 
         $count = 0;
@@ -164,10 +166,10 @@ class Version extends Admin
             }
         }  
         
-        return $this->app->response([
-            'result' => 'ok',
-            'message' => $count.' deleted record(s)'
-        ],200);
+        $this->app->set('format', 'json');
+        $this->set('result', 'ok');
+        $this->set('message', $count.' deleted record(s)');
+        return ;
     }
 
     public function validateID()
@@ -184,7 +186,7 @@ class Version extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid Task');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('detail-request/'. $request_id),
             );
         }
@@ -202,7 +204,7 @@ class Version extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('milestones'),
             );
         }
@@ -215,7 +217,7 @@ class Version extends Admin
         if (!$this->container->exists('VersionEntity'))
         {
             $this->session->set('flashMsg', 'Invalid Plugin Version');
-            return $this->app->redirect(
+            return Response::redirect(
                 $this->router->url('admin')
             );
         }

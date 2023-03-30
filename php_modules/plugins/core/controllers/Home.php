@@ -10,13 +10,13 @@
 
 namespace App\plugins\core\controllers;
 
-use SPT\MVC\JDIContainer\MVController;
+use SPT\Web\MVC\Controller;
 
-class Home extends MVController 
+class home extends Controller
 {
-    public function demo()
+    public function display()
     {
-        // $this->app->set('format', 'html');
-        // $this->app->set('layout', 'demo');
+        $this->app->set('format', 'html');
+        $this->app->set('layout', 'home');
     }
 }

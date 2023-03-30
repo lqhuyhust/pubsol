@@ -8,25 +8,17 @@
  * 
  */
 
-define( 'APP_PATH', __DIR__ . '/../php_modules/');
+define( 'APP_PATH', __DIR__ . '/../');
 define('PUBLIC_PATH', __DIR__ . '/');
 define('MEDIA_PATH', PUBLIC_PATH. 'media/');
 define('SPT_PATH_TEMP', PUBLIC_PATH);
 
-require APP_PATH.'/../vendor/autoload.php';
+require APP_PATH. 'vendor/autoload.php';
 
-use SPT\App\Instance as AppIns;
-use Joomla\DI\Container;
-use App\libraries\appPlg;
+$app = new SPT\Application\Joomla\Web(
+    APP_PATH. 'php_modules/plugins',
+    APP_PATH. 'php_modules/config.php',
+    'App'
+);
 
-/**
- * Running application
- */
-AppIns::bootstrap( new appPlg(new Container),[
-    'app' => APP_PATH,
-    'config' => APP_PATH. '/config.php', 
-    'plugin' => APP_PATH. '//plugins/', 
-    'theme' => APP_PATH. 'themes/', 
-]);
-
-AppIns::main()->execute();
+$app->execute(APP_PATH. 'php_modules/themes');

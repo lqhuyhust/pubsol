@@ -1,4 +1,4 @@
-<?php echo $this->render('notification');?>
+<?php echo $this->render('notification', []);?>
 <div class="pt-2" id="relate_note_link">
 	<div class="container-fluid">
 		<div class="row justify-content-center mx-auto">
@@ -14,10 +14,10 @@
 				</a>
 				<div class="collapse" id="collapseRelateNote">
 					<div class=" row align-items-center pt-3">
-						<?php echo $this->render('backend.relate_note.list.filter');?>
+						<?php echo $this->render('backend.relate_note.list.filter', []);?>
 					</div>
 					<div class="row align-items-center">
-						<?php echo $this->render('backend.relate_note.form');?>
+						<?php echo $this->render('backend.relate_note.form', []);?>
 					</div>
 					<form action="<?php echo $this->link_list ?>" method="POST" id="formListRelateNote">
 						<input type="hidden" value="<?php echo $this->token ?>" name="token">
@@ -34,7 +34,7 @@
 								</tr>
 							</thead>
 							<tbody id="listRelateNote">
-								<?php while($this->list->hasRow()) $this->render('backend.relate_note.list.row'); ?> 
+								<?php while($this->list->hasRow()) echo $this->render('backend.relate_note.list.row', ['item' => $this->list->getRow(), 'index' => $this->list->getIndex(), 'link_note' => $this->link_note]); ?> 
 							</tbody>
 						<?php
 						?>

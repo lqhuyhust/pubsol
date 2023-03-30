@@ -1,4 +1,4 @@
-<?php echo $this->render('notification'); ?>
+<?php echo $this->render('notification', []); ?>
 <div id="document_link" class="pt-2">
     <div class="container-fluid">
         <div class="row row justify-content-center mx-auto">
@@ -114,10 +114,10 @@
             success: function(resultData)
             {
                 var list = '';
-                if (Array.isArray(resultData))
+                if (Array.isArray(resultData.list))
                 {
                     
-                    resultData.forEach(function(item)
+                    resultData.list.forEach(function(item)
                     {
                         list += `
                         <li class="list-group-item">
@@ -142,9 +142,9 @@
             success: function(resultData)
             {
                 var list = '';
-                if (Array.isArray(resultData))
+                if (Array.isArray(resultData.list))
                 {
-                    resultData.forEach(function(item)
+                    resultData.list.forEach(function(item)
                     {
                         if (user_id == item['user_id'])
                         {

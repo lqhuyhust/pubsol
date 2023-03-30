@@ -17,25 +17,33 @@ use SPT\View\Gui\Form;
 class AdminNoteHistoryVM extends ViewModel
 {
     protected $alias = 'AdminNoteHistoryVM';
-    protected $layouts = [
-        'layouts.backend.note_history' => [
-            'form',
-        ],
-    ];
+
+    public static function register()
+    {
+        return [
+            'layouts.backend.note_history.form',
+        ];
+    }
 
     public function form()
     {
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-        $this->set('id', $id, true);
+        $request = $this->container->get('request');
+        $NoteHistoryEntity = $this->container->get('NoteHistoryEntity');
+        $UserEntity = $this->container->get('UserEntity');
+        $TagEntity = $this->container->get('TagEntity');
+        $AttachmentEntity = $this->container->get('AttachmentEntity');
+        $router = $this->container->get('router');
 
-        $version = $id ? $this->NoteHistoryEntity->findByPK($id) : [];
+        $urlVars = $request->get('urlVars');
+        $id = (int) $urlVars['id'];
+
+        $version = $id ? $NoteHistoryEntity->findByPK($id) : [];
 
         if ($version)
         {
             if ($version)
             {
-                $user_tmp = $this->UserEntity->findByPK($version['created_by']);
+                $user_tmp = $UserEntity->findByPK($version['created_by']);
                 $version['created_by'] = $user_tmp ? $user_tmp['name'] : '';
                 $data = json_decode($version['meta_data'], true);
                 $data['id'] = $id;
@@ -47,12 +55,12 @@ class AdminNoteHistoryVM extends ViewModel
         {
             $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
             $data['description_presenter'] = $data['description'];
-            $versions = $this->NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
+            $versions = $NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
             $versions = $versions ? $versions : [];
 
             foreach($versions as &$item)
             {
-                $user_tmp = $this->UserEntity->findByPK($item['created_by']);
+                $user_tmp = $UserEntity->findByPK($item['created_by']);
                 $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
             }
 
@@ -62,24 +70,27 @@ class AdminNoteHistoryVM extends ViewModel
         $data_tags = [];
         if (!empty($data['tags'])){
             $where[] = "(`id` IN (".$data['tags'].") )";
-            $data_tags = $this->TagEntity->list(0, 1000, $where);
+            $data_tags = $TagEntity->list(0, 1000, $where);
         }
-        $attachments = $this->AttachmentEntity->list(0, 0, ['note_id = '. $id]);
+        $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
         $form = new Form($this->getFormFields(), $data);
         $view_mode = true;
 
-        $this->set('form', $form, true);
-        $this->set('data', $data, true);
-        $this->set('view_mode', $view_mode, true);
-        $this->set('data_tags', $data_tags, true);
-        $this->set('version', $version, true);
-        $this->set('attachments', $attachments);
-        $this->set('title_page', $data && $data['title'] ? $data['title'] : 'New Note', true);
-        $this->set('url', $this->router->url(), true);
-        $this->set('link_list', $this->router->url('note/'. $version['note_id']), true);
-        $this->set('link_form', $this->router->url('note/version'), true);
-        $this->set('link_form_attachment', $this->router->url('attachment'));
-        $this->set('link_tag', $this->router->url('tag'));
+        return [
+            'id' => $id,
+            'form' => $form,
+            'data' => $data,
+            'view_mode' => $view_mode,
+            'data_tags' => $data_tags,
+            'version' => $version,
+            'attachments' => $attachments,
+            'title_page' => $data && $data['title'] ? $data['title'] : 'New Note',
+            'url' => $router->url(),
+            'link_list' => $router->url('note/'. $version['note_id']),
+            'link_form' => $router->url('note/version'),
+            'link_form_attachment' => $router->url('attachment'),
+            'link_tag' => $router->url('tag'),
+        ];
     }
 
     public function getFormFields()
@@ -126,7 +137,7 @@ class AdminNoteHistoryVM extends ViewModel
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',
-                'default' => $this->app->getToken(),
+                'default' => $this->container->get('token')->getToken(),
             ],
         ];
 

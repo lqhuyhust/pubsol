@@ -45,4 +45,4 @@
         </div>
     </div>
 </form>
-<?php echo $this->render('backend.user.list.javascript'); ?>
+<?php echo $this->render('backend.user.list.javascript', []); ?>
