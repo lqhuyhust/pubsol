@@ -78,6 +78,9 @@ class Request extends Admin
         $description = $this->request->post->get('description', '', 'string');
         $deadline_at = $this->request->post->get('deadline_at', '0000-00-00 00:00:00', 'string');
         $finished_at = $this->request->post->get('finished_at', '0000-00-00 00:00:00', 'string');
+        $deadline_at = $deadline_at ? $deadline_at : '0000-00-00 00:00:00';
+        $finished_at = $finished_at ? $finished_at : '0000-00-00 00:00:00';
+
         if (!$title)
         {
             $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
@@ -139,6 +142,9 @@ class Request extends Admin
             $deadline_at = $this->request->post->get('deadline_at', '0000-00-00 00:00:00', 'string');
             $finished_at = $this->request->post->get('finished_at', '0000-00-00 00:00:00', 'string');
     
+            $deadline_at = $deadline_at ? $deadline_at : '0000-00-00 00:00:00';
+            $finished_at = $finished_at ? $finished_at : '0000-00-00 00:00:00';
+
             $try = $this->RequestEntity->update([
                 'milestone_id' => $milestone_id,
                 'title' => $title,
