@@ -27,7 +27,7 @@ class Task extends Admin
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Task");
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );
         }
@@ -199,7 +199,7 @@ class Task extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid Task');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id),
             );
         }
@@ -217,7 +217,7 @@ class Task extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('milestones'),
             );
         }

@@ -19,7 +19,7 @@ class Admin extends Controller
     {
         if( !$this->user->get('id') )
         {
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url(
                     'login'
                 )

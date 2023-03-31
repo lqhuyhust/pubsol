@@ -26,7 +26,7 @@ class Version extends Admin
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Version");
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions')
             );
         }
@@ -60,7 +60,7 @@ class Version extends Admin
         if (!$name)
         {
             $this->session->set('flashMsg', 'Error: Title is required! ');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions')
             );
         }
@@ -69,7 +69,7 @@ class Version extends Admin
         if ($findOne)
         {
             $this->session->set('flashMsg', 'Error: Title already used! ');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions')
             );
         }
@@ -96,14 +96,14 @@ class Version extends Admin
         {
             $msg = 'Error: Created failed!';
             $this->session->set('flashMsg', $msg);
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions')
             );
         }
         else
         {
             $this->session->set('flashMsg', 'Created Successfully!');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions')
             );
         }
@@ -118,7 +118,7 @@ class Version extends Admin
         if( is_array($ids) && $ids != null)
         {
             $this->session->set('flashMsg', 'Invalid Version');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions')
             );
         }
@@ -135,7 +135,7 @@ class Version extends Admin
             if ($findOne)
             {
                 $this->session->set('flashMsg', 'Error: Title already used! ');
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('versions')
                 );
             }
@@ -153,7 +153,7 @@ class Version extends Admin
             if($try) 
             {
                 $this->session->set('flashMsg', 'Updated Successfully');
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('versions')
                 );
             }
@@ -161,7 +161,7 @@ class Version extends Admin
             {
                 $msg = 'Error: Updated Failed';
                 $this->session->set('flashMsg', $msg);
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('versions')
                 );
             }
@@ -194,7 +194,7 @@ class Version extends Admin
         
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return Response::redirect(
+        return $this->app->redirect(
             $this->router->url('versions'), 
         );
     }
@@ -212,7 +212,7 @@ class Version extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid Version');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('versions'),
             );
         }

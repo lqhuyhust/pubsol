@@ -34,14 +34,14 @@ class Version extends Admin {
                     $this->NoteHistoryEntity->remove($item['id']);
                 }
 
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('note/'. $data['id'])
                 );
             }
         }
 
         $this->session->set('flashMsg', 'Error: Update Fail');
-        return Response::redirect(
+        return $this->app->redirect(
             $this->router->url('note/'. $data['id'])
         );
     }
@@ -58,7 +58,7 @@ class Version extends Admin {
         if(!empty($id) && !$exist)
         {
             $this->session->set('flashMsg', "Invalid note");
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('notes')
             );
         }
@@ -85,7 +85,7 @@ class Version extends Admin {
 
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return Response::redirect(
+        return $this->app->redirect(
             $link
         );
     }
@@ -103,7 +103,7 @@ class Version extends Admin {
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid version');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('notes'),
             );
         }

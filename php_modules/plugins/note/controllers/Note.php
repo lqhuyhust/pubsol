@@ -26,7 +26,7 @@ class Note extends Admin {
         if(!empty($id) && !$exist)
         {
             $this->session->set('flashMsg', "Invalid note");
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('notes')
             );
         }
@@ -90,7 +90,7 @@ class Note extends Admin {
         if (!$title)
         {
             $this->session->set('flashMsg', 'Error: Title is required! ');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('note/0')
             );
         }
@@ -99,7 +99,7 @@ class Note extends Admin {
         if ($findOne)
         {
             $this->session->set('flashMsg', 'Error: Title already used! ');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('note/0')
             );
         }
@@ -121,7 +121,7 @@ class Note extends Admin {
         {
             $msg = 'Error: Created Failed!';
             $this->session->set('flashMsg', $msg);
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('note/0')
             );
         }
@@ -143,7 +143,7 @@ class Note extends Admin {
                     $try = $this->AttachmentModel->upload($file, $newId);
                     if (!$try)
                     {
-                        return Response::redirect(
+                        return $this->app->redirect(
                             $this->router->url('note/'. $newId)
                         );
                     }
@@ -151,7 +151,7 @@ class Note extends Admin {
             }
             $this->session->set('flashMsg', 'Created Successfully!');
             $link = $save_close ? 'notes' : 'note/'. $newId;
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url($link)
             );
         }
@@ -200,7 +200,7 @@ class Note extends Admin {
             if (!$title)
             {
                 $this->session->set('flashMsg', 'Error: Title is required! ');
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('note/0')
                 );
             }
@@ -218,7 +218,7 @@ class Note extends Admin {
             if ($findOne)
             {
                 $this->session->set('flashMsg', 'Error: Title already used! ');
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('note/'. $ids)
                 );
             }
@@ -252,7 +252,7 @@ class Note extends Admin {
                         $try = $this->AttachmentModel->upload($file, $ids);
                         if (!$try)
                         {
-                            return Response::redirect(
+                            return $this->app->redirect(
                                 $this->router->url('note/'. $ids)
                             );
                         }
@@ -283,7 +283,7 @@ class Note extends Admin {
                 {
                     $this->session->set('flashMsg', 'Updated successfully. An error occurred that the version of the note could not be saved! ');
                 }
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url($link)
                 );
             }
@@ -291,7 +291,7 @@ class Note extends Admin {
             {
                 $msg = 'Error: Updated failed';
                 $this->session->set('flashMsg', $msg);
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('note/'. $ids)
                 );
             }
@@ -324,7 +324,7 @@ class Note extends Admin {
 
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
-        return Response::redirect(
+        return $this->app->redirect(
             $this->router->url('notes'),
         );
     }
@@ -342,7 +342,7 @@ class Note extends Admin {
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid note');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('notes'),
             );
         }

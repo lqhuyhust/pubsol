@@ -109,7 +109,7 @@ class Documenthistory extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid document');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url(),
             );
         }
