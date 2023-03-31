@@ -31,6 +31,7 @@ class AdminRelateNotesVM extends ViewModel
     {
         $request =  $this->container->get('request');
         $NoteEntity =  $this->container->get('NoteEntity');
+        $TagEntity =  $this->container->get('TagEntity');
         $session =  $this->container->get('session');
         $user =  $this->container->get('user');
         $token =  $this->container->get('token');
@@ -89,7 +90,7 @@ class AdminRelateNotesVM extends ViewModel
                 if (!empty($item['tags'])){
                     $t1 = $where = [];
                     $where[] = "(`id` IN (".$item['tags'].") )";
-                    $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
+                    $t2 = $TagEntity->list(0, 1000, $where,'','`name`');
     
                     foreach ($t2 as $i) $t1[] = $i['name'];
     
