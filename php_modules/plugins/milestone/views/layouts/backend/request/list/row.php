@@ -17,8 +17,8 @@
         <?php echo  strlen(strip_tags($description)) > 50 ? substr(strip_tags($description), 0, 50) .'...' : $description;  ?>
     </td>
     <td><?php echo   $this->item['creator'] ?></td>
-    <td><?php echo   date('Y-m-d', strtotime($this->item['deadline_at'])) ?></td>
-    <td><?php echo   date('Y-m-d', strtotime($this->item['finished_at'])) ?></td>
+    <td><?php echo  $this->item['deadline_at'] != '0000-00-00 00:00:00' ? date('Y-m-d', strtotime($this->item['deadline_at'])) : '' ?></td>
+    <td><?php echo  $this->item['finished_at'] != '0000-00-00 00:00:00' ? date('Y-m-d', strtotime($this->item['finished_at'])) : '' ?></td>
     <td><?php echo $status ? 'Disabled' : 'Enabled';?></td>
     <td>
         <?php if(!$status) { ?>
