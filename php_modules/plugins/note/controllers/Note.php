@@ -412,7 +412,7 @@ class Note extends Admin {
         $result = [];
         foreach($list as &$item)
         {
-            $request = $this->RequestEntity->findByPK($item['id']);
+            $request = $this->RequestEntity->findByPK($item['request_id']);
             if ($request)
             {
                 $request['deadline_at'] = $request['deadline_at'] && $request['deadline_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['deadline_at'])) : '';
