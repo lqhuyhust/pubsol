@@ -35,7 +35,7 @@ class NoteDiagramEntity extends Entity
                     'null' => 'YES',
                 ],
                 'config' => [
-                    'type' => 'text',
+                    'type' => 'longtext',
                     'null' => 'YES',
                 ],
                 'created_at' => [

@@ -52,7 +52,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
 <script>
     var ignore = <?php echo json_encode($this->ignore) ?>;
     $(document).ready(function(e) {
-        var data = '<?php echo $this->data ? $this->data['config'] : ''; ?>';
+        var data = `<?php echo $this->data ? $this->data['config'] : ''; ?>`;
         data = data ? JSON.parse(data) : [];
         $(".btn_save_close").click(function(e) {
             e.preventDefault();

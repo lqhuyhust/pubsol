@@ -44,7 +44,7 @@ class AdminNoteDiagramVM extends ViewModel
             {
                 $config = $NoteDiagramModel->convertConfig($config);
             }
-            $data['config'] = json_encode($config);
+            $data['config'] = json_encode($config, JSON_UNESCAPED_UNICODE);
             $ignore = $NoteDiagramModel->findNotes($config);
         }
 
