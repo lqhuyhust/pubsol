@@ -11,10 +11,10 @@
                     </div>
                     <div class="row px-0 mb-3">
                         <div class="col-12 d-flex align-items-center">
-                            <label class="form-label fw-bold mb-2">Deadline</label>
+                            <label class="form-label fw-bold mb-2">Start</label>
                         </div>
                         <div class="col-12">
-                            <?php $this->field('deadline_at'); ?>
+                            <?php $this->field('start_at'); ?>
                         </div>
                     </div>
                     <div class="row px-0 mb-3">

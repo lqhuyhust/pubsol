@@ -89,6 +89,22 @@
                         <input name="title" type="text" id="title" required="" placeholder="Request" value="<?php echo $this->request['title'];?>" class="form-control h-50-px fw-bold rounded-0 fs-3">
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <label class="form-label fw-bold mb-2">Start At</label>
+                    </div>
+                    <div class="col-12">
+                        <input name="start_at" type="date" id="start_at" placeholder="Start At" value="<?php echo $this->request['start_at'] && $this->request['start_at'] != '0000-00-00 00:00:00' ? date('Y-m-d', strtotime($this->request['start_at'])) : '';?>" class="form-control rounded-0 border border-1 py-1 fs-4-5"/>                        
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <label class="form-label fw-bold mb-2">End At</label>
+                    </div>
+                    <div class="col-12">
+                        <input name="finished_at" type="date" id="finished_at" placeholder="End At" value="<?php echo $this->request['finished_at'] && $this->request['finished_at'] != '0000-00-00 00:00:00' ? date('Y-m-d', strtotime($this->request['finished_at'])) : '';?>" class="form-control rounded-0 border border-1 py-1 fs-4-5"/>                        
+                    </div>
+                </div>
                 <input type="hidden" name="detail_request" value="1">
                 <div class="row mb-3">
                     <div class="col-12 d-flex align-items-center">
