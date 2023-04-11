@@ -17,8 +17,8 @@
         <?php echo  strlen(strip_tags($description)) > 50 ? substr(strip_tags($description), 0, 50) .'...' : $description;  ?>
     </td>
     <td><?php echo   $this->item['creator'] ?></td>
-    <td><?php echo  $this->item['deadline_at'] != '0000-00-00 00:00:00' ? date('Y-m-d', strtotime($this->item['deadline_at'])) : '' ?></td>
-    <td><?php echo  $this->item['finished_at'] != '0000-00-00 00:00:00' ? date('Y-m-d', strtotime($this->item['finished_at'])) : '' ?></td>
+    <td><?php echo  $this->item['start_at'] != '0000-00-00 00:00:00' && $this->item['start_at'] ? date('Y-m-d', strtotime($this->item['start_at'])) : '' ?></td>
+    <td><?php echo  $this->item['finished_at'] != '0000-00-00 00:00:00' && $this->item['finished_at'] ? date('Y-m-d', strtotime($this->item['finished_at'])) : '' ?></td>
     <td><?php echo $status ? 'Disabled' : 'Enabled';?></td>
     <td>
         <?php if(!$status) { ?>
@@ -28,7 +28,7 @@
             data-title="<?php echo  $this->item['title']  ?>" 
             data-description="<?php echo ($this->item['description']); ?>" 
             data-finished_at="<?php echo date('Y-m-d', strtotime($this->item['finished_at'])); ?>" 
-            data-deadline_at="<?php echo date('Y-m-d', strtotime($this->item['deadline_at'])); ?>" 
+            data-start_at="<?php echo date('Y-m-d', strtotime($this->item['start_at'])); ?>" 
             data-bs-placement="top" 
             data-bs-toggle="modal" 
             data-bs-target="#exampleModalToggle">
