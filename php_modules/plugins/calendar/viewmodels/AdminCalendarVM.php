@@ -35,7 +35,7 @@ class AdminCalendarVM extends ViewModel
         $request = $this->container->get('request');
         $RequestEntity = $this->container->get('RequestEntity');
         $RelateNoteEntity = $this->container->get('RelateNoteEntity');
-        $TimelineModel = $this->container->get('TimelineModel');
+        $CalendarModel = $this->container->get('CalendarModel');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
         
         $filter = $this->filter()['form'];

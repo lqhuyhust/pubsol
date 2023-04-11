@@ -1,5 +1,5 @@
 <?php
-$this->theme->add($this->url . 'assets/fullcalendar/index.global.js', '', 'fullcalendar-js');
+$this->theme->add($this->url . 'assets/calendar/js/index.global.js', '', 'calendar-js');
 ?>
 <?php echo $this->render('notification', []); ?>
 <div class="main">
