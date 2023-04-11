@@ -1,5 +1,5 @@
 <?php
-$this->theme->add($this->url . 'assets/css/gantt.css', '', 'gantt_style');
+$this->theme->add($this->url . 'assets/timeline/css/style.css', '', 'timeline_style');
 ?>
 <?php echo $this->render('notification', []); ?>
 <div class="main">
