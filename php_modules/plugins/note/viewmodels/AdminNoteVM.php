@@ -36,20 +36,20 @@ class AdminNoteVM extends ViewModel
         $AttachmentEntity = $this->container->get('AttachmentEntity');
         $router = $this->container->get('router');
 
-        $urlVars = $this->request->get('urlVars');
+        $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $version = $this->request->get->get('version', 0);
+        $version = $request->get->get('version', 0);
 
-        $data = $id ? $this->NoteEntity->findByPK($id) : [];
+        $data = $id ? $NoteEntity->findByPK($id) : [];
         $data_version = [];
         if ($data)
         {
             if ($version)
             {
-                $data_version = $this->NoteHistoryEntity->findByPK($version);
+                $data_version = $NoteHistoryEntity->findByPK($version);
                 if ($data_version)
                 {
-                    $user_tmp = $this->UserEntity->findByPK($data_version['created_by']);
+                    $user_tmp = $UserEntity->findByPK($data_version['created_by']);
                     $data_version['created_by'] = $user_tmp ? $user_tmp['name'] : '';
                     $data = json_decode($data_version['meta_data'], true);
                     $data['id'] = $id;
@@ -58,12 +58,12 @@ class AdminNoteVM extends ViewModel
             }
 
             $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
-            $versions = $this->NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
+            $versions = $NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
             $versions = $versions ? $versions : [];
 
             foreach($versions as &$item)
             {
-                $user_tmp = $this->UserEntity->findByPK($item['created_by']);
+                $user_tmp = $UserEntity->findByPK($item['created_by']);
                 $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
             }
 
@@ -74,9 +74,9 @@ class AdminNoteVM extends ViewModel
         $data_tags = [];
         if (!empty($data['tags'])){
             $where[] = "(`id` IN (".$data['tags'].") )";
-            $data_tags = $this->TagEntity->list(0, 1000, $where);
+            $data_tags = $TagEntity->list(0, 1000, $where);
         }
-        $attachments = $this->AttachmentEntity->list(0, 0, ['note_id = '. $id]);
+        $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
         
         if ($data && $data['editor'] == 'presenter')
         {

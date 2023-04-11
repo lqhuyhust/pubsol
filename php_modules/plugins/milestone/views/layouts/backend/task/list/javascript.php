@@ -54,6 +54,21 @@
                         `
                     });
                     $("#listTask").html(list);
+                    $(".show_data").click(function() {
+                        var id = $(this).data('id');
+                        var title = $(this).data('title');
+                        var url = $(this).data('url');
+
+                        $('#title').val(title);
+                        $('#url').val(url);
+
+                        $('#form_task').attr('action', '<?php echo $this->link_form;?>/' + id);
+                        if(id) {
+                            $('#task').val('PUT');
+                        } else {
+                            $('#task').val('POST');
+                        }
+                    });
                 }
             }
         })
@@ -61,6 +76,21 @@
     $(document).ready(function() {
         $("#select_all").click( function(){
             $('.checkbox-item').prop('checked', this.checked);
+        });
+        $(".show_data").click(function() {
+            var id = $(this).data('id');
+            var title = $(this).data('title');
+            var url = $(this).data('url');
+
+            $('#title').val(title);
+            $('#url').val(url);
+
+            $('#form_task').attr('action', '<?php echo $this->link_form;?>/' + id);
+            if(id) {
+                $('#task').val('PUT');
+            } else {
+                $('#task').val('POST');
+            }
         });
         $(".button_delete_item").click(function() {
             var id = $(this).data('id');
@@ -113,21 +143,6 @@
         });
         $('#limit').on("change", function (e) {
             $('#filter_form').submit()
-        });
-        $(".show_data").click(function() {
-            var id = $(this).data('id');
-            var title = $(this).data('title');
-            var url = $(this).data('url');
-
-            $('#title').val(title);
-            $('#url').val(url);
-
-            $('#form_task').attr('action', '<?php echo $this->link_form;?>/' + id);
-            if(id) {
-                $('#task').val('PUT');
-            } else {
-                $('#task').val('POST');
-            }
         });
         $('#filter_form_task').on('submit', function (e){
             e.preventDefault();

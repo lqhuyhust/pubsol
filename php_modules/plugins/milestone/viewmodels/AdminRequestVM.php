@@ -37,10 +37,10 @@ class AdminRequestVM extends ViewModel
         $form = new Form($this->getFormFields(), []);
 
         return [
-            'form', $form,
-            'url', $router->url(),
-            'link_list', $router->url('requests/'. $milestone_id),
-            'link_form', $router->url('request/'. $milestone_id),
+            'form' => $form,
+            'url' => $router->url(),
+            'link_list' => $router->url('requests/'. $milestone_id),
+            'link_form' => $router->url('request/'. $milestone_id),
         ];
     }
 

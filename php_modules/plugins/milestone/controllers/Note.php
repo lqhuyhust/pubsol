@@ -27,7 +27,7 @@ class Note extends Admin
         if(!empty($id) && !$exist) 
         {
             $this->session->set('flashMsg', "Invalid Relate Note");
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );
         }
@@ -203,7 +203,7 @@ class Note extends Admin
 
         if( is_array($ids) && $ids != null)
         {
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id)
             );
         }
@@ -219,7 +219,7 @@ class Note extends Admin
                 if ($findOne)
                 {
                     $this->session->set('flashMsg', 'Error: Duplicate Relate Note');
-                    return Response::redirect(
+                    return $this->app->redirect(
                         $this->router->url('detail-request/'. $request_id),
                     );
                 }
@@ -234,7 +234,7 @@ class Note extends Admin
             if($try) 
             {
                 $this->session->set('flashMsg', 'Edit Relate Note Successfully');
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('detail-request/'. $request_id), 
                 );
             }
@@ -242,7 +242,7 @@ class Note extends Admin
             {
                 $msg = 'Error: Save Relate Note Failed';
                 $this->session->set('flashMsg', $msg);
-                return Response::redirect(
+                return $this->app->redirect(
                     $this->router->url('detail-request/'. $request_id .'/'. $ids)
                 );
             }
@@ -301,7 +301,7 @@ class Note extends Admin
             if(count($ids)) return $ids;
 
             $this->session->set('flashMsg', 'Invalid Relate Note');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('detail-request/'. $request_id),
             );
         }
@@ -319,7 +319,7 @@ class Note extends Admin
         if(empty($id))
         {
             $this->session->set('flashMsg', 'Invalid Request');
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url('admin'),
             );
         }

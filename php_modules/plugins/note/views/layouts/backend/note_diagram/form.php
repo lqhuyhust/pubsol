@@ -21,7 +21,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                     </div>
                 </div>
                 <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                    <div id="tree_root">
+                    <div class="overflow-auto" id="tree_root">
                     </div>
                 </div>
             </div>
@@ -52,8 +52,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
 <script>
     var ignore = <?php echo json_encode($this->ignore) ?>;
     $(document).ready(function(e) {
-        var data = '<?php echo $this->data ? $this->data['config'] : ''; ?>';
-        data = data ? JSON.parse(data) : [];
+        var data = <?php echo $this->data ? $this->data['config'] : '[]'; ?>;
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
             $("#save_close").val(1);
@@ -111,9 +110,11 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             var node = $('#tree_root').jstree().get_selected();
             var index = node && node[0] ? node[0] : '-1';
             index = item.id == '-1' ? '#' : index;
+            type = item.type ? item.type : 'note';
             $('#tree_root').jstree().create_node(index, {
                 "id": item.id,
-                "text": item.text
+                "text": item.text,
+                'type' : type,
             }, "last");
         }
         $('#tree_root').jstree({
@@ -126,7 +127,10 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                 'data': data,
             },
             "types": {
-                 "note": {
+                "#": {
+                    "valid_children": ["root"]
+                },
+                "note": {
                     "valid_children": ["note"]
                 },
             },
@@ -160,7 +164,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
         });
         if (data.length == 0)
         {
-            createNote({'id': '-1', 'text': 'ROOT'});
+            createNote({'id': '-1', 'text': 'ROOT', 'type' : 'root'});
         }
         $('#tree_root').on('select_node.jstree', function (even, node){
             node = node.node;
@@ -169,8 +173,10 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
 
             $('#link_node').text(node.text);
             $('#link_node').attr('href', node_detail);
+            $('#body_related_request').html('');
             if (node.id == '-1')
             {
+                $('#link_node').text('');
                 return true;
             }
             $.ajax({  
@@ -183,9 +189,7 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
                         var data = response.data;
                         $('#related_request').addClass('d-none');
 
-                        $('#body_related_request').html('');
                         data.forEach(function(item) {
-                            console.log(item);
                             var link_detail = '<?php echo $this->link_detail_request . '/'; ?>' + item.id;
                             $('#body_related_request').append(`
                                 <tr>

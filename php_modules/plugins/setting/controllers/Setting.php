@@ -47,7 +47,7 @@ class Setting extends Controller
 
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        return Response::redirect( $this->router->url('setting-system'));
+        return $this->app->redirect( $this->router->url('setting-system'));
     }
 
     public function smtp()
@@ -79,14 +79,14 @@ class Setting extends Controller
 
         $msg = $try ? 'Save Done.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        return Response::redirect( $this->router->url('setting-smtp'));
+        return $this->app->redirect( $this->router->url('setting-smtp'));
     }
 
     public function isLoggedIn()
     {
         if( !$this->user->get('id') )
         {
-            return Response::redirect(
+            return $this->app->redirect(
                 $this->router->url(
                     'login'
                 )
@@ -102,7 +102,7 @@ class Setting extends Controller
         if (!$admin_mail)
         {
             $this->session->set('flashMsg', 'Error: Enter admin email before testing');
-            return Response::redirect( $this->router->url('setting'));
+            return $this->app->redirect( $this->router->url('setting'));
         }
 
         $try = $this->EmailModel->send($admin_mail, 'Admin', 'This is mail test', 'Mail Test');
@@ -110,6 +110,6 @@ class Setting extends Controller
         {
             $this->session->set('flashMsg', 'Sent Mail Successfully');
         }
-        return Response::redirect( $this->router->url('setting-smtp'));
+        return $this->app->redirect( $this->router->url('setting-smtp'));
     }
 }

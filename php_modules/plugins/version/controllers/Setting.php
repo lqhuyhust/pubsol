@@ -37,7 +37,7 @@ class Setting extends Admin
             if ($this->request->post->get($key, '', 'int') < 1)
             {
                 $this->session->set('flashMsg', 'Invalid setting');
-                return Response::redirect( $this->router->url('setting-version'));
+                return $this->app->redirect( $this->router->url('setting-version'));
             }
             $try = $this->OptionModel->set($key, $this->request->post->get($key, '', 'int'));
             if (!$try) break;
@@ -45,7 +45,7 @@ class Setting extends Admin
 
         $msg = $try ? 'Save Successfully.' : 'Save Fail';
         $this->session->set('flashMsg', $msg);
-        return Response::redirect( $this->router->url('setting-version'));
+        return $this->app->redirect( $this->router->url('setting-version'));
     }
 
 }
