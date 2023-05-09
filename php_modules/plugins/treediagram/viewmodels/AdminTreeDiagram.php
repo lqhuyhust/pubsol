@@ -14,10 +14,8 @@ namespace App\plugins\treediagram\viewmodels;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\View\Gui\Form;
 
-class AdminTreeDiagramVM extends ViewModel
+class AdminTreeDiagram extends ViewModel
 {
-    protected $alias = 'AdminTreeDiagramVM';
-
     public static function register()
     {
         return [
