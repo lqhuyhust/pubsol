@@ -8,17 +8,19 @@
  * 
  */
 
-define( 'APP_PATH', __DIR__ . '/../');
+define('ROOT_PATH', __DIR__ . '/../');
+define('APP_PATH', ROOT_PATH. '/php_modules/');
 define('PUBLIC_PATH', __DIR__ . '/');
 define('MEDIA_PATH', PUBLIC_PATH. 'media/');
 define('SPT_PATH_TEMP', PUBLIC_PATH);
 
-require APP_PATH. 'vendor/autoload.php';
+require ROOT_PATH. 'vendor/autoload.php';
 
 $app = new SPT\Application\Joomla\Web(
-    APP_PATH. 'php_modules/plugins',
-    APP_PATH. 'php_modules/config.php',
+    PUBLIC_PATH,
+    APP_PATH. 'plugins',
+    APP_PATH. 'config.php',
     'App'
 );
 
-$app->execute(APP_PATH. 'php_modules/themes');
+$app->execute(APP_PATH. 'themes');
