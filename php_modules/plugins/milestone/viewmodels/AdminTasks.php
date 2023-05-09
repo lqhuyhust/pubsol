@@ -13,75 +13,86 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminMilestonesVM extends ViewModel
+class AdminTasks extends ViewModel
 {
-    protected $alias = 'AdminMilestonesVM';
-
     public static function register()
     {
         return [
-            'layouts.backend.milestone.list',
-            'layouts.backend.milestone.list.row',
-            'layouts.backend.milestone.list.filter',
+            'layouts.backend.task.list',
+            'layouts.backend.task.list.filter',
         ];
     }
-    
+
     public function list()
     {
         $request = $this->container->get('request');
-        $session = $this->container->get('session');
-        $user = $this->container->get('user');
         $router = $this->container->get('router');
+        $user = $this->container->get('user');
+        $session = $this->container->get('session');
+        $TaskEntity = $this->container->get('TaskEntity');
+        $RequestEntity = $this->container->get('RequestEntity');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
+        $VersionEntity = $this->container->get('VersionEntity');
+        $request = $this->container->get('request');
 
         $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
-        $status = $filter->getField('status')->value;
+        $search = $filter->getField('search_task')->value;
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
-        
+        $where[] = ['request_id = '. $request_id];
 
         if( !empty($search) )
         {
-            $where[] = "(`title` LIKE '%".$search."%' ".
-                "OR `description` LIKE '%".$search."%' )";
+            $where[] = "(`title` LIKE '%".$search."%')";
         }
-        if(is_numeric($status))
-        {
-            $where[] = '`status`='. $status;
-        }
-
+        
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $MilestoneEntity->list( $start, $limit, $where, $sort);
-        $total = $MilestoneEntity->getListTotal();
+        $result = $TaskEntity->list( 0, 0, $where, 0);
+        $total = $TaskEntity->getListTotal();
         if (!$result)
         {
             $result = [];
             $total = 0;
-            if( !empty($search) )
-            {
-                $session->set('flashMsg', 'Not Found Milestone');
-            }
+        }
+        $request = $RequestEntity->findByPK($request_id);
+        $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
+        $title_page = 'Task';
+
+        $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
+        $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
+        foreach($tmp_request as $item) {
+        }
+        if(strcmp($item['version_id'], '0') == 0) {
+            $status = false;
+        } elseif ($version_lastest > $item['version_id']) {
+            $status = true;
+        } else {
+            $status = false;
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         return [
+            'request_id' => $request_id,
             'list' => $list,
             'page' => $page,
             'start' => $start,
+            'status' => $status,
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
-            'link_list' => $router->url('milestones'),
-            'title_page' => 'Milestone Manager',
-            'link_form' => $router->url('milestone'),
+            'link_list' => $router->url('tasks/'. $request_id),
+            'title_page_task' => $title_page,
+            'link_form' => $router->url('task/'. $request_id),
             'token' => $this->container->get('token')->getToken(),
         ];
     }
@@ -91,7 +102,7 @@ class AdminMilestonesVM extends ViewModel
         return [
             'num' => '#',
             'title' => 'Title',
-            'status' => 'Status',
+            'url' => 'url',
             'created_at' => 'Created at',
             'col_last' => ' ',
         ];
@@ -102,10 +113,9 @@ class AdminMilestonesVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'milestone.search'),
-                'status' => $this->state('status', '','', 'post', 'milestone.status'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'milestone.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'milestone.sort')
+                'search_task' => $this->state('search', '', '', 'post', 'task.search'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'task.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'task.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
@@ -119,21 +129,11 @@ class AdminMilestonesVM extends ViewModel
     public function getFilterFields()
     {
         return [
-            'search' => ['text',
+            'search_task' => ['text',
                 'default' => '',
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',
                 'placeholder' => 'Search..'
-            ],
-            'status' => ['option',
-                'default' => '1',
-                'formClass' => 'form-select',
-                'options' => [
-                    ['text' => '--', 'value' => ''],
-                    ['text' => 'Show', 'value' => '1'],
-                    ['text' => 'Hide', 'value' => '0'],
-                ],
-                'showLabel' => false
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',
@@ -150,15 +150,6 @@ class AdminMilestonesVM extends ViewModel
                 ],
                 'showLabel' => false
             ]
-        ];
-    }
-
-    public function row($layoutData, $viewData)
-    {
-        $row = $viewData['list']->getRow();
-        return [
-            'item' => $row,
-            'index' => $viewData['list']->getIndex(),
         ];
     }
 

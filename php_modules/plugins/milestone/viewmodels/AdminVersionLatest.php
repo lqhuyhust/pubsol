@@ -13,10 +13,8 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminVersionLatestVM extends ViewModel
+class AdminVersionLatest extends ViewModel
 {
-    protected $alias = 'AdminVersionLatestVM';
-
     public static function register()
     {
         return [

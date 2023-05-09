@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SPT software - ViewModel
  * 
@@ -13,63 +14,65 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminMilestoneVM extends ViewModel
+class AdminRelateNote extends ViewModel
 {
-    protected $alias = 'AdminMilestoneVM';
-
     public static function register()
     {
         return [
-            'layouts.backend.milestone.form'
+            'layouts.backend.relate_note.form'
         ];
     }
     
     public function form()
     {
+        $request = $this->container->get('request');
         $router = $this->container->get('router');
+
+        $urlVars = $request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
         $form = new Form($this->getFormFields(), []);
 
         return [
             'form' => $form,
             'url' => $router->url(),
-            'link_list' => $router->url('milestones'),
-            'link_form' => $router->url('milestone'),
+            'link_list' => $router->url('relate-notes/'. $request_id),
+            'link_form' => $router->url('relate-note/'. $request_id),
         ];
     }
 
     public function getFormFields()
     {
+        $NoteEntity = $this->container->get('NoteEntity');
+        $notes = $NoteEntity->list(0, 0, [], 'title asc');
+        
+        $options = [];
+        foreach ($notes as $note) {
+            $options[] = [
+                'text' => $note['title'],
+                'value' => $note['id'],
+            ];
+        }
         $fields = [
             'id' => ['hidden'],
             'title' => [
                 'text',
-                'placeholder' => 'New Milestone',
+                'placeholder' => 'New Relate Note',
                 'showLabel' => false,
                 'formClass' => 'form-control h-50-px fw-bold rounded-0 fs-3',
-                'required' => 'required',
+                'required' => 'required'
             ],
             'description' => ['textarea',
-                'placeholder' => 'Enter Description',
+                'placeholder' => 'Enter Note',
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
+                'required' => 'required',
             ],
-            'start_date' => ['date',
+            'note_id' => ['option',
+                'options' => $options,
+                'type' => 'select2',
                 'showLabel' => false,
-                'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
-            ],
-            'end_date' => ['date',
-                'showLabel' => false,
-                'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
-            ],
-            'status' => ['option',
-                'showLabel' => false,
-                'type' => 'radio_inline',
-                'formClass' => 'd-flex',
-                'default' => 1,
-                'options' => [
-                    ['text'=>'Show', 'value'=>1],
-                    ['text'=>'Hide', 'value'=>0]
-                ]
+                'formClass' => 'form-select',
             ],
             'token' => ['hidden',
                 'default' => $this->container->get('token')->getToken(),

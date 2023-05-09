@@ -13,29 +13,31 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminTasksVM extends ViewModel
-{
-    protected $alias = 'AdminTasksVM';
-
+class AdminRelateNotes extends ViewModel
+{   
     public static function register()
     {
         return [
-            'layouts.backend.task.list',
-            'layouts.backend.task.list.filter',
+            'layouts.backend.relate_note.list',
+            'layouts.backend.relate_note.list.filter',
+            'layouts.backend.relate_note.list.javascript',
         ];
+    
     }
 
     public function list()
     {
-        $request = $this->container->get('request');
-        $router = $this->container->get('router');
-        $user = $this->container->get('user');
-        $session = $this->container->get('session');
-        $TaskEntity = $this->container->get('TaskEntity');
-        $RequestEntity = $this->container->get('RequestEntity');
-        $MilestoneEntity = $this->container->get('MilestoneEntity');
-        $VersionEntity = $this->container->get('VersionEntity');
-        $request = $this->container->get('request');
+        $request =  $this->container->get('request');
+        $NoteEntity =  $this->container->get('NoteEntity');
+        $TagEntity =  $this->container->get('TagEntity');
+        $session =  $this->container->get('session');
+        $user =  $this->container->get('user');
+        $token =  $this->container->get('token');
+        $router =  $this->container->get('router');
+        $RequestEntity =  $this->container->get('RequestEntity');
+        $RelateNoteEntity =  $this->container->get('RelateNoteEntity');
+        $MilestoneEntity =  $this->container->get('MilestoneEntity');
+        $VersionEntity =  $this->container->get('VersionEntity');
 
         $filter = $this->filter()['form'];
         $urlVars = $request->get('urlVars');
@@ -43,7 +45,7 @@ class AdminTasksVM extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search_task')->value;
+        $search = $filter->getField('search')->value;
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -58,8 +60,8 @@ class AdminTasksVM extends ViewModel
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $TaskEntity->list( 0, 0, $where, 0);
-        $total = $TaskEntity->getListTotal();
+        $result = $RelateNoteEntity->list( 0, 0, $where, 0);
+        $total = $RelateNoteEntity->getListTotal();
         if (!$result)
         {
             $result = [];
@@ -67,22 +69,53 @@ class AdminTasksVM extends ViewModel
         }
         $request = $RequestEntity->findByPK($request_id);
         $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
-        $title_page = 'Task';
+        $title_page_relate_note = 'Related Notes';
+
+        $note_exist = $this->container->exists('NoteEntity');
+
+        foreach ($result as &$item)
+        {
+            if ($note_exist)
+            {
+                $note_tmp = $NoteEntity->findByPK($item['note_id']);
+                if ($note_tmp)
+                {
+                    $item['title'] = $note_tmp['title'];
+                    $item['description'] = strip_tags((string) $note_tmp['description']) ;
+                    $item['tags'] = $note_tmp['tags'] ;
+                }
+
+                if (!empty($item['tags'])){
+                    $t1 = $where = [];
+                    $where[] = "(`id` IN (".$item['tags'].") )";
+                    $t2 = $TagEntity->list(0, 1000, $where,'','`name`');
+    
+                    foreach ($t2 as $i) $t1[] = $i['name'];
+    
+                    $item['tags'] = implode(', ', $t1);
+                }
+            }
+
+            if (strlen($item['description']) > 100)
+            {
+                $item['description'] = substr($item['description'], 0, 100) .' ...';
+            }
+        }
 
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
+        foreach($tmp_request as $tmp_item) {
         }
-        if(strcmp($item['version_id'], '0') == 0) {
+        if(strcmp($tmp_item['version_id'], '0') == 0) {
             $status = false;
-        } elseif ($version_lastest > $item['version_id']) {
+        } elseif ($version_lastest > $tmp_item['version_id']) {
             $status = true;
         } else {
             $status = false;
         }
 
-        $list   = new Listing($result, $total, $limit, $this->getColumns() );
+        $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [
             'request_id' => $request_id,
             'list' => $list,
@@ -92,9 +125,31 @@ class AdminTasksVM extends ViewModel
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
-            'link_list' => $router->url('tasks/'. $request_id),
-            'title_page_task' => $title_page,
-            'link_form' => $router->url('task/'. $request_id),
+            'link_list' => $router->url('relate-notes/' . $request_id),
+            'link_note' => $router->url('note'),
+            'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
+            'title_page_relate_note' => $title_page_relate_note,
+            'token' => $this->container->get('token')->getToken(),
+        ];
+    }
+
+    public function javascript()
+    {
+        $request =  $this->container->get('request');
+        $user =  $this->container->get('user');
+        $token =  $this->container->get('token');
+        $router =  $this->container->get('router');
+
+        $filter = $this->filter()['form'];
+        $urlVars = $request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+
+        return [
+            'request_id' => $request_id,
+            'link_list' => $router->url('relate-notes/' . $request_id),
+            'link_form' => $router->url('relate-note/'. $request_id),
+            'link_note' => $router->url('note'),
+            'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
             'token' => $this->container->get('token')->getToken(),
         ];
     }
@@ -104,7 +159,7 @@ class AdminTasksVM extends ViewModel
         return [
             'num' => '#',
             'title' => 'Title',
-            'url' => 'url',
+            'status' => 'Status',
             'created_at' => 'Created at',
             'col_last' => ' ',
         ];
@@ -115,13 +170,12 @@ class AdminTasksVM extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search_task' => $this->state('search', '', '', 'post', 'task.search'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'task.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'task.sort')
+                'search' => $this->state('search', '', '', 'post', 'relate_note.search'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'relate_note.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'relate_note.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
-
             $this->_filter = $filter;
         endif;
 
@@ -131,7 +185,7 @@ class AdminTasksVM extends ViewModel
     public function getFilterFields()
     {
         return [
-            'search_task' => ['text',
+            'search' => ['text',
                 'default' => '',
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',
