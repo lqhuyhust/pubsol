@@ -16,10 +16,8 @@ use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 use stdClass;
 
-class AdminCalendarVM extends ViewModel
+class AdminCalendar extends ViewModel
 {
-    protected $alias = 'AdminCalendarVM';
-
     public static function register()
     {
         return [
