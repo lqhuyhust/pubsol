@@ -12,7 +12,7 @@ namespace App\plugins\core\controllers;
 
 use SPT\Web\MVC\Controller;
 
-class home extends Controller
+class Home extends Controller
 {
     public function display()
     {
