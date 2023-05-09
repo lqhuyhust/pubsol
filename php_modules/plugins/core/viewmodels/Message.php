@@ -11,10 +11,8 @@ namespace App\plugins\core\viewmodels;
 
 use SPT\Web\MVVM\ViewModel;
 
-class MessageVM extends ViewModel
+class Message extends ViewModel
 {
-    protected $alias = 'MessageVM';
-
     public static function register()
     {
         return [

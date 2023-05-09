@@ -12,10 +12,8 @@ namespace App\plugins\core\viewmodels;
 
 use SPT\Web\MVVM\ViewModel;
 
-class PaginationVM extends ViewModel
+class Pagination extends ViewModel
 {
-    protected $alias = 'PaginationVM';
-
     public static function register()
     {
         return ['layouts.pagination'];

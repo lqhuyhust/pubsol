@@ -12,7 +12,7 @@ namespace App\plugins\core\viewmodels;
 
 use SPT\Web\MVVM\ViewModel;
 
-class SideBarVM extends ViewModel
+class SideBar extends ViewModel
 {
     public static function register()
     {
