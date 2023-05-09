@@ -15,10 +15,8 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminFeedbackVM extends ViewModel
+class AdminFeedback extends ViewModel
 {
-    protected $alias = 'AdminFeedbackVM';
-
     public static function register()
     {
         return [

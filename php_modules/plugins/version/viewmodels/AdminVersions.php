@@ -15,10 +15,8 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminVersionsVM extends ViewModel
+class AdminVersions extends ViewModel
 {
-    protected $alias = 'AdminVersionsVM';
-
     public static function register()
     {
         return [
