@@ -15,10 +15,8 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 
-class AdminTreePhpsVM extends ViewModel
+class AdminTreePhps extends ViewModel
 {
-    protected $alias = 'AdminTreePhpsVM';
-
     public static function register()
     {
         return [

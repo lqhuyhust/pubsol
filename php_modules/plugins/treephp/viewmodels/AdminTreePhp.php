@@ -14,10 +14,8 @@ namespace App\plugins\treephp\viewmodels;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\View\Gui\Form;
 
-class AdminTreePhpVM extends ViewModel
+class AdminTreePhp extends ViewModel
 {
-    protected $alias = 'AdminTreePhpVM';
-
     public static function register()
     {
         return [
