@@ -15,10 +15,8 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 
-class AdminNotesVM extends ViewModel
+class AdminNotes extends ViewModel
 {
-    protected $alias = 'AdminNotesVM';
-
     public static function register()
     {
         return [

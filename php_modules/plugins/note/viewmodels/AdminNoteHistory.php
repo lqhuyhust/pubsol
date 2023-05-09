@@ -14,22 +14,18 @@ namespace App\plugins\note\viewmodels;
 use SPT\View\VM\JDIContainer\ViewModel;
 use SPT\View\Gui\Form;
 
-class AdminNoteVM extends ViewModel
+class AdminNoteHistory extends ViewModel
 {
-    protected $alias = 'AdminNoteVM';
-
     public static function register()
     {
         return [
-            'layouts.backend.note.form',
-            'layouts.backend.setting.connections'
+            'layouts.backend.note_history.form',
         ];
     }
-    
+
     public function form()
     {
         $request = $this->container->get('request');
-        $NoteEntity = $this->container->get('NoteEntity');
         $NoteHistoryEntity = $this->container->get('NoteHistoryEntity');
         $UserEntity = $this->container->get('UserEntity');
         $TagEntity = $this->container->get('TagEntity');
@@ -38,26 +34,25 @@ class AdminNoteVM extends ViewModel
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $version = $request->get->get('version', 0);
 
-        $data = $id ? $NoteEntity->findByPK($id) : [];
-        $data_version = [];
-        if ($data)
+        $version = $id ? $NoteHistoryEntity->findByPK($id) : [];
+
+        if ($version)
         {
             if ($version)
             {
-                $data_version = $NoteHistoryEntity->findByPK($version);
-                if ($data_version)
-                {
-                    $user_tmp = $UserEntity->findByPK($data_version['created_by']);
-                    $data_version['created_by'] = $user_tmp ? $user_tmp['name'] : '';
-                    $data = json_decode($data_version['meta_data'], true);
-                    $data['id'] = $id;
-                    $data['title'] = $data['title'] . ' - '. $data_version['created_at']. ' - by '. $data_version['created_by'];
-                }
+                $user_tmp = $UserEntity->findByPK($version['created_by']);
+                $version['created_by'] = $user_tmp ? $user_tmp['name'] : '';
+                $data = json_decode($version['meta_data'], true);
+                $data['id'] = $id;
+                $data['title'] = $data['title'] . ' - '. $version['created_at']. ' - by '. $version['created_by'];
             }
+        }
 
+        if ($data)
+        {
             $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
+            $data['description_presenter'] = $data['description'];
             $versions = $NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
             $versions = $versions ? $versions : [];
 
@@ -68,7 +63,6 @@ class AdminNoteVM extends ViewModel
             }
 
             $data['versions'] = $versions;
-            $data['editor'] = $data['editor'] == 'html' ? 'tynimce' : $data['editor'];
         }
         
         $data_tags = [];
@@ -77,14 +71,8 @@ class AdminNoteVM extends ViewModel
             $data_tags = $TagEntity->list(0, 1000, $where);
         }
         $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
-        
-        if ($data && $data['editor'] == 'presenter')
-        {
-            $data['description_presenter'] = $data['description'];
-        }
-
         $form = new Form($this->getFormFields(), $data);
-        $view_mode = $data ? 'true' : '';
+        $view_mode = true;
 
         return [
             'id' => $id,
@@ -92,18 +80,15 @@ class AdminNoteVM extends ViewModel
             'data' => $data,
             'view_mode' => $view_mode,
             'data_tags' => $data_tags,
-            'data_version' => $data_version,
             'version' => $version,
             'attachments' => $attachments,
-            'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Note',
+            'title_page' => $data && $data['title'] ? $data['title'] : 'New Note',
             'url' => $router->url(),
-            'link_list' => $data_version ? $router->url('note/'. $id) : $router->url('notes'),
-            'link_form' => $router->url('note'),
+            'link_list' => $router->url('note/'. $version['note_id']),
+            'link_form' => $router->url('note/version'),
             'link_form_attachment' => $router->url('attachment'),
-            'link_form_download_attachment' => $router->url('download/attachment'),
             'link_tag' => $router->url('tag'),
         ];
-        
     }
 
     public function getFormFields()
@@ -129,6 +114,7 @@ class AdminNoteVM extends ViewModel
                 'showLabel' => false,
                 'placeholder' => 'Note',
                 'formClass' => 'form-control',
+                ''
             ],
             'file' => [
                 'file',
@@ -153,62 +139,6 @@ class AdminNoteVM extends ViewModel
             ],
         ];
 
-        return $fields;
-    }
-
-    public function connections()
-    {
-        
-        $fields = $this->getFormFieldsConnection();
-        $router = $this->container->get('router');
-
-        $data = [];
-        foreach ($fields as $key => $value) {
-            if ($key != 'token') {
-                $data[$key] =  $this->OptionModel->get($key, '');
-            }
-        }
-        $form = new Form($fields, $data);
-
-        $title_page = 'Setting Connections';
-        return [
-            'fields' => $fields,
-            'form' => $form,
-            'title_page' => $title_page,
-            'data' => $data,
-            'url' => $router->url(),
-            'link_form' => $router->url('setting-connections'),
-        ];
-    }
-
-    public function getFormFieldsConnection()
-    {
-        $fields = [
-            'folder_id' => [
-                'text',
-                'label' => 'Folder ID:',
-                'formClass' => 'form-control',
-            ],
-            'client_id' => [
-                'text',
-                'label' => 'Client ID:',
-                'formClass' => 'form-control',
-            ],
-            'client_secret' => [
-                'text',
-                'label' => 'Client secret',
-                'formClass' => 'form-control',
-            ],
-            'access_token' => [
-                'text',
-                'label' => 'Access Token',
-                'formClass' => 'form-control',
-            ],
-            'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
-            ],
-        ];
-       
         return $fields;
     }
 }
