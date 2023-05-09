@@ -11,7 +11,7 @@ class Menu
         $container = $app->getContainer();
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
 
-        $app->loadPlugins('setting', 'registerSetting');
+        $app->plgLoad('setting', 'registerSetting');
         $menu_setting = [];
         if ($container->exists('setting'))
         {

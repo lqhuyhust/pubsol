@@ -24,7 +24,7 @@ class SideBarVM extends ViewModel
     public function sidebar()
     {
         $app = $this->container->get('app');
-        $app->loadPlugins('menu', 'registerMenu');
+        $app->plgLoad('menu', 'registerMenu');
         
         $menu_active = $this->container->exists('menu_active') ? $this->container->get('menu_active') : 'menu';
         $menu_root = $this->container->exists($menu_active) ? $this->container->get($menu_active) : [];

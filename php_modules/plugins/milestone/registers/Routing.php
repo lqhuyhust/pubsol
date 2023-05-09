@@ -9,6 +9,7 @@ class Routing
     public static function registerEndpoints()
     {
         return [
+            '' => 'milestone.milestone.list',
             // Endpoint Milestones
             'milestones'=>[
                 'fnc' => [
