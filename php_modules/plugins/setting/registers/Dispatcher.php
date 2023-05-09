@@ -17,15 +17,16 @@ class Dispatcher
         $controller = 'App\plugins\setting\controllers\\'. $cName;
         if(!class_exists($controller))
         {
-            throw new \Exception('Invalid controller '. $cName);
+            $app->raiseError('Invalid controller '. $cName);
         }
 
         $controller = new $controller($app);
-        $controller->set('url', $app->url());
         $controller->{$fName}();
-        $format = $app->get('format', 'html');
-        $fName = 'to'. ucfirst($format);
-        $content = $controller->{$fName}();
-        Response::_200($content);
+
+        $fName = 'to'. ucfirst($app->get('format', 'html'));
+
+        $app->finalize(
+            $controller->{$fName}()
+        );
     }
 }
