@@ -14,17 +14,17 @@ $this->theme->prepareAssets([
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDM</title>
-    <?php $this->theme->echo('css', $this->getVar('url', '')) ?> 
-    <?php $this->theme->echo('topJs', $this->getVar('url', '')) ?>
-    <?php $this->theme->echo('inlineCss', $this->getVar('url', '')) ?>
+    <?php $this->theme->echo('css', $this->url()) ?> 
+    <?php $this->theme->echo('topJs', $this->url()) ?>
+    <?php $this->theme->echo('inlineCss', $this->url()) ?>
 </head>
 <body>
     <div class="wrap" fluid="xl">
         <div class="content-wrapper m-0">
-            <?php echo $this->renderLayout($this->mainLayout) ?>
+            <?php echo $this->render($this->mainLayout) ?>
         </div>
     </div>
-<?php $this->theme->echo('js', $this->getVar('url', '')); ?>
-<?php $this->theme->echo('inlineJs', $this->getVar('url', '')); ?>
+<?php $this->theme->echo('js', $this->url()); ?>
+<?php $this->theme->echo('inlineJs', $this->url()); ?>
 </body>
 </html>
