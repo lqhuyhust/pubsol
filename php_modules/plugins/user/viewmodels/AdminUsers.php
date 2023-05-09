@@ -13,7 +13,7 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\Web\MVVM\ViewModel;
 
-class AdminUsersVM extends ViewModel
+class AdminUsers extends ViewModel
 {
     public static function register()
     {
