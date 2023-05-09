@@ -9,11 +9,11 @@ class Entity
     public static function loadEntity( IApp $app )
     {
         $container = $app->getContainer();
-        foreach(new \DirectoryIterator($app->getPluginPath()) as $item) 
+        foreach(new \DirectoryIterator(SPT_PLUGIN_PATH) as $item) 
         {
             if (!$item->isDot() && $item->isDir()) 
             { 
-                $path = $app->getPluginPath().$item->getBasename().'/entities';
+                $path = SPT_PLUGIN_PATH. '/'. $item->getBasename().'/entities';
                 $namespace = $app->getNamespace().'\\plugins\\'.$item->getBasename().'\entities';
                 $inners = Loader::findClass($path, $namespace);
                 foreach($inners as $class)
