@@ -415,7 +415,7 @@ class Note extends Admin {
             $request = $this->RequestEntity->findByPK($item['request_id']);
             if ($request)
             {
-                $request['deadline_at'] = $request['deadline_at'] && $request['deadline_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['deadline_at'])) : '';
+                $request['start_at'] = $request['start_at'] && $request['start_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['start_at'])) : '';
                 $request['finished_at'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['finished_at'])) : '';
                 $result[] = $request;
             }
