@@ -18,11 +18,11 @@
                             <form id="form_document" action="<?php echo $this->link_form ?>" method="post">
                                 <div class="row">
                                     <div class="mb-3 col-sm-12 mx-auto">
-                                        <?php $this->field('description'); ?>
+                                        <?php $this->ui->field('description'); ?>
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center m-0">
-                                    <?php $this->field('token'); if(!$this->status) {?>
+                                    <?php $this->ui->field('token'); if(!$this->status) {?>
                                     <div class="col-xl-12 col-sm-12 text-center">
                                         <button type="submit" class="btn btn-outline-success">Apply</button>
                                     </div>
@@ -56,7 +56,7 @@
                         <?php endforeach; ?>
                         </ul>
                         <form id="form_comment" action="<?php echo $this->link_form_comment ?>" method="post">
-                            <?php $this->field('token'); ?>
+                            <?php $this->ui->field('token'); ?>
                             <div class="form-outline">
                                 <textarea required name="message" class="form-control" id="textAreaExample2" rows="4"></textarea>
                                 <div class="form-notch">

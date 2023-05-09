@@ -9,7 +9,7 @@ class Menu
     public static function registerMenu( IApp $app )
     {
         $container = $app->getContainer();
-        $app->loadPlugins('Menu', 'registerReportMenu');
+        $app->plgLoad('Menu', 'registerReportMenu');
         
         $menu_report = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
         if ($menu_report)

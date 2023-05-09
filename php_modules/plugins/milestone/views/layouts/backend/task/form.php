@@ -5,7 +5,7 @@
             <form action="" method="post" id="form_task">
                 <div class="row ">
                     <div class="mb-5 col-12 mx-auto pt-3">
-                        <?php $this->field('title'); ?>
+                        <?php $this->ui->field('title'); ?>
                     </div>
                 </div>
                 <div class="row ">
@@ -15,14 +15,14 @@
                                 <label class="form-label fw-bold mb-0">Url</label>
                             </div>
                             <div class="col-10">
-                                <?php $this->field('url'); ?>
+                                <?php $this->ui->field('url'); ?>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row g-3 align-items-center m-0">
                     <div class="modal-footer">
-                        <?php $this->field('token'); ?>
+                        <?php $this->ui->field('token'); ?>
                         <input class="form-control rounded-0 border border-1" id="task" type="hidden" name="_method" value="POST">
                         <div class="row">
                             <div class="col-6 text-end pe-0">

@@ -5,7 +5,7 @@
             <form action="" method="post" id="form_milestone">
                 <div class="row">
                     <div class="mb-4 col-12 mx-auto pt-3">
-                        <?php $this->field('title'); ?>
+                        <?php $this->ui->field('title'); ?>
                     </div>
                 </div>
                 <div class="row">
@@ -15,7 +15,7 @@
                                 <label class="form-label fw-bold mb-0">Start Date</label>
                             </div>
                             <div class="col-9">
-                                <?php $this->field('start_date'); ?>
+                                <?php $this->ui->field('start_date'); ?>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                                 <label class="form-label fw-bold mb-0">End Date</label>
                             </div>
                             <div class="col-9">
-                                <?php $this->field('end_date'); ?>
+                                <?php $this->ui->field('end_date'); ?>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                 <label class="form-label fw-bold mb-0">Status</label>
                             </div>
                             <div class="col-9 d-flex">
-                                <?php $this->field('status'); ?>
+                                <?php $this->ui->field('status'); ?>
                             </div>
                         </div>
                     </div>
@@ -51,14 +51,14 @@
                                 <label class="form-label fw-bold mb-0">Description</label>
                             </div>
                             <div class="col-9">
-                                <?php $this->field('description'); ?>
+                                <?php $this->ui->field('description'); ?>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row g-3 ">
                     <div class="col-12 d-flex justify-content-end mb-4">
-                        <?php $this->field('token'); ?>
+                        <?php $this->ui->field('token'); ?>
                         <input class="form-control rounded-0 border border-1" id="milestone" type="hidden" name="_method" value="POST">
                         <div class="me-2">
                             <button type="button" class="btn btn-outline-secondary fs-4" data-bs-dismiss="modal">Cancel</button>

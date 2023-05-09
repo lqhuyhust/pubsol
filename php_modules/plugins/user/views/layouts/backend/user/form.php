@@ -5,47 +5,47 @@
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
                     <label class="form-label fw-bold">Name:</label>
-                    <?php $this->field('name'); ?>
+                    <?php $this->ui->field('name'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold">User Name:</label>
-                    <?php $this->field('username'); ?>
+                    <?php $this->ui->field('username'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold">Password:</label>
-                    <?php $this->field('password'); ?>
+                    <?php $this->ui->field('password'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold">Confirm Password:</label>
-                    <?php $this->field('confirm_password'); ?>
+                    <?php $this->ui->field('confirm_password'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold" for="inputEmail4">Email:</label>
-                    <?php $this->field('email'); ?>
+                    <?php $this->ui->field('email'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold" for="groups">Groups:</label>
-                    <?php $this->field('groups'); ?>
+                    <?php $this->ui->field('groups'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
                     <label class="form-label fw-bold">Status:</label>
-                    <?php $this->field('status'); ?>
+                    <?php $this->ui->field('status'); ?>
                 </div>
             </div>
             <div class="d-flex g-3 flex-row align-items-end m-0 justify-content-center">
-                <?php $this->field('token'); ?>
+                <?php $this->ui->field('token'); ?>
                 <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
                 <div class="me-2">
                     <a href="<?php echo $this->link_list ?>">

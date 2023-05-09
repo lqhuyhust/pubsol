@@ -17,7 +17,7 @@ $this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-s
                 </div>
                 <div class="row g-3 align-items-center m-0">
                     <div class="modal-footer">
-                        <?php $this->field('token'); ?>
+                        <?php $this->ui->field('token'); ?>
                         <div class="row">
                             <div class="col-6 text-end pe-0">
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>

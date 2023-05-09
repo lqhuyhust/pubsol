@@ -9,7 +9,6 @@ $this->theme->prepareAssets([
     'js-backend',
 ]);
 $content = $this->render($this->mainLayout);
-var_dump($this->theme->getThemePath());
 ?>
 <!DOCTYPE html>
 <html lang="en">

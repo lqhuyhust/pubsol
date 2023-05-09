@@ -8,7 +8,7 @@
             <h3 class="h3 mb-2 fw-bolder"><?php echo $legend['label']; ?></h3>
             <?php foreach($legend['fields'] as $value) { ?>
                 <div class="mb-3 col-lg-12 col-sm-12 mx-auto label-bold">
-                    <?php $this->field($value); ?>
+                    <?php $this->ui->field($value); ?>
                 </div>
             <?php } ?>
         <?php } ?>

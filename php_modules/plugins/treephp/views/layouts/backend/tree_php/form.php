@@ -68,8 +68,8 @@ $this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-s
             </div>
         </div>
         <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
-        <?php $this->field('removes'); ?>
-        <?php $this->field('structure'); ?>
+        <?php $this->ui->field('removes'); ?>
+        <?php $this->ui->field('structure'); ?>
         <input type="hidden" name="save_close" id="save_close">
     </form>
 </div>

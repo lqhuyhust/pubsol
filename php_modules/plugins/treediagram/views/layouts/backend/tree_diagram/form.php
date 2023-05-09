@@ -44,8 +44,8 @@ $this->theme->add($this->url . 'assets/treejs/css/style.css', '', 'treejs_style'
             </div>
         </div>
         <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
-        <?php $this->field('notes'); ?>
-        <?php $this->field('config'); ?>
+        <?php $this->ui->field('notes'); ?>
+        <?php $this->ui->field('config'); ?>
         <input type="hidden" name="save_close" id="save_close">
     </form>
 </div>

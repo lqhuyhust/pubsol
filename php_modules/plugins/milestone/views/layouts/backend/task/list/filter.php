@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="pe-2">
-                <?php $this->field('search_task');  ?>
+                <?php $this->ui->field('search_task');  ?>
             </div>
             <button type='Submit' data-bs-toggle="tooltip" title="Filter" class=" align-middle btn border border-1" type="button">
                 <i class="fa-solid fa-filter"></i>

@@ -6,7 +6,7 @@
                 <div class="row g-3 align-items-center">
                     <div class="row">
                         <div class="mb-3 col-12 mx-auto pt-3">
-                            <?php $this->field('name'); ?>
+                            <?php $this->ui->field('name'); ?>
                         </div>
                     </div>
                     <div class="row">
@@ -16,7 +16,7 @@
                                     <label class="form-label fw-bold mb-0">Release Date</label>
                                 </div>
                                 <div class="col-9">
-                                    <?php $this->field('release_date'); ?>
+                                    <?php $this->ui->field('release_date'); ?>
                                 </div>
                             </div>
                         </div>
@@ -40,14 +40,14 @@
                                     <label class="form-label fw-bold mb-0">Description</label>
                                 </div>
                                 <div class="col-9">
-                                <?php $this->field('description'); ?>
+                                <?php $this->ui->field('description'); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 d-flex justify-content-end mb-4">
-                            <?php $this->field('token'); ?>
+                            <?php $this->ui->field('token'); ?>
                             <input class="form-control rounded-0 border border-1" id="version" type="hidden" name="_method" value="POST">
                             <div class="me-2">
                                 <button type="button" class="btn btn-outline-secondary fs-4" data-bs-dismiss="modal">Cancel</button>

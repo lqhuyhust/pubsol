@@ -6,7 +6,7 @@
                 <div class="row g-3 align-items-center">
                     <div class="row px-0">
                         <div class="mb-3 col-12 mx-auto pt-3">
-                            <?php $this->field('title'); ?>
+                            <?php $this->ui->field('title'); ?>
                         </div>
                     </div>
                     <div class="row px-0 mb-3">
@@ -14,7 +14,7 @@
                             <label class="form-label fw-bold mb-2">Start</label>
                         </div>
                         <div class="col-12">
-                            <?php $this->field('start_at'); ?>
+                            <?php $this->ui->field('start_at'); ?>
                         </div>
                     </div>
                     <div class="row px-0 mb-3">
@@ -22,7 +22,7 @@
                             <label class="form-label fw-bold mb-2">Finished</label>
                         </div>
                         <div class="col-12">
-                            <?php $this->field('finished_at'); ?>
+                            <?php $this->ui->field('finished_at'); ?>
                         </div>
                     </div>
                     <div class="row px-0 mb-3">
@@ -30,12 +30,12 @@
                             <label class="form-label fw-bold mb-2">Description</label>
                         </div>
                         <div class="col-12">
-                            <?php $this->field('description'); ?>
+                            <?php $this->ui->field('description'); ?>
                         </div>
                     </div>
                     <div class="row g-3 align-items-center m-0">
                         <div class="modal-footer">
-                            <?php $this->field('token'); ?>
+                            <?php $this->ui->field('token'); ?>
                             <input class="form-control rounded-0 border border-1" id="request" type="hidden" name="_method" value="POST">
                             <div class="row">
                                 <div class="col-6 text-end pe-0">

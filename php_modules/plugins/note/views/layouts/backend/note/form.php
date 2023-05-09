@@ -39,11 +39,11 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             </nav>
                         </div>
                         <div id="html_editor" class="d-none">
-                            <?php $this->field('description'); ?>
+                            <?php $this->ui->field('description'); ?>
                         </div>
-                        <?php $this->field('description_sheetjs'); ?>
+                        <?php $this->ui->field('description_sheetjs'); ?>
                         <div id="presenter_editor" class="d-none">
-                            <?php $this->field('description_presenter'); ?>
+                            <?php $this->ui->field('description_presenter'); ?>
                         </div>
                         <div id="content" class="p-3 d-none text-break">
                             <?php if (isset($this->data['description'])) {
@@ -54,7 +54,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 </div>
                 
                 <div class="d-flex g-3 flex-row align-items-end m-0 pb-3 justify-content-center">
-                    <?php $this->field('token'); ?>
+                    <?php $this->ui->field('token'); ?>
                     <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
                     <div class="me-2">
                         <a href="<?php echo $this->link_list ?>">
@@ -74,7 +74,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Note:</label>
-                        <?php $this->field('note'); ?>
+                        <?php $this->ui->field('note'); ?>
                     </div>
                 </div>
                 <?php if ($this->data && !$this->data_version) : ?>
@@ -98,7 +98,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 <div class="row pt-3" style="display: none">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Tags:</label>
-                        <?php $this->field('tags'); ?>
+                        <?php $this->ui->field('tags'); ?>
                     </div>
                 </div>
 
