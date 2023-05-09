@@ -21,7 +21,7 @@ class Dispatcher
         }
 
         $controller = new $controller($app);
-        $controller->set('url', $app->url());
+        $controller->set('url', $app->getRouter()->url());
         $controller->{$fName}();
         $format = $app->get('format', 'html');
         $fName = 'to'. ucfirst($format);
