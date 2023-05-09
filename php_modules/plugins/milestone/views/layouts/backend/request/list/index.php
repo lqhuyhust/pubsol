@@ -24,7 +24,7 @@
 											<th>Title</th>
 											<th>Description</th>
 											<th>Creator</th>
-											<th>Deadline at</th>
+											<th>Start at</th>
 											<th>Finished at</th>
 											<th>Status</th>
 											<th>Action</th>
