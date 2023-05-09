@@ -5,7 +5,7 @@
     <?php if ($this->title_page_edit) { ?>
         <div class="d-flex w-100">
             <h2 class="m-0 flex-grow-1 pe-1">
-                <?php echo $this->field('title'); ?>
+                <?php echo $this->ui->field('title'); ?>
             </h2>
             <div class="me-2">
                 <a href="<?php echo $this->link_list ?>">
