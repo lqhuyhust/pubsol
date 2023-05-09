@@ -28,8 +28,8 @@ class AdminUserVM extends ViewModel
     {
         $app = $this->container->get('app');
         return [
-            'url' =>  $app->url(),
-            'link_login' =>  $app->url('login'),
+            'url' =>  $app->getRouter()->url(),
+            'link_login' =>  $app->getRouter()->url('login'),
         ];
     }
 
