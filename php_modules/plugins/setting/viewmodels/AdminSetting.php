@@ -14,10 +14,8 @@ namespace App\plugins\setting\viewmodels;
 use SPT\Web\MVVM\ViewModel;
 use SPT\View\Gui\Form;
 
-class AdminSettingVM extends ViewModel
+class AdminSetting extends ViewModel
 {
-    protected $alias = 'AdminSettingVM';
-    
     public static function register()
     {
         return [
