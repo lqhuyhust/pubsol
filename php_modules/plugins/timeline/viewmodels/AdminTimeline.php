@@ -15,10 +15,8 @@ use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
 use SPT\View\VM\JDIContainer\ViewModel;
 
-class AdminTimelineVM extends ViewModel
+class AdminTimeline extends ViewModel
 {
-    protected $alias = 'AdminTimelineVM';
-
     public static function register()
     {
         return [
