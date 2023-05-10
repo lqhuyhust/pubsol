@@ -13,7 +13,7 @@ namespace App\plugins\treephp\controllers;
 use SPT\Web\MVVM\ControllerContainer as Controller;
 use SPT\Response;
 
-class TreeDiagram extends Admin {
+class Treediagram extends Admin {
     public function detail()
     {
         $this->isLoggedIn();
