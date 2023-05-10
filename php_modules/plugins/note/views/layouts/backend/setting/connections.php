@@ -7,7 +7,7 @@
         <div class="mb-2">
             <a class="pb-2" href="https://github.com/ivanvermeyen/laravel-google-drive-demo/tree/master/README">Instruction of getting configuration</a>
         </div>
-        <?php foreach($this->ui->fields as $key => $value) { ?>
+        <?php foreach($this->fields as $key => $value) { ?>
             <div class="mb-3 col-lg-12 col-sm-12 mx-auto label-bold">
                 <?php $this->ui->field($key); ?>
             </div>

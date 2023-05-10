@@ -3,7 +3,7 @@
     <?php
     ?>
     <form enctype='multipart/form-data' action="<?php echo  $this->link_form ?>" method="POST">
-        <?php foreach($this->ui->fields as $key => $value) { ?>
+        <?php foreach($this->fields as $key => $value) { ?>
             <div class="mb-3 col-lg-12 col-sm-12 mx-auto label-bold">
                 <?php $this->ui->field($key); ?>
             </div>
