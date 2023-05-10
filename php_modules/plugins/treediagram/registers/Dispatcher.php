@@ -2,12 +2,14 @@
 namespace App\plugins\treediagram\registers;
 
 use SPT\Application\IApp;
-use SPT\Response;
+use Joomla\DI\Container;
 
 class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {   
+        static::registerEntities($app->getContainer());
+
         $cName = ucfirst($cName);
 
         $controller = 'App\plugins\treediagram\controllers\\'. $cName;
@@ -24,5 +26,16 @@ class Dispatcher
         $app->finalize(
             $controller->{$fName}()
         );
+    }
+
+    private static function registerEntities(Container $container)
+    {
+        $query = $container->get('query');
+
+        $e = new \App\plugins\treediagram\entities\TreeDiagramEntity($query);
+        $e->checkAvailability();
+        $container->share( 'TreeDiagramEntity', $e, true);
+
+        $container->share( 'TreeDiagramModel', new \App\plugins\treediagram\models\TreeDiagramModel($container), true);
     }
 }
