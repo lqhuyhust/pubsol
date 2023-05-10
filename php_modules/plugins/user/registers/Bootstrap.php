@@ -7,7 +7,7 @@ class Bootstrap
 {
     public static function initialize( IApp $app)
     {
-        // prepare User
-        $container = $app->getContainer();
+        // TODO: move user setting here
+        // MATH: have to put core to first load before others
     }
 }

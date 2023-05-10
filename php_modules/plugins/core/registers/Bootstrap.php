@@ -15,14 +15,15 @@ class Bootstrap
 {
     public static function initialize( IApp $app)
     {
-        // do something to register with system
-        // register database
         static::prepareDB($app);
         static::prepareToken($app);
         static::prepareSession($app);
+        static::loadBasicClasses($app);
+        static::prepareUser($app);
+        static::prepareTheme($app);
     }
 
-    public static function prepareDB(IApp $app)
+    private static function prepareDB(IApp $app)
     {
         $container = $app->getContainer();
         $config = $container->get('config');
@@ -42,14 +43,14 @@ class Bootstrap
         }
     }
 
-    public static function prepareToken(IApp $app)
+    private static function prepareToken(IApp $app)
     {
         $container = $app->getContainer();
         $token = new Token($app);
         $container->set('token', $token);
     }
 
-    public static function prepareSession(IApp $app)
+    private static function prepareSession(IApp $app)
     {
         $container = $app->getContainer();
         $query = $container->get('query');
@@ -62,5 +63,73 @@ class Bootstrap
         );
 
         $container->set('session', $session);
+    }
+
+    private static function loadBasicClasses(IApp $app)
+    {
+        $SDMplugins = ['calendar', 'milestone', 'note', 'report', 'setting', 'timeline', 'user', 'version'];
+        $container = $app->getContainer();
+        
+        foreach($SDMplugins as $plgName)
+        {
+            // load entities
+            $path = SPT_PLUGIN_PATH. '/'. $plgName. '/entities';
+            $namespace = $app->getNamespace().'\\plugins\\'. $plgName. '\entities';
+            $inners = Loader::findClass($path, $namespace);
+            foreach($inners as $class)
+            {
+                if(class_exists($class))
+                {
+                    $entity = new $class($container->get('query'));
+                    $entity->checkAvailability();
+                    $container->share( $class, $entity, true);
+                    $alias = explode('\\', $class);
+                    $container->alias( $alias[count($alias) - 1], $class);
+                }
+            } 
+
+            // load models
+            $path = SPT_PLUGIN_PATH. '/'. $plgName. '/models';
+            $namespace = $app->getNamespace().'\\plugins\\'.$plgName. '\models';
+            $inners = Loader::findClass($path, $namespace);
+            foreach($inners as $class)
+            {
+                if(class_exists($class))
+                {
+                    $model = new $class($container);
+                    $alias = explode('\\', $class);
+                    $container->share( $alias[count($alias) - 1], $model, true);
+                }
+            }
+        }
+    }
+    private static function prepareUser(IApp $app)
+    {
+        // prepare user
+        $container = $app->getContainer();
+        $user = new UserInstance( new UserAdapter() );
+        $session = $container->get('session');
+        $query = $container->get('query');
+        $user->init([
+            'session' => $session,
+            'entity' => new  UserEntity($query)
+        ]);
+        $container->share('user', $user, true);
+    }
+
+    private static function prepareTheme( IApp $app )
+    {
+        $container = $app->getContainer();
+        $config = $container->get('config');
+        $request = $container->get('request');
+
+        if(!$config->exists('defaultTheme'))
+        {
+            throw new \Exception('Configuration did not set up theme');
+        }
+        
+        $theme = $request->get('theme', $config->defaultTheme);
+
+        $app->set('theme', $theme);
     }
 }

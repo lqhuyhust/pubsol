@@ -1,17 +1,20 @@
 <?php
 namespace App\plugins\note\registers;
 
-use SPT\Application\IApp;
-use SPT\Response;
+use SPT\Application\IApp; 
+use SPT\File;
 
 class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
-        $app->plgLoad('entity', 'loadEntity');
-        $app->plgLoad('user', 'loadUser');
-        $app->plgLoad('model', 'loadModel');
-        $app->plgLoad('middleware', 'AfterRouting');
+        // prepare note
+        $container = $app->getContainer();
+        if (!$container->exists('file'))
+        {
+            $container->set('file', new File());
+        }
+        
         $cName = ucfirst($cName);
 
         $controller = 'App\plugins\note\controllers\\'. $cName;
