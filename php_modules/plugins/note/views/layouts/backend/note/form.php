@@ -1,6 +1,5 @@
 <?php
 $this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
-$this->theme->add($this->url . 'assets/css/select2_custom.css', '', 'select2-custom-css');
 $this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
 $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 ?>
@@ -103,7 +102,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 </div>
 
                 <div class="row">
-                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto  tag-note">
                         <label class="form-label fw-bold">Tags:</label>
                         <select class="js-example-tags" multiple id="select_tags">
                             <?php foreach ($this->data_tags as $item) : ?>
@@ -216,8 +215,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $("#apply").addClass("d-none");
             $("#save_and_close_header").addClass("d-none");
             $("#apply_header").addClass("d-none");
-            // $("#col-8").addClass("col-lg-12");
-            // $("#col-4").addClass("col-lg-0 d-none");
+            $("#col-8").addClass("col-lg-12");
+            $("#col-4").addClass("col-lg-0 d-none");
             $(".button-editor-mode").addClass('d-none');
             openModeEditor();
         } else {
