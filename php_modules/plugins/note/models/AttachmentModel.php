@@ -17,9 +17,6 @@ class AttachmentModel extends Base
     // Write your code here
     public function upload($file, $note_id)
     {
-        $year = date('Y');   
-        $month = date('m');   
-        $day = date('d');   
         if($file['name']) 
         {
             
