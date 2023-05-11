@@ -31,6 +31,7 @@ class AdminNote extends ViewModel
         $NoteHistoryEntity = $this->container->get('NoteHistoryEntity');
         $UserEntity = $this->container->get('UserEntity');
         $TagEntity = $this->container->get('TagEntity');
+        $NoteModel = $this->container->get('NoteModel');
         $AttachmentEntity = $this->container->get('AttachmentEntity');
         $router = $this->container->get('router');
 
@@ -42,6 +43,7 @@ class AdminNote extends ViewModel
         $data_version = [];
         if ($data)
         {
+            $data['description'] = $NoteModel->replaceContent($data['description'], false);
             if ($version)
             {
                 $data_version = $NoteHistoryEntity->findByPK($version);
