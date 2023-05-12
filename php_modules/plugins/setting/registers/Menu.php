@@ -10,6 +10,12 @@ class Menu
     {
         $container = $app->getContainer();
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow = $permission ? $permission->checkPermission(['setting_manager']) : true;
+        if (!$allow)
+        {
+            return false;
+        }
 
         $app->plgLoad('setting', 'registerSetting');
         $menu_setting = [];
