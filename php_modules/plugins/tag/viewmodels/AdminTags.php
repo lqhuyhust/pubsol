@@ -30,7 +30,6 @@ class AdminTags extends ViewModel
     {
         $request = $this->container->get('request');
         $TagEntity = $this->container->get('TagEntity');
-        $NoteEntity = $this->container->get('NoteEntity');
         $session = $this->container->get('session');
         $router = $this->container->get('router');
         $token = $this->container->get('token');
@@ -45,81 +44,40 @@ class AdminTags extends ViewModel
 
         $where = [];
 
-        if (!empty($search) && is_string($search)) {
-            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
-            $where[] = "(`description` LIKE '%" . $search . "%')";
-            $where[] = "(`note` LIKE '%" . $search . "%')";
-            $where[] = "(`title` LIKE '%" . $search . "%')";
-            if ($tags) {
-                foreach ($tags as $tag) {
-                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                }
-            }
-            $where = [implode(" OR ", $where)];
-        } elseif (is_array($search)) {
-            foreach ($search as $key => $value) {
-                foreach ($value as $k => $v) {
-                    $tags = [];
-                    $tags = $TagEntity->list(0, 0, ["`name` = '" . $v . "'"]);
-                    if ($tags) {
-                        foreach ($tags as $tag) {
-                            $where[] = 
-                            "(`tags` = '" . $tag['id'] . "'" .
-                            " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                            " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                            " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                        }
-                    }   
-                    
-                }
-                $where = [implode(" AND ", $where)];
-            }
-           
+        if (!empty($search)) {
+            $where[] = "(`name` LIKE '%" . $search . "%') OR (`description` LIKE '%" . $search . "%')";
         }
 
         $start  = ($page - 1) * $limit;
-        $sort = $sort ? $sort : 'title asc';
+        $sort = $sort ? $sort : 'name asc';
 
-        $result = $NoteEntity->list($start, $limit, $where, $sort);
-        $total = $NoteEntity->getListTotal();
-        $data_tags = [];
+        $result = $TagEntity->list($start, $limit, $where, $sort);
+        $total = $TagEntity->getListTotal();
         
         if (!$result) {
             $result = [];
             $total = 0;
-            if (!empty($search)) {
-                $session->set('flashMsg', 'Notes not found');
-            }
         }
 
-        foreach ($result as $item) {
-            if (!empty($item['tags'])) {
-                $t1 = $where = [];
-                $where[] = "(`id` IN (" . $item['tags'] . ") )";
-                $t2 = $TagEntity->list(0, 0, $where, '', '`name`');
-                if ($t2) {
-                    foreach ($t2 as $i) {
-                        $t1[] = $i['name'];
-                    }
-                }
-                $data_tags[$item['id']] = implode(',', $t1);
+        foreach ($result as &$item) 
+        {
+            if ($item['parent_id'])
+            {
+                $tag_tmp = $TagEntity->findByPK($item['parent_id']);
+                $item['parent_tag'] = $tag_tmp['name'];
             }
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [
             'list' => $list,
-            'data_tags' => $data_tags,
             'page' => $page,
             'start' => $start,
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
             'link_list' => $router->url('notes'),
-            'title_page' => 'Note Manager',
+            'title_page' => 'Tags',
             'link_form' => $router->url('note'),
             'token' => $token->getToken(),
         ];
@@ -129,9 +87,9 @@ class AdminTags extends ViewModel
     {
         return [
             'num' => '#',
-            'title' => 'Title',
-            //            'status' => 'Status',
-            'created_at' => 'Created at',
+            'name' => 'Name',
+            'description' => 'Description',
+            'parent' => 'Parent',
             'col_last' => ' ',
         ];
     }
@@ -141,20 +99,10 @@ class AdminTags extends ViewModel
     {
         if (null === $this->_filter) :
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'note.search'),
-                'tags' => $this->state('tags', '', '', 'post', 'note.tags'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'note.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'note.sort')
+                'search' => $this->state('search', '', '', 'post', 'tag.search'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'tag.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'tag.sort')
             ];
-            if (strpos($data['search'], ';') == true) {
-                $try = explode(';', $data['search']);
-                $data['search'] = [];
-                $tmp = [];
-                foreach ($try as $key => $value) {
-                    $tmp[] = $value;
-                }
-                $data['search'][] = $tmp;
-            }
             $filter = new Form($this->getFilterFields(), $data);
 
             $this->_filter = $filter;
@@ -194,10 +142,10 @@ class AdminTags extends ViewModel
             'sort' => [
                 'option',
                 'formClass' => 'form-select',
-                'default' => 'title asc',
+                'default' => 'name asc',
                 'options' => [
-                    ['text' => 'Title ascending', 'value' => 'title asc'],
-                    ['text' => 'Title descending', 'value' => 'title desc'],
+                    ['text' => 'name ascending', 'value' => 'name asc'],
+                    ['text' => 'name descending', 'value' => 'name desc'],
                 ],
                 'showLabel' => false
             ]
