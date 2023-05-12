@@ -50,12 +50,69 @@ class Permission
     {
         if (!$access)
         {
-            $router = $this->container->getRouter();
-            $plugin = $this->app->get('currentPlugin');
-            $config_plugin = isset($config[$plugin]) ? $config[$plugin] : [];
+            $router = $this->container->get('router');
+            $request = $this->container->get('request');
+            $urlVars = (array) $request->get('urlVars');
+            $actualPath = trim($router->get('actualPath'), '/');
+            $arr = explode('/', $actualPath); 
+            $method = $request->header->getRequestMethod();
             
+            foreach($urlVars as $item)
+            {
+                if ($item)
+                {
+                    array_pop($arr);
+                }
+            }
+
+            $path = implode('/', $arr);
+            $plugin = $this->app->get('currentPlugin');
+            $config_plugin = isset($this->config[$plugin]) ? $this->config[$plugin] : [];
+            $access = isset($config_plugin[$path]) ? $config_plugin[$path] : [];
+            $access = isset($access[$method]) ? $access[$method] : [];
+        }
+        
+        if ($access)
+        {
+            $user_access = $this->getAccessByUser();
+            foreach($access as $item)
+            {
+                if (in_array($item, $user_access))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
+        return true;
+    }
+
+    public function getAccessByUser()
+    {
+        $UserEntity = $this->container->get('UserEntity');
+        $GroupEntity = $this->container->get('GroupEntity');
+        $user = $this->container->get('user');
         
+        if (!$user)
+        {
+            return [];
+        }
+
+        $groups = $UserEntity->getGroups($user->get('id'));
+        $access = [];
+
+        foreach($groups as $group)
+        {
+            $group_tmp = $GroupEntity->findByPK($group['group_id']);
+            if ($group_tmp)
+            {
+                $access_tmp = $group_tmp['access'] ? json_decode($group_tmp['access'], true) : [];
+                $access = array_merge($access, $access_tmp);
+            }
+        }
+
+        return $access;
     }
 }
