@@ -17,6 +17,11 @@ class Routing
                     'delete' => 'tag.tag.delete'
                 ]
             ],
+            'tag/search' => [
+                'fnc' => [
+                    'get' => 'tag.tag.search',
+                ],
+            ],
             'tag' => [
                 'fnc' => [
                     'get' => 'tag.tag.detail',

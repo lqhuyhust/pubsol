@@ -57,7 +57,7 @@ class Tag extends Admin {
         {
             $this->session->set('flashMsg', 'Create Successfully!');
             return $this->app->redirect(
-                $this->router->url('tags1')
+                $this->router->url('tags')
             );
         }
     }
@@ -157,5 +157,43 @@ class Tag extends Admin {
         }
 
         return $id;
+    }
+
+    public function search()
+    {
+        $this->isLoggedIn();
+
+        $name = $this->request->get->get('search', '', 'string');
+        $ignores = $this->request->get->get('ignores', [], 'array');
+
+        $where = [];
+
+        if( !empty($name) )
+        {
+            $where[] = "(`name` LIKE '%".$name."%' )";
+        }
+
+        if ($ignores)
+        {
+            $where[] = "id NOT IN (". implode(',', $ignores).")";
+        }
+
+        $data = $this->TagEntity->list(0,100, $where);
+        foreach($data as &$item)
+        {
+            if ($item['parent_id'])
+            {
+                $tmp = $this->TagEntity->findByPK($parent_id);
+                if ($tmp)
+                {
+                    $item['name'] = $tmp['name']. ' > '. $item['name'];
+                }
+            }
+        }
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $data);
+        $this->set('message' , '');
+        return;
     }
 }

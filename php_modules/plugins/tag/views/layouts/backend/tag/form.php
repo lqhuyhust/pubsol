@@ -4,7 +4,10 @@
             <form action="" method="post" id="form_tag">
                 <div class="row g-3 align-items-center">
                     <div class="row px-0">
-                        <div class="mb-3 col-12 mx-auto pt-3">
+                        <div class="col-12 d-flex align-items-center">
+                            <label class="form-label fw-bold mb-2">Name</label>
+                        </div>
+                        <div class="col-12">
                             <?php $this->ui->field('name'); ?>
                         </div>
                     </div>
@@ -44,6 +47,7 @@
     </div>
 </div>
 <script>
+    var ignores = [];
     $(document).ready(function(){
         $('.show_data').on('click', function(){
             var id = $(this).data('id') ?? 0;
@@ -56,16 +60,80 @@
             $('#form_tag #name').val(name);
             $('#form_tag #description').val(description);
             
+            if (id)
+            {
+                ignores=[id];
+                $('#_method').val('PUT');
+            }
+            else
+            {
+                ignores= [];
+                $('#_method').val('PUT');
+            }
+
             //clear all
             $('#parent_id').val(null).trigger('change');
-            $('#parent_id').val(null).trigger('change');
+            if (parent_id && parent_tag)
+            {
+                var newOption = new Option(parent_tag, parent_id, false, false);
+                $('#parent_id').append(newOption).trigger('change');
+            }
         });
     })
 </script>
 <?php
 $js = <<<Javascript
 $(document).ready(function() {
-    $('#parent_tag').select2();
+    $("#parent_id").select2({
+        matcher: matchCustom,
+        ajax: {
+            url: "{$this->link_search}",
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    search: params.term,
+                    ignores: ignores
+                };
+            },
+            processResults: function(data, params) {
+                let items = [];
+                if (data.data.length > 0) {
+                    data.data.forEach(function(item) {
+                        items.push({
+                            id: item.id,
+                            text: item.name
+                        })
+                    })
+                }
+
+                return {
+                    results: items,
+                    pagination: {
+                        more: false
+                    }
+                };
+            },
+            cache: true
+        },
+        placeholder: 'Parent Tag',
+        dropdownParent: $("#formEditTag"),
+        minimumInputLength: 1,
+    });
+    function matchCustom(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+            return data;
+        }
+
+        // Do not display the item if there is no 'text' property
+        if (typeof data.text === 'undefined') {
+            return null;
+        }
+
+        // Return `null` if the term should not be displayed
+        return null;
+    }
   });
 Javascript;
 

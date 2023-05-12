@@ -40,6 +40,7 @@ class AdminTag extends ViewModel
         return [
             'id' => $id,
             'form' => $form,
+            'link_search' => $router->url('tag/search'),
             'data' => $data,
         ];
         
@@ -52,7 +53,7 @@ class AdminTag extends ViewModel
                 'text',
                 'showLabel' => false,
                 'placeholder' => 'Tag Name',
-                'formClass' => 'form-control border-0 border-bottom fs-2 py-0',
+                'formClass' => 'form-control mb-3',
                 'required' => 'required',
             ],
             'description' => [
