@@ -10,7 +10,13 @@ class Menu
     {
         $container = $app->getContainer();
         $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
-
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow = $permission ? $permission->checkPermission(['timeline_manager', 'timeline_view']) : true;
+        if (!$allow)
+        {
+            return false;
+        }
+        
         $menu = [
             [['timeline', 'timeline',], 'timeline', 'Timeline', ''],
         ];
