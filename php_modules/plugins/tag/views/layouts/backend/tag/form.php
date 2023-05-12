@@ -30,7 +30,7 @@
                     <div class="row g-3 align-items-center m-0">
                         <div class="modal-footer">
                             <?php $this->ui->field('token'); ?>
-                            <input class="form-control rounded-0 border border-1" id="request" type="hidden" name="_method" value="POST">
+                            <input class="form-control rounded-0 border border-1" id="_method" type="hidden" name="_method" value="POST">
                             <div class="row">
                                 <div class="col-6 text-end pe-0">
                                     <button type="button" class="btn btn-outline-secondary fs-4" data-bs-dismiss="modal">Cancel</button>

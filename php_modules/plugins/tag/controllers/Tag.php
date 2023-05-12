@@ -81,7 +81,7 @@ class Tag extends Admin {
             }
             
             $try = $this->TagEntity->update([
-                'title' => $title,
+                'name' => $name,
                 'description' => $description,
                 'parent_id' => $parent_id,
                 'id' => $id,
@@ -183,7 +183,7 @@ class Tag extends Admin {
         {
             if ($item['parent_id'])
             {
-                $tmp = $this->TagEntity->findByPK($parent_id);
+                $tmp = $this->TagEntity->findByPK($item['parent_id']);
                 if ($tmp)
                 {
                     $item['name'] = $tmp['name']. ' > '. $item['name'];
