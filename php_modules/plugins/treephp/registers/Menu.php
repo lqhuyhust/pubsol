@@ -10,7 +10,13 @@ class Menu
     {
         $container = $app->getContainer();
         $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
-
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow = $permission ? $permission->checkPermission(['treephp_manager', 'treephp_view']) : true;
+        if (!$allow)
+        {
+            return false;
+        }
+        
         $menu = [
             [['tree-phps', 'tree-php',], 'tree-phps', 'Tree PHP', ''],
         ];
