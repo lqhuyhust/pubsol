@@ -10,7 +10,12 @@ class Menu
     {
         $container = $app->getContainer();
         $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
-
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow = $permission ? $permission->checkPermission(['treediagram_manager', 'treediagram_view']) : true;
+        if (!$allow)
+        {
+            return false;
+        }
         $menu = [
             [['tree-diagrams', 'tree-diagram',], 'tree-diagrams', 'Tree JS', ''],
         ];
