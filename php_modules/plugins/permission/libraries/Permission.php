@@ -12,6 +12,7 @@ class Permission
 
         // get access
         $this->access = [];
+        $this->config = [];
         foreach(new \DirectoryIterator(SPT_PLUGIN_PATH) as $item) 
         {
             if (!$item->isDot() && $item->isDir()) 
@@ -26,6 +27,16 @@ class Permission
                         $this->access = array_merge($this->access, $result);
                     }
                 }
+
+                if(class_exists($plgRegister) && method_exists($plgRegister, 'registerPermission'))
+                {
+                    $result = $plgRegister::registerPermission();
+                    
+                    if (is_array($result))
+                    {
+                        $this->config[$item->getBasename()] = $result;
+                    }
+                }
             }
         }
     }
@@ -37,6 +48,14 @@ class Permission
 
     public function checkPermission($access = null)
     {
+        if (!$access)
+        {
+            $router = $this->container->getRouter();
+            $plugin = $this->app->get('currentPlugin');
+            $config_plugin = isset($config[$plugin]) ? $config[$plugin] : [];
+            
+        }
+
         
     }
 }
