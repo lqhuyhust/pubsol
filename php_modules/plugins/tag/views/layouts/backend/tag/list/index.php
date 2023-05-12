@@ -39,7 +39,6 @@
 
 		</div>
 	</main>
-
-
 </div>
 </div>
+<?php echo $this->render('backend.tag.form', []);?>

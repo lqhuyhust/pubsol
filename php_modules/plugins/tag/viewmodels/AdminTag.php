@@ -31,7 +31,7 @@ class AdminTag extends ViewModel
         $router = $this->container->get('router');
 
         $urlVars = $request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = $urlVars ? (int) $urlVars['id'] : 0;
 
         $data = $id ? $TagEntity->findByPK($id) : [];
         
@@ -41,9 +41,6 @@ class AdminTag extends ViewModel
             'id' => $id,
             'form' => $form,
             'data' => $data,
-            'url' => $router->url(),
-            'link_list' => $router->url('tags'),
-            'link_form' => $router->url('tag'),
         ];
         
     }
@@ -54,7 +51,7 @@ class AdminTag extends ViewModel
             'name' => [
                 'text',
                 'showLabel' => false,
-                'placeholder' => 'Name',
+                'placeholder' => 'Tag Name',
                 'formClass' => 'form-control border-0 border-bottom fs-2 py-0',
                 'required' => 'required',
             ],
@@ -65,7 +62,10 @@ class AdminTag extends ViewModel
                 'formClass' => 'form-control',
             ],
             'parent_id' => [
-                'text',
+                'option',
+                'type' => 'select2',
+                'formClass' => 'form-select',
+                'options' => [],
                 'showLabel' => false,
                 'placeholder' => 'Tags',
                 'formClass' => 'form-control',
