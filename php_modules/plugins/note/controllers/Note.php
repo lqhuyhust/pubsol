@@ -68,14 +68,6 @@ class Note extends Admin {
             {
                 $tags_tmp[] = $tag;
             }
-            elseif( !(int) $tag)
-            {
-                $newTag = $this->TagEntity->add(['name' => $tag]);
-                if ($newTag)
-                {
-                    $tags_tmp[] = $newTag;
-                }
-            }
         }
         if ($editor == 'sheetjs')
         {
@@ -187,14 +179,6 @@ class Note extends Admin {
                 if ($find)
                 {
                     $tags_tmp[] = $tag;
-                }
-                else
-                {
-                    $newTag = $this->TagEntity->add(['name' => $tag]);
-                    if ($newTag)
-                    {
-                        $tags_tmp[] = $newTag;
-                    }
                 }
             }
             $tags = implode(',', $tags_tmp);

@@ -101,7 +101,7 @@ class AdminNote extends ViewModel
             'link_form' => $router->url('note'),
             'link_form_attachment' => $router->url('attachment'),
             'link_form_download_attachment' => $router->url('download/attachment'),
-            'link_tag' => $router->url('tag'),
+            'link_tag' => $router->url('tag/search'),
         ];
         
     }
