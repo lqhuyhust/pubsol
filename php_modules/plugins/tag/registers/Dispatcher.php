@@ -8,13 +8,19 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
-        // prepare note
         $container = $app->getContainer();
-        if (!$container->exists('file'))
+        if ($container->exists('permission'))
         {
-            $container->set('file', new File());
+            $allow = $container->get('permission')->checkPermission();
+            if (!$allow)
+            {
+                $router = $container->get('router');
+                $session = $container->get('session');
+                $session->set('flashMsg', 'You don\'t have permission!');
+                $app->redirect($router->url(''));
+            }
         }
-        
+        // prepare note
         $cName = ucfirst($cName);
 
         $controller = 'App\plugins\tag\controllers\\'. $cName;
