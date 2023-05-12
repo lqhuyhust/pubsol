@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\permission\libraries;
+namespace App\plugins\user\libraries;
 
 use SPT\Application\IApp;
 
@@ -52,20 +52,12 @@ class Permission
         {
             $router = $this->container->get('router');
             $request = $this->container->get('request');
-            $urlVars = (array) $request->get('urlVars');
             $actualPath = trim($router->get('actualPath'), '/');
-            $arr = explode('/', $actualPath); 
             $method = $request->header->getRequestMethod();
             
-            foreach($urlVars as $item)
-            {
-                if ($item)
-                {
-                    array_pop($arr);
-                }
-            }
-
-            $path = implode('/', $arr);
+            $siteNote = $router->get('sitenode');
+            $path = $siteNote ? trim($siteNote, '/') : $actualPath;
+            
             $plugin = $this->app->get('currentPlugin');
             $config_plugin = isset($this->config[$plugin]) ? $this->config[$plugin] : [];
             $access = isset($config_plugin[$path]) ? $config_plugin[$path] : [];
