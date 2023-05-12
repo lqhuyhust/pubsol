@@ -10,10 +10,16 @@ class Menu
     {
         $container = $app->getContainer();
         $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
-
-        $menu = [
-            [['calendar', 'calendar',], 'calendar', 'Calendar', ''],
-        ];
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow = $permission ? $permission->checkPermission(['calendar_manager', 'calendar_view']) : true;
+        $menu = [];
+        if ($allow)
+        {
+            $menu = [
+                [['calendar', 'calendar',], 'calendar', 'Calendar', ''],
+            ];
+        }
+        
         $menu_root = array_merge($menu_root, $menu);
         $container->set('reportMenu', $menu_root);
     }
