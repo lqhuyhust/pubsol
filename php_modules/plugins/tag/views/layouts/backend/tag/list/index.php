@@ -18,9 +18,9 @@
 											<th width="10px">
 												<input type="checkbox" id="select_all">
 											</th>
-											<th>Title</th>
-											<th>Tags</th>
-										</tr>
+											<th>Name</th>
+											<th>Parent Tag</th>
+											<th>Description</th>
 									</thead>
 									<tbody>
 										<?php while($this->list->hasRow()) echo $this->render('backend.tag.list.row', []); ?>

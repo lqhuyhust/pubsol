@@ -61,11 +61,13 @@ class AdminTags extends ViewModel
 
         foreach ($result as &$item) 
         {
+            $tag_tmp = [];
             if ($item['parent_id'])
             {
                 $tag_tmp = $TagEntity->findByPK($item['parent_id']);
-                $item['parent_tag'] = $tag_tmp['name'];
             }
+
+            $item['parent_tag'] = $tag_tmp ? $tag_tmp['name'] : '';
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
@@ -76,9 +78,9 @@ class AdminTags extends ViewModel
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
-            'link_list' => $router->url('notes'),
+            'link_list' => $router->url('tags'),
             'title_page' => 'Tags',
-            'link_form' => $router->url('note'),
+            'link_form' => $router->url('tag'),
             'token' => $token->getToken(),
         ];
     }
