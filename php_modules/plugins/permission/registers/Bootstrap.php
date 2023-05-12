@@ -2,6 +2,7 @@
 namespace App\plugins\permission\registers;
 
 use SPT\Application\IApp;
+use App\plugins\permission\libraries\Permission;
 
 class Bootstrap
 {

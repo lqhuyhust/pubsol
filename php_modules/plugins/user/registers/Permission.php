@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'user_manager', 'user_view', 'user_edit', 'user_delete'
+            'user_manager', 'user_view', 'user_edit', 'user_delete',
             'usergroup_manager', 'usergroup_view', 'usergroup_edit', 'usergroup_delete'
         ];
     }
