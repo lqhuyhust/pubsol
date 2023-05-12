@@ -11,6 +11,10 @@ class Menu
         $container = $app->getContainer();
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
 
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow_milestone = $permission ? $permission->checkPermission(['milestone_manager', 'milestone_view']) : true;
+        $allow_request = $permission ? $permission->checkPermission(['request_manager', 'request_view']) : true;
+        
         $entity = $container->get('MilestoneEntity');
         $router = $container->get('router');
         $path_current = $router->get('actualPath');
@@ -24,7 +28,7 @@ class Menu
                 break;
             }
         }
-        if ($check)
+        if ($check && $allow_request)
         {
             $request = $container->get('request');
             $version = $container->exists('VersionEntity') ? $container->get('VersionEntity') : null;
@@ -49,12 +53,20 @@ class Menu
         }
 
         $list = $entity->list(0, 0, ['status = 1']);
-        $menu = [
-            [['milestones', 'milestone', '',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
-        ];
-        foreach($list as $item)
+        $menu = [];
+        if ($allow_milestone)
         {
-            $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="me-4 pe-2"></i>', 'back-ground-sidebar'];
+            $menu = [
+                [['milestones', 'milestone', '',], 'milestones', 'Milestones', '<i class="fa-solid fa-business-time"></i>', ''],
+            ];
+        }
+
+        if($allow_request)
+        {
+            foreach($list as $item)
+            {
+                $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="me-4 pe-2"></i>', 'back-ground-sidebar'];
+            }
         }
 
         $menu_root[1] = isset($menu_root[1]) ? array_merge($menu_root[1], $menu) : $menu;
