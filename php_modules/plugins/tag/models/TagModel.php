@@ -12,7 +12,7 @@ namespace App\plugins\tag\models;
 
 use SPT\JDIContainer\Base; 
 
-class NoteModel extends Base
+class TagModel extends Base
 { 
     // Write your code here
 }
