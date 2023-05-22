@@ -38,6 +38,10 @@ class RequestEntity extends Entity
                     'limit' => 255,
                 ],
                 'start_at' => [
+                    'type' => 'datetime',
+                    'null' => 'YES',
+                ],
+                'tags' => [
                     'type' => 'text',
                     'null' => 'YES',
                 ],

@@ -51,7 +51,6 @@
         $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
     }
     
-	$("#sidebar .sidebar-content").addClass('position-fixed');
 	function showMessage(status, message)
     {
         if (status == 'ok')
@@ -87,6 +86,16 @@
                 <div class="row">
                     <div class="mb-3 col-12 mx-auto pt-3">
                         <input name="title" type="text" id="title" required="" placeholder="Request" value="<?php echo $this->request['title'];?>" class="form-control h-50-px fw-bold rounded-0 fs-3">
+                    </div>
+                </div>
+                <input type="hidden" name="tags" id="tags">
+                <div class="row px-0 mb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <label class="form-label fw-bold mb-2">Tags</label>
+                    </div>
+                    <div class="col-lg-12 col-sm-12">
+                        <select class="js-example-tags" multiple id="select_tags">
+                        </select>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -131,3 +140,133 @@
         </div>
     </div>
 </div>
+<script>
+    var new_tags = [];
+    $(document).ready(function(){
+        $(".js-example-tags").select2({
+            tags: true,
+            createTag: newtag,
+            matcher: matchCustom,
+            ajax: {
+                url: "<?php echo $this->link_tag ?>",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function(data, params) {
+                    let items = [];
+                    if (data.data.length > 0) {
+                        data.data.forEach(function(item) {
+                            items.push({
+                                id: item.id,
+                                text: item.name
+                            })
+                        })
+                    }
+
+                    return {
+                        results: items,
+                        pagination: {
+                            more: false
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Search tags',
+            minimumInputLength: 1,
+        });
+
+        function newtag(params, data) {
+            var term = $.trim(params.term);
+            if (term === '') {
+                return null;
+            }
+
+            return {
+                id: term,
+                text: term,
+                newTag: true // add additional parameters
+            }
+        }
+
+        $('.js-example-tags').on('select2:select', async function(e) {
+            let tag = e.params.data;
+            if (tag.newTag === true) {
+                await $.post("<?php echo $this->link_tag ?>", {
+                        name: tag.text
+                    })
+                    .done(function(data) {
+                        new_tags.push({
+                            id: data.data.id,
+                            text: data.data.name
+                        })
+
+                        setTags();
+                    });
+            } else {
+                setTags();
+            }
+        });
+
+        $('.js-example-tags').on('select2:unselect', function(e) {
+            setTags();
+        });
+
+        function matchCustom(params, data) {
+            // If there are no search terms, return all of the data
+            if ($.trim(params.term) === '') {
+                return data;
+            }
+
+            // Do not display the item if there is no 'text' property
+            if (typeof data.text === 'undefined') {
+                return null;
+            }
+
+            // Return `null` if the term should not be displayed
+            return null;
+        }
+
+        var tags = <?php echo json_encode($this->request['tags']);?>;
+        $('#select_tags').val('').trigger('change');
+
+        if (Array.isArray(tags))
+        {
+            tags.forEach(function(item,index){
+                var newOption = new Option(item.name, item.id, true, true);
+                $('#select_tags').append(newOption).trigger('change');
+            });
+        }
+        setTags();
+    })
+    function setTags() {
+        let tmp_tags = $('#select_tags').val();
+        if (tmp_tags.length > 0) {
+            var items = [];
+
+            if (new_tags.length > 0) {
+                tmp_tags.forEach(function(item, key) {
+                    let ck = false;
+                    new_tags.forEach(function(item2, key2) {
+
+                        if (item == item2.text)
+                            ck = item2
+                    })
+
+                    if (ck === false)
+                        items.push(item)
+                    else
+                        items.push(ck.id)
+                })
+            } else items = tmp_tags
+
+            $('#tags').val(items.join(','))
+        } else {
+            $('#tags').val('')
+        }
+    }
+</script>

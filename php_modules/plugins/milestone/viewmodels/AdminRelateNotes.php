@@ -73,8 +73,10 @@ class AdminRelateNotes extends ViewModel
 
         $note_exist = $this->container->exists('NoteEntity');
 
-        foreach ($result as &$item)
+        $notes = [];
+        foreach ($result as $index => &$item)
         {
+            $note_tmp = false;
             if ($note_exist)
             {
                 $note_tmp = $NoteEntity->findByPK($item['note_id']);
@@ -84,6 +86,10 @@ class AdminRelateNotes extends ViewModel
                     $item['editor'] = $note_tmp['editor'];
                     $item['description'] = strip_tags((string) $note_tmp['description']) ;
                     $item['tags'] = $note_tmp['tags'] ;
+                }
+                else
+                {
+                    unset($result[$index]);
                 }
 
                 if (!empty($item['tags'])){
@@ -101,8 +107,14 @@ class AdminRelateNotes extends ViewModel
             {
                 $item['description'] = substr($item['description'], 0, 100) .' ...';
             }
+
+            if ($note_tmp)
+            {
+                $notes[] = $item;
+            }
         }
 
+        $result = $notes;
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);

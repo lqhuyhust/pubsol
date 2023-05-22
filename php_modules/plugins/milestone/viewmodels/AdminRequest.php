@@ -38,6 +38,7 @@ class AdminRequest extends ViewModel
             'form' => $form,
             'url' => $router->url(),
             'link_list' => $router->url('requests/'. $milestone_id),
+            'link_tag' => $router->url('tag/search'),
             'link_form' => $router->url('request/'. $milestone_id),
         ];
     }
@@ -68,6 +69,8 @@ class AdminRequest extends ViewModel
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
             ],
+            'tags' => ['hidden',
+            ],
             'token' => ['hidden',
                 'default' => $this->container->get('token')->getToken(),
             ],
@@ -81,6 +84,7 @@ class AdminRequest extends ViewModel
         $request = $this->container->get('request');
         $router = $this->container->get('router');
         $RequestEntity = $this->container->get('RequestEntity');
+        $TagEntity = $this->container->get('TagEntity');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
 
         $urlVars = $request->get('urlVars');
@@ -88,12 +92,27 @@ class AdminRequest extends ViewModel
         $request = $RequestEntity->findByPK($request_id);
         $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         
+        if ($request)
+        {
+            $tags = $request['tags'] ? explode(',', $request['tags']) : [];
+            $request['tags'] = [];
+            foreach($tags as $tag)
+            {
+                $tmp = $TagEntity->findByPK($tag);
+                if ($tmp)
+                {
+                    $request['tags'][] = $tmp;
+                }
+            }
+        }
+
         $title_page = '<a class="me-2" href="'.$router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
         return [
             'request_id' => $request_id,
-            'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),
-            'title_page' => $title_page,
             'url' => $router->url(),
+            'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),
+            'link_tag' => $router->url('tag/search'),
+            'title_page' => $title_page,
             'request' => $request,
         ];
     }

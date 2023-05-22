@@ -75,11 +75,32 @@ class Request extends Admin
         $exist = $this->MilestoneEntity->findByPK($milestone_id);
 
         $title = $this->request->post->get('title', '', 'string');
+        $tags = $this->request->post->get('tags', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
         $start_at = $this->request->post->get('start_at', '0000-00-00 00:00:00', 'string');
         $finished_at = $this->request->post->get('finished_at', '0000-00-00 00:00:00', 'string');
         $start_at = $start_at ? $start_at : '0000-00-00 00:00:00';
         $finished_at = $finished_at ? $finished_at : '0000-00-00 00:00:00';
+
+        $listTag = explode(',', $tags);
+        $tags_tmp = [];
+        foreach($listTag as $tag)
+        {
+            if (!$tag) continue;
+            $find = $this->TagEntity->findOne(['id', $tag]);
+            if ($find)
+            {
+                $tags_tmp[] = $tag;
+            }
+            elseif( !(int) $tag)
+            {
+                $newTag = $this->TagEntity->add(['name' => $tag]);
+                if ($newTag)
+                {
+                    $tags_tmp[] = $newTag;
+                }
+            }
+        }
 
         if (!$title)
         {
@@ -99,6 +120,7 @@ class Request extends Admin
             'milestone_id' => $milestone_id,
             'version_id' => $version_latest ? $version_latest['version'] : 0,
             'title' => $title,
+            'tags' => $tags,
             'description' => $description,
             'start_at' => $start_at,
             'finished_at' => $finished_at,
@@ -139,15 +161,38 @@ class Request extends Admin
         {
             $title = $this->request->post->get('title', '', 'string');
             $description = $this->request->post->get('description', '', 'string');
+            $tags = $this->request->post->get('tags', '', 'string');
+            
             $start_at = $this->request->post->get('start_at', '0000-00-00 00:00:00', 'string');
             $finished_at = $this->request->post->get('finished_at', '0000-00-00 00:00:00', 'string');
     
             $start_at = $start_at ? $start_at : '0000-00-00 00:00:00';
             $finished_at = $finished_at ? $finished_at : '0000-00-00 00:00:00';
 
+            $listTag = explode(',', $tags);
+            $tags_tmp = [];
+            foreach($listTag as $tag)
+            {
+                if (!$tag) continue;
+                $find = $this->TagEntity->findOne(['id', $tag]);
+                if ($find)
+                {
+                    $tags_tmp[] = $tag;
+                }
+                elseif( !(int) $tag)
+                {
+                    $newTag = $this->TagEntity->add(['name' => $tag]);
+                    if ($newTag)
+                    {
+                        $tags_tmp[] = $newTag;
+                    }
+                }
+            }
+            
             $try = $this->RequestEntity->update([
                 'milestone_id' => $milestone_id,
                 'title' => $title,
+                'tags' => $tags,
                 'description' => $description,
                 'start_at' => $start_at,
                 'finished_at' => $finished_at,

@@ -15,7 +15,7 @@ use SPT\Web\MVVM\ViewModel;
 
 class AdminRequests extends ViewModel
 {
-   public static function register()
+    public static function register()
     {
         return [
             'layouts.backend.request.list',
@@ -31,6 +31,7 @@ class AdminRequests extends ViewModel
         $router = $this->container->get('router');
         $RequestEntity = $this->container->get('RequestEntity');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
+        $TagEntity = $this->container->get('TagEntity');
         $UserEntity = $this->container->get('UserEntity');
         $VersionEntity = $this->container->get('VersionEntity');
         $user = $this->container->get('user');
@@ -74,6 +75,20 @@ class AdminRequests extends ViewModel
         {
             $user_tmp = $UserEntity->findByPK($item['created_by']);
             $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
+            $tags = $item['tags'] ? explode(',', $item['tags']) : [];
+            $tag_tmp = [];
+            $item['tags'] = [];
+            foreach($tags as $tag)
+            {
+                $tmp = $TagEntity->findByPK($tag);
+                if ($tmp)
+                {
+                    $tag_tmp[] = $tmp['name'];
+                    $item['tags'][] = $tmp;
+                }
+            }
+
+            $item['tag_tmp'] = implode(' , ', $tag_tmp);
         }
 
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');

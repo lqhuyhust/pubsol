@@ -58,6 +58,17 @@
             var description = $(this).data('description');
             var start_at = $(this).data('start_at');
             var finished_at = $(this).data('finished_at');
+            var tags = $(this).data('tags');
+            $('#select_tags').val('').trigger('change');
+
+            if (Array.isArray(tags))
+            {
+                tags.forEach(function(item,index){
+                    var newOption = new Option(item.name, item.id, true, true);
+                    $('#select_tags').append(newOption).trigger('change');
+                });
+            }
+            setTags();
 
             $('#title').val(title);
             $('#description').val(description);
