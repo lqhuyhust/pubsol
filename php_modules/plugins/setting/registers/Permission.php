@@ -16,15 +16,8 @@ class Permission
     public static function registerPermission()
     {
         return [
-            'setting-system'=>[
+            'settings'=>[
                 'get' => ['setting_manager'],
-                'post' => ['setting_manager'],
-            ],
-            'setting-smtp'=>[
-                'get' => ['setting_manager'],
-                'post' => ['setting_manager'],
-            ],
-            'setting/mail-test'=>[
                 'post' => ['setting_manager'],
             ],
         ];

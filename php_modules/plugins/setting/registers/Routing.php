@@ -9,21 +9,10 @@ class Routing
     public static function registerEndpoints()
     {
         return [
-            'setting-system'=>[
+            'settings'=>[
                 'fnc' => [
-                    'get' => 'setting.setting.system',
-                    'post' => 'setting.setting.systemSave',
-                ],
-            ],
-            'setting-smtp'=>[
-                'fnc' => [
-                    'get' => 'setting.setting.smtp',
-                    'post' => 'setting.setting.smtpSave',
-                ],
-            ],
-            'setting/mail-test'=>[
-                'fnc' => [
-                    'post' => 'setting.setting.testMail',
+                    'get' => 'setting.setting.form',
+                    'post' => 'setting.setting.save',
                 ],
             ],
         ];

@@ -21,7 +21,6 @@ class AdminNote extends ViewModel
         return [
             'layouts.backend.note.form',
             'layouts.backend.note.preview',
-            'layouts.backend.setting.connections'
         ];
     }
     
@@ -254,62 +253,6 @@ class AdminNote extends ViewModel
             ],
         ];
 
-        return $fields;
-    }
-
-    public function connections()
-    {
-        
-        $fields = $this->getFormFieldsConnection();
-        $router = $this->container->get('router');
-
-        $data = [];
-        foreach ($fields as $key => $value) {
-            if ($key != 'token') {
-                $data[$key] =  $this->OptionModel->get($key, '');
-            }
-        }
-        $form = new Form($fields, $data);
-
-        $title_page = 'Setting Connections';
-        return [
-            'fields' => $fields,
-            'form' => $form,
-            'title_page' => $title_page,
-            'data' => $data,
-            'url' => $router->url(),
-            'link_form' => $router->url('setting-connections'),
-        ];
-    }
-
-    public function getFormFieldsConnection()
-    {
-        $fields = [
-            'folder_id' => [
-                'text',
-                'label' => 'Folder ID:',
-                'formClass' => 'form-control',
-            ],
-            'client_id' => [
-                'text',
-                'label' => 'Client ID:',
-                'formClass' => 'form-control',
-            ],
-            'client_secret' => [
-                'text',
-                'label' => 'Client secret',
-                'formClass' => 'form-control',
-            ],
-            'access_token' => [
-                'text',
-                'label' => 'Access Token',
-                'formClass' => 'form-control',
-            ],
-            'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
-            ],
-        ];
-       
         return $fields;
     }
 }
