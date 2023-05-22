@@ -40,6 +40,7 @@ class AdminNotes extends ViewModel
         $filter = $this->filter()['form'];
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
+        $tags   = $filter->getField('tags')->value;
         $search = $filter->getField('search')->value;
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
@@ -47,39 +48,40 @@ class AdminNotes extends ViewModel
         $where = [];
 
         if (!empty($search) && is_string($search)) {
-            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
             $where[] = "(`description` LIKE '%" . $search . "%')";
             $where[] = "(`note` LIKE '%" . $search . "%')";
             $where[] = "(`title` LIKE '%" . $search . "%')";
-            if ($tags) {
-                foreach ($tags as $tag) {
-                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                }
-            }
             $where = [implode(" OR ", $where)];
-        } elseif (is_array($search)) {
-            foreach ($search as $key => $value) {
-                foreach ($value as $k => $v) {
-                    $tags = [];
-                    $tags = $TagEntity->list(0, 0, ["`name` = '" . $v . "'"]);
-                    if ($tags) {
-                        foreach ($tags as $tag) {
-                            $where[] = 
-                            "(`tags` = '" . $tag['id'] . "'" .
-                            " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                            " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                            " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                        }
-                    }   
-                    
-                }
-                $where = [implode(" AND ", $where)];
-            }
-           
         }
+        if ($tags)
+        {
+            $filter_tags = [];
+            $where_tag = [];
+
+            foreach ($tags as $tag) 
+            {
+                $tag_tmp = $this->TagEntity->findByPK($tag);
+                if ($tag_tmp)
+                {
+                    $filter_tags[] = [
+                        'id' => $tag,
+                        'name' => $tag_tmp['name'],
+                    ];
+                }
+
+                $where_tag[] = 
+                "(`tags` = '" . $tag . "'" .
+                " OR `tags` LIKE '%" . ',' . $tag . "'" .
+                " OR `tags` LIKE '" . $tag . ',' . "%'" .
+                " OR `tags` LIKE '%" . ',' . $tag . ',' . "%' )";
+            }
+            $where_tag = implode(" OR ", $where_tag);
+
+            if ($where_tag)
+            {
+                $where[] = '('. $where_tag . ')';
+            }
+        }    
 
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
@@ -121,6 +123,7 @@ class AdminNotes extends ViewModel
             'data_tags' => $data_tags,
             'page' => $page,
             'start' => $start,
+            'filter_tags' => json_encode($filter_tags),
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
@@ -153,15 +156,6 @@ class AdminNotes extends ViewModel
                 'limit' => $this->state('limit', 10, 'int', 'post', 'note.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'note.sort')
             ];
-            if (strpos($data['search'], ';') == true) {
-                $try = explode(';', $data['search']);
-                $data['search'] = [];
-                $tmp = [];
-                foreach ($try as $key => $value) {
-                    $tmp[] = $value;
-                }
-                $data['search'][] = $tmp;
-            }
             $filter = new Form($this->getFilterFields(), $data);
 
             $this->_filter = $filter;

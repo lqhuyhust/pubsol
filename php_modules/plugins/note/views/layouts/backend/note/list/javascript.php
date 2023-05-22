@@ -9,6 +9,7 @@
     document.getElementById('clear_filter').onclick = function() {
         document.getElementById("search").value = "";
         document.getElementById("sort").value = "title asc";
+        $('#tags').val(null).trigger('change');
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {
@@ -55,7 +56,8 @@
 <?php
 $js = <<<Javascript
     $(document).ready(function(){
-
+        var filter_tags = {$this->filter_tags};
+        
         $("#tags").select2({
             matcher: matchCustom,
             ajax: {
@@ -91,6 +93,17 @@ $js = <<<Javascript
             minimumInputLength: 1,
         });
 
+        $('#tags').val(null).trigger('change');
+        var selected_tag = [];
+        if (Array.isArray(filter_tags))
+        {
+            filter_tags.forEach(function(item,index){
+                var newOption = new Option(item.name, item.id, true, true);
+                selected_tag.push(item.id);
+                $('#tags').append(newOption);
+            });
+            $('#tags').val(selected_tag).trigger('change');
+        }
         function matchCustom(params, data) {
             // If there are no search terms, return all of the data
             if ($.trim(params.term) === '') {

@@ -145,7 +145,6 @@
     $(document).ready(function(){
         $(".js-example-tags").select2({
             tags: true,
-            createTag: newtag,
             matcher: matchCustom,
             ajax: {
                 url: "<?php echo $this->link_tag ?>",
@@ -180,36 +179,8 @@
             minimumInputLength: 1,
         });
 
-        function newtag(params, data) {
-            var term = $.trim(params.term);
-            if (term === '') {
-                return null;
-            }
-
-            return {
-                id: term,
-                text: term,
-                newTag: true // add additional parameters
-            }
-        }
-
         $('.js-example-tags').on('select2:select', async function(e) {
-            let tag = e.params.data;
-            if (tag.newTag === true) {
-                await $.post("<?php echo $this->link_tag ?>", {
-                        name: tag.text
-                    })
-                    .done(function(data) {
-                        new_tags.push({
-                            id: data.data.id,
-                            text: data.data.name
-                        })
-
-                        setTags();
-                    });
-            } else {
-                setTags();
-            }
+             setTags();
         });
 
         $('.js-example-tags').on('select2:unselect', function(e) {
