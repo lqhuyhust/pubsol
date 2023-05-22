@@ -9,6 +9,7 @@
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.4",
+        "google/apiclient": "^2.13",
         "illuminate/container": "^8.0",
         "illuminate/contracts": "^8.0",
         "illuminate/events": "^8.0",
