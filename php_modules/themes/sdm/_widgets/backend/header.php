@@ -18,27 +18,21 @@
             <div class="me-2">
                 <button id="apply_header" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
             </div>
-            <?php if ($this->view_mode): ?>
-            <script>
-                var url = window.location.pathname;
-                var id = url.substring(url.lastIndexOf('/') + 1);
-                if (id != 0) {
-                    var tmp = 'Edit Mode';
-                } else {
-                    var tmp = 'View Mode';
-                }
-            </script>
-            <div class="" id="mode">
-                <button id="open" type="button" class="btn btn-outline-success">
-                    <script>
-                        document.write(tmp)
-                    </script>
-                </button>
+            <?php if ($this->link_preview): ?>
+            <div class="me-2">
+                <a class="btn btn-outline-success" href="<?php echo $this->link_preview; ?>">
+                    Preview
+                </a>
             </div>
             <?php endif; ?>
         </div>
 
     <?php } else { ?>
         <h2 class="m-0 d-flex align-items-center"><?php echo $this->title_page; ?></h2>
+        <?php if($this->button_header) : ?>
+            <div class="ms-auto d-flex">
+                <? echo $this->button_header;?>
+            </div>
+        <?php endif; ?>
     <?php } ?>
 </nav>

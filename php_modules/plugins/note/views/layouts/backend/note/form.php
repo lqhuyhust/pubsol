@@ -12,25 +12,29 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <div class="fw-bold d-flex  mb-2">
-                            <span class="me-auto">Description:</span> 
+                            <span class="me-auto">Description:</span>
+                            <?php if (!$this->id): ?> 
                             <span>
                                 <div class="button-editor-mode form-check form-switch me-2 mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || $this->data && $this->data['editor'] == 'tynimce') ? 'checked' : ''; ?> name="editor" id="tynimceToogle" value="tynimce">
-                                    <label class="form-check-label" for="tynimceToogle">Tynimce Mode</label>
+                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || ($this->data && $this->data['editor'] == 'html')) ? 'checked' : ''; ?> name="editor" id="tynimceToogle" value="html">
+                                    <label class="form-check-label" for="tynimceToogle">HTML</label>
                                 </div>
                             </span>
                             <span>
                                 <div class=" button-editor-mode form-check me-2 form-switch mb-0">
                                     <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
-                                    <label class="form-check-label" for="sheetToogle">Sheet Mode</label>
+                                    <label class="form-check-label" for="sheetToogle">Sheet</label>
                                 </div>
                             </span>
                             <span>
                                 <div class="button-editor-mode form-check form-switch mb-0">
                                     <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'presenter') ? 'checked' : ''; ?> name="editor" id="PresenterToogle" value="presenter">
-                                    <label class="form-check-label" for="PresenterToogle">Presenter Mode</label>
+                                    <label class="form-check-label" for="PresenterToogle">Presenter</label>
                                 </div>
                             </span>
+                            <?php else: ?>
+                                <input type="hidden"  name="editor" value="<?php echo $this->data['editor'];?>">
+                            <?php endif; ?>
                             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
                                     <i class="fa-solid fa-bars fs-2 "></i>
@@ -44,29 +48,12 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         <div id="presenter_editor" class="d-none">
                             <?php $this->ui->field('description_presenter'); ?>
                         </div>
-                        <div id="content" class="p-3 d-none text-break">
-                            <?php if (isset($this->data['description'])) {
-                                echo $this->data['description'];
-                            } ?>
-                        </div>
                     </div>
                 </div>
                 
                 <div class="d-flex g-3 flex-row align-items-end m-0 pb-3 justify-content-center">
                     <?php $this->ui->field('token'); ?>
                     <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
-                    <div class="me-2">
-                        <a href="<?php echo $this->link_list ?>">
-                            <button type="button" class="btn btn-outline-secondary">Cancel</button>
-                        </a>
-                    </div>
-                    <div class="me-2">
-                        <input type="hidden" name="save_close" id="save_close">
-                        <button id="save_and_close" type="submit" class="btn btn-outline-success btn_save_close">Save & Close</button>
-                    </div>
-                    <div class="me-2">
-                        <button id="apply" type="submit" class="btn btn-outline-success btn_apply">Apply</button>
-                    </div>
                 </div>
             </div>
             <div id="col-4" class="col-lg-4 col-sm-12">
@@ -171,9 +158,9 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
     }
 </style>
 <script>
-    var view_mode = '<?php echo $this->view_mode ?>';
     $(document).ready(function(e) {
         var editor = '<?php echo $this->data ? $this->data['editor'] : '' ?>';
+        
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
             $("#save_close").val(1);
@@ -210,57 +197,14 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             $('#form_submit').submit();
         });
 
-        if(view_mode) {
-            $("#save_and_close").addClass("d-none");
-            $("#apply").addClass("d-none");
-            $("#save_and_close_header").addClass("d-none");
-            $("#apply_header").addClass("d-none");
-            $("#col-8").addClass("col-lg-12");
-            $("#col-4").addClass("col-lg-0 d-none");
-            $(".button-editor-mode").addClass('d-none');
-            openModeEditor();
-        } else {
-            $("#html_editor").removeClass("d-none");
-            $("#check_mode").removeClass("d-none");
-            $("#content").removeClass("border");
-            $("#save_and_close").removeClass("d-none");
-            $("#apply").removeClass("d-none");
-            $("#save_and_close_header").removeClass("d-none");
-            $("#apply_header").removeClass("d-none");
-            openModeEditor();
-        }
-
-        $("#mode").click(function () {
-            if(view_mode)
-            {
-                view_mode = '';
-                $("#open").text('View Mode');
-                $("#content").addClass("d-none");
-                $("#col-8").removeClass("col-lg-12");
-                $("#col-4").removeClass("col-lg-0 d-none");
-                $(".button-editor-mode").removeClass("d-none");
-                $("#save_and_close").removeClass("d-none");
-                $("#apply").removeClass("d-none");
-                $("#save_and_close_header").removeClass("d-none");
-                $("#apply_header").removeClass("d-none");
-                window.dispatchEvent(new Event('resize'));
-                openModeEditor();
-            }
-            else
-            {
-                view_mode = 'true';
-                $(".button-editor-mode").addClass("d-none");
-                $("#open").text('Edit Mode');
-                $("#col-8").addClass("col-lg-12");
-                $("#col-4").addClass("col-lg-0 d-none");
-                window.dispatchEvent(new Event('resize'));
-                $("#save_and_close").addClass("d-none");
-                $("#apply").addClass("d-none");
-                $("#save_and_close_header").addClass("d-none");
-                $("#apply_header").addClass("d-none");
-                openModeEditor();
-            }
-        });
+        $("#html_editor").removeClass("d-none");
+        $("#check_mode").removeClass("d-none");
+        $("#content").removeClass("border");
+        $("#save_and_close").removeClass("d-none");
+        $("#apply").removeClass("d-none");
+        $("#save_and_close_header").removeClass("d-none");
+        $("#apply_header").removeClass("d-none");
+        openModeEditor('<?php echo $this->data ? $this->data['editor'] : 'html';?>');
         
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
@@ -270,22 +214,12 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         });
     });
 
-    function openModeEditor() {
-        var value = $('input[name="editor"]:checked').val();
-        if (value=='tynimce')
+    function openModeEditor(value) {
+        if (value=='html')
         {
-            if (view_mode)
-            {
-                $("#content").removeClass("d-none");
-                $("#content").addClass("border");
-                $('#html_editor').addClass('d-none');
-            }
-            else
-            {
-                $('#html_editor').removeClass('d-none');
-                $('#sheet_description_sheetjs').addClass('d-none');
-                $('#presenter_editor').addClass('d-none');
-            }
+            $('#html_editor').removeClass('d-none');
+            $('#sheet_description_sheetjs').addClass('d-none');
+            $('#presenter_editor').addClass('d-none');
         }
 
         if (value=='sheetjs')
@@ -393,17 +327,6 @@ $js = <<<Javascript
     }
 
     $(document).ready(function() {
-        if (!$('#sheetToogle').is(":checked"))
-        {
-            $('#sheet_description_sheetjs').addClass('d-none');
-        }
-        else
-        {
-            $('#html_editor').addClass('d-none');
-            $('#content').addClass('d-none');
-            window.dispatchEvent(new Event('resize'));
-        }
-
         $('.clear-version').on('click', function(){
             var result = confirm("You are going to delete 1 record(s). Are you sure ?");
             if (result) {
@@ -419,7 +342,8 @@ $js = <<<Javascript
         });
         $('input[name="editor"]').change(function()
         {
-            openModeEditor();
+            var value = $('input[name="editor"]:checked').val();
+            openModeEditor(value);
         });
         $("#description").attr('rows', 25);
         $(".button_delete_item").click(function() {
