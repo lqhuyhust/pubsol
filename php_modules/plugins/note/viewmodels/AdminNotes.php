@@ -31,6 +31,7 @@ class AdminNotes extends ViewModel
         $request = $this->container->get('request');
         $TagEntity = $this->container->get('TagEntity');
         $NoteEntity = $this->container->get('NoteEntity');
+        $UserEntity = $this->container->get('UserEntity');
         $session = $this->container->get('session');
         $router = $this->container->get('router');
         $token = $this->container->get('token');
@@ -95,7 +96,7 @@ class AdminNotes extends ViewModel
             }
         }
 
-        foreach ($result as $item) {
+        foreach ($result as &$item) {
             if (!empty($item['tags'])) {
                 $t1 = $where = [];
                 $where[] = "(`id` IN (" . $item['tags'] . ") )";
@@ -107,6 +108,11 @@ class AdminNotes extends ViewModel
                 }
                 $data_tags[$item['id']] = implode(',', $t1);
             }
+
+            $item['editor'] = $item['editor'] ? $item['editor'] : 'html';
+            $user_tmp = $UserEntity->findByPK($item['created_by']);
+            $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
+            $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
         }
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
@@ -119,6 +125,7 @@ class AdminNotes extends ViewModel
             'user_id' => $user->get('id'),
             'url' => $router->url(),
             'link_list' => $router->url('notes'),
+            'link_tag' => $router->url('tag/search'),
             'title_page' => 'Note Manager',
             'link_form' => $router->url('note'),
             'token' => $token->getToken(),
@@ -142,7 +149,7 @@ class AdminNotes extends ViewModel
         if (null === $this->_filter) :
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'note.search'),
-                'tags' => $this->state('tags', '', '', 'post', 'note.tags'),
+                'tags' => $this->state('tags', [], 'array', 'post', 'note.tags'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'note.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'note.sort')
             ];
@@ -172,6 +179,13 @@ class AdminNotes extends ViewModel
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',
                 'placeholder' => 'Search..'
+            ],
+            'tags' => [
+                'option',
+                'type' => 'multiselect',
+                'formClass' => 'form-select',
+                'options' => [],
+                'showLabel' => false
             ],
             'status' => [
                 'option',
