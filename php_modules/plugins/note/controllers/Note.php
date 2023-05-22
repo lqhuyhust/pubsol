@@ -35,6 +35,28 @@ class Note extends Admin {
         $this->app->set('format', 'html');
     }
 
+    public function preview()
+    {
+        $this->isLoggedIn();
+
+        $urlVars = $this->request->get('urlVars');
+        $id = (int) $urlVars['id'];
+
+        $exist = $this->NoteEntity->findByPK($id);
+
+        if(!$exist)
+        {
+            $this->session->set('flashMsg', "Invalid note");
+            return $this->app->redirect(
+                $this->router->url('notes')
+            );
+        }
+        $this->app->set('layout', 'backend.note.preview');
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+    }
+
+
     public function list()
     {
         $this->isLoggedIn();

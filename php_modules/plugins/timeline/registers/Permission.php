@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'timeline_manager', 'timeline_view'
+            'timeline_manager', 'timeline_read'
         ];
     }
 
@@ -17,8 +17,8 @@ class Permission
     {
         return [
             'timeline' => [
-                'get' => ['timeline_manager', 'timeline_view'],
-                'post' => ['timeline_manager', 'timeline_view'],
+                'get' => ['timeline_manager', 'timeline_read'],
+                'post' => ['timeline_manager', 'timeline_read'],
             ],
         ];
     }

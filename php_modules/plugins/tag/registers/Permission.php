@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'tag_manager', 'tag_view'
+            'tag_manager', 'tag_read'
         ];
     }
 
@@ -17,13 +17,13 @@ class Permission
     {
         return [
             'tags' => [
-                'get' => ['tag_manager' , 'tag_view'],
-                'post' => ['tag_manager' , 'tag_view'],
+                'get' => ['tag_manager' , 'tag_read'],
+                'post' => ['tag_manager' , 'tag_read'],
                 'put' => ['tag_manager' , 'tag_update'],
                 'delete' => ['tag_manager' , 'tag_delete']
             ],
             'tag' => [
-                'get' => ['tag_manager' , 'tag_view'],
+                'get' => ['tag_manager' , 'tag_read'],
                 'post' => ['tag_manager' , 'tag_create'],
                 'put' => ['tag_manager' , 'tag_update'],
                 'delete' => ['tag_manager' , 'tag_delete']

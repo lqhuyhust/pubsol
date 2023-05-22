@@ -11,7 +11,7 @@ class Menu
         $container = $app->getContainer();
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
         $permission = $container->exists('permission') ? $container->get('permission') : null;
-        $allow = $permission ? $permission->checkPermission(['note_manager', 'note_view']) : true;
+        $allow = $permission ? $permission->checkPermission(['note_manager', 'note_read']) : true;
 
         if (!$allow)
         {

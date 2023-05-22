@@ -12,7 +12,7 @@ class Menu
         $app->plgLoad('Menu', 'registerReportMenu');
         
         $permission = $container->exists('permission') ? $container->get('permission') : null;
-        $allow = $permission ? $permission->checkPermission(['report_manager', 'report_view']) : true;
+        $allow = $permission ? $permission->checkPermission(['report_manager', 'report_read']) : true;
         if (!$allow)
         {
             return false;

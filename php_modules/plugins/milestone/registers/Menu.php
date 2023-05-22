@@ -12,8 +12,8 @@ class Menu
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
 
         $permission = $container->exists('permission') ? $container->get('permission') : null;
-        $allow_milestone = $permission ? $permission->checkPermission(['milestone_manager', 'milestone_view']) : true;
-        $allow_request = $permission ? $permission->checkPermission(['request_manager', 'request_view']) : true;
+        $allow_milestone = $permission ? $permission->checkPermission(['milestone_manager', 'milestone_read']) : true;
+        $allow_request = $permission ? $permission->checkPermission(['request_manager', 'request_read']) : true;
         
         $entity = $container->get('MilestoneEntity');
         $router = $container->get('router');

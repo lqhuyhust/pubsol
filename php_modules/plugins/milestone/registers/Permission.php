@@ -9,8 +9,8 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'milestone_manager', 'milestone_view', 'milestone_update', 'milestone_create', 'milestone_delete',
-            'request_manager', 'request_view', 'request_update', 'request_create', 'request_delete',
+            'milestone_manager', 'milestone_read', 'milestone_update', 'milestone_create', 'milestone_delete',
+            'request_manager', 'request_read', 'request_update', 'request_create', 'request_delete',
         ];
     }
 
@@ -18,19 +18,19 @@ class Permission
     {
         return [
             'milestones'=>[
-                'get' => ['milestone_manager', 'milestone_view'],
-                'post' => ['milestone_manager', 'milestone_view'],
+                'get' => ['milestone_manager', 'milestone_read'],
+                'post' => ['milestone_manager', 'milestone_read'],
                 'put' => ['milestone_manager', 'milestone_update'],
                 'delete' => ['milestone_manager', 'milestone_delete']
             ],
             'requests' => [
-                'get' => ['request_manager', 'request_view'],
-                'post' => ['request_manager', 'request_view'],
+                'get' => ['request_manager', 'request_read'],
+                'post' => ['request_manager', 'request_read'],
                 'put' => ['request_manager', 'request_update'],
                 'delete' => ['request_manager', 'request_delete']
             ],
             'request' => [
-                'get' => ['request_manager', 'request_view'],
+                'get' => ['request_manager', 'request_read'],
                 'post' => ['request_manager', 'request_create'],
                 'put' => ['request_manager', 'request_update'],
                 'delete' => ['request_manager', 'request_delete']
@@ -55,7 +55,7 @@ class Permission
                 'post' => ['request_manager', 'request_update'],
             ],
             'detail-request' => [
-                'get' => ['request_manager', 'request_view'],
+                'get' => ['request_manager', 'request_read'],
             ],
             'document/version' => [
                 'get' => ['request_manager', 'request_update'],

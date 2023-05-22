@@ -11,7 +11,7 @@ class Menu
         $container = $app->getContainer();
         $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
         $permission = $container->exists('permission') ? $container->get('permission') : null;
-        $allow = $permission ? $permission->checkPermission(['calendar_manager', 'calendar_view']) : true;
+        $allow = $permission ? $permission->checkPermission(['calendar_manager', 'calendar_read']) : true;
         $menu = [];
         if ($allow)
         {
