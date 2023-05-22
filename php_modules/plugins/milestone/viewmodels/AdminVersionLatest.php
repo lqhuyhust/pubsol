@@ -63,13 +63,8 @@ class AdminVersionLatest extends ViewModel
         $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $item) {
         }
-        if(strcmp($item['version_id'], '0') == 0) {
-            $status = false;
-        } elseif ($version_lastest > $item['version_id']) {
-            $status = true;
-        } else {
-            $status = false;
-        }
+        
+        $status = false;
 
         return [
             'request_id' => $request_id,

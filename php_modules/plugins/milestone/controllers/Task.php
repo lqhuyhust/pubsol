@@ -62,13 +62,6 @@ class Task extends Admin
     {
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Create Task Failed!');
-            return ;
-        }
 
         $title = $this->request->post->get('title', '', 'string');
         $url = $this->request->post->get('url', '', 'string');
@@ -106,13 +99,7 @@ class Task extends Admin
     {
         $ids = $this->validateID(); 
         $request_id = $this->validateRequestID();
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Update Task Failed!');
-            return ;
-        }
+        
         // TODO valid the request input
 
         if(is_numeric($ids) && $ids)
@@ -153,13 +140,7 @@ class Task extends Admin
     {
         $ids = $this->validateID();
         $request_id = $this->validateRequestID();
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Delete Task Failed!');
-            return ;
-        }
+        
         $count = 0;
         if( is_array($ids))
         {
@@ -225,19 +206,4 @@ class Task extends Admin
         return $id;
     }
 
-    public function checkVersion($request_id)
-    {
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
-        }
-        if(strcmp($item['version_id'], '0') == 0) {
-            return false;
-        } elseif ($version_lastest > $item['version_id']) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

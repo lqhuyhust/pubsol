@@ -37,14 +37,6 @@ class Document extends Admin
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
 
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Save Document Failed!');
-            return ;
-        }
-
         $description = $this->request->post->get('description', '', 'string');
 
         $check  = $this->DocumentEntity->findOne(['request_id' => $request_id]);
@@ -171,21 +163,5 @@ class Document extends Admin
         $this->set('result', 'ok');
         $this->set('list', $result);
         return ;
-    }
-
-    public function checkVersion($request_id)
-    {
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
-        }
-        if(strcmp($item['version_id'], '0') == 0) {
-            return false;
-        } elseif ($version_lastest > $item['version_id']) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

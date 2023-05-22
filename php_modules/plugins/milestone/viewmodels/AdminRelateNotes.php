@@ -81,6 +81,7 @@ class AdminRelateNotes extends ViewModel
                 if ($note_tmp)
                 {
                     $item['title'] = $note_tmp['title'];
+                    $item['editor'] = $note_tmp['editor'];
                     $item['description'] = strip_tags((string) $note_tmp['description']) ;
                     $item['tags'] = $note_tmp['tags'] ;
                 }
@@ -107,13 +108,8 @@ class AdminRelateNotes extends ViewModel
         $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $tmp_item) {
         }
-        if(strcmp($tmp_item['version_id'], '0') == 0) {
-            $status = false;
-        } elseif ($version_lastest > $tmp_item['version_id']) {
-            $status = true;
-        } else {
-            $status = false;
-        }
+
+        $status = false;
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [

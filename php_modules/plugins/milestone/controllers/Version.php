@@ -38,14 +38,6 @@ class Version extends Admin
         //check title sprint
         $request_id = $this->validateRequestID();
 
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Add Version Failed!');
-            return ;
-        }
-
         $log = $this->request->post->get('log', '', 'string');
         $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_latest = $version_latest ? $version_latest[0] : [];
@@ -89,13 +81,6 @@ class Version extends Admin
         $ids = $this->validateID(); 
         $request_id = $this->validateRequestID();
 
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Update Version Failed!');
-            return ;
-        }
         // TODO valid the request input
 
         if( is_array($ids) && $ids != null)
@@ -137,14 +122,6 @@ class Version extends Admin
     {
         $ids = $this->validateID();
         $request_id = $this->validateRequestID();
-
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Delete Version Failed!');
-            return ;
-        }
 
         $count = 0;
         if( is_array($ids))
@@ -220,22 +197,6 @@ class Version extends Admin
             return $this->app->redirect(
                 $this->router->url('admin')
             );
-        }
-    }
-
-    public function checkVersion($request_id)
-    {
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
-        }
-        if(strcmp($item['version_id'], '0') == 0) {
-            return false;
-        } elseif ($version_lastest > $item['version_id']) {
-            return true;
-        } else {
-            return false;
         }
     }
 }

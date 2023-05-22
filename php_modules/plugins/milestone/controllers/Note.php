@@ -53,11 +53,15 @@ class Note extends Admin
                 $item['title'] = $note_tmp['title'];
                 $item['description'] = strip_tags((string) $note_tmp['description']) ;
                 $item['tags'] = $note_tmp['tags'] ;
-            }
+                if (strlen($item['description']) > 100)
+                {
+                    $item['description'] = substr($item['description'], 0, 100) .' ...';
+                }
 
-            if (strlen($item['description']) > 100)
-            {
-                $item['description'] = substr($item['description'], 0, 100) .' ...';
+                if (in_array($note_tmp['editor'], ['presenter', 'sheetjs']))
+                {
+                    $item['description'] = '';
+                }
             }
 
             if (!empty($item['tags'])){
@@ -92,14 +96,7 @@ class Note extends Admin
         $request_id = (int) $urlVars['request_id'];
 
         $search = $this->request->post->get('search', '', 'post');
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Get Note Failed!');
-            return ;
-        }
-
+        
         $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $request_id]);
         $where = [];
         if ($relate_note)
@@ -124,13 +121,6 @@ class Note extends Admin
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
 
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Add Note Failed!');
-            return ;
-        }
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
         $notes = $this->request->post->get('note_id', [], 'array');
@@ -191,14 +181,6 @@ class Note extends Admin
         $ids = $this->validateID(); 
         $request_id = $this->validateRequestID();
 
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Update Note Failed!');
-            return ;
-        }
-
         // TODO valid the request input
 
         if( is_array($ids) && $ids != null)
@@ -253,14 +235,6 @@ class Note extends Admin
     {
         $ids = $this->validateID();
         $request_id = $this->validateRequestID();
-
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Delete Note Failed!');
-            return ;
-        }
 
         $count = 0;
         if( is_array($ids))
@@ -325,21 +299,5 @@ class Note extends Admin
         }
 
         return $id;
-    }
-    
-    public function checkVersion($request_id)
-    {
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
-        }
-        if(strcmp($item['version_id'], '0') == 0) {
-            return false;
-        } elseif ($version_lastest > $item['version_id']) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

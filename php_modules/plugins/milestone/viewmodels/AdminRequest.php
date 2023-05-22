@@ -93,6 +93,7 @@ class AdminRequest extends ViewModel
             'request_id' => $request_id,
             'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),
             'title_page' => $title_page,
+            'url' => $router->url(),
             'request' => $request,
         ];
     }
