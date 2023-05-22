@@ -65,7 +65,10 @@ class Menu
         {
             foreach($list as $item)
             {
-                $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $item['title'], '<i class="me-4 pe-2"></i>', 'back-ground-sidebar'];
+                $start_date = $item['start_date'] && $item['start_date'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['start_date'])) : '__';
+                $end_date = $item['end_date'] && $item['end_date'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['end_date'])) : '__';
+                $title = $item['title'] . ' ('. $start_date . ' - '. $end_date .')';
+                $menu[] = [['requests/'. $item['id'],'request/'. $item['id']], 'requests/'. $item['id'], $title, '<i class="me-4 pe-2"></i>', 'back-ground-sidebar'];
             }
         }
 

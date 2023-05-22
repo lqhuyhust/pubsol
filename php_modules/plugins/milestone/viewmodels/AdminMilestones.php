@@ -78,6 +78,7 @@ class AdminMilestones extends ViewModel
             'user_id' => $user->get('id'),
             'url' => $router->url(),
             'link_list' => $router->url('milestones'),
+            'link_request_list' => $router->url('requests'),
             'title_page' => 'Milestone Manager',
             'link_form' => $router->url('milestone'),
             'token' => $this->container->get('token')->getToken(),
