@@ -21,7 +21,7 @@ class Menu
         if ($menu_report)
         {
             $menu_root = $container->exists('menu') ? $container->get('menu') : [];
-            $menu[] = [['report', 'report',], 'report', 'Report Diagram', '<i class="fa-solid fa-magnifying-glass-chart"></i>', $menu_report];
+            $menu[] = [['report', 'report',], 'report', 'Report', '<i class="fa-solid fa-magnifying-glass-chart"></i>', $menu_report];
             $menu_root[2] = isset($menu_root[2]) ? array_merge($menu_root[2], $menu) : $menu;
             $container->set('menu', $menu_root);
         }
