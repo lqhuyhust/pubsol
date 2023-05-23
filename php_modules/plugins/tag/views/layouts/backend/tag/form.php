@@ -68,7 +68,7 @@
             else
             {
                 ignores= [];
-                $('#_method').val('PUT');
+                $('#_method').val('POST');
             }
 
             //clear all
