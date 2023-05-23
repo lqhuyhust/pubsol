@@ -10,11 +10,6 @@ class Setting
     {
         return[
             'Google Auth' => [
-                'api_secret_key' => [
-                    'text',
-                    'label' => 'API Secret Key:',
-                    'formClass' => 'form-control',
-                ],
                 'google_client_id' => [
                     'text',
                     'label' => 'Google Client ID:',

@@ -9,11 +9,9 @@
  */
 
 namespace App\plugins\googleauth\controllers;
+use SPT\Web\MVVM\ControllerContainer as Controller;
 
-use SPT\MVC\JDIContainer\MVController;
-use SPT\Middleware\Dispatcher as MW;
-
-class Google extends MVController
+class Google extends Controller
 {
     public function login()
     {
@@ -34,24 +32,14 @@ class Google extends MVController
             $email =  $google_account_info->email;
             $name =  $google_account_info->name;
 
-           // print_r($google_account_info);
            /**
             * CHECK EMAIL AND NAME IN DATABASE
             */
             $check = $this->UserEntity->findOne(['email' => $email]);
             if (!$check)
             {
-                $user_id = $this->UserEntity->add([
-                    'username' => $email,
-                    'email' => $email,
-                    'password' => $email,
-                    'name' => $name,
-                    'status' => 0,
-                    'created_by' => 0,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'modified_by' => 0,
-                    'modified_at' => date('Y-m-d H:i:s')
-                ]);
+                $this->session->set('flashMsg', 'Login failed, email not registered');
+                return $this->app->redirect($this->router->url('login'));
             }
             else
             {

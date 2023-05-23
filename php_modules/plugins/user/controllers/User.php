@@ -54,7 +54,6 @@ class User extends Admin
             }
             else
             {
-                $this->session->set('flashMsg', 'Hello!!!');
                 return $this->app->redirect(
                     $this->router->url($redirect_after_login)
                 );
@@ -172,7 +171,6 @@ class User extends Admin
     {
         $this->user->logout();
 
-        $this->session->set('flashMsg', 'Bye Bye');
         return $this->app->redirect(
             $this->router->url('login')
         );

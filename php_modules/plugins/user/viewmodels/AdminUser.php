@@ -27,9 +27,17 @@ class AdminUser extends ViewModel
     public function login($layoutData, &$viewData)
     {
         $app = $this->container->get('app');
+        $GoogleModel = $this->container->get('GoogleModel');
+        $link_google_auth = '';
+        if (is_object($GoogleModel))
+        {
+            $link_google_auth = $GoogleModel->getUrlLogin();
+        }
+
         return [
             'url' =>  $app->getRouter()->url(),
             'link_login' =>  $app->getRouter()->url('login'),
+            'link_google_auth' =>  $link_google_auth,
         ];
     }
 
