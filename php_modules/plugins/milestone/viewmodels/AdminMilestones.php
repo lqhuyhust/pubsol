@@ -18,12 +18,22 @@ class AdminMilestones extends ViewModel
     public static function register()
     {
         return [
+            'layouts.backend.milestone.home',
             'layouts.backend.milestone.list',
             'layouts.backend.milestone.list.row',
             'layouts.backend.milestone.list.filter',
         ];
     }
     
+    public function home()
+    {
+        $router = $this->container->get('router');
+        return [
+            'url' => $router->url(),
+            'title_page' => 'Welcome SDM',
+        ];
+    }
+
     public function list()
     {
         $request = $this->container->get('request');

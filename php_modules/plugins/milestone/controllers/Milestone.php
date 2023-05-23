@@ -39,9 +39,20 @@ class Milestone extends Admin
     public function list()
     {
         $this->isLoggedIn();
+        // support no permission view
+        $allow = $this->permission->checkPermission(['milestone_manager', 'milestone_read']);
+        if ($allow)
+        {
+            $this->app->set('page', 'backend');
+            $this->app->set('format', 'html');
+            $this->app->set('layout', 'backend.milestone.list');
+            return ;
+        }
+        
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.milestone.list');
+        $this->app->set('layout', 'backend.milestone.home');
+        return;
     }
 
     public function add()
