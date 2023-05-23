@@ -18,10 +18,14 @@ class GoogleModel extends Base
     public function getUrlLogin()
     {
         $client = $this->initGoogle();
-        
-        $url = $client->createAuthUrl();
+        if ($client)
+        {
+            $url = $client->createAuthUrl();
 
-        return $url;
+            return $url;
+        }
+        
+        return '';
     }
 
     public function initGoogle()
@@ -37,6 +41,9 @@ class GoogleModel extends Base
             $client->addScope("email");
             $client->addScope("profile");
                 
+        }
+        else{
+            return false;
         }
         
         return $client;
