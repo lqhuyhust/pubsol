@@ -17,6 +17,7 @@ class Menu
         $allow_usergroup = true;
         if ($permission)
         {
+            $allow_profile = $permission->checkPermission(['user_profile', 'user_manager']);
             $allow_user = $permission->checkPermission(['user_manager', 'user_read']);
             $allow_usergroup = $permission->checkPermission(['usergroup_manager', 'usergroup_read']);
         }
@@ -38,7 +39,12 @@ class Menu
         {
             $menu[] = $menu_user;
         }
-        $menu[] = [['profile'], 'profile', 'Profile', '<i class="fa-solid fa-user"></i>', ''];
+
+        if ($allow_profile)
+        {
+            $menu[] = [['profile'], 'profile', 'Profile', '<i class="fa-solid fa-user"></i>', ''];
+        }
+        
         $menu[] = [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', ''];
 
         $menu_root[15] = isset($menu_root[15]) ? array_merge($menu_root[15], $menu) : $menu;

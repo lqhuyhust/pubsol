@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'user_manager', 'user_read', 'user_create', 'user_update', 'user_delete',
+            'user_manager', 'user_read', 'user_create', 'user_update', 'user_delete', 'user_profile',
             'usergroup_manager', 'usergroup_read', 'usergroup_create', 'usergroup_update', 'usergroup_delete'
         ];
     }
@@ -41,6 +41,11 @@ class Permission
                 'get' => ['usergroup_manager', 'usergroup_read'],
                 'put' => ['usergroup_manager', 'usergroup_update'],
                 'delete' => ['usergroup_manager', 'usergroup_delete']
+            ],
+
+            'profile' => [
+                'get' => ['user_profile', 'user_manager'],
+                'post' => ['user_profile', 'user_manager'],
             ],
         ];
     }
