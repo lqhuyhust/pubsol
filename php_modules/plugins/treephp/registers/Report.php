@@ -4,23 +4,26 @@ namespace App\plugins\treephp\registers;
 use SPT\Application\IApp;
 use SPT\Support\Loader;
 
-class Menu
+class Report
 {
-    public static function registerReportMenu( IApp $app )
+    public static function registerType( IApp $app )
     {
         $container = $app->getContainer();
-        $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
+        $router = $container->get('router');
         $permission = $container->exists('permission') ? $container->get('permission') : null;
         $allow = $permission ? $permission->checkPermission(['treephp_manager', 'treephp_read']) : true;
         if (!$allow)
         {
-            return false;
+            return [];
         }
         
-        $menu = [
-            // [['tree-phps', 'tree-php',], 'tree-phps', 'Tree PHP', ''],
+        return [
+            'tree_php' => [
+                'title' => 'Tree Of Note',
+                'new_link' => $router->url('tree-php/0'),
+                'detail_link' => $router->url('tree-php'),
+                'remove_object' => 'TreePhpModel',
+            ],
         ];
-        $menu_root = array_merge($menu_root, $menu);
-        $container->set('reportMenu', $menu_root);
     }
 }

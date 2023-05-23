@@ -26,7 +26,7 @@ class AdminTreePhp extends ViewModel
     public function form()
     {
         $request = $this->container->get('request');
-        $TreePhpEntity = $this->container->get('TreePhpEntity');
+        $DiagramEntity = $this->container->get('DiagramEntity');
         $NoteEntity = $this->container->get('NoteEntity');
         $TreePhpModel = $this->container->get('TreePhpModel');
         $router = $this->container->get('router');
@@ -34,7 +34,7 @@ class AdminTreePhp extends ViewModel
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
 
-        $data = $id ? $TreePhpEntity->findByPK($id) : [];
+        $data = $id ? $DiagramEntity->findByPK($id) : [];
         $ignore = [];
         $list_tree = [];
         if ($data)
@@ -58,7 +58,7 @@ class AdminTreePhp extends ViewModel
             'link_note' => $router->url('note/'),
             'link_request' => $router->url('note/request'),
             'link_detail_request' => $router->url('detail-request'),
-            'link_list' => $router->url('tree-phps'),
+            'link_list' => $router->url('reports'),
             'link_form' => $router->url('tree-php'),
             'link_search' => $router->url('note/search'),
         ];

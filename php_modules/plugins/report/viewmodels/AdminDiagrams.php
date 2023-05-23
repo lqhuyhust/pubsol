@@ -1,106 +1,104 @@
 <?php
-
 /**
  * SPT software - ViewModel
  * 
- * @project: https://github.com/smpleader/spt
+ * @project: https://github.com/smpleader/spt-boilerplate
  * @author: Pham Minh - smpleader
- * @description: A simple View Model
+ * @description: Just a basic viewmodel
  * 
  */
-
-namespace App\plugins\treephp\viewmodels;
+namespace App\plugins\report\viewmodels; 
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\MVVM\ViewModel;
 
-class AdminTreePhps extends ViewModel
+class AdminDiagrams extends ViewModel
 {
     public static function register()
     {
         return [
-            'layouts.backend.tree_php.list',
-            'layouts.backend.tree_php.list.row',
-            'layouts.backend.tree_php.list.filter'
+            'layouts.backend.diagram.list',
+            'layouts.backend.diagram.list.row',
+            'layouts.backend.diagram.list.filter',
         ];
     }
-
+    
     public function list()
     {
         $request = $this->container->get('request');
-        $TagEntity = $this->container->get('TagEntity');
-        $DiagramEntity = $this->container->get('DiagramEntity');
+        $UserEntity = $this->container->get('UserEntity');
+        $app = $this->container->get('app');
         $session = $this->container->get('session');
         $user = $this->container->get('user');
         $router = $this->container->get('router');
+        $DiagramEntity = $this->container->get('DiagramEntity');
 
         $filter = $this->filter()['form'];
+
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $search = $filter->getField('search')->value;
+        $status = $filter->getField('status')->value;
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
+        
 
-        if (!empty($search) && is_string($search)) {
-            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
-            $where[] = "(`description` LIKE '%" . $search . "%')";
-            $where[] = "(`note` LIKE '%" . $search . "%')";
-            $where[] = "(`title` LIKE '%" . $search . "%')";
-            if ($tags) {
-                foreach ($tags as $tag) {
-                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                }
-            }
-            $where = [implode(" OR ", $where)];
-        } 
+        if( !empty($search) )
+        {
+            $where[] = "(`title` LIKE '%". $search ."%') ";
+        }
+        
+        if(is_numeric($status))
+        {
+            $where[] = '`status`='. $status;
+        }
 
-        $start  = ($page - 1) * $limit;
+        $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $DiagramEntity->list($start, $limit, $where, $sort);
+        $result = $DiagramEntity->list( $start, $limit, $where, $sort);
         $total = $DiagramEntity->getListTotal();
-        $data_tags = [];
-        
-        if (!$result) {
+        if (!$result)
+        {
             $result = [];
             $total = 0;
-            if (!empty($search)) {
-                $session->set('flashMsg', 'Note Diagram not found');
+            if( !empty($search) )
+            {
+                $session->set('flashMsg', 'Not Found Report');
             }
         }
 
-        foreach ($result as $item) {
-            if (!empty($item['tags'])) {
-                $t1 = $where = [];
-                $where[] = "(`id` IN (" . $item['tags'] . ") )";
-                $t2 = $TagEntity->list(0, 0, $where, '', '`name`');
-                if ($t2) {
-                    foreach ($t2 as $i) {
-                        $t1[] = $i['name'];
-                    }
-                }
-                $data_tags[$item['id']] = implode(',', $t1);
+        $types = [];
+        $app->plgLoad('report', 'registerType', function($type) use (&$types)
+        {
+            if (is_array($type) && $type)
+            {
+                $types = array_merge($type, $types);
             }
+        });
+
+        foreach($result as &$item)
+        {
+            $item['report_type'] = isset($types[$item['report_type']]) ? $types[$item['report_type']] : $item['report_type'];
+            $user_tmp = $UserEntity->findByPK($item['created_by']);
+            $item['auth'] = $user_tmp ? $user_tmp['name'] : '';
+            $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
         }
 
-        $list   = new Listing($result, $total, $limit, $this->getColumns());
+        $list   = new Listing($result, $total, $limit, $this->getColumns() );
         return [
             'list' => $list,
-            'data_tags' => $data_tags,
             'page' => $page,
             'start' => $start,
+            'types' => $types,
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
-            'link_list' => $router->url('tree-phps'),
-            'title_page' => 'Tree PHP Diagarm',
-            'link_form' => $router->url('tree-php'),
+            'link_list' => $router->url('reports'),
+            'title_page' => 'Report',
             'token' => $this->container->get('token')->getToken(),
         ];
     }
@@ -110,6 +108,7 @@ class AdminTreePhps extends ViewModel
         return [
             'num' => '#',
             'title' => 'Title',
+            'status' => 'Status',
             'created_at' => 'Created at',
             'col_last' => ' ',
         ];
@@ -118,23 +117,16 @@ class AdminTreePhps extends ViewModel
     protected $_filter;
     public function filter()
     {
-        if (null === $this->_filter) :
+        if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'tree_php.search'),
-                'tags' => $this->state('tags', '', '', 'post', 'tree_php.tags'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'tree_php.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'tree_php.sort')
+                'search' => $this->state('search', '', '', 'post', 'milestone.search'),
+                'status' => $this->state('status', '','', 'post', 'milestone.status'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'milestone.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'milestone.sort')
             ];
-            if (strpos($data['search'], ';') == true) {
-                $try = explode(';', $data['search']);
-                $data['search'] = [];
-                $tmp = [];
-                foreach ($try as $key => $value) {
-                    $tmp[] = $value;
-                }
-                $data['search'][] = $tmp;
-            }
+
             $filter = new Form($this->getFilterFields(), $data);
+
             $this->_filter = $filter;
         endif;
 
@@ -144,15 +136,13 @@ class AdminTreePhps extends ViewModel
     public function getFilterFields()
     {
         return [
-            'search' => [
-                'text',
+            'search' => ['text',
                 'default' => '',
                 'showLabel' => false,
                 'formClass' => 'form-control h-full input_common w_full_475',
                 'placeholder' => 'Search..'
             ],
-            'status' => [
-                'option',
+            'status' => ['option',
                 'default' => '1',
                 'formClass' => 'form-select',
                 'options' => [
@@ -162,15 +152,13 @@ class AdminTreePhps extends ViewModel
                 ],
                 'showLabel' => false
             ],
-            'limit' => [
-                'option',
+            'limit' => ['option',
                 'formClass' => 'form-select',
                 'default' => 10,
-                'options' => [5, 10, 20, 50],
+                'options' => [ 5, 10, 20, 50],
                 'showLabel' => false
             ],
-            'sort' => [
-                'option',
+            'sort' => ['option',
                 'formClass' => 'form-select',
                 'default' => 'title asc',
                 'options' => [

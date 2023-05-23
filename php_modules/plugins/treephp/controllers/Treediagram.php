@@ -21,13 +21,13 @@ class Treediagram extends Admin {
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
-        $exist = $this->TreePhpEntity->findByPK($id);
+        $exist = $this->DiagramEntity->findByPK($id);
 
         if(!empty($id) && !$exist)
         {
             $this->session->set('flashMsg', "Invalid note diagram");
             return $this->app->redirect(
-                $this->router->url('tree-phps')
+                $this->router->url('reports')
             );
         }
         $this->app->set('layout', 'backend.tree_php.form');
@@ -61,8 +61,10 @@ class Treediagram extends Admin {
         }
 
         // TODO: validate new add
-        $newId =  $this->TreePhpEntity->add([
+        $newId =  $this->DiagramEntity->add([
             'title' => $title,
+            'status' => 1,
+            'report_type' => 'tree_php',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
@@ -103,7 +105,7 @@ class Treediagram extends Admin {
                 );
             }
             $this->session->set('flashMsg', 'Created Successfully!');
-            $link = $save_close ? 'tree-phps' : 'tree-php/'. $newId;
+            $link = $save_close ? 'reports' : 'tree-php/'. $newId;
             return $this->app->redirect(
                 $this->router->url($link)
             );
@@ -131,7 +133,7 @@ class Treediagram extends Admin {
                 );
             }
 
-            $try = $this->TreePhpEntity->update([
+            $try = $this->DiagramEntity->update([
                 'title' => $title,
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
@@ -184,7 +186,7 @@ class Treediagram extends Admin {
                     );
                 }
                 $this->session->set('flashMsg', 'Updated successfully');
-                $link = $save_close ? 'tree-phps' : 'tree-php/'. $ids;
+                $link = $save_close ? 'reports' : 'tree-php/'. $ids;
                 return $this->app->redirect(
                     $this->router->url($link)
                 );
@@ -227,7 +229,7 @@ class Treediagram extends Admin {
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         return $this->app->redirect(
-            $this->router->url('tree-phps'),
+            $this->router->url('reports'),
         );
     }
 
@@ -245,7 +247,7 @@ class Treediagram extends Admin {
 
             $this->session->set('flashMsg', 'Invalid note diagram');
             return $this->app->redirect(
-                $this->router->url('tree-phps'),
+                $this->router->url('reports'),
             );
         }
 
