@@ -119,16 +119,18 @@ class User extends Admin
         $password = $this->request->post->get('password', '');
         $repassword = $this->request->post->get('confirm_password', '');
         
+        $user = [
+            'name' => $this->request->post->get('name', '', 'string'),
+            'username' => $this->request->post->get('username', '' , 'string'),
+            'email' => $this->request->post->get('email', '', 'string'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+        ];
+
         if($password == $repassword) 
         {
-            $user = [
-                'name' => $this->request->post->get('name', '', 'string'),
-                'username' => $this->request->post->get('username', '' , 'string'),
-                'email' => $this->request->post->get('email', '', 'string'),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $id,
-            ];
+            $user['password'] = md5($password);
         }
         else
         {
@@ -138,8 +140,6 @@ class User extends Admin
             );
         }
 
-        if($password) $user['password'] = md5($passwrd);
-        
         $try = $this->container->get('UserEntity')->update( $user );
 
         if($try) 
