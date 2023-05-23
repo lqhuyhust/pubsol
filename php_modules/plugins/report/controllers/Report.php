@@ -23,6 +23,32 @@ class Report extends Admin
         $this->app->set('layout', 'backend.diagram.list');
     }
 
+    public function update()
+    {
+        $this->isLoggedIn();
+        $id = $this->request->post->get('id', '', 'string');
+        $find = $this->DiagramEntity->findByPK($id);
+        if (!$find)
+        {
+            $this->session->set('flashMsg', 'Invalid Report');
+            return $this->app->redirect(
+                $this->router->url('reports'),
+            );
+        }
+
+        $try = $this->DiagramEntity->update([
+            'id' => $id,
+            'status' => $find['status'] ? 0 : 1,
+        ]);
+
+        $msg = $try ? 'Update Successfull' : 'Update Fail';
+       
+        $this->session->set('flashMsg', $msg);
+        return $this->app->redirect(
+            $this->router->url('reports'),
+        );
+    }
+
     public function delete()
     {
         $ids = $this->validateID();
@@ -111,7 +137,7 @@ class Report extends Admin
 
             $this->session->set('flashMsg', 'Invalid Report');
             return $this->app->redirect(
-                $this->router->url('requests'),
+                $this->router->url('reports'),
             );
         }
 

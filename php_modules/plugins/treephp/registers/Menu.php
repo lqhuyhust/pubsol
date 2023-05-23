@@ -18,7 +18,7 @@ class Menu
             return false;
         }
         
-        $list = $DiagramEntity->list(0, 0, ['report_type' => 'tree_php']);
+        $list = $DiagramEntity->list(0, 0, ['report_type' => 'tree_php', 'status' => 1]);
         $menu = [];
         foreach($list as $item)
         {

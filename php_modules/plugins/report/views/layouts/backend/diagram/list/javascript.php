@@ -2,6 +2,11 @@
     <input type="hidden" value="<?php echo $this->token ?>" name="token">
     <input type="hidden" value="DELETE" name="_method">
 </form>
+<form class="hidden" method="POST" id="form_update" action="<?php echo $this->link_list ?>">
+    <input type="hidden" value="<?php echo $this->token ?>" name="token">
+    <input type="hidden" value="" name="id" class="toogle_status_id">
+    <input type="hidden" value="PUT" name="_method">
+</form>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
@@ -71,6 +76,13 @@
             } else {
                 $('#milestone').val('POST');
             }
+        });
+        $('.toggle_status').on('click', function(e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            var status = $(this).data('status');
+            $('.toogle_status_id').val(id);
+            $('#form_update').submit();
         });
 
     });
