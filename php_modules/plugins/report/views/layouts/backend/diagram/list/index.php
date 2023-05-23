@@ -52,7 +52,7 @@
 				<div class="d-flex justify-content-center">
 				<?php foreach($this->types as $type) : ?>
 					<h4>
-						<a href="<?php echo $type['new_link']?>"><?php echo $type['title']?></a>
+						<a class="mx-3" href="<?php echo $type['new_link']?>"><?php echo $type['title']?></a>
 					</h4>
 				<?php endforeach; ?>
 				</div>
