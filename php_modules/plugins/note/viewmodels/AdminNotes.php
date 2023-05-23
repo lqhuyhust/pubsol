@@ -60,20 +60,24 @@ class AdminNotes extends ViewModel
 
             foreach ($tags as $tag) 
             {
-                $tag_tmp = $this->TagEntity->findByPK($tag);
-                if ($tag_tmp)
+                if ($tag)
                 {
-                    $filter_tags[] = [
-                        'id' => $tag,
-                        'name' => $tag_tmp['name'],
-                    ];
+                    $tag_tmp = $this->TagEntity->findByPK($tag);
+                    if ($tag_tmp)
+                    {
+                        $filter_tags[] = [
+                            'id' => $tag,
+                            'name' => $tag_tmp['name'],
+                        ];
+                    }
+    
+                    $where_tag[] = 
+                    "(`tags` = '" . $tag . "'" .
+                    " OR `tags` LIKE '%" . ',' . $tag . "'" .
+                    " OR `tags` LIKE '" . $tag . ',' . "%'" .
+                    " OR `tags` LIKE '%" . ',' . $tag . ',' . "%' )";
                 }
-
-                $where_tag[] = 
-                "(`tags` = '" . $tag . "'" .
-                " OR `tags` LIKE '%" . ',' . $tag . "'" .
-                " OR `tags` LIKE '" . $tag . ',' . "%'" .
-                " OR `tags` LIKE '%" . ',' . $tag . ',' . "%' )";
+                
             }
             $where_tag = implode(" OR ", $where_tag);
 

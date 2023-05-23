@@ -273,7 +273,7 @@ $js = <<<Javascript
             cache: true
         },
         placeholder: 'Search tags',
-        minimumInputLength: 2,
+        minimumInputLength: 1,
     });
 
     $('.js-example-tags').on('select2:select', async function(e) {

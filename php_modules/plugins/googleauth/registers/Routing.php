@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\timeline\registers;
+namespace App\plugins\googleauth\registers;
 
 use SPT\Application\IApp;
 

@@ -118,7 +118,7 @@ class Tag extends Admin {
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->TagEntity->remove( $id ) )
+                if( $this->TagModel->remove( $id ) )
                 {
                     $count++;
                 }
@@ -126,7 +126,7 @@ class Tag extends Admin {
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->TagEntity->remove($ids ) )
+            if( $this->TagModel->remove($ids ) )
             {
                 $count++;
             }
