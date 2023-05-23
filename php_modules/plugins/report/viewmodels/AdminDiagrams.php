@@ -28,7 +28,7 @@ class AdminDiagrams extends ViewModel
     {
         $request = $this->container->get('request');
         $UserEntity = $this->container->get('UserEntity');
-        $app = $this->container->get('app');
+        $ReportModel = $this->container->get('ReportModel');
         $session = $this->container->get('session');
         $user = $this->container->get('user');
         $router = $this->container->get('router');
@@ -71,14 +71,7 @@ class AdminDiagrams extends ViewModel
             }
         }
 
-        $types = [];
-        $app->plgLoad('report', 'registerType', function($type) use (&$types)
-        {
-            if (is_array($type) && $type)
-            {
-                $types = array_merge($type, $types);
-            }
-        });
+        $types = $ReportModel->getTypes();
 
         foreach($result as &$item)
         {

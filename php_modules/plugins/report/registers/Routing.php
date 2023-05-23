@@ -13,6 +13,8 @@ class Routing
                 'fnc' => [
                     'get' => 'report.report.list',
                     'post' => 'report.report.list',
+                    'put' => 'report.report.update',
+                    'delete' => 'report.report.delete',
                 ],
             ],
         ];

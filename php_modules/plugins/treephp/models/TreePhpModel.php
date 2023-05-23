@@ -74,7 +74,7 @@ class TreePhpModel extends Base
         
         foreach($list as $item)
         {
-            $this->TreeStructureEntity->remove($item);
+            $this->TreeStructureEntity->remove($item['id']);
         }
 
         $try = $this->DiagramEntity->remove($id);

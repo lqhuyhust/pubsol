@@ -26,50 +26,92 @@ class Report extends Admin
     public function delete()
     {
         $ids = $this->validateID();
-        $types = [];
+        $types = $this->ReportModel->getTypes();
         $count = 0;
         if( is_array($ids))
         {
             foreach($ids as $id)
             {
                 //Delete file in source
-                $find = $this->ReportEntity->findByPK($id);
-                if( $this->RequestEntity->remove( $id ) )
+                $find = $this->DiagramEntity->findByPK($id);
+                if ($find)
                 {
-                    $count++;
+                    $type = isset($types[$find['report_type']]) ? $types[$find['report_type']] : [];
+                }
+
+                if (isset($type['remove_object']))
+                {
+                    $remove_object = $this->container->get($type['remove_object']);
+                    
+                }
+                
+                if (is_object($remove_object))
+                {
+                    if ($remove_object->remove($id))
+                    {
+                        $count++;
+                    }
+                }
+                else
+                {
+                    if( $this->DiagramEntity->remove( $id ) )
+                    {
+                        $count++;
+                    }
                 }
             }
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->RequestEntity->remove($ids ) )
+            $id = $ids;
+            $find = $this->DiagramEntity->findByPK($id);
+            if ($find)
             {
-                $count++;
+                $type = isset($types[$find['report_type']]) ? $types[$find['report_type']] : [];
+            }
+
+            if (isset($type['remove_object']))
+            {
+                $remove_object = $this->container->get($type['remove_object']);
+                
+            }
+            if (is_object($remove_object))
+            {
+                if ($remove_object->remove($id))
+                {
+                    $count++;
+                }
+            }
+            else
+            {
+                if( $this->DiagramEntity->remove( $id ) )
+                {
+                    $count++;
+                }
             }
         }  
         
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         return $this->app->redirect(
-            $this->router->url('requests/'. $milestone_id), 
+            $this->router->url('reports'), 
         );
     }
 
     public function validateID()
     {
         $this->isLoggedIn();
-        $milestone_id = $this->validateMilestoneID();
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = $urlVars ? (int) $urlVars['id'] : [];
 
         if(empty($id))
         {
             $ids = $this->request->post->get('ids', [], 'array');
             if(count($ids)) return $ids;
 
-            $this->session->set('flashMsg', 'Invalid request');
+            $this->session->set('flashMsg', 'Invalid Report');
             return $this->app->redirect(
-                $this->router->url('requests/'. $milestone_id),
+                $this->router->url('requests'),
             );
         }
 
