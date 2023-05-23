@@ -16,24 +16,24 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                             <?php if (!$this->id): ?> 
                             <span>
                                 <div class="button-editor-mode form-check form-switch me-2 mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || ($this->data && $this->data['editor'] == 'html')) ? 'checked' : ''; ?> name="editor" id="tynimceToogle" value="html">
+                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || ($this->data && $this->data['type'] == 'html')) ? 'checked' : ''; ?> name="type" id="tynimceToogle" value="html">
                                     <label class="form-check-label" for="tynimceToogle">HTML</label>
                                 </div>
                             </span>
                             <span>
                                 <div class=" button-editor-mode form-check me-2 form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'sheetjs') ? 'checked' : ''; ?> name="editor" id="sheetToogle" value="sheetjs">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['type'] == 'sheetjs') ? 'checked' : ''; ?> name="type" id="sheetToogle" value="sheetjs">
                                     <label class="form-check-label" for="sheetToogle">Sheet</label>
                                 </div>
                             </span>
                             <span>
                                 <div class="button-editor-mode form-check form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['editor'] == 'presenter') ? 'checked' : ''; ?> name="editor" id="PresenterToogle" value="presenter">
+                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['type'] == 'presenter') ? 'checked' : ''; ?> name="type" id="PresenterToogle" value="presenter">
                                     <label class="form-check-label" for="PresenterToogle">Presenter</label>
                                 </div>
                             </span>
                             <?php else: ?>
-                                <input type="hidden"  name="editor" value="<?php echo $this->data['editor'];?>">
+                                <input type="hidden"  name="type" value="<?php echo $this->data['type'];?>">
                             <?php endif; ?>
                             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
@@ -159,7 +159,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 </style>
 <script>
     $(document).ready(function(e) {
-        var editor = '<?php echo $this->data ? $this->data['editor'] : '' ?>';
+        var editor = '<?php echo $this->data ? $this->data['type'] : '' ?>';
         
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
@@ -204,7 +204,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         $("#apply").removeClass("d-none");
         $("#save_and_close_header").removeClass("d-none");
         $("#apply_header").removeClass("d-none");
-        openModeEditor('<?php echo $this->data ? $this->data['editor'] : 'html';?>');
+        openModeEditor('<?php echo $this->data ? $this->data['type'] : 'html';?>');
         
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
@@ -340,9 +340,9 @@ $js = <<<Javascript
                 return false;
             }
         });
-        $('input[name="editor"]').change(function()
+        $('input[name="type"]').change(function()
         {
-            var value = $('input[name="editor"]:checked').val();
+            var value = $('input[name="type"]:checked').val();
             openModeEditor(value);
         });
         $("#description").attr('rows', 25);

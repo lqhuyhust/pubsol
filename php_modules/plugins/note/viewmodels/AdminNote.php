@@ -68,7 +68,7 @@ class AdminNote extends ViewModel
             }
 
             $data['versions'] = $versions;
-            $data['editor'] = !$data['editor'] ? 'html' : $data['editor'];
+            $data['type'] = !$data['type'] ? 'html' : $data['type'];
         }
         
         $data_tags = [];
@@ -78,7 +78,7 @@ class AdminNote extends ViewModel
         }
         $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
         
-        if ($data && $data['editor'] == 'presenter')
+        if ($data && $data['type'] == 'presenter')
         {
             $data['description_presenter'] = $data['description'];
         }
@@ -148,7 +148,7 @@ class AdminNote extends ViewModel
             }
 
             $data['versions'] = $versions;
-            $data['editor'] = !$data['editor'] ? 'html' : $data['editor'];
+            $data['type'] = !$data['type'] ? 'html' : $data['type'];
 
             $tag_tmp = $data['tags'] ? explode(',', $data['tags']) : [];
             $data['tags'] = [];
@@ -170,7 +170,7 @@ class AdminNote extends ViewModel
         }
         $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
         
-        if ($data && $data['editor'] == 'presenter')
+        if ($data && $data['type'] == 'presenter')
         {
             $data['description_presenter'] = $data['description'];
         }

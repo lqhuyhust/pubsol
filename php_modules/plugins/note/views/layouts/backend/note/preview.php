@@ -14,17 +14,17 @@
                                 </a>
                             </nav>
                         </div>
-                        <?php if($this->data['editor'] == 'html' || !$this->data['editor']) : ?>
+                        <?php if($this->data['type'] == 'html' || !$this->data['type']) : ?>
                             <div id="content" class="text-break">
                                 <?php if (isset($this->data['description'])) {
                                     echo $this->data['description'];
                                 } ?>
                             </div>
                         <?php endif; ?>
-                        <?php if($this->data['editor'] == 'sheetjs') : ?>
+                        <?php if($this->data['type'] == 'sheetjs') : ?>
                             <?php $this->ui->field('description_sheetjs'); ?>
                         <?php endif; ?>
-                        <?php if($this->data['editor'] == 'presenter') : ?>
+                        <?php if($this->data['type'] == 'presenter') : ?>
                             <div id="presenter_editor pe-none">
                                 <?php $this->ui->field('description_presenter'); ?>
                             </div>
@@ -128,7 +128,7 @@
             window.dispatchEvent(new Event('resize'));
         });
 
-        <?php if ($this->data['editor'] == 'presenter') : ?>
+        <?php if ($this->data['type'] == 'presenter') : ?>
             $('#editor-canvas').addClass('pe-none');
             $('#fabric_tool_menu').addClass('d-none');
             $('#fabric_slide_menu .add-button').addClass('d-none');
@@ -137,7 +137,7 @@
     });
 
     function openModeEditor() {
-        var value = $('input[name="editor"]:checked').val();
+        var value = $('input[name="type"]:checked').val();
         if (value=='html')
         {
             if (view_mode)

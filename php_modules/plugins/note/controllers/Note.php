@@ -78,7 +78,7 @@ class Note extends Admin {
         $save_close = $this->request->post->get('save_close', '', 'string');
         $files = $this->request->file->get('files', [], 'array');
         $note = $this->request->post->get('note', '', 'string');
-        $editor = $this->request->post->get('editor', 'html', 'string');
+        $type = $this->request->post->get('type', 'html', 'string');
 
         $listTag = explode(',', $tags);
         $tags_tmp = [];
@@ -91,12 +91,12 @@ class Note extends Admin {
                 $tags_tmp[] = $tag;
             }
         }
-        if ($editor == 'sheetjs')
+        if ($type == 'sheetjs')
         {
             $description = base64_decode($description_sheetjs);
         }
 
-        if ($editor == 'presenter')
+        if ($type == 'presenter')
         {
             $description = $description_presenter;
         }
@@ -125,7 +125,7 @@ class Note extends Admin {
             'title' => $title,
             'tags' => $tags,
             'note' => $note,
-            'editor' => $editor,
+            'type' => $type,
             'description' => $description,
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -190,7 +190,7 @@ class Note extends Admin {
             $files = $this->request->file->get('files', [], 'array');
             $save_close = $this->request->post->get('save_close', '', 'string');
             $note = $this->request->post->get('note', '', 'string');
-            $editor = $this->request->post->get('editor', 'html', 'string');
+            $type = $this->request->post->get('type', 'html', 'string');
 
             $listTag = explode(',', $tags);
             $tags_tmp = [];
@@ -213,12 +213,12 @@ class Note extends Admin {
                 );
             }
 
-            if ($editor == 'sheetjs')
+            if ($type == 'sheetjs')
             {
                 $description = base64_decode($description_sheetjs);
             }
 
-            if ($editor == 'presenter')
+            if ($type == 'presenter')
             {
                 $description = $description_presenter;
             }
@@ -237,7 +237,7 @@ class Note extends Admin {
                 'title' => $title,
                 'tags' => $tags,
                 'note' => $note,
-                'editor' => $editor,
+                'type' => $type,
                 'description' => $description,
                 'modified_by' => $this->user->get('id'),
                 'modified_at' => date('Y-m-d H:i:s'),
@@ -276,7 +276,7 @@ class Note extends Admin {
                     'title' => $title,
                     'tags' => $tags,
                     'note' => $note,
-                    'editor' => $editor,
+                    'type' => $type,
                     'description' => $description,
                     'modified_by' => $this->user->get('id'),
                     'modified_at' => date('Y-m-d H:i:s'),
