@@ -1,12 +1,16 @@
 <?php
+
+
 namespace App\plugins\report\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Report extends Controller 
+class Report extends Admin 
 {
     public function list()
     {
+        $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.diagram.list');
@@ -14,6 +18,7 @@ class Report extends Controller
 
     public function update()
     {
+        $this->isLoggedIn();
         $id = $this->request->post->get('id', '', 'string');
         $find = $this->DiagramEntity->findByPK($id);
         if (!$find)
@@ -114,6 +119,7 @@ class Report extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $id = $urlVars ? (int) $urlVars['id'] : [];
 

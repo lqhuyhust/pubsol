@@ -11,11 +11,13 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Version extends Controller 
-{
+class Version extends Admin {
+    
     public function rollback()
     {
+        $this->isLoggedIn();
         $id = $this->validateID();
         $version = $this->NoteHistoryEntity->findByPK($id);
         if ($version)
@@ -46,6 +48,8 @@ class Version extends Controller
 
     public function detail()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -88,6 +92,8 @@ class Version extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 

@@ -12,11 +12,11 @@ namespace App\plugins\tag\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
 
-class Tag extends Controller 
-{
+class Tag extends Admin {
 
     public function list()
     {
+        $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.tag.list');
@@ -24,6 +24,8 @@ class Tag extends Controller
 
     public function add()
     {
+        $this->isLoggedIn();
+
         $name = $this->request->post->get('name', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
         $parent_id = $this->request->post->get('parent_id', 0, 'int');
@@ -31,6 +33,15 @@ class Tag extends Controller
         if (!$name)
         {
             $this->session->set('flashMsg', 'Error: Name can\'t empty! ');
+            return $this->app->redirect(
+                $this->router->url('tags')
+            );
+        }
+
+        $findOne = $this->TagEntity->findOne(['name' => $name]);
+        if ($findOne)
+        {
+            $this->session->set('flashMsg', 'Error: Create Failed! Tag already exists');
             return $this->app->redirect(
                 $this->router->url('tags')
             );
@@ -78,6 +89,15 @@ class Tag extends Controller
                 );
             }
             
+            $findOne = $this->TagEntity->findOne(['name' => $name, 'id <> '. $id]);
+            if ($findOne)
+            {
+                $this->session->set('flashMsg', 'Error: Update Failed! Tag already exists');
+                return $this->app->redirect(
+                    $this->router->url('tags')
+                );
+            }
+
             $try = $this->TagEntity->update([
                 'name' => $name,
                 'description' => $description,
@@ -139,6 +159,7 @@ class Tag extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $id = $urlVars ? (int) $urlVars['id'] : 0;
 
@@ -158,6 +179,7 @@ class Tag extends Controller
 
     public function search()
     {
+        $this->isLoggedIn();
 
         $name = trim($this->request->get->get('search', '', 'string'));
         $ignores = $this->request->get->get('ignores', [], 'array');

@@ -1,13 +1,17 @@
 <?php
 
+
 namespace App\plugins\version\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Version extends Controller 
+class Version extends Admin 
 {
     public function detail()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -26,6 +30,7 @@ class Version extends Controller
 
     public function list()
     {
+        $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.version.list');
@@ -33,6 +38,8 @@ class Version extends Controller
 
     public function add()
     {
+        $this->isLoggedIn();
+
         //check title sprint
         $name = $this->request->post->get('name', '', 'string');
         $release_date = $this->request->post->get('release_date', '', 'string');
@@ -187,6 +194,7 @@ class Version extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];

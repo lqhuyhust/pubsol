@@ -1,13 +1,16 @@
 <?php
 
+
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Discussion extends Controller 
+class Discussion extends Admin 
 {
     public function add()
     {
+        $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         
         $document = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
@@ -73,6 +76,7 @@ class Discussion extends Controller
 
     public function validateRequestID()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];

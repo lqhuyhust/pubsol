@@ -1,13 +1,16 @@
 <?php
 
+
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Document extends Controller 
+class Document extends Admin 
 {
     public function detail()
     {
+        $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         $request = $this->RequestEntity->findByPK($request_id);
         if (!$request)
@@ -24,6 +27,7 @@ class Document extends Controller
 
     public function save()
     {
+        $this->isLoggedIn();
         $request_id = $this->validateRequestID();
 
         $description = $this->request->post->get('description', '', 'string');
@@ -80,6 +84,7 @@ class Document extends Controller
 
     public function validateRequestID()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
@@ -97,6 +102,7 @@ class Document extends Controller
 
     public function getHistory()
     {
+        $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
@@ -127,6 +133,7 @@ class Document extends Controller
 
     public function getComment()
     {
+        $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 

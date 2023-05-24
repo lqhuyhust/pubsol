@@ -11,9 +11,9 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Attachment extends Controller 
-{
+class Attachment extends Admin {
     public function delete()
     {
         $id = $this->validateID();
@@ -47,6 +47,8 @@ class Attachment extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 

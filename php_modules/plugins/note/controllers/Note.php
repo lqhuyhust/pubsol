@@ -11,11 +11,13 @@
 namespace App\plugins\note\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Note extends Controller 
-{
+class Note extends Admin {
     public function detail()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -35,6 +37,8 @@ class Note extends Controller
 
     public function preview()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -55,6 +59,7 @@ class Note extends Controller
 
     public function list()
     {
+        $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.note.list');
@@ -62,6 +67,8 @@ class Note extends Controller
 
     public function add()
     {
+        $this->isLoggedIn();
+
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
         $tags = $this->request->post->get('tags', '', 'string');
@@ -334,6 +341,8 @@ class Note extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
+
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 

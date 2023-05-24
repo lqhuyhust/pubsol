@@ -1,13 +1,16 @@
 <?php
 
+
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Request extends Controller 
+class Request extends Admin 
 {
     public function detail()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -28,6 +31,7 @@ class Request extends Controller
 
     public function detail_request()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
@@ -49,6 +53,7 @@ class Request extends Controller
 
     public function list()
     {
+        $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.request.list');
@@ -56,6 +61,7 @@ class Request extends Controller
 
     public function add()
     {
+        $this->isLoggedIn();
         $milestone_id = $this->validateMilestoneID();
         $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_latest = $version_latest ? $version_latest[0] : [];
@@ -78,14 +84,6 @@ class Request extends Controller
             if ($find)
             {
                 $tags_tmp[] = $tag;
-            }
-            elseif( !(int) $tag)
-            {
-                $newTag = $this->TagEntity->add(['name' => $tag]);
-                if ($newTag)
-                {
-                    $tags_tmp[] = $newTag;
-                }
             }
         }
 
@@ -166,14 +164,6 @@ class Request extends Controller
                 {
                     $tags_tmp[] = $tag;
                 }
-                elseif( !(int) $tag)
-                {
-                    $newTag = $this->TagEntity->add(['name' => $tag]);
-                    if ($newTag)
-                    {
-                        $tags_tmp[] = $newTag;
-                    }
-                }
             }
             
             $try = $this->RequestEntity->update([
@@ -240,6 +230,7 @@ class Request extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
         $milestone_id = $this->validateMilestoneID();
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -260,6 +251,7 @@ class Request extends Controller
 
     public function validateMilestoneID()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
 

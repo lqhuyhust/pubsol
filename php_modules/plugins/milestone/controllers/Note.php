@@ -1,13 +1,16 @@
 <?php
 
+
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Response;
 
-class Note extends Controller 
+class Note extends Admin 
 {
     public function detail()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -28,6 +31,7 @@ class Note extends Controller
 
     public function list()
     {
+        $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
         $search = trim($this->request->post->get('search', '', 'string'));
@@ -80,6 +84,7 @@ class Note extends Controller
 
     public function getNote()
     {
+        $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
@@ -106,6 +111,7 @@ class Note extends Controller
 
     public function add()
     {
+        $this->isLoggedIn();
         $request_id = $this->validateRequestID();
 
         //check title sprint
@@ -251,6 +257,7 @@ class Note extends Controller
 
     public function validateID()
     {
+        $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
@@ -271,6 +278,7 @@ class Note extends Controller
 
     public function validateRequestID()
     {
+        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];

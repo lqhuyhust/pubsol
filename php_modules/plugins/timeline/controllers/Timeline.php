@@ -12,10 +12,12 @@ namespace App\plugins\timeline\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
 
-class Timeline extends Controller 
+class Timeline extends Admin 
 {
     public function diagram()
     {
+        $this->isLoggedIn();
+        
         $this->app->set('layout', 'backend.timeline.diagram');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
