@@ -72,5 +72,4 @@ class Permission
             $app->getRouter()->url('login')
         );
     }
-
 }
