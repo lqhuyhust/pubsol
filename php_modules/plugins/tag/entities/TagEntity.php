@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\note\entities;
+namespace App\plugins\tag\entities;
 
 use SPT\Storage\DB\Entity;
 
@@ -29,7 +29,15 @@ class TagEntity extends Entity
                 'name' => [
                     'type' => 'varchar',
                     'limit' => 255,
-                ]
+                ],
+                'parent_id' => [
+                    'type' => 'int',
+                    'null' => 'YES',
+                ],
+                'description' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
         ];
     }
 }

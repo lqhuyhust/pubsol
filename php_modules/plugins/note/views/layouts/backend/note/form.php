@@ -308,8 +308,6 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 $js = <<<Javascript
     var new_tags = [];
     $(".js-example-tags").select2({
-        tags: true,
-        createTag: newtag,
         matcher: matchCustom,
         ajax: {
             url: "{$this->link_tag}",
@@ -344,36 +342,8 @@ $js = <<<Javascript
         minimumInputLength: 2,
     });
 
-    function newtag(params, data) {
-        var term = $.trim(params.term);
-        if (term === '') {
-            return null;
-        }
-
-        return {
-            id: term,
-            text: term,
-            newTag: true // add additional parameters
-        }
-    }
-
     $('.js-example-tags').on('select2:select', async function(e) {
-        let tag = e.params.data;
-        if (tag.newTag === true) {
-            await $.post("{$this->link_tag}", {
-                    name: tag.text
-                })
-                .done(function(data) {
-                    new_tags.push({
-                        id: data.data.id,
-                        text: data.data.name
-                    })
-
-                    setTags();
-                });
-        } else {
-            setTags();
-        }
+        setTags();
     });
 
     $('.js-example-tags').on('select2:unselect', function(e) {
