@@ -31,6 +31,7 @@ class AdminNoteHistory extends ViewModel
         $TagEntity = $this->container->get('TagEntity');
         $AttachmentEntity = $this->container->get('AttachmentEntity');
         $router = $this->container->get('router');
+        $NoteModel = $this->container->get('NoteModel');
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -51,6 +52,8 @@ class AdminNoteHistory extends ViewModel
 
         if ($data)
         {
+            $data['description'] = $NoteModel->replaceContent($data['description'], false);
+
             $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
             $data['description_presenter'] = $data['description'];
             $versions = $NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');

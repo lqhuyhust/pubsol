@@ -19,22 +19,7 @@ class AttachmentModel extends Base
     {
         if($file['name']) 
         {
-            if (!file_exists(MEDIA_PATH))
-            {
-                if (!mkdir(MEDIA_PATH))
-                {
-                    $this->session->set('flashMsg', 'Upload Fail');
-                    return false;
-                }
-            }
-            if (!file_exists(MEDIA_PATH.'attachments'))
-            {
-                if (!mkdir(MEDIA_PATH.'attachments'))
-                {
-                    $this->session->set('flashMsg', 'Upload Fail');
-                    return false;
-                }
-            }
+            
             // check extension
             if ($this->config->exists('extension_allow') &&  is_array($this->config->extension_allow))
             {
@@ -46,15 +31,19 @@ class AttachmentModel extends Base
                     return false;
                 }
             }
+
+            // get folder save attachment
+            $path_attachment = $this->createFolderSave();
+
             $uploader = $this->file->setOptions([
                 'overwrite' => true,
-                'targetDir' => MEDIA_PATH . 'attachments/'
+                'targetDir' => $path_attachment
             ]);
     
             // TODO: create dynamice fieldName for file
             $index = 0;
             $tmp_name = $file['name'];
-            while(file_exists(MEDIA_PATH. 'attachments/' . $file['name']))
+            while(file_exists($path_attachment. '/' . $file['name']))
             {
                 $file['name'] = $index. "_". $tmp_name;
                 $index ++;
@@ -69,7 +58,7 @@ class AttachmentModel extends Base
             $try = $this->AttachmentEntity->add([
                 'note_id' => $note_id,
                 'name' => $file['name'],
-                'path' => 'media/attachments/' . $file['name'],
+                'path' => 'media/attachments/'.date('Y').'/'.date('m').'/'.date('d').'/' . $file['name'],
                 'uploaded_by' => $this->user->get('id'),
                 'uploaded_at' => date('Y-m-d H:i:s'),
             ]);
@@ -102,5 +91,26 @@ class AttachmentModel extends Base
         $try = $this->AttachmentEntity->remove($id);
 
         return $try;
+    }
+
+    public function createFolderSave($dir = '')
+    {
+        if (!$dir)
+        {
+            $dir = MEDIA_PATH . 'attachments/'. date('Y'). '/'. date('m'). '/'. date('d');
+        }
+
+        if (!is_dir($dir))
+        {
+            $dir_child = explode('/', $dir);
+            array_pop($dir_child);
+            $dir_child = implode('/',$dir_child);
+            $try = $this->createFolderSave($dir_child);
+            if (!mkdir($dir))
+            {
+                return '';
+            } 
+        }
+        return $dir;
     }
 }

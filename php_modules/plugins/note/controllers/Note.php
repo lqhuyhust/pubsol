@@ -104,6 +104,8 @@ class Note extends Admin {
             );
         }
 
+        $description = $this->NoteModel->replaceContent($description);
+        
         // TODO: validate new add
         $newId =  $this->NoteEntity->add([
             'title' => $title,
@@ -222,6 +224,8 @@ class Note extends Admin {
                     $this->router->url('note/'. $ids)
                 );
             }
+
+            $description = $this->NoteModel->replaceContent($description);
 
             $try = $this->NoteEntity->update([
                 'title' => $title,
