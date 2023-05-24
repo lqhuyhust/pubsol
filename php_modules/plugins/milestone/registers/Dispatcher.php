@@ -9,6 +9,8 @@ class Dispatcher
     public static function dispatch( IApp $app, string $cName, string $fName)
     {   
         // Check Permission
+        $app->plgLoad('permission', 'CheckSession');
+
         $cName = ucfirst($cName);
         $controller = 'App\plugins\milestone\controllers\\'. $cName;
         if(!class_exists($controller))

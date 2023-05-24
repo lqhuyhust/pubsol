@@ -17,6 +17,12 @@ class Routing
                     'put' => 'milestone.milestone.update',
                     'delete' => 'milestone.milestone.delete'
                 ],
+                'permission' => [
+                    'get' => ['milestone_manager', 'milestone_read'],
+                    'post' => ['milestone_manager', 'milestone_read'],
+                    'put' => ['milestone_manager', 'milestone_update'],
+                    'delete' => ['milestone_manager', 'milestone_delete']
+                ],
             ],
             'requests' => [
                 'fnc' => [
@@ -26,6 +32,12 @@ class Routing
                     'delete' => 'milestone.request.delete'
                 ],
                 'parameters' => ['milestone_id'],
+                'permission' => [
+                    'get' => ['request_manager', 'request_read'],
+                    'post' => ['request_manager', 'request_read'],
+                    'put' => ['request_manager', 'request_update'],
+                    'delete' => ['request_manager', 'request_delete']
+                ],
             ],
             'request' => [
                 'fnc' => [
@@ -35,6 +47,13 @@ class Routing
                     'delete' => 'milestone.request.delete'
                 ],
                 'parameters' => ['milestone_id','id'],
+                'permission' => [
+                    'get' => ['request_manager', 'request_read'],
+                    'post' => ['request_manager', 'request_create'],
+                    'put' => ['request_manager', 'request_update'],
+                    'delete' => ['request_manager', 'request_delete']
+                ],
+
             ],
             'tasks' => [
                 'fnc' => [
@@ -122,6 +141,12 @@ class Routing
                     'delete' => 'milestone.milestone.delete'
                 ],
                 'parameters' => ['id'],
+                'permission' => [
+                    'get' => ['milestone_manager', 'milestone_read'],
+                    'post' => ['milestone_manager', 'milestone_create'],
+                    'put' => ['milestone_manager', 'milestone_update'],
+                    'delete' => ['milestone_manager', 'milestone_delete']
+                ],
             ],
             'request-versions' => [
                 'fnc' => [
