@@ -24,13 +24,7 @@ class Setting extends Controller
 
     public function save()
     {
-        $settings = [];
-        $this->app->plgLoad('setting', 'registerItem', function ($arr) use ( &$settings ){
-            if (is_array($arr))
-            {
-                $settings = array_merge($settings, $arr);
-            }
-        });
+        $settings = $this->SettingModel->getSetting();
         
         $try = true;
         foreach($settings as $fields)

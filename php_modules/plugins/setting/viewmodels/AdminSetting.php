@@ -29,13 +29,8 @@ class AdminSetting extends ViewModel
 
         $app = $this->container->get('app');
         $router = $this->container->get('router');
-        $settings = [];
-        $app->plgLoad('setting', 'registerItem', function ($arr) use ( &$settings ){
-            if (is_array($arr))
-            {
-                $settings = array_merge($settings, $arr);
-            }
-        });
+        $SettingModel = $this->container->get('SettingModel');
+        $settings = $SettingModel->getSetting();
 
         $fields = [];
         foreach($settings as $item)
