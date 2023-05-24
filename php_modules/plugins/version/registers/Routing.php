@@ -16,6 +16,12 @@ class Routing
                     'put' => 'version.version.update',
                     'delete' => 'version.version.delete'
                 ],
+                'permission' => [
+                    'get' => ['version_manager', 'version_read'],
+                    'post' => ['version_manager', 'version_read'],
+                    'put' => ['version_manager', 'version_update'],
+                    'delete' => ['version_manager', 'version_delete']
+                ],
             ],
             'version' => [
                 'fnc' => [
@@ -25,6 +31,12 @@ class Routing
                     'delete' => 'version.version.delete'
                 ],
                 'parameters' => ['id'],
+                'permission' => [
+                    'get' =>  ['version_manager', 'version_read'],
+                    'post' =>  ['version_manager', 'version_create'],
+                    'put' =>  ['version_manager', 'version_update'],
+                    'delete' =>  ['version_manager', 'version_delete']
+                ],
             ],
             'version-feedback' => [
                 'fnc' => [
@@ -32,11 +44,19 @@ class Routing
                     'post' => 'version.feedback.list',
                 ],
                 'parameters' => ['version_id'],
+                'permission' => [
+                    'get' =>  ['version_manager', 'version_read'],
+                    'post' =>  ['version_manager', 'version_read'],
+                ],
             ],
             'setting-version'=>[
                 'fnc' => [
                     'get' => 'version.setting.version',
                     'post' => 'version.setting.versionSave',
+                ],
+                'permission' => [
+                    'get' =>  ['version_manager'],
+                    'post' =>  ['version_manager'],
                 ],
             ],
         ];
