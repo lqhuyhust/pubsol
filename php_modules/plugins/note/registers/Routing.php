@@ -15,7 +15,13 @@ class Routing
                     'post' => 'note.note.list',
                     'put' => 'note.note.update',
                     'delete' => 'note.note.delete'
-                ]
+                ],
+                'permission' => [
+                    'get' => ['note_manager', 'note_read'],
+                    'post' => ['note_manager', 'note_read'],
+                    'put' => ['note_manager', 'note_update'],
+                    'delete' => ['note_manager', 'note_delete']
+                ],
             ],
             'note/search' => [
                 'fnc' => [
@@ -53,6 +59,9 @@ class Routing
                     'get' => 'note.note.preview',
                 ],
                 'parameters' => ['id'],
+                'permission' => [
+                    'get' => ['note_manager', 'note_read'],
+                ],
             ],
             'note' => [
                 'fnc' => [
@@ -62,6 +71,12 @@ class Routing
                     'delete' => 'note.note.delete'
                 ],
                 'parameters' => ['id'],
+                'permission' => [
+                    'get' => ['note_manager', 'note_read'],
+                    'post' => ['note_manager', 'note_create'],
+                    'put' => ['note_manager', 'note_update'],
+                    'delete' => ['note_manager', 'note_delete']
+                ],
             ],
             'tag' => [
                 'fnc' => [

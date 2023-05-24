@@ -8,6 +8,8 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
+        $app->plgLoad('permission', 'CheckSession');
+
         // prepare note
         $container = $app->getContainer();
         if (!$container->exists('file'))
