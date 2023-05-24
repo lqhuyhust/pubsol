@@ -11,34 +11,15 @@ class Permission
         $this->container = $app->getContainer();
 
         // get access
-        $this->access = [];
-        $this->config = [];
-        foreach(new \DirectoryIterator(SPT_PLUGIN_PATH) as $item) 
-        {
-            if (!$item->isDot() && $item->isDir()) 
-            { 
-                $plgRegister = $this->app->getNamespace(). '\\plugins\\'. $item->getBasename(). '\\registers\\Permission';
-                if(class_exists($plgRegister) && method_exists($plgRegister, 'registerAccess'))
-                {
-                    $result = $plgRegister::registerAccess();
-                    
-                    if (is_array($result))
-                    {
-                        $this->access = array_merge($this->access, $result);
-                    }
-                }
-
-                if(class_exists($plgRegister) && method_exists($plgRegister, 'registerPermission'))
-                {
-                    $result = $plgRegister::registerPermission();
-                    
-                    if (is_array($result))
-                    {
-                        $this->config[$item->getBasename()] = $result;
-                    }
-                }
+        $register_access = [];
+        $app->plgLoad('permission', 'registerAccess', function($access) use (&$register_access){
+            if (is_array($access) && $access)
+            {
+                $register_access = array_merge($register_access, $access);
             }
-        }
+        });
+
+        $this->access = $register_access;
     }
 
     public function getAccess()
@@ -50,35 +31,28 @@ class Permission
     {
         if (!$access)
         {
-            $router = $this->container->get('router');
+            $permission = $this->app->get('permission', []);
             $request = $this->container->get('request');
-            $actualPath = trim($router->get('actualPath'), '/');
             $method = $request->header->getRequestMethod();
+
+            if (!$permission || !isset($permission[$method]) || !$permission[$method])
+            {
+                return true;
+            }
             
-            $siteNote = $router->get('sitenode');
-            $path = $siteNote ? trim($siteNote, '/') : $actualPath;
-            
-            $plugin = $this->app->get('currentPlugin');
-            $config_plugin = isset($this->config[$plugin]) ? $this->config[$plugin] : [];
-            $access = isset($config_plugin[$path]) ? $config_plugin[$path] : [];
-            $access = isset($access[$method]) ? $access[$method] : [];
+            $access = $permission[$method];
         }
         
-        if ($access)
+        $user_access = $this->getAccessByUser();
+        foreach($access as $item)
         {
-            $user_access = $this->getAccessByUser();
-            foreach($access as $item)
+            if (in_array($item, $user_access))
             {
-                if (in_array($item, $user_access))
-                {
-                    return true;
-                }
+                return true;
             }
-
-            return false;
         }
 
-        return true;
+        return false;
     }
 
     public function getAccessByUser()
