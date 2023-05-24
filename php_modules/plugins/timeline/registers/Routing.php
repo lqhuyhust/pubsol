@@ -13,7 +13,11 @@ class Routing
                 'fnc' => [
                     'get' => 'timeline.timeline.diagram',
                     'post' => 'timeline.timeline.diagram',
-                ]
+                ],
+                'permission' => [
+                    'get' => ['timeline_manager', 'timeline_read'],
+                    'post' => ['timeline_manager', 'timeline_read'],
+                ],
             ],
         ];
     }
