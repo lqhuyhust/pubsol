@@ -8,9 +8,6 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
-        //Check Permission
-        $app->plgLoad('permission', 'CheckSession');
-        
         // static::registerEntities($app->getContainer());
 
         $cName = ucfirst($cName);

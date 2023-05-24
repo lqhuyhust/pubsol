@@ -8,7 +8,6 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
-        $app->plgLoad('permission', 'CheckSession');
         // prepare note
         $cName = ucfirst($cName);
 

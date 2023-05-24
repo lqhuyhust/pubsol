@@ -27,20 +27,10 @@ class Milestone extends Controller
 
     public function list()
     {
-        // support no permission view
-        $allow = $this->permission->checkPermission(['milestone_manager', 'milestone_read']);
-        if ($allow)
-        {
-            $this->app->set('page', 'backend');
-            $this->app->set('format', 'html');
-            $this->app->set('layout', 'backend.milestone.list');
-            return ;
-        }
-        
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.milestone.home');
-        return;
+        $this->app->set('layout', 'backend.milestone.list');
+        return ;
     }
 
     public function add()

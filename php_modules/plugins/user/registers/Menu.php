@@ -12,15 +12,10 @@ class Menu
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
 
         $menu = [];
-        $permission = $container->get('permission');
         $allow_user = true;
+        $allow_profile = true;
         $allow_usergroup = true;
-        if ($permission)
-        {
-            $allow_profile = $permission->checkPermission(['user_profile', 'user_manager']);
-            $allow_user = $permission->checkPermission(['user_manager', 'user_read']);
-            $allow_usergroup = $permission->checkPermission(['usergroup_manager', 'usergroup_read']);
-        }
+        
         $menu_user = [];
         if ($allow_user || $allow_usergroup)
         {
