@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'note_manager', 'note_view', 'note_create', 'note_update', 'note_delete',
+            'note_manager', 'note_read', 'note_create', 'note_update', 'note_delete',
         ];
     }
 
@@ -17,8 +17,8 @@ class Permission
     {
         return [
             'notes' => [
-                'get' => ['note_manager', 'note_view'],
-                'post' => ['note_manager', 'note_view'],
+                'get' => ['note_manager', 'note_read'],
+                'post' => ['note_manager', 'note_read'],
                 'put' => ['note_manager', 'note_update'],
                 'delete' => ['note_manager', 'note_delete']
             ],
@@ -31,7 +31,7 @@ class Permission
                 'delete' => ['note_manager', 'note_update']
             ],
             'note' => [
-                'get' => ['note_manager', 'note_view'],
+                'get' => ['note_manager', 'note_read'],
                 'post' => ['note_manager', 'note_create'],
                 'put' => ['note_manager', 'note_update'],
                 'delete' => ['note_manager', 'note_delete']

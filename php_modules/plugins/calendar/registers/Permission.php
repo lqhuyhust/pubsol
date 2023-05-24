@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'calendar_manager', 'calendar_view'
+            'calendar_manager', 'calendar_read'
         ];
     }
 
@@ -17,8 +17,8 @@ class Permission
     {
         return [
             'calendar' => [
-                'get' => ['calendar_manager', 'calendar_view'],
-                'post' => ['calendar_manager', 'calendar_view'],
+                'get' => ['calendar_manager', 'calendar_read'],
+                'post' => ['calendar_manager', 'calendar_read'],
             ],
         ];
     }

@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'treediagram_manager', 'treediagram_view', 'treediagram_update', 'treediagram_create', 'treediagram_delete'
+            'treediagram_manager', 'treediagram_read', 'treediagram_update', 'treediagram_create', 'treediagram_delete'
         ];
     }
 
@@ -17,13 +17,13 @@ class Permission
     {
         return [
             'tree-diagrams' => [
-                'get' => ['treediagram_manager', 'treediagram_view'],
-                'post' => ['treediagram_manager', 'treediagram_view'],
+                'get' => ['treediagram_manager', 'treediagram_read'],
+                'post' => ['treediagram_manager', 'treediagram_read'],
                 'put' => ['treediagram_manager', 'treediagram_update'],
                 'delete' => ['treediagram_manager', 'treediagram_delete']
             ],
             'tree-diagram' => [
-                'get' =>  ['treediagram_manager', 'treediagram_view'],
+                'get' =>  ['treediagram_manager', 'treediagram_read'],
                 'post' =>  ['treediagram_manager', 'treediagram_create'],
                 'put' =>  ['treediagram_manager', 'treediagram_update'],
                 'delete' =>  ['treediagram_manager', 'treediagram_delete']

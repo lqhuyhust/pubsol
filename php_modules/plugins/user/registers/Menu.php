@@ -17,8 +17,8 @@ class Menu
         $allow_usergroup = true;
         if ($permission)
         {
-            $allow_user = $permission->checkPermission(['user_manager', 'user_view']);
-            $allow_usergroup = $permission->checkPermission(['usergroup_manager', 'usergroup_view']);
+            $allow_user = $permission->checkPermission(['user_manager', 'user_read']);
+            $allow_usergroup = $permission->checkPermission(['usergroup_manager', 'usergroup_read']);
         }
         $menu_user = [];
         if ($allow_user || $allow_usergroup)
