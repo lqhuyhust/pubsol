@@ -371,7 +371,7 @@ class Note extends Admin {
             return true;
         }
 
-        $search = $this->request->get->get('search', '', 'string');
+        $search = trim($this->request->get->get('search', '', 'string'));
         $ignore = $this->request->get->get('ignore', '', 'string');
 
         $where = [];

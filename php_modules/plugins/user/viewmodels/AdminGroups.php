@@ -38,7 +38,7 @@ class AdminGroups extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $status = $filter->getField('status')->value;
         $page   = $request->get->get('page', 1, 'int');
 
@@ -92,7 +92,7 @@ class AdminGroups extends ViewModel
                 }
             }
         }
-
+        $limit = $limit == 0 ? $total : $limit;
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
 
         return [
@@ -161,8 +161,12 @@ class AdminGroups extends ViewModel
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [ 5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => ['option',

@@ -42,7 +42,7 @@ class AdminRequests extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -94,6 +94,8 @@ class AdminRequests extends ViewModel
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
 
+        
+        $limit = $limit == 0 ? $total : $limit;
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         
         return [
@@ -152,8 +154,12 @@ class AdminRequests extends ViewModel
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [ 5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => ['option',

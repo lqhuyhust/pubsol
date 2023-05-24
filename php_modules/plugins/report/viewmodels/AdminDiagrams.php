@@ -38,7 +38,7 @@ class AdminDiagrams extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $status = $filter->getField('status')->value;
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
@@ -81,6 +81,7 @@ class AdminDiagrams extends ViewModel
             $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
         }
 
+        $limit = $limit == 0 ? $total : $limit;
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         return [
             'list' => $list,
@@ -112,10 +113,10 @@ class AdminDiagrams extends ViewModel
     {
         if( null === $this->_filter):
             $data = [
-                'search' => $this->state('search', '', '', 'post', 'milestone.search'),
-                'status' => $this->state('status', '','', 'post', 'milestone.status'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'milestone.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'milestone.sort')
+                'search' => $this->state('search', '', '', 'post', 'report.search'),
+                'status' => $this->state('status', '','', 'post', 'report.status'),
+                'limit' => $this->state('limit', 10, 'int', 'post', 'report.limit'),
+                'sort' => $this->state('sort', '', '', 'post', 'report.sort')
             ];
 
             $filter = new Form($this->getFilterFields(), $data);
@@ -147,8 +148,12 @@ class AdminDiagrams extends ViewModel
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [ 5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => ['option',

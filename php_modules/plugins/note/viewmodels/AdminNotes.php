@@ -41,7 +41,7 @@ class AdminNotes extends ViewModel
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $tags   = $filter->getField('tags')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -121,6 +121,7 @@ class AdminNotes extends ViewModel
             $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
             $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
         }
+        $limit = $limit == 0 ? $total : $limit;
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [
@@ -201,8 +202,12 @@ class AdminNotes extends ViewModel
             'limit' => [
                 'option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => [

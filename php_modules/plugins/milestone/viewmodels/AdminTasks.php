@@ -41,7 +41,7 @@ class AdminTasks extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search_task')->value;
+        $search = trim($filter->getField('search_task')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 

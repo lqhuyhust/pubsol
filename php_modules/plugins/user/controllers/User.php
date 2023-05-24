@@ -120,7 +120,7 @@ class User extends Admin
         
         $user = [
             'name' => $this->request->post->get('name', '', 'string'),
-            'username' => $this->request->post->get('username', '' , 'string'),
+            // 'username' => $this->request->post->get('username', '' , 'string'),
             'email' => $this->request->post->get('email', '', 'string'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),

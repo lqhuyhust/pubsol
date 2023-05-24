@@ -45,7 +45,7 @@ class AdminRelateNotes extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -83,7 +83,7 @@ class AdminRelateNotes extends ViewModel
                 if ($note_tmp)
                 {
                     $item['title'] = $note_tmp['title'];
-                    $item['editor'] = $note_tmp['editor'];
+                    $item['type'] = $note_tmp['type'];
                     $item['description'] = strip_tags((string) $note_tmp['description']) ;
                     $item['tags'] = $note_tmp['tags'] ;
                 }

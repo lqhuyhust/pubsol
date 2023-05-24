@@ -203,11 +203,11 @@ class AdminUser extends ViewModel
                 'formClass' => 'form-control',
                 'required' => 'required'
             ],
-            'username' => ['readonly',
+            'username' => ['hidden',
                 'placeholder' => 'Enter User Name',
                 'showLabel' => false,
                 'disabled' => 'disabled',
-                'formClass' => 'form-control',
+                'formClass' => 'form-control readonly',
             ],
             'email' => ['email',
                 'formClass' => 'form-control',

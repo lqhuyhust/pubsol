@@ -163,7 +163,7 @@ class Tag extends Admin {
     {
         $this->isLoggedIn();
 
-        $name = $this->request->get->get('search', '', 'string');
+        $name = trim($this->request->get->get('search', '', 'string'));
         $ignores = $this->request->get->get('ignores', [], 'array');
 
         $where = [];

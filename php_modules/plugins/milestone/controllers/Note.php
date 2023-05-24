@@ -41,7 +41,7 @@ class Note extends Admin
         $this->isLoggedIn();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
-        $search = $this->request->post->get('search', '', 'string');
+        $search = trim($this->request->post->get('search', '', 'string'));
 
         $list = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
         $result = [];
@@ -95,7 +95,7 @@ class Note extends Admin
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
-        $search = $this->request->post->get('search', '', 'post');
+        $search = trim($this->request->post->get('search', '', 'post'));
         
         $relate_note = $this->RelateNoteEntity->list(0, 0, ['request_id = '. $request_id]);
         $where = [];
