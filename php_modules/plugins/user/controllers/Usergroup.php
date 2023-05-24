@@ -9,7 +9,8 @@
  */
 
 namespace App\plugins\user\controllers;
-use SPT\Response;
+
+use SPT\Web\MVVM\ControllerContainer as Controller;
 
 class Usergroup extends Admin 
 {
