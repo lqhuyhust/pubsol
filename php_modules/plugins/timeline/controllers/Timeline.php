@@ -12,7 +12,7 @@ namespace App\plugins\timeline\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
 
-class Timeline extends Admin 
+class Timeline extends Controller 
 {
     public function diagram()
     {
