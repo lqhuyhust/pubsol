@@ -14,6 +14,10 @@ class Routing
                     'get' => 'setting.setting.form',
                     'post' => 'setting.setting.save',
                 ],
+                'permission' => [
+                    'get' => ['setting_manager'],
+                    'post' => ['setting_manager'],
+                ],
             ],
         ];
     }
