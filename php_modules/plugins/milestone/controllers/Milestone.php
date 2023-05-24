@@ -12,13 +12,11 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
-use SPT\Response;
 
-class Milestone extends Admin
+class Milestone extends Controller
 {
     public function detail()
     {
-        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -38,7 +36,6 @@ class Milestone extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
         // support no permission view
         $allow = $this->permission->checkPermission(['milestone_manager', 'milestone_read']);
         if ($allow)
@@ -57,7 +54,6 @@ class Milestone extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
 
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
@@ -205,7 +201,6 @@ class Milestone extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];

@@ -11,13 +11,11 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
-use SPT\Response;
 
-class Request extends Admin 
+class Request extends Controller 
 {
     public function detail()
     {
-        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -38,7 +36,6 @@ class Request extends Admin
 
     public function detail_request()
     {
-        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
@@ -60,7 +57,6 @@ class Request extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.request.list');
@@ -68,7 +64,6 @@ class Request extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
         $milestone_id = $this->validateMilestoneID();
         $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_latest = $version_latest ? $version_latest[0] : [];
@@ -253,7 +248,6 @@ class Request extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
         $milestone_id = $this->validateMilestoneID();
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -274,7 +268,6 @@ class Request extends Admin
 
     public function validateMilestoneID()
     {
-        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
 

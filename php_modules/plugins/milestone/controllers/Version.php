@@ -11,13 +11,11 @@
 namespace App\plugins\milestone\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
-use SPT\Response;
 
-class Version extends Admin 
+class Version extends Controller 
 {
     public function list()
     {
-        $this->isLoggedIn();
         $this->validateVersion();
         $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
         $version_latest = $version_latest ? $version_latest[0] : [];
@@ -33,7 +31,6 @@ class Version extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
         $this->validateVersion();
         //check title sprint
         $request_id = $this->validateRequestID();
@@ -151,7 +148,6 @@ class Version extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
         $this->validateVersion();
         $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
@@ -173,7 +169,6 @@ class Version extends Admin
 
     public function validateRequestID()
     {
-        $this->isLoggedIn();
 
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
