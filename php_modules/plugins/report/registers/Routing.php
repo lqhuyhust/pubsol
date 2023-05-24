@@ -16,6 +16,12 @@ class Routing
                     'put' => 'report.report.update',
                     'delete' => 'report.report.delete',
                 ],
+                'permission' => [
+                    'get' => ['report_manager', 'report_read'],
+                    'post' => ['report_manager', 'report_read'],
+                    'put' => ['report_manager', 'report_update'],
+                    'delete' => ['report_manager', 'report_delete']
+                ],
             ],
         ];
     }
