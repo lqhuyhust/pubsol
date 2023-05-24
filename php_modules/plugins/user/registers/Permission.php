@@ -44,4 +44,27 @@ class Permission
             ],
         ];
     }
+
+    public static function CheckSession(IApp $app)
+    {
+        $user = $app->getContainer()->get('user');
+        $permission = $app->getContainer()->get('permission');
+
+        if( is_object($user) && $user->get('id') )
+        {
+            $allow = $permission->checkPermission();
+            if ($allow)
+            {
+                return true;
+            }
+
+            $app->redirect(
+                $app->getRouter()->url('')
+            );
+        } 
+
+        $app->redirect(
+            $app->getRouter()->url('login')
+        );
+    }
 }
