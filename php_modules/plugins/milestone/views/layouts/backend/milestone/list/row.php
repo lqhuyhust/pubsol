@@ -3,16 +3,8 @@
         <input class="checkbox-item" type="checkbox" name="ids[]" value="<?php echo $this->item['id']; ?>">
     </td>
     <td>
-        <a href="#" class="show_data" 
-            data-id="<?php echo  $this->item['id'] ?>" 
-            data-title="<?php echo  $this->item['title']  ?>" 
-            data-status="<?php echo   $this->item['status'] ?>" 
-            data-start_date="<?php echo   $this->item['start_date'] ? date('Y-m-d', strtotime($this->item['start_date'])) : '';  ?>" 
-            data-description="<?php echo ($this->item['description']); ?>" 
-            data-end_date="<?php echo   $this->item['end_date'] ? date('Y-m-d', strtotime($this->item['end_date'])) : '';  ?>" 
-            data-bs-placement="top" 
-            data-bs-toggle="modal" 
-            data-bs-target="#exampleModalToggle"><?php echo  $this->item['title']  ?>
+        <a href="<?php echo $this->link_request_list.'/'. $this->item['id']; ?>">
+            <?php echo  $this->item['title']  ?>
         </a>
     </td>
     <td>
@@ -26,10 +18,10 @@
         <a href="#" 
             class="fs-4 me-1 show_data" 
             data-id="<?php echo  $this->item['id'] ?>" 
-            data-title="<?php echo  $this->item['title']  ?>" 
+            data-title="<?php echo htmlspecialchars($this->item['title'])  ?>" 
             data-status="<?php echo   $this->item['status']?>"
             data-start_date="<?php echo   $this->item['start_date'] ? date('Y-m-d', strtotime($this->item['start_date'])) : '';  ?>" 
-            data-description="<?php echo ($this->item['description']); ?>" data-end_date="<?php echo   $this->item['end_date'] ? date('Y-m-d', strtotime($this->item['end_date'])) : '';  ?>" 
+            data-description="<?php echo htmlspecialchars($this->item['description'] ?? ''); ?>" data-end_date="<?php echo   $this->item['end_date'] ? date('Y-m-d', strtotime($this->item['end_date'])) : '';  ?>" 
             data-bs-placement="top" 
             data-bs-toggle="modal" 
             data-bs-target="#exampleModalToggle">

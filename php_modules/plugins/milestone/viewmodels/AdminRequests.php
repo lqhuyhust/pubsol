@@ -15,7 +15,7 @@ use SPT\Web\MVVM\ViewModel;
 
 class AdminRequests extends ViewModel
 {
-   public static function register()
+    public static function register()
     {
         return [
             'layouts.backend.request.list',
@@ -31,6 +31,7 @@ class AdminRequests extends ViewModel
         $router = $this->container->get('router');
         $RequestEntity = $this->container->get('RequestEntity');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
+        $TagEntity = $this->container->get('TagEntity');
         $UserEntity = $this->container->get('UserEntity');
         $VersionEntity = $this->container->get('VersionEntity');
         $user = $this->container->get('user');
@@ -41,7 +42,7 @@ class AdminRequests extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -74,11 +75,27 @@ class AdminRequests extends ViewModel
         {
             $user_tmp = $UserEntity->findByPK($item['created_by']);
             $item['creator'] = $user_tmp ? $user_tmp['name'] : '';
+            $tags = $item['tags'] ? explode(',', $item['tags']) : [];
+            $tag_tmp = [];
+            $item['tags'] = [];
+            foreach($tags as $tag)
+            {
+                $tmp = $TagEntity->findByPK($tag);
+                if ($tmp)
+                {
+                    $tag_tmp[] = $tmp['name'];
+                    $item['tags'][] = $tmp;
+                }
+            }
+
+            $item['tag_tmp'] = implode(' , ', $tag_tmp);
         }
 
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
 
+        
+        $limit = $limit == 0 ? $total : $limit;
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         
         return [
@@ -137,8 +154,12 @@ class AdminRequests extends ViewModel
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [ 5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => ['option',

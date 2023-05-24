@@ -11,13 +11,13 @@
 namespace App\plugins\treediagram\controllers;
 
 use SPT\Web\MVVM\ControllerContainer as Controller;
-use SPT\Response;
 
-class Treediagram extends Admin {
+class Treediagram extends Admin 
+{
     public function detail()
     {
         $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -38,6 +38,7 @@ class Treediagram extends Admin {
     public function list()
     {
         $this->isLoggedIn();
+
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.tree_diagram.list');

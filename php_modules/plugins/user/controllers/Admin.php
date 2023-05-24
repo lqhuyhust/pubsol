@@ -1,12 +1,5 @@
 <?php
-/**
- * SPT software - homeController
- * 
- * @project: https://github.com/smpleader/spt
- * @author: Pham Minh - smpleader
- * @description: Just a basic controller
- * 
- */
+
 
 namespace App\plugins\user\controllers;
 
@@ -21,7 +14,7 @@ class Admin extends Controller
         if( !$this->user->get('id') )
         {
             return $this->app->redirect(
-                $this->app->url(
+                $this->router->url(
                     'login'
                 )
             );

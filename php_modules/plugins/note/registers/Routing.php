@@ -48,6 +48,12 @@ class Routing
                 ],
                 'parameters' => ['id'],
             ],
+            'note/preview' => [
+                'fnc' => [
+                    'get' => 'note.note.preview',
+                ],
+                'parameters' => ['id'],
+            ],
             'note' => [
                 'fnc' => [
                     'get' => 'note.note.detail',

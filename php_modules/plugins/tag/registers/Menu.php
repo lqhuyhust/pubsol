@@ -10,6 +10,12 @@ class Menu
     {
         $container = $app->getContainer();
         $menu_root = $container->exists('menu') ? $container->get('menu') : [];
+        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $allow = $permission ? $permission->checkPermission(['tag_manager', 'tag_read']) : true;
+        if (!$allow)
+        {
+            return false;
+        }
 
         $menu = [
             [['tags', 'tag',], 'tags', 'Tags', '<i class="fa-solid fa-clipboard"></i>', '', ''],

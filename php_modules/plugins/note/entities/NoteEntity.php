@@ -43,7 +43,7 @@ class NoteEntity extends Entity
                     'type' => 'text',
                     'null' => 'YES',
                 ],
-                'editor' => [
+                'type' => [
                     'type' => 'varchar',
                     'limit' => 100,
                     'null' => 'YES',

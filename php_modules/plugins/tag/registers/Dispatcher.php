@@ -9,12 +9,6 @@ class Dispatcher
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
         // prepare note
-        $container = $app->getContainer();
-        if (!$container->exists('file'))
-        {
-            $container->set('file', new File());
-        }
-        
         $cName = ucfirst($cName);
 
         $controller = 'App\plugins\tag\controllers\\'. $cName;

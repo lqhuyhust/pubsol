@@ -30,7 +30,7 @@ class AdminTreePhps extends ViewModel
     {
         $request = $this->container->get('request');
         $TagEntity = $this->container->get('TagEntity');
-        $TreePhpEntity = $this->container->get('TreePhpEntity');
+        $DiagramEntity = $this->container->get('DiagramEntity');
         $session = $this->container->get('session');
         $user = $this->container->get('user');
         $router = $this->container->get('router');
@@ -63,8 +63,8 @@ class AdminTreePhps extends ViewModel
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
-        $result = $TreePhpEntity->list($start, $limit, $where, $sort);
-        $total = $TreePhpEntity->getListTotal();
+        $result = $DiagramEntity->list($start, $limit, $where, $sort);
+        $total = $DiagramEntity->getListTotal();
         $data_tags = [];
         
         if (!$result) {

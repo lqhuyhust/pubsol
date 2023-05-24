@@ -8,6 +8,7 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {   
+
         static::registerEntities($app->getContainer());
 
         $cName = ucfirst($cName);

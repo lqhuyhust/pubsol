@@ -18,12 +18,22 @@ class AdminMilestones extends ViewModel
     public static function register()
     {
         return [
+            'layouts.backend.milestone.home',
             'layouts.backend.milestone.list',
             'layouts.backend.milestone.list.row',
             'layouts.backend.milestone.list.filter',
         ];
     }
     
+    public function home()
+    {
+        $router = $this->container->get('router');
+        return [
+            'url' => $router->url(),
+            'title_page' => 'Welcome SDM',
+        ];
+    }
+
     public function list()
     {
         $request = $this->container->get('request');
@@ -36,7 +46,7 @@ class AdminMilestones extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $status = $filter->getField('status')->value;
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
@@ -68,7 +78,7 @@ class AdminMilestones extends ViewModel
                 $session->set('flashMsg', 'Not Found Milestone');
             }
         }
-
+        $limit = $limit == 0 ? $total : $limit;
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         return [
             'list' => $list,
@@ -78,6 +88,7 @@ class AdminMilestones extends ViewModel
             'user_id' => $user->get('id'),
             'url' => $router->url(),
             'link_list' => $router->url('milestones'),
+            'link_request_list' => $router->url('requests'),
             'title_page' => 'Milestone Manager',
             'link_form' => $router->url('milestone'),
             'token' => $this->container->get('token')->getToken(),
@@ -135,8 +146,12 @@ class AdminMilestones extends ViewModel
             ],
             'limit' => ['option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [ 5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => ['option',

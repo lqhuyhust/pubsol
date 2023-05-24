@@ -45,7 +45,7 @@ class AdminRelateNotes extends ViewModel
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
@@ -73,16 +73,23 @@ class AdminRelateNotes extends ViewModel
 
         $note_exist = $this->container->exists('NoteEntity');
 
-        foreach ($result as &$item)
+        $notes = [];
+        foreach ($result as $index => &$item)
         {
+            $note_tmp = false;
             if ($note_exist)
             {
                 $note_tmp = $NoteEntity->findByPK($item['note_id']);
                 if ($note_tmp)
                 {
                     $item['title'] = $note_tmp['title'];
+                    $item['type'] = $note_tmp['type'];
                     $item['description'] = strip_tags((string) $note_tmp['description']) ;
                     $item['tags'] = $note_tmp['tags'] ;
+                }
+                else
+                {
+                    unset($result[$index]);
                 }
 
                 if (!empty($item['tags'])){
@@ -100,20 +107,21 @@ class AdminRelateNotes extends ViewModel
             {
                 $item['description'] = substr($item['description'], 0, 100) .' ...';
             }
+
+            if ($note_tmp)
+            {
+                $notes[] = $item;
+            }
         }
 
+        $result = $notes;
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
         foreach($tmp_request as $tmp_item) {
         }
-        if(strcmp($tmp_item['version_id'], '0') == 0) {
-            $status = false;
-        } elseif ($version_lastest > $tmp_item['version_id']) {
-            $status = true;
-        } else {
-            $status = false;
-        }
+
+        $status = false;
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [

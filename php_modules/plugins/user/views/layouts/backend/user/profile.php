@@ -9,8 +9,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="mb-3 col-lg-6 col-sm-12 mx-auto">
-                    <label class="form-label fw-bold">User Name:</label>
+                <div class="mb-1 col-lg-6 col-sm-12 mx-auto">
+                    <label class="form-label fw-bold me-2">User Name: </label>
+                    <?php echo $this->data['username']; ?>
                     <?php $this->ui->field('username'); ?>
                 </div>
             </div>

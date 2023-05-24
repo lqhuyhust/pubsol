@@ -17,7 +17,7 @@ class Timeline extends Admin
     public function diagram()
     {
         $this->isLoggedIn();
-
+        
         $this->app->set('layout', 'backend.timeline.diagram');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');

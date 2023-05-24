@@ -15,18 +15,18 @@
 							<form action="<?php echo $this->link_list ?>" method="POST" id="formList">
 								<input type="hidden" value="<?php echo $this->token ?>" name="token">
             					<input type="hidden" value="DELETE" name="_method">
-								<table id="datatables-buttons" class="table table-striped border-top border-1" style="width:100%">
+								<table id="datatables-buttons" class="request-table table table-striped border-top border-1" style="width:100%">
 									<thead>
 										<tr>
 											<th width="10px">
 												<input type="checkbox" id="select_all">
 											</th>
 											<th>Title</th>
-											<th>Description</th>
+											<th>Tags</th>
+											<th width="300px">Description</th>
 											<th>Creator</th>
 											<th>Start at</th>
 											<th>Finished at</th>
-											<th>Status</th>
 											<th>Action</th>
 										</tr>
 									</thead>

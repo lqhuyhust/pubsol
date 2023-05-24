@@ -8,7 +8,7 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
-        static::registerEntities($app->getContainer());
+        // static::registerEntities($app->getContainer());
 
         $cName = ucfirst($cName);
 
@@ -35,9 +35,9 @@ class Dispatcher
         $e->checkAvailability();
         $container->share( 'TreeStructureEntity', $e, true);
 
-        $e = new \App\plugins\treephp\entities\TreePhpEntity($query);
+        $e = new \App\plugins\treephp\entities\DiagramEntity($query);
         $e->checkAvailability();
-        $container->share( 'TreePhpEntity', $e, true);
+        $container->share( 'DiagramEntity', $e, true);
 
         $container->share( 'TreePhpModel', new \App\plugins\treephp\models\TreePhpModel($container), true);
     }

@@ -1,12 +1,5 @@
 <?php
-/**
- * SPT software - homeController
- * 
- * @project: https://github.com/smpleader/spt
- * @author: Pham Minh - smpleader
- * @description: Just a basic controller
- * 
- */
+
 
 namespace App\plugins\milestone\controllers;
 
@@ -20,14 +13,6 @@ class Discussion extends Admin
         $this->isLoggedIn();
         $request_id = $this->validateRequestID();
         
-        $tmp_check = $this->checkVersion($request_id);
-        if($tmp_check) {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Add Discussion Failed!');
-            return ;
-        }
-
         $document = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
         $message = $this->request->post->get('message', '', 'string');
         if (!$message)
@@ -107,19 +92,4 @@ class Discussion extends Admin
         return $id;
     }
 
-    public function checkVersion($request_id)
-    {
-        $version_lastest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
-        $tmp_request = $this->RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
-        }
-        if(strcmp($item['version_id'], '0') == 0) {
-            return false;
-        } elseif ($version_lastest > $item['version_id']) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

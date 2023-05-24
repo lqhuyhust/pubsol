@@ -28,6 +28,11 @@
                                     <div class="mb-3 text-center">
                                         <input type="submit" value="Sign in" class="btn btn-lg btn-primary form-control form-control-lg border-0">
                                     </div>
+                                    <?php if($this->link_google_auth) : ?>
+                                    <div class="mb-3 text-center">
+                                        <a href="<?php echo $this->link_google_auth ?>"  class="btn btn-lg btn-primary form-control form-control-lg border-0">Login With Google</a>
+                                    </div>
+                                    <?php endif; ?>
                                 </form>
                             </div>
                         </div>

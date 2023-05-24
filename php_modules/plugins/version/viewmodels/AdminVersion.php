@@ -19,7 +19,6 @@ class AdminVersion extends ViewModel
     {
         return [
             'layouts.backend.version.form',
-            'layouts.backend.version.setting',
         ];
     }
 
@@ -54,59 +53,6 @@ class AdminVersion extends ViewModel
                 'placeholder' => 'Enter Description',
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
-            ],
-            'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
-            ],
-        ];
-
-        return $fields;
-    }
-
-    public function setting()
-    {
-        $OptionModel = $this->container->get('OptionModel');
-        $router = $this->container->get('router');
-
-        $fields = $this->getFormFieldsSetting();
-        $data = [];
-        foreach ($fields as $key => $value) {
-            if ($key != 'token') {
-                $data[$key] =  $OptionModel->get($key, '1');
-            }
-        }
-        $form = new Form($this->getFormFieldsSetting(), $data);
-
-        $title_page = 'Version Setting';
-        return [
-            'fields' => $fields,
-            'form' => $form,
-            'title_page' => $title_page,
-            'data' => $data,
-            'url' => $router->url(),
-            'link_form' => $router->url('setting-version'),
-            'link_mail_test' => $router->url('setting/mail-test'),
-        ];
-    }
-
-    public function getFormFieldsSetting()
-    {
-        $fields = [
-            'version_level' => [
-                'number',
-                'showLabel' => false,
-                'placeholder' => '',
-                'defaultValue' => 1,
-                'formClass' => 'form-control',
-                'required' => 'required'
-            ],
-            'version_level_deep' => [
-                'number',
-                'showLabel' => false,
-                'placeholder' => '',
-                'defaultValue' => 2,
-                'formClass' => 'form-control',
-                'required' => 'required'
             ],
             'token' => ['hidden',
                 'default' => $this->container->get('token')->getToken(),

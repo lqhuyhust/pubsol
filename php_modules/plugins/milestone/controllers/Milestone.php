@@ -1,13 +1,6 @@
 <?php
 
-/**
- * SPT software - homeController
- * 
- * @project: https://github.com/smpleader/spt
- * @author: Pham Minh - smpleader
- * @description: Just a basic controller
- * 
- */
+
 
 namespace App\plugins\milestone\controllers;
 
@@ -39,9 +32,11 @@ class Milestone extends Admin
     public function list()
     {
         $this->isLoggedIn();
+
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.milestone.list');
+        return ;
     }
 
     public function add()

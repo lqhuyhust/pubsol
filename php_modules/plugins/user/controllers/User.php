@@ -1,12 +1,5 @@
 <?php
-/**
- * SPT software - homeController
- * 
- * @project: https://github.com/smpleader/spt
- * @author: Pham Minh - smpleader
- * @description: Just a basic controller
- * 
- */
+
 
 namespace App\plugins\user\controllers;
 
@@ -54,7 +47,6 @@ class User extends Admin
             }
             else
             {
-                $this->session->set('flashMsg', 'Hello!!!');
                 return $this->app->redirect(
                     $this->router->url($redirect_after_login)
                 );
@@ -119,16 +111,18 @@ class User extends Admin
         $password = $this->request->post->get('password', '');
         $repassword = $this->request->post->get('confirm_password', '');
         
+        $user = [
+            'name' => $this->request->post->get('name', '', 'string'),
+            // 'username' => $this->request->post->get('username', '' , 'string'),
+            'email' => $this->request->post->get('email', '', 'string'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s'),
+            'id' => $id,
+        ];
+
         if($password == $repassword) 
         {
-            $user = [
-                'name' => $this->request->post->get('name', '', 'string'),
-                'username' => $this->request->post->get('username', '' , 'string'),
-                'email' => $this->request->post->get('email', '', 'string'),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $id,
-            ];
+            $user['password'] = md5($password);
         }
         else
         {
@@ -138,8 +132,6 @@ class User extends Admin
             );
         }
 
-        if($password) $user['password'] = md5($passwrd);
-        
         $try = $this->container->get('UserEntity')->update( $user );
 
         if($try) 
@@ -172,7 +164,6 @@ class User extends Admin
     {
         $this->user->logout();
 
-        $this->session->set('flashMsg', 'Bye Bye');
         return $this->app->redirect(
             $this->router->url('login')
         );

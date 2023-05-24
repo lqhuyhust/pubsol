@@ -6,13 +6,31 @@ use SPT\Support\Loader;
 
 class Setting
 {
-    public static function registerSetting( IApp $app )
+    public static function registerItem( IApp $app )
     {
-        $container = $app->getContainer();
-        $setting = $container->exists('setting') ? $container->get('setting') : [];
-        $arr = [
-            [['setting-connections'], 'setting-connections', 'Connections', ''],
+        return[
+            'Setting Connections' => [
+                'folder_id' => [
+                    'text',
+                    'label' => 'Folder ID:',
+                    'formClass' => 'form-control',
+                ],
+                'client_id' => [
+                    'text',
+                    'label' => 'Client ID:',
+                    'formClass' => 'form-control',
+                ],
+                'client_secret' => [
+                    'text',
+                    'label' => 'Client secret',
+                    'formClass' => 'form-control',
+                ],
+                'access_token' => [
+                    'text',
+                    'label' => 'Access Token',
+                    'formClass' => 'form-control',
+                ],
+            ]
         ];
-        $container->set('setting', array_merge($setting, $arr));
     }
 }

@@ -31,6 +31,7 @@ class AdminNotes extends ViewModel
         $request = $this->container->get('request');
         $TagEntity = $this->container->get('TagEntity');
         $NoteEntity = $this->container->get('NoteEntity');
+        $UserEntity = $this->container->get('UserEntity');
         $session = $this->container->get('session');
         $router = $this->container->get('router');
         $token = $this->container->get('token');
@@ -39,46 +40,53 @@ class AdminNotes extends ViewModel
         $filter = $this->filter()['form'];
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
-        $search = $filter->getField('search')->value;
+        $tags   = $filter->getField('tags')->value;
+        $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
 
         $where = [];
-
+        $filter_tags = [];
+        
         if (!empty($search) && is_string($search)) {
-            $tags = $TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
             $where[] = "(`description` LIKE '%" . $search . "%')";
             $where[] = "(`note` LIKE '%" . $search . "%')";
             $where[] = "(`title` LIKE '%" . $search . "%')";
-            if ($tags) {
-                foreach ($tags as $tag) {
-                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                }
-            }
             $where = [implode(" OR ", $where)];
-        } elseif (is_array($search)) {
-            foreach ($search as $key => $value) {
-                foreach ($value as $k => $v) {
-                    $tags = [];
-                    $tags = $TagEntity->list(0, 0, ["`name` = '" . $v . "'"]);
-                    if ($tags) {
-                        foreach ($tags as $tag) {
-                            $where[] = 
-                            "(`tags` = '" . $tag['id'] . "'" .
-                            " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                            " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                            " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                        }
-                    }   
-                    
-                }
-                $where = [implode(" AND ", $where)];
-            }
-           
         }
+        if ($tags)
+        {
+            $filter_tags = [];
+            $where_tag = [];
+
+            foreach ($tags as $tag) 
+            {
+                if ($tag)
+                {
+                    $tag_tmp = $this->TagEntity->findByPK($tag);
+                    if ($tag_tmp)
+                    {
+                        $filter_tags[] = [
+                            'id' => $tag,
+                            'name' => $tag_tmp['name'],
+                        ];
+                    }
+    
+                    $where_tag[] = 
+                    "(`tags` = '" . $tag . "'" .
+                    " OR `tags` LIKE '%" . ',' . $tag . "'" .
+                    " OR `tags` LIKE '" . $tag . ',' . "%'" .
+                    " OR `tags` LIKE '%" . ',' . $tag . ',' . "%' )";
+                }
+                
+            }
+            $where_tag = implode(" OR ", $where_tag);
+
+            if ($where_tag)
+            {
+                $where[] = '('. $where_tag . ')';
+            }
+        }    
 
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
@@ -95,7 +103,7 @@ class AdminNotes extends ViewModel
             }
         }
 
-        foreach ($result as $item) {
+        foreach ($result as &$item) {
             if (!empty($item['tags'])) {
                 $t1 = $where = [];
                 $where[] = "(`id` IN (" . $item['tags'] . ") )";
@@ -107,7 +115,13 @@ class AdminNotes extends ViewModel
                 }
                 $data_tags[$item['id']] = implode(',', $t1);
             }
+
+            $item['type'] = $item['type'] ? $item['type'] : 'html';
+            $user_tmp = $UserEntity->findByPK($item['created_by']);
+            $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
+            $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
         }
+        $limit = $limit == 0 ? $total : $limit;
 
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [
@@ -115,12 +129,15 @@ class AdminNotes extends ViewModel
             'data_tags' => $data_tags,
             'page' => $page,
             'start' => $start,
+            'filter_tags' => json_encode($filter_tags),
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
             'link_list' => $router->url('notes'),
+            'link_tag' => $router->url('tag/search'),
             'title_page' => 'Note Manager',
             'link_form' => $router->url('note'),
+            'link_preview' => $router->url('note/preview'),
             'token' => $token->getToken(),
         ];
     }
@@ -142,19 +159,10 @@ class AdminNotes extends ViewModel
         if (null === $this->_filter) :
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'note.search'),
-                'tags' => $this->state('tags', '', '', 'post', 'note.tags'),
+                'tags' => $this->state('tags', [], 'array', 'post', 'note.tags'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'note.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'note.sort')
             ];
-            if (strpos($data['search'], ';') == true) {
-                $try = explode(';', $data['search']);
-                $data['search'] = [];
-                $tmp = [];
-                foreach ($try as $key => $value) {
-                    $tmp[] = $value;
-                }
-                $data['search'][] = $tmp;
-            }
             $filter = new Form($this->getFilterFields(), $data);
 
             $this->_filter = $filter;
@@ -173,6 +181,13 @@ class AdminNotes extends ViewModel
                 'formClass' => 'form-control h-full input_common w_full_475',
                 'placeholder' => 'Search..'
             ],
+            'tags' => [
+                'option',
+                'type' => 'multiselect',
+                'formClass' => 'form-select',
+                'options' => [],
+                'showLabel' => false
+            ],
             'status' => [
                 'option',
                 'default' => '1',
@@ -187,8 +202,12 @@ class AdminNotes extends ViewModel
             'limit' => [
                 'option',
                 'formClass' => 'form-select',
-                'default' => 10,
-                'options' => [5, 10, 20, 50],
+                'default' => 20,
+                'options' => [
+                    ['text' => '20', 'value' => 20],
+                    ['text' => '50', 'value' => 50],
+                    ['text' => 'All', 'value' => 0],
+                ],
                 'showLabel' => false
             ],
             'sort' => [

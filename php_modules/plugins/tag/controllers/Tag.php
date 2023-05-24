@@ -37,6 +37,15 @@ class Tag extends Admin {
                 $this->router->url('tags')
             );
         }
+
+        $findOne = $this->TagEntity->findOne(['name' => $name]);
+        if ($findOne)
+        {
+            $this->session->set('flashMsg', 'Error: Create Failed! Tag already exists');
+            return $this->app->redirect(
+                $this->router->url('tags')
+            );
+        }
         
         // TODO: validate new add
         $newId =  $this->TagEntity->add([
@@ -80,6 +89,15 @@ class Tag extends Admin {
                 );
             }
             
+            $findOne = $this->TagEntity->findOne(['name' => $name, 'id <> '. $id]);
+            if ($findOne)
+            {
+                $this->session->set('flashMsg', 'Error: Update Failed! Tag already exists');
+                return $this->app->redirect(
+                    $this->router->url('tags')
+                );
+            }
+
             $try = $this->TagEntity->update([
                 'name' => $name,
                 'description' => $description,
@@ -118,7 +136,7 @@ class Tag extends Admin {
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->TagEntity->remove( $id ) )
+                if( $this->TagModel->remove( $id ) )
                 {
                     $count++;
                 }
@@ -126,7 +144,7 @@ class Tag extends Admin {
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->TagEntity->remove($ids ) )
+            if( $this->TagModel->remove($ids ) )
             {
                 $count++;
             }
@@ -163,7 +181,7 @@ class Tag extends Admin {
     {
         $this->isLoggedIn();
 
-        $name = $this->request->get->get('search', '', 'string');
+        $name = trim($this->request->get->get('search', '', 'string'));
         $ignores = $this->request->get->get('ignores', [], 'array');
 
         $where = [];
