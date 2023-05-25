@@ -22,6 +22,7 @@ class VersionModel extends Base
         $version_lastest = $this->VersionEntity->list(0, 1, [], 'id desc');
         $current_version = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         
+        $version_level = $version_level > 0 ? $version_level : 1;
         $vParts = explode('.', $current_version);
         $max = (int) str_repeat('9', $version_level);
         $newVersion = '';
@@ -36,6 +37,8 @@ class VersionModel extends Base
                 $ins = 1;
                 $tmp = 0;
             }
+
+            $tmp = ($i == $version_level_deep && $tmp == 0) ? 1 : $tmp;
 
             if ($version_level - strlen((string) $tmp) > 0)
             {
