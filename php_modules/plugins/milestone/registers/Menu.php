@@ -9,7 +9,7 @@ class Menu
     public static function registerItem( IApp $app )
     {
         $container = $app->getContainer();
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow_milestone = $permission ? $permission->checkPermission(['milestone_manager', 'milestone_read']) : true;
         $allow_request = $permission ? $permission->checkPermission(['request_manager', 'request_read']) : true;
         $entity = $container->get('MilestoneEntity');
