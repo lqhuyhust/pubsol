@@ -13,7 +13,11 @@ class Routing
                 'fnc' => [
                     'get' => 'calendar.calendar.diagram',
                     'post' => 'calendar.calendar.diagram',
-                ]
+                ],
+                'permission' => [
+                    'get' => ['calendar_manager', 'calendar_read'],
+                    'post' => ['calendar_manager', 'calendar_read'],
+                ],
             ],
         ];
     }

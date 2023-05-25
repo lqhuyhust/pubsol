@@ -8,6 +8,8 @@ class Dispatcher
 {
     public static function dispatch( IApp $app, string $cName, string $fName)
     {
+        $app->plgLoad('permission', 'CheckSession');
+
         $cName = ucfirst($cName);
         $controller = 'App\plugins\report\controllers\\'. $cName;
         if(!class_exists($controller))

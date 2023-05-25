@@ -15,7 +15,13 @@ class Routing
                     'post' => 'treephp.treediagram.list',
                     'put' => 'treephp.treediagram.update',
                     'delete' => 'treephp.treediagram.delete'
-                ]
+                ],
+                'permission' => [
+                    'get' => ['treephp_manager', 'treephp_read'],
+                    'post' => ['treephp_manager', 'treephp_read'],
+                    'put' => ['treephp_manager', 'treephp_update'],
+                    'delete' => ['treephp_manager', 'treephp_delete']
+                ],
             ],
             'tree-php' => [
                 'fnc' => [
@@ -25,6 +31,12 @@ class Routing
                     'delete' => 'treephp.treediagram.delete'
                 ],
                 'parameters' => ['id'],
+                'permission' => [
+                    'get' =>  ['treephp_manager', 'treephp_read'],
+                    'post' =>  ['treephp_manager', 'treephp_create'],
+                    'put' =>  ['treephp_manager', 'treephp_update'],
+                    'delete' =>  ['treephp_manager', 'treephp_delete']
+                ],
             ],
         ];
     }
