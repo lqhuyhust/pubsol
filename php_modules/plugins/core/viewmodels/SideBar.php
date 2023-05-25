@@ -24,23 +24,38 @@ class SideBar extends ViewModel
     public function sidebar()
     {
         $app = $this->container->get('app');
-        $app->plgLoad('menu', 'registerMenu');
-        
-        $menu_active = $this->container->exists('menu_active') ? $this->container->get('menu_active') : 'menu';
-        $menu_root = $this->container->exists($menu_active) ? $this->container->get($menu_active) : [];
-        ksort($menu_root);
-        $menu = [];
-        foreach($menu_root as $menu_items)
-        {
-            $menu = array_merge($menu, $menu_items);
-        }
-
         $router = $this->container->get('router');
+
+        $menu_register = [];
+        $app->plgLoad('menu', 'registerItem', function($menu) use (&$menu_register){
+            if (is_array($menu) && $menu)
+            {
+                $order = 1;
+                if (isset($menu['order']))
+                {
+                    $order = $menu['order'];
+                    unset($menu['order']);
+                }
+                foreach($menu as $key => $item)
+                {
+                    $menu_register[$key][$order] = array_merge($menu_register[$key][$order] ?? [], $menu[$key]);
+                }
+                
+            }
+        });
+        $menu_type = $app->get('menu_type', 'menu');
+        $menu = isset($menu_register[$menu_type]) ? $menu_register[$menu_type] : [];
+        ksort($menu);
+
+        $menu_sidebar = [];
+        foreach($menu as $menu_items)
+        {
+            $menu_sidebar = array_merge($menu_sidebar, $menu_items);
+        }
         return [
-            'path_current' => $router->get('actualPath'),
             'logout_link' => $router->url('logout'),
             'link_admin' => $router->url(''),
-            'menu' => $menu,
+            'menu' => $menu_sidebar,
         ];
     }
 }

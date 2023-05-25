@@ -12,73 +12,28 @@
         </a>
         <ul class="sidebar-nav fs-4">
             <?php
-            foreach ($this->menu as $row) {
-                list($allow, $plural, $name, $icon, $submenu) = $row;
-                $plural_tmp = str_replace('/', '\/', $plural); 
-                preg_match('/^(\/' . $plural_tmp . ')(|\/)$/', $this->path_current, $match);
-                if (is_array($match) && count($match)) {
-                    $active = true;
-                } else {
-                    $active = false;
-                    foreach ($allow as $single) {
-                        $single = str_replace('/', '\/', $single);
-                        preg_match('/^(\/' . $single . ')(|\/([0-9]*?))$/', $this->path_current, $match);
-                        if (is_array($match) && count($match)) {
-                            $active = true;
-                            break;
-                        }
-                    }
-                } 
-                $check_submenu_active = false;
-                if (is_array($submenu) && $submenu)
-                {
-                    $sub_actives = [];
-                    foreach($submenu as $key => $sub)
-                    {
-                        $sub_actives[$key] = false;
-                        list($allow_sub, $plural_sub, $name_sub, $icon_sub) = $sub;
-                        $plural_tmp = str_replace('/', '\/', $plural_sub); 
-                        preg_match('/^(\/' . $plural_tmp . ')(|\/)$/', $this->path_current, $match);
-                        if (is_array($match) && count($match)) {
-                            $sub_actives[$key] = true;
-                            $check_submenu_active = true;
-                        } else {
-                            foreach ($allow_sub as $single) {
-                                $single = str_replace('/', '\/', $single);
-                                preg_match('/^(\/' . $single . ')(|\/([0-9]*?))$/', $this->path_current, $match);
-                                if (is_array($match) && count($match)) {
-                                    $sub_actives[$key] = true;
-                                    $check_submenu_active = true;
-                                    break;
-                                }
-                            }
-                        } 
-                    }
-                }
-                ?>
-                <li class="sidebar-item <?php echo $submenu && is_string($submenu) ? $submenu : ''; ?> <?php echo $active && !(is_array($submenu) && $submenu) ? 'active' : ''; ?>">
-                    <a href="<?php echo (is_array($submenu) && $submenu) ? '' : $this->link_admin . $plural ?>" 
-                        class="sidebar-link <?php echo (is_array($submenu) && $submenu) ? 'link-collapse collapsed' : '';?>" 
-                        <?php echo (is_array($submenu) && $submenu) ? 'data-bs-target="#'. $plural. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
+            foreach ($this->menu as $index => $row) {?>
+                <li class="sidebar-item <?php echo isset($row['class']) ? $row['class'] : ''; ?> ">
+                    <a href="<?php echo isset($row['link']) ? $row['link'] : ''; ?>" 
+                        class="sidebar-link <?php echo (isset($row['childs']) && is_array($row['childs']) && $row['childs']) ? 'link-collapse collapsed' : '';?>" 
+                        <?php echo (isset($row['childs']) && is_array($row['childs']) && $row['childs']) ? 'data-bs-target="#'. $index. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
                     >
-                    
-                        <?php echo $icon ?> 
+                        <?php echo isset($row['icon']) ? $row['icon'] : '' ?> 
                         <span class="align-middle">
-                            <?php echo $name ?>
-                            <?php if (is_array($submenu) && $submenu) : ?>
-                                <i id="icon" class="fa-solid  fa-caret-<?php echo $check_submenu_active ? 'up' : 'down'; ?> icon-collapse float-end mt-1"></i>
+                            <?php echo $row['title'] ?>
+                            <?php if (isset($row['childs']) && is_array($row['childs']) && $row['childs']) : ?>
+                                <i id="icon" class="fa-solid  fa-caret-up icon-collapse float-end mt-1"></i>
                             <?php endif; ?>
                         </span>
                     </a>
-                    <?php if (is_array($submenu) && $submenu) : ?>
-                        <ul id="<?php echo $plural."_tab"; ?>" class="sidebar-dropdown list-unstyled collapse <?php echo $check_submenu_active ? 'show' : ''; ?>" >
-                            <?php foreach($submenu as $key => $sub) :
-                                list($allow_sub, $plural_sub, $name_sub, $icon_sub) = $sub;
+                    <?php if (isset($row['childs']) && is_array($row['childs']) && $row['childs']) : ?>
+                        <ul id="<?php echo $index."_tab"; ?>" class="sidebar-dropdown list-unstyled collapse show ?>" >
+                            <?php foreach($row['childs'] as $key => $child) :
                              ?>
-                            <li class="sidebar-item <?php echo $sub_actives[$key] ? 'active' : ''; ?>">
-                                <a href="<?php echo $this->link_admin . $plural_sub; ?>" class="sidebar-link submenu-link">
+                            <li class="sidebar-item <?php echo isset($child['class']) ? $child['class'] : ''; ?>">
+                                <a href="<?php echo $child['link']; ?>" class="sidebar-link submenu-link">
                                     <span class="align-middle">
-                                        <i class="fa-solid fa-arrow-right"></i><?php echo $name_sub ?>
+                                        <i class="fa-solid fa-arrow-right"></i><?php echo $child['title'] ?>
                                     </span>
                                 </a>
                             </li>
