@@ -44,7 +44,10 @@ div > .select2-container{
 span.select2-container {
     z-index:10050;
 }
-
+.select2-no-index span.select2-container
+{
+    z-index: 0;
+}
 #tree_root
 {
     height: calc(100vh - 130px);
