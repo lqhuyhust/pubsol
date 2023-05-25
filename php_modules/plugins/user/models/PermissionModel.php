@@ -7,7 +7,7 @@ class PermissionModel extends Base
 {
     public function getAccess()
     {
-        if ($this->access) 
+        if (!isset($this->access)) 
         {
             $register_access = [];
             $this->app->plgLoad('permission', 'registerAccess', function($access) use (&$register_access){
