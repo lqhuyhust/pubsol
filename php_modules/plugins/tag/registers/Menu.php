@@ -6,10 +6,11 @@ use SPT\Support\Loader;
 
 class Menu
 {
-    public static function registerMenu( IApp $app )
+    public static function registerItem( IApp $app )
     {
         $container = $app->getContainer();
-        $menu_root = $container->exists('menu') ? $container->get('menu') : [];
+        $router = $container->get('router');
+        $path_current = $router->get('actualPath');
         $permission = $container->exists('permission') ? $container->get('permission') : null;
         $allow = $permission ? $permission->checkPermission(['tag_manager', 'tag_read']) : true;
         if (!$allow)
@@ -17,10 +18,19 @@ class Menu
             return false;
         }
 
+        $active = strpos($path_current, 'tags') !== false ? 'active' : '';
         $menu = [
-            [['tags', 'tag',], 'tags', 'Tags', '<i class="fa-solid fa-clipboard"></i>', '', ''],
+            [
+                'link' => $router->url('tags'),
+                'title' => 'Tags', 
+                'icon' => '<i class="fa-solid fa-clipboard"></i>',
+                'class' => $active,
+            ]
         ];
-        $menu_root[1] = isset($menu_root[1]) ? array_merge($menu_root[1], $menu) : $menu;
-        $container->set('menu', $menu_root);
+        
+        return [
+            'menu' => $menu,
+            'order' => 3,
+        ];
     }
 }
