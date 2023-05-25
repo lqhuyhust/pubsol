@@ -16,18 +16,18 @@
                 <li class="sidebar-item <?php echo isset($row['class']) ? $row['class'] : ''; ?> ">
                     <a href="<?php echo isset($row['link']) ? $row['link'] : ''; ?>" 
                         class="sidebar-link <?php echo (isset($row['childs']) && is_array($row['childs']) && $row['childs']) ? 'link-collapse collapsed' : '';?>" 
-                        <?php echo (isset($row['childs']) && is_array($row['childs']) && $row['childs']) ? 'data-bs-target="#'. $index. '_tab" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
+                        <?php echo (isset($row['childs']) && is_array($row['childs']) && $row['childs']) ? 'data-bs-target="#tab_'. $index .'" role="button" data-bs-toggle="collapse" aria-expanded="false" ' : '' ?> 
                     >
                         <?php echo isset($row['icon']) ? $row['icon'] : '' ?> 
                         <span class="align-middle">
                             <?php echo $row['title'] ?>
                             <?php if (isset($row['childs']) && is_array($row['childs']) && $row['childs']) : ?>
-                                <i id="icon" class="fa-solid  fa-caret-up icon-collapse float-end mt-1"></i>
+                                <i id="icon" class="fa-solid <?php echo (isset($row['class']) && strpos($row['class'] , 'active') !== false) ? 'fa-caret-up' : 'fa-caret-down' ?> icon-collapse float-end mt-1"></i>
                             <?php endif; ?>
                         </span>
                     </a>
                     <?php if (isset($row['childs']) && is_array($row['childs']) && $row['childs']) : ?>
-                        <ul id="<?php echo $index."_tab"; ?>" class="sidebar-dropdown list-unstyled collapse show ?>" >
+                        <ul id="tab_<?php echo $index ?>" class="sidebar-dropdown list-unstyled collapse <?php echo (isset($row['class']) && strpos($row['class'] , 'active') !== false) ? 'show' : '' ?>" >
                             <?php foreach($row['childs'] as $key => $child) :
                              ?>
                             <li class="sidebar-item <?php echo isset($child['class']) ? $child['class'] : ''; ?>">

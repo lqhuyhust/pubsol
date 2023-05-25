@@ -27,7 +27,7 @@ class Menu
             $menu[] = [
                 'link' => $router->url('tree-php/'. $item['id']),
                 'title' => $item['title'], 
-                'icon' => '',
+                'icon' => '<i class="me-4 pe-2"></i>',
                 'class' => 'back-ground-sidebar ' . $active,
             ];
         }
