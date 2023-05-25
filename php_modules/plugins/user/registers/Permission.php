@@ -17,7 +17,7 @@ class Permission
     public static function CheckSession(IApp $app)
     {
         $user = $app->getContainer()->get('user');
-        $permission = $app->getContainer()->get('permission');
+        $permission = $app->getContainer()->get('PermissionModel');
 
         if( is_object($user) && $user->get('id') )
         {

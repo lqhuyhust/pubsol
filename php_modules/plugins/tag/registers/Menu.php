@@ -11,7 +11,7 @@ class Menu
         $container = $app->getContainer();
         $router = $container->get('router');
         $path_current = $router->get('actualPath');
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow = $permission ? $permission->checkPermission(['tag_manager', 'tag_read']) : true;
         if (!$allow)
         {

@@ -10,7 +10,7 @@ class Menu
     {
         $container = $app->getContainer();
         $router = $app->getRouter();
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow = $permission ? $permission->checkPermission(['report_manager', 'report_read']) : true;
         $path_current = $router->get('actualPath');
 

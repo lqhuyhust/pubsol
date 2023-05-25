@@ -52,9 +52,9 @@ class AdminGroup extends ViewModel
     public function getFormFields($id)
     {
         $key_access = [];
-        if ($this->container->exists('permission'))
+        if ($this->container->exists('PermissionModel'))
         {
-            $key_access = $this->container->get('permission')->getAccess();
+            $key_access = $this->container->get('PermissionModel')->getAccess();
         }
         $option = [];
         foreach ($key_access as $key)

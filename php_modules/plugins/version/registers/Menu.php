@@ -12,7 +12,7 @@ class Menu
         $router = $container->get('router');
         $path_current = $router->get('actualPath');
 
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow = $permission ? $permission->checkPermission(['version_manager', 'version_read']) : true;
         if (!$allow)
         {
