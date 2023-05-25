@@ -27,7 +27,7 @@ class AdminRequest extends ViewModel
     {
         $request = $this->container->get('request');
         $router = $this->container->get('router');
-        $permission = $this->container->exists('permission') ? $this->container->get('permission') : null;
+        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
 
         $urlVars = $request->get('urlVars');
         
@@ -89,7 +89,7 @@ class AdminRequest extends ViewModel
         $router = $this->container->get('router');
         $RequestEntity = $this->container->get('RequestEntity');
         $TagEntity = $this->container->get('TagEntity');
-        $permission = $this->container->exists('permission') ? $this->container->get('permission') : null;
+        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
         $MilestoneEntity = $this->container->get('MilestoneEntity');
 
         $urlVars = $request->get('urlVars');

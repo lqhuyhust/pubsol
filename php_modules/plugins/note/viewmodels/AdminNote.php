@@ -35,7 +35,7 @@ class AdminNote extends ViewModel
         $AttachmentEntity = $this->container->get('AttachmentEntity');
         $router = $this->container->get('router');
         $type = $this->request->get->get('type', 'html');
-        $permission = $this->container->exists('permission') ? $this->container->get('permission') : null;
+        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];

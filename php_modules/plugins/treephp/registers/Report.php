@@ -10,7 +10,7 @@ class Report
     {
         $container = $app->getContainer();
         $router = $container->get('router');
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow = $permission ? $permission->checkPermission(['treephp_manager', 'treephp_read']) : true;
         if (!$allow)
         {
