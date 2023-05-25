@@ -125,8 +125,10 @@
             $("#col-8").toggleClass("col-lg-12");
             $("#col-4").toggleClass("col-lg-0 d-none");
             $("#sidebarToggle i").toggleClass('fa-caret-right fa-caret-left');
-            reRender();
             window.dispatchEvent(new Event('resize'));
+            <?php if ($this->data['type'] == 'presenter') {?>
+                reRender();
+            <?php } ?>
         });
 
         <?php if ($this->data['type'] == 'presenter') : ?>
