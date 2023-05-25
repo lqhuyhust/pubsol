@@ -10,7 +10,7 @@
                             <span class="me-auto">Description:</span> 
                             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
-                                    <i class="fa-solid fa-bars fs-2 "></i>
+                                    <i class="fa-solid fa-caret-left fs-1"></i>
                                 </a>
                             </nav>
                         </div>
@@ -37,7 +37,7 @@
                     <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
                 </div>
             </div>
-            <div id="col-4" class="col-lg-4 col-sm-12 col-lg-0 d-none">
+            <div id="col-4" class="col-lg-4 col-sm-12 col-lg-0 col-left-note d-none">
                 <div class="row">
                     <div class="col-lg-12 col-sm-12 mx-auto">
                         <label class="form-label fw-bold">Notice: <?php echo $this->data['note']?></label>
@@ -124,6 +124,7 @@
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
             $("#col-4").toggleClass("col-lg-0 d-none");
+            $("#sidebarToggle i").toggleClass('fa-caret-right fa-caret-left');
             reRender();
             window.dispatchEvent(new Event('resize'));
         });
