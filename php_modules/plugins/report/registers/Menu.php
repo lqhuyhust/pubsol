@@ -21,9 +21,9 @@ class Menu
         
         $menu_report = [];
         $app->plgLoad('menu', 'registerReportItem', function ($reports) use (&$menu_report){
-            if ($reports && is_array($menu_report))
+            if ($reports && is_array($reports))
             {
-                $menu_report = array_merge($menu_report);
+                $menu_report = array_merge($menu_report, $reports);
             }
         });
 
@@ -36,7 +36,7 @@ class Menu
                 'class' => $active,
             ],
         ];
-        
+
         if ($menu_report)
         {
             foreach($menu_report as $item)
