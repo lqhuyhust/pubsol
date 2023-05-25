@@ -90,6 +90,22 @@ class Note extends Admin {
             {
                 $tags_tmp[] = $tag;
             }
+            else
+            {
+                $find_tmp = $this->TagEntity->findOne(['name' => $tag]);
+                if ($find_tmp)
+                {
+                    $tags_tmp[] = $find_tmp['id'];
+                }
+                else
+                {
+                    $new_tag = $this->TagEntity->add(['name' => $tag]);
+                    if ($new_tag)
+                    {
+                        $tags_tmp[] = $new_tag;
+                    }
+                }
+            }
         }
         if ($type == 'sheetjs')
         {
@@ -201,6 +217,22 @@ class Note extends Admin {
                 if ($find)
                 {
                     $tags_tmp[] = $tag;
+                }
+                else
+                {
+                    $find_tmp = $this->TagEntity->findOne(['name' => $tag]);
+                    if ($find_tmp)
+                    {
+                        $tags_tmp[] = $find_tmp['id'];
+                    }
+                    else
+                    {
+                        $new_tag = $this->TagEntity->add(['name' => $tag]);
+                        if ($new_tag)
+                        {
+                            $tags_tmp[] = $new_tag;
+                        }
+                    }
                 }
             }
             $tags = implode(',', $tags_tmp);

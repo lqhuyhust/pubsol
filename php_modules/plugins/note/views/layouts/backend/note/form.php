@@ -246,6 +246,7 @@ $js = <<<Javascript
     var new_tags = [];
     $(".js-example-tags").select2({
         matcher: matchCustom,
+        tags : {$this->allow_tag},
         ajax: {
             url: "{$this->link_tag}",
             dataType: 'json',

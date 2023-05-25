@@ -34,6 +34,7 @@ class AdminNote extends ViewModel
         $NoteModel = $this->container->get('NoteModel');
         $AttachmentEntity = $this->container->get('AttachmentEntity');
         $router = $this->container->get('router');
+        $permission = $this->container->exists('permission') ? $this->container->get('permission') : null;
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -83,12 +84,15 @@ class AdminNote extends ViewModel
             $data['description_presenter'] = $data['description'];
         }
 
+        $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
+
         $form = new Form($this->getFormFields(), $data);
         return [
             'id' => $id,
             'form' => $form,
             'data' => $data,
             'data_tags' => $data_tags,
+            'allow_tag' => $allow_tag ? 'true' : 'false',
             'data_version' => $data_version,
             'version' => $version,
             'attachments' => $attachments,
