@@ -82,10 +82,11 @@ class Menu
         {
             foreach($list as $item)
             {
-                $start_date = $item['start_date'] && $item['start_date'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['start_date'])) : '__';
-                $end_date = $item['end_date'] && $item['end_date'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['end_date'])) : '__';
-                $title = $item['title'] . ' ('. $start_date . ' - '. $end_date .')';
+                $start_date = $item['start_date'] && $item['start_date'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['start_date'])) : '';
+                $end_date = $item['end_date'] && $item['end_date'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['end_date'])) : '';
+                $title = $start_date && $end_date ? $item['title'] . ' ('. $start_date . ' - '. $end_date .')' : $item['title'];
                 $active = ($sitenode == 'requests') && (strpos($path_current, 'requests/'. $item['id']) !== false) ? 'active' : '';
+
                 $menu[] =  [
                     'link' => $router->url('requests/'. $item['id']),
                     'title' => $title,
