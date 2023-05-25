@@ -98,6 +98,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         </select>
                     </div>
                 </div>
+                <input type="hidden" name="save_close" id="save_close">
                 <label class="form-label fw-bold pt-2">Attachments:</label>
                 <input name="files[]" type="file" multiple id="file" class="form-control">
                 <div class="d-flex flex-wrap pt-4">
