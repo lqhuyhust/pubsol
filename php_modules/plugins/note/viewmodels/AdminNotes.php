@@ -134,7 +134,7 @@ class AdminNotes extends ViewModel
             ],
             [
                 'link' => $router->url('note/0?type=presenter'),
-                'title' => 'presenter',
+                'title' => 'Presenter',
             ],
         ];
         $list   = new Listing($result, $total, $limit, $this->getColumns());

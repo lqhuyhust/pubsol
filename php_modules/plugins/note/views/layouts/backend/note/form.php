@@ -13,28 +13,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
                         <div class="fw-bold d-flex">
                             <span class="me-auto">Description:</span>
-                            <?php if (!$this->id): ?> 
-                            <span>
-                                <div class="button-editor-mode form-check form-switch me-2 mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || ($this->data && $this->data['type'] == 'html')) ? 'checked' : ''; ?> name="type" id="tynimceToogle" value="html">
-                                    <label class="form-check-label" for="tynimceToogle">HTML</label>
-                                </div>
-                            </span>
-                            <span>
-                                <div class=" button-editor-mode form-check me-2 form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['type'] == 'sheetjs') ? 'checked' : ''; ?> name="type" id="sheetToogle" value="sheetjs">
-                                    <label class="form-check-label" for="sheetToogle">Sheet</label>
-                                </div>
-                            </span>
-                            <span>
-                                <div class="button-editor-mode form-check form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['type'] == 'presenter') ? 'checked' : ''; ?> name="type" id="PresenterToogle" value="presenter">
-                                    <label class="form-check-label" for="PresenterToogle">Presenter</label>
-                                </div>
-                            </span>
-                            <?php else: ?>
-                                <input type="hidden"  name="type" value="<?php echo $this->data['type'];?>">
-                            <?php endif; ?>
+                            <input type="hidden"  name="type" value="<?php echo $this->type;?>">
                             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
                                     <i class="fa-solid fa-caret-right fs-1"></i>
@@ -90,7 +69,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 </div>
 
                 <div class="row">
-                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto  tag-note">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto  tag-note select2-no-index">
                         <label class="form-label fw-bold">Tags:</label>
                         <select class="js-example-tags" multiple id="select_tags">
                             <?php foreach ($this->data_tags as $item) : ?>
@@ -161,7 +140,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 </style>
 <script>
     $(document).ready(function(e) {
-        var editor = '<?php echo $this->data ? $this->data['type'] : '' ?>';
+        var editor = '<?php echo $this->data ? $this->data['type'] : $this->type ?>';
         
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
@@ -206,7 +185,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         $("#apply").removeClass("d-none");
         $("#save_and_close_header").removeClass("d-none");
         $("#apply_header").removeClass("d-none");
-        openModeEditor('<?php echo $this->data ? $this->data['type'] : 'html';?>');
+        openModeEditor('<?php echo $this->data ? $this->data['type'] : $this->type;?>');
         
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
