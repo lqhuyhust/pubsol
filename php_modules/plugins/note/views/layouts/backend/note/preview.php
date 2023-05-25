@@ -40,7 +40,7 @@
             <div id="col-4" class="col-lg-4 col-sm-12 col-lg-0 d-none">
                 <div class="row">
                     <div class="col-lg-12 col-sm-12 mx-auto">
-                        <label class="form-label fw-bold">Note: <?php echo $this->data['note']?></label>
+                        <label class="form-label fw-bold">Notice: <?php echo $this->data['note']?></label>
                     </div>
                 </div>
                 <?php if ($this->data && !$this->data_version) : ?>

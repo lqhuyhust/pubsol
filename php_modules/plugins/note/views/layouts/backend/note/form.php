@@ -59,7 +59,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
             <div id="col-4" class="col-lg-4 col-sm-12">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                        <label class="form-label fw-bold">Note:</label>
+                        <label class="form-label fw-bold">Notice:</label>
                         <?php $this->ui->field('note'); ?>
                     </div>
                 </div>
