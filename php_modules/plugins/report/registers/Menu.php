@@ -6,20 +6,37 @@ use SPT\Support\Loader;
 
 class Menu
 {
-    public static function registerMenu( IApp $app )
+    public static function registerItem( IApp $app )
     {
         $container = $app->getContainer();
-        $app->plgLoad('Menu', 'registerReportMenu');
-        
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $router = $app->getRouter();
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow = $permission ? $permission->checkPermission(['report_manager', 'report_read']) : true;
+        $path_current = $router->get('actualPath');
+
         if (!$allow)
         {
             return false;
         }
-        $menu_report = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
-        $menu_root = $container->exists('menu') ? $container->get('menu') : [];
-        $menu[] = [['reports', 'reports',], 'reports', 'Report', '<i class="fa-solid fa-magnifying-glass-chart"></i>', []];
+        
+        $menu_report = [];
+        $app->plgLoad('menu', 'registerReportItem', function ($reports) use (&$menu_report){
+            if ($reports && is_array($reports))
+            {
+                $menu_report = array_merge($menu_report, $reports);
+            }
+        });
+
+        $active = strpos($path_current, 'reports') !== false ? 'active' : '';
+        $menu = [
+            [
+                'link' => $router->url('reports'), 
+                'title' => 'Report', 
+                'icon' => '<i class="fa-solid fa-magnifying-glass-chart"></i>',
+                'class' => $active,
+            ],
+        ];
+
         if ($menu_report)
         {
             foreach($menu_report as $item)
@@ -27,7 +44,10 @@ class Menu
                 $menu[] = $item;
             }
         }
-        $menu_root[2] = isset($menu_root[2]) ? array_merge($menu_root[2], $menu) : $menu;
-        $container->set('menu', $menu_root);
+        
+        return [
+            'menu' => $menu,
+            'order' => 4,
+        ];
     }
 }

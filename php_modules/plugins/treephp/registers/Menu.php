@@ -6,11 +6,12 @@ use SPT\Support\Loader;
 
 class Menu
 {
-    public static function registerReportMenu( IApp $app )
+    public static function registerReportItem( IApp $app )
     {
         $container = $app->getContainer();
-        $menu_root = $container->exists('reportMenu') ? $container->get('reportMenu') : [];
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $router = $container->get('router');
+        $path_current = $router->get('actualPath');
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $DiagramEntity = $container->get('DiagramEntity');
         $allow = $permission ? $permission->checkPermission(['treephp_manager', 'treephp_read']) : true;
         if (!$allow)
@@ -22,10 +23,15 @@ class Menu
         $menu = [];
         foreach($list as $item)
         {
-            $menu[] = [['tree-php/'. $item['id'],'tree-php/'. $item['id']], 'tree-php/'. $item['id'], $item['title'], '<i class="me-4 pe-2"></i>', 'back-ground-sidebar'];
+            $active = strpos($path_current, 'tree-php/'. $item['id']) !== false ? 'active' : '';
+            $menu[] = [
+                'link' => $router->url('tree-php/'. $item['id']),
+                'title' => $item['title'], 
+                'icon' => '<i class="me-4 pe-2"></i>',
+                'class' => 'back-ground-sidebar ' . $active,
+            ];
         }
         
-        $menu_root = array_merge($menu_root, $menu);
-        $container->set('reportMenu', $menu_root);
+        return $menu;
     }
 }

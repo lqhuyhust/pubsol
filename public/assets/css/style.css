@@ -21,6 +21,12 @@ ul a.submenu-link{
 .back-ground-sidebar a.sidebar-link
 {
     background: #35414e;
+    font-size: 14px;
+    border-top: 0.5px solid;
+}
+
+.sidebar-nav .sidebar-item:not(.back-ground-sidebar) + .sidebar-item.back-ground-sidebar a.sidebar-link{
+    border-top: none;
 }
 
 .field-sheetjs{

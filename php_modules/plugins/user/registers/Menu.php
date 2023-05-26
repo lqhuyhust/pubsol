@@ -6,28 +6,48 @@ use SPT\Support\Loader;
 
 class Menu
 {
-    public static function registerMenu( IApp $app )
+    public static function registerItem( IApp $app )
     {
         $container = $app->getContainer();
-        $menu_root = $container->exists('menu') ? $container->get('menu') : [];
+        $router = $container->get('router');
+        $path_current = $router->get('actualPath');
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
 
-        $menu = [];
-        $allow_user = true;
-        $allow_profile = true;
-        $allow_usergroup = true;
+        $allow_user = $permission ? $permission->checkPermission(['user_manager', 'user_read']) : true;
+        $allow_usergroup = $permission ? $permission->checkPermission(['usergroup_manager', 'usergroup_read']) : true;
+        $allow_profile = $permission ? $permission->checkPermission(['user_manager', 'user_profile']) : true;
         
         $menu_user = [];
         if ($allow_user || $allow_usergroup)
         {
-            $menu_user = [['users', 'user','user-groups', 'user-group',], 'users', 'Users', '<i class="fa-solid fa-users"></i>', []];
+            $active = strpos($path_current, 'user') !== false || strpos($path_current, 'user-group') !== false ? 'active-child' : '';
+            $menu_user = [
+                'link' => '#',
+                'title' => 'Users', 
+                'icon' => '<i class="fa-solid fa-users"></i>', 
+                'class' => $active,
+                'childs' => [],
+            ];
         }
         if ($allow_user)
         {
-            $menu_user[4][] = [['users', 'user',], 'users', 'Users', '<i class="fa-solid fa-user"></i>', '',];
+            $active = strpos($path_current, 'user') !== false && strpos($path_current, 'user-group') === false ? 'active' : '';
+            $menu_user['childs'][] = [
+                'link' => $router->url('users'),
+                'title' => 'Users', 
+                'icon' => '<i class="fa-solid fa-users"></i>', 
+                'class' => $active,
+            ];
         }
         if ($allow_usergroup)
         {
-            $menu_user[4][] = [['user-groups', 'user-group',], 'user-groups', 'Groups', '<i class="fa-solid fa-user-group"></i>', ''];
+            $active = strpos($path_current, 'user-group') !== false ? 'active' : '';
+            $menu_user['childs'][] = [
+                'link' => $router->url('user-groups'),
+                'title' => 'User Groups', 
+                'icon' => '<i class="fa-solid fa-user-group"></i>', 
+                'class' => $active,
+            ];
         }
 
         if ($menu_user)
@@ -37,12 +57,25 @@ class Menu
 
         if ($allow_profile)
         {
-            $menu[] = [['profile'], 'profile', 'Profile', '<i class="fa-solid fa-user"></i>', ''];
+            $active = strpos($path_current, 'profile') !== false ? 'active' : '';
+            $menu[] = [
+                'link' => $router->url('profile'),
+                'title' => 'Profile', 
+                'icon' => '<i class="fa-solid fa-user"></i>', 
+                'class' => $active,
+            ];
         }
         
-        $menu[] = [['logout'], 'logout', 'Logout', '<i class="fa-solid fa-right-from-bracket"></i>', ''];
+        $menu[] = [
+            'link' => $router->url('logout'),
+            'title' => 'Logout', 
+            'icon' => '<i class="fa-solid fa-right-from-bracket"></i>', 
+            'class' => '',
+        ];
 
-        $menu_root[15] = isset($menu_root[15]) ? array_merge($menu_root[15], $menu) : $menu;
-        $container->set('menu', $menu_root);
+        return [
+            'menu' => $menu,
+            'order' => 11,
+        ];
     }
 }

@@ -6,21 +6,33 @@ use SPT\Support\Loader;
 
 class Menu
 {
-    public static function registerMenu( IApp $app )
+    public static function registerItem( IApp $app )
     {
         $container = $app->getContainer();
-        $menu_root = $container->exists('menu') ? $container->get('menu') : [];
-        $permission = $container->exists('permission') ? $container->get('permission') : null;
+        $router = $container->get('router');
+        $path_current = $router->get('actualPath');
+
+        $permission = $container->exists('PermissionModel') ? $container->get('PermissionModel') : null;
         $allow = $permission ? $permission->checkPermission(['version_manager', 'version_read']) : true;
         if (!$allow)
         {
             return false;
         }
-        $menu = [
-            [['versions', 'version', 'version-notes', 'version-feedback'], 'versions', 'Versions', '<i class="fa-solid fa-code-branch"></i>', ''],
-        ];
 
-        $menu_root[5] = isset($menu_root[5]) ? array_merge($menu_root[5], $menu) : $menu;
-        $container->set('menu', $menu_root);
+        $active = strpos($path_current, 'version') !== false ? 'active' : '';
+        $menu = [
+            [
+                'link' => $router->url('versions'),
+                'title' => 'Versions', 
+                'icon' => '<i class="fa-solid fa-code-branch"></i>',
+                'class' => $active,
+            ]
+        ];
+        
+
+        return [
+            'menu' => $menu,
+            'order' => 5,
+        ];
     }
 }
