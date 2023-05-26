@@ -144,7 +144,7 @@
     var new_tags = [];
     $(document).ready(function(){
         $(".js-example-tags").select2({
-            tags: true,
+            tags: <?php echo $this->allow_tag ?>,
             matcher: matchCustom,
             ajax: {
                 url: "<?php echo $this->link_tag ?>",

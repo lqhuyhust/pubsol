@@ -27,6 +27,7 @@ class AdminRequest extends ViewModel
     {
         $request = $this->container->get('request');
         $router = $this->container->get('router');
+        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
 
         $urlVars = $request->get('urlVars');
         
@@ -34,8 +35,11 @@ class AdminRequest extends ViewModel
         
         $form = new Form($this->getFormFields(), []);
 
+        $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
+
         return [
             'form' => $form,
+            'allow_tag' => $allow_tag ? 'true' : 'false',
             'url' => $router->url(),
             'link_list' => $router->url('requests/'. $milestone_id),
             'link_tag' => $router->url('tag/search'),
@@ -85,6 +89,7 @@ class AdminRequest extends ViewModel
         $router = $this->container->get('router');
         $RequestEntity = $this->container->get('RequestEntity');
         $TagEntity = $this->container->get('TagEntity');
+        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
         $MilestoneEntity = $this->container->get('MilestoneEntity');
 
         $urlVars = $request->get('urlVars');
@@ -106,9 +111,12 @@ class AdminRequest extends ViewModel
             }
         }
 
+        $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
+
         $title_page = '<a class="me-2" href="'.$router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
         return [
             'request_id' => $request_id,
+            'allow_tag' => $allow_tag ? 'true' : 'false',
             'url' => $router->url(),
             'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),
             'link_tag' => $router->url('tag/search'),

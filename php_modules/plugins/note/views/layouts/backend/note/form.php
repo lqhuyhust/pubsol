@@ -11,33 +11,12 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 <input id="input_title" type="hidden" class="d-none" name="title" required>
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                        <div class="fw-bold d-flex  mb-2">
+                        <div class="fw-bold d-flex">
                             <span class="me-auto">Description:</span>
-                            <?php if (!$this->id): ?> 
-                            <span>
-                                <div class="button-editor-mode form-check form-switch me-2 mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ( !$this->data || ($this->data && $this->data['type'] == 'html')) ? 'checked' : ''; ?> name="type" id="tynimceToogle" value="html">
-                                    <label class="form-check-label" for="tynimceToogle">HTML</label>
-                                </div>
-                            </span>
-                            <span>
-                                <div class=" button-editor-mode form-check me-2 form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['type'] == 'sheetjs') ? 'checked' : ''; ?> name="type" id="sheetToogle" value="sheetjs">
-                                    <label class="form-check-label" for="sheetToogle">Sheet</label>
-                                </div>
-                            </span>
-                            <span>
-                                <div class="button-editor-mode form-check form-switch mb-0">
-                                    <input class="form-check-input" type="radio" <?php echo ($this->data && $this->data['type'] == 'presenter') ? 'checked' : ''; ?> name="type" id="PresenterToogle" value="presenter">
-                                    <label class="form-check-label" for="PresenterToogle">Presenter</label>
-                                </div>
-                            </span>
-                            <?php else: ?>
-                                <input type="hidden"  name="type" value="<?php echo $this->data['type'];?>">
-                            <?php endif; ?>
+                            <input type="hidden"  name="type" value="<?php echo $this->type;?>">
                             <nav class="navbar navbar-expand navbar-light navbar-bg d-flex pe-0 justify-content-end py-0" style="box-shadow: inherit;">
                                 <a class="sidebar-toggle1 js-sidebar-toggle" id="sidebarToggle" style="color: black !important;">
-                                    <i class="fa-solid fa-bars fs-2 "></i>
+                                    <i class="fa-solid fa-caret-right fs-1"></i>
                                 </a>
                             </nav>
                         </div>
@@ -56,10 +35,11 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     <input class="form-control rounded-0 border border-1" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
                 </div>
             </div>
-            <div id="col-4" class="col-lg-4 col-sm-12">
+            
+            <div id="col-4" class="col-lg-4 col-sm-12 col-left-note">
                 <div class="row">
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto">
-                        <label class="form-label fw-bold">Note:</label>
+                        <label class="form-label fw-bold">Notice:</label>
                         <?php $this->ui->field('note'); ?>
                     </div>
                 </div>
@@ -89,7 +69,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                 </div>
 
                 <div class="row">
-                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto  tag-note">
+                    <div class="mb-3 col-lg-12 col-sm-12 mx-auto  tag-note select2-no-index">
                         <label class="form-label fw-bold">Tags:</label>
                         <select class="js-example-tags" multiple id="select_tags">
                             <?php foreach ($this->data_tags as $item) : ?>
@@ -98,6 +78,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                         </select>
                     </div>
                 </div>
+                <input type="hidden" name="save_close" id="save_close">
                 <label class="form-label fw-bold pt-2">Attachments:</label>
                 <input name="files[]" type="file" multiple id="file" class="form-control">
                 <div class="d-flex flex-wrap pt-4">
@@ -159,7 +140,7 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
 </style>
 <script>
     $(document).ready(function(e) {
-        var editor = '<?php echo $this->data ? $this->data['type'] : '' ?>';
+        var editor = '<?php echo $this->data ? $this->data['type'] : $this->type ?>';
         
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
@@ -204,11 +185,12 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
         $("#apply").removeClass("d-none");
         $("#save_and_close_header").removeClass("d-none");
         $("#apply_header").removeClass("d-none");
-        openModeEditor('<?php echo $this->data ? $this->data['type'] : 'html';?>');
+        openModeEditor('<?php echo $this->data ? $this->data['type'] : $this->type;?>');
         
         $("#sidebarToggle").click(function() {
             $("#col-8").toggleClass("col-lg-12");
             $("#col-4").toggleClass("col-lg-0 d-none");
+            $("#sidebarToggle i").toggleClass('fa-caret-right fa-caret-left');
             reRender();
             window.dispatchEvent(new Event('resize'));
         });
@@ -243,6 +225,7 @@ $js = <<<Javascript
     var new_tags = [];
     $(".js-example-tags").select2({
         matcher: matchCustom,
+        tags : {$this->allow_tag},
         ajax: {
             url: "{$this->link_tag}",
             dataType: 'json',

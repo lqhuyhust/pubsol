@@ -27,7 +27,7 @@ class Setting extends Controller
                 foreach($fields as $key => $config)
                 {
                     $value = $this->request->post->get($key, '', 'string');
-                    $value = $value ? $value : '';
+                    $value = (string) $value;
                     $try = $this->OptionModel->set($key, $value);
                 }
             }

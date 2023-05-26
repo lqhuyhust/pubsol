@@ -123,9 +123,24 @@ class AdminNotes extends ViewModel
         }
         $limit = $limit == 0 ? $total : $limit;
 
+        $types = [
+            [
+                'link' => $router->url('note/0?type=html'),
+                'title' => 'Html',
+            ],
+            [
+                'link' => $router->url('note/0?type=sheetjs'),
+                'title' => 'Sheet',
+            ],
+            [
+                'link' => $router->url('note/0?type=presenter'),
+                'title' => 'Presenter',
+            ],
+        ];
         $list   = new Listing($result, $total, $limit, $this->getColumns());
         return [
             'list' => $list,
+            'types' => $types,
             'data_tags' => $data_tags,
             'page' => $page,
             'start' => $start,

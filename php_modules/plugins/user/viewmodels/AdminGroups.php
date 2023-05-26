@@ -79,9 +79,9 @@ class AdminGroups extends ViewModel
             //get Right Access
             $group['access'] = (array) json_decode($group['access']);
             $keys = [];
-            if ($this->container->exists('permissionModel'))
+            if ($this->container->exists('PermissionModel'))
             {
-                $keys = $this->container->get('permissionModel')->getAccess();
+                $keys = $this->container->get('PermissionModel')->getAccess();
             }
             
             foreach($group['access'] as $key => $value)

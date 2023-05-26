@@ -44,7 +44,10 @@ div > .select2-container{
 span.select2-container {
     z-index:10050;
 }
-
+.select2-no-index span.select2-container
+{
+    z-index: 0;
+}
 #tree_root
 {
     height: calc(100vh - 130px);
@@ -69,4 +72,9 @@ span.select2-container {
     border-radius: 10px;
     background: linear-gradient(left, #fff, #e4e4e4);
     border: 1px solid #aaa;
+}
+
+.col-left-note{
+    border-left: 1px solid #aaa;
+    min-height: calc(100vh - 90px);
 }

@@ -34,6 +34,8 @@ class AdminNote extends ViewModel
         $NoteModel = $this->container->get('NoteModel');
         $AttachmentEntity = $this->container->get('AttachmentEntity');
         $router = $this->container->get('router');
+        $type = $this->request->get->get('type', 'html');
+        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -83,12 +85,21 @@ class AdminNote extends ViewModel
             $data['description_presenter'] = $data['description'];
         }
 
+        $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
+
+        $allow_type = ['html', 'sheetjs', 'presenter'];
+        $type = in_array($type, $allow_type) ? $type : 'html';
+
+        $type = $data ? $data['type'] : $type;
+
         $form = new Form($this->getFormFields(), $data);
         return [
             'id' => $id,
             'form' => $form,
             'data' => $data,
+            'type' => $type,
             'data_tags' => $data_tags,
+            'allow_tag' => $allow_tag ? 'true' : 'false',
             'data_version' => $data_version,
             'version' => $version,
             'attachments' => $attachments,
@@ -227,7 +238,7 @@ class AdminNote extends ViewModel
             'note' => [
                 'textarea',
                 'showLabel' => false,
-                'placeholder' => 'Note',
+                'placeholder' => 'Notice',
                 'formClass' => 'form-control',
             ],
             'file' => [
