@@ -11,8 +11,8 @@
         <?php echo  $this->item['excerpt_description'];  ?>
     </td>
     <td><?php echo   $this->item['status'] ? 'Show' : 'Hide';  ?></td>
-    <td class="min-w-100"><?php echo   $this->item['start_date'] ? date('m-d-Y', strtotime($this->item['start_date'])) : '';  ?></td>
-    <td class="min-w-100"><?php echo   $this->item['end_date'] ? date('m-d-Y', strtotime($this->item['end_date'])) : '';  ?></td>
+    <td class="min-w-100"><?php echo   $this->item['start_date'] ? date('d/m/Y', strtotime($this->item['start_date'])) : '';  ?></td>
+    <td class="min-w-100"><?php echo   $this->item['end_date'] ? date('d/m/Y', strtotime($this->item['end_date'])) : '';  ?></td>
     <td>
         <a href="#" 
             class="fs-4 me-1 show_data" 
