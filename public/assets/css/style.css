@@ -78,3 +78,8 @@ span.select2-container {
     border-left: 1px solid #aaa;
     min-height: calc(100vh - 90px);
 }
+
+.popover.show{
+    max-height: 100vh;
+    overflow-y: auto;
+}
