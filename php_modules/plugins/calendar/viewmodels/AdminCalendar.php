@@ -94,7 +94,7 @@ class AdminCalendar extends ViewModel
             'link_detail' => $router->url('detail-request'),
             'title_page' => 'Calendar',
             'link_form' => $router->url('timeline'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

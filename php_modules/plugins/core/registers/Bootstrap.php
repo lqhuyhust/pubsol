@@ -20,7 +20,6 @@ class Bootstrap
     public static function initialize( IApp $app)
     {
         static::prepareDB($app);
-        static::prepareToken($app);
         static::prepareSession($app);
         static::loadBasicClasses($app);
         static::prepareUser($app);
@@ -47,13 +46,6 @@ class Bootstrap
         }
     }
 
-    private static function prepareToken(IApp $app)
-    {
-        $container = $app->getContainer();
-        $token = new Token($app);
-        $container->set('token', $token);
-    }
-
     private static function prepareSession(IApp $app)
     {
         $container = $app->getContainer();
@@ -62,7 +54,7 @@ class Bootstrap
 
         $session = new Session(
             $container->exists('query') ? 
-            new DatabaseSession( new DatabaseSessionEntity($query), $token->getToken() ) :
+            new DatabaseSession( new DatabaseSessionEntity($query), $token->value() ) :
             new PhpSession()
         );
 
@@ -127,7 +119,7 @@ class Bootstrap
         $config = $container->get('config');
         $request = $container->get('request');
 
-        if(!$config->exists('defaultTheme'))
+        if(!$config->defaultTheme)
         {
             throw new \Exception('Configuration did not set up theme');
         }

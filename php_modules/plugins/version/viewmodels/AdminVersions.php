@@ -120,7 +120,7 @@ class AdminVersions extends ViewModel
             'title_page' => 'Version Manager',
             'link_form' => $router->url('version'),
             'link_form_detail' => $router->url('version-notes'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

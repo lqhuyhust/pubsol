@@ -153,7 +153,7 @@ class AdminNotes extends ViewModel
             'title_page' => 'Note Manager',
             'link_form' => $router->url('note'),
             'link_preview' => $router->url('note/preview'),
-            'token' => $token->getToken(),
+            'token' => $token->value(),
         ];
     }
 

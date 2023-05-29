@@ -112,7 +112,7 @@ class AdminRequests extends ViewModel
             'title_page' => $title_page,
             'link_form' => $router->url('request/'. $milestone_id),
             'link_detail' => $router->url('detail-request'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
     
         ];
     }

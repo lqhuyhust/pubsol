@@ -130,7 +130,7 @@ class AdminFeedback extends ViewModel
             'link_cancel' => $router->url('versions'),
             'title_page' => $title_page,
             'link_form' => $router->url('note'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
     public function getColumns()

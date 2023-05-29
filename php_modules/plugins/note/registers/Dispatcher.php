@@ -6,9 +6,9 @@ use SPT\File;
 
 class Dispatcher
 {
-    public static function dispatch( IApp $app, string $cName, string $fName)
+    public static function dispatch(IApp $app)
     {
-        $app->plgLoad('permission', 'CheckSession');
+        $app->plgLoad('permission', 'CheckSession'); 
 
         // prepare note
         $container = $app->getContainer();
@@ -16,6 +16,9 @@ class Dispatcher
         {
             $container->set('file', new File());
         }
+        
+        $cName = $app->get('controller');
+        $fName = $app->get('function');
         
         $cName = ucfirst($cName);
 

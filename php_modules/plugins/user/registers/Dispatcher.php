@@ -6,8 +6,10 @@ use SPT\Response;
 
 class Dispatcher
 {
-    public static function dispatch( IApp $app, string $cName, string $fName)
+    public static function dispatch(IApp $app)
     {
+        $cName = $app->get('controller');
+        $fName = $app->get('function');
         if( $cName != 'user' || !in_array($fName, ['gate', 'login']))
         {
             $app->plgLoad('permission', 'CheckSession');

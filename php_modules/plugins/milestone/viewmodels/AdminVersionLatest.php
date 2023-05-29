@@ -76,7 +76,7 @@ class AdminVersionLatest extends ViewModel
             'link_cancel' => $router->url('detail-request/'. $request_id),
             'title_page_version' => $title_page,
             'link_form' => $router->url('request-version/'. $request_id),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

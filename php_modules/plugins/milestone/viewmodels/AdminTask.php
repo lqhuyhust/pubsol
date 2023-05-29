@@ -61,7 +61,7 @@ class AdminTask extends ViewModel
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
             ],
             'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
+                'default' => $this->container->get('token')->value(),
             ],
         ];
 

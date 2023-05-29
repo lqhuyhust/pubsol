@@ -22,7 +22,7 @@ class User extends Admin
 
     public function login()
     {
-        $redirect_after_login = $this->config->exists('redirect_after_login') ? $this->config->redirect_after_login : ''; 
+        $redirect_after_login = $this->config->redirect_after_login ? $this->config->redirect_after_login : ''; 
         if ($this->user->get('id'))
         {
             return $this->app->redirect(

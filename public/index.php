@@ -16,7 +16,8 @@ define('SPT_PATH_TEMP', PUBLIC_PATH);
 
 require ROOT_PATH. 'vendor/autoload.php';
 
-$app = new SPT\Application\Joomla\Web(
+$app = new SPT\Application\Web(
+    new \SPT\Container\Joomla,
     PUBLIC_PATH,
     APP_PATH. 'plugins',
     APP_PATH. 'config.php',

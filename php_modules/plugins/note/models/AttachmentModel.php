@@ -21,7 +21,7 @@ class AttachmentModel extends Base
         {
             
             // check extension
-            if ($this->config->exists('extension_allow') &&  is_array($this->config->extension_allow))
+            if ($this->config->extension_allow &&  is_array($this->config->extension_allow))
             {
                 $extension = explode('.', $file['name']);
                 $extension = end($extension);

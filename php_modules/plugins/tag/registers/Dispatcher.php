@@ -6,10 +6,12 @@ use SPT\File;
 
 class Dispatcher
 {
-    public static function dispatch( IApp $app, string $cName, string $fName)
+    public static function dispatch(IApp $app)
     {
         $app->plgLoad('permission', 'CheckSession');
 
+        $cName = $app->get('controller');
+        $fName = $app->get('function');
         // prepare note
         $cName = ucfirst($cName);
 

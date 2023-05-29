@@ -99,7 +99,7 @@ class AdminUsers extends ViewModel
             'link_list' => $router->url('users'), true,
             'link_form' => $router->url('user'), true,
             'title_page' => 'User Manager',
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

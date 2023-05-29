@@ -105,7 +105,7 @@ class AdminGroups extends ViewModel
             'link_list' => $router->url('user-groups'),
             'title_page' => 'User Group Manager',
             'link_form' => $router->url('user-group'),
-            'token' => $token->getToken(),
+            'token' => $token->value(),
         ];
         
     }
