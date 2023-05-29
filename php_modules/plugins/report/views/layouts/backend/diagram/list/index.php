@@ -49,7 +49,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div class="d-flex justify-content-center flex-wrap">
+				<div class="d-flex justify-content-around flex-wrap">
 				<?php foreach($this->types as $type) : ?>
 					<h4 class="text-nowrap mb-3">
 						<a class="mx-3" href="<?php echo $type['new_link']?>"><?php echo $type['title']?></a>
