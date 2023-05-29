@@ -101,7 +101,7 @@ class AdminTreeDiagrams extends ViewModel
             'link_list' => $router->url('tree-diagrams'),
             'title_page' => 'Tree Diagarm',
             'link_form' => $router->url('tree-diagram'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

@@ -93,7 +93,7 @@ class AdminDiagrams extends ViewModel
             'url' => $router->url(),
             'link_list' => $router->url('reports'),
             'title_page' => 'Report',
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

@@ -82,7 +82,7 @@ class AdminTags extends ViewModel
             'link_list' => $router->url('tags'),
             'title_page' => 'Tags',
             'link_form' => $router->url('tag'),
-            'token' => $token->getToken(),
+            'token' => $token->value(),
         ];
     }
 

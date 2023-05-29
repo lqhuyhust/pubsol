@@ -75,7 +75,7 @@ class AdminRelateNote extends ViewModel
                 'formClass' => 'form-select',
             ],
             'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
+                'default' => $this->container->get('token')->value(),
             ],
         ];
 

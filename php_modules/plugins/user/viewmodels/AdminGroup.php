@@ -95,7 +95,7 @@ class AdminGroup extends ViewModel
                 ]
             ],
             'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
+                'default' => $this->container->get('token')->value(),
             ],
         ];
 

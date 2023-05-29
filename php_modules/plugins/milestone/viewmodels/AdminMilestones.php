@@ -91,7 +91,7 @@ class AdminMilestones extends ViewModel
             'link_request_list' => $router->url('requests'),
             'title_page' => 'Milestone Manager',
             'link_form' => $router->url('milestone'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

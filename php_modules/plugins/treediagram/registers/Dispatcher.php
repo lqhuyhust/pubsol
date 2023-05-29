@@ -6,11 +6,14 @@ use Joomla\DI\Container;
 
 class Dispatcher
 {
-    public static function dispatch( IApp $app, string $cName, string $fName)
+    public static function dispatch(IApp $app)
     {   
         $app->plgLoad('permission', 'CheckSession');
 
         static::registerEntities($app->getContainer());
+        
+        $cName = $app->get('controller');
+        $fName = $app->get('function');
 
         $cName = ucfirst($cName);
 

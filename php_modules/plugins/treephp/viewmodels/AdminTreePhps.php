@@ -101,7 +101,7 @@ class AdminTreePhps extends ViewModel
             'link_list' => $router->url('tree-phps'),
             'title_page' => 'Tree PHP Diagarm',
             'link_form' => $router->url('tree-php'),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

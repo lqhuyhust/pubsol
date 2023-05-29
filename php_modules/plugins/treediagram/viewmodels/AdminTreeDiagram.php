@@ -86,7 +86,7 @@ class AdminTreeDiagram extends ViewModel
                 'hidden',
             ],
             'token' => ['hidden',
-                'default' => $this->container->get('token')->getToken(),
+                'default' => $this->container->get('token')->value(),
             ],
         ];
 

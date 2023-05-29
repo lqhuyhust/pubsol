@@ -6,9 +6,11 @@ use SPT\Response;
 
 class Dispatcher
 {
-    public static function dispatch( IApp $app, string $cName, string $fName)
+    public static function dispatch(IApp $app)
     {
         $app->plgLoad('permission', 'CheckSession');
+        $cName = $app->get('controller');
+        $fName = $app->get('function');
 
         $cName = ucfirst($cName);
         $controller = 'App\plugins\report\controllers\\'. $cName;

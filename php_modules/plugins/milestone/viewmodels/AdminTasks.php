@@ -88,7 +88,7 @@ class AdminTasks extends ViewModel
             'link_list' => $router->url('tasks/'. $request_id),
             'title_page_task' => $title_page,
             'link_form' => $router->url('task/'. $request_id),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 

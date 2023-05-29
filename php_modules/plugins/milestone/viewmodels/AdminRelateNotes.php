@@ -137,7 +137,7 @@ class AdminRelateNotes extends ViewModel
             'link_note' => $router->url('note'),
             'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
             'title_page_relate_note' => $title_page_relate_note,
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 
@@ -158,7 +158,7 @@ class AdminRelateNotes extends ViewModel
             'link_form' => $router->url('relate-note/'. $request_id),
             'link_note' => $router->url('note'),
             'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
-            'token' => $this->container->get('token')->getToken(),
+            'token' => $this->container->get('token')->value(),
         ];
     }
 
