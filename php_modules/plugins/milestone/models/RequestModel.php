@@ -51,4 +51,14 @@ class RequestModel extends Base
 
         return $try;
     }   
+
+    public function excerpt($content, $limit = 10)
+    {
+        $content = explode(' ', $content);
+        $ex = count($content) > $limit ? ' ...' : '';
+        $content = array_splice($content, 0, 10);
+        $string = implode(' ', $content);
+        
+        return $string . $ex;
+    }   
 }

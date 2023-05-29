@@ -8,8 +8,7 @@
         </a>
     </td>
     <td>
-        <?php $description = $this->item['description'] ? $this->item['description'] : ''; ?>
-        <?php echo  strlen(strip_tags($description)) > 50 ? substr(strip_tags($description), 0, 50) .'...' : $description;  ?>
+        <?php echo  $this->item['excerpt_description'];  ?>
     </td>
     <td><?php echo   $this->item['status'] ? 'Show' : 'Hide';  ?></td>
     <td><?php echo   $this->item['start_date'] ? date('m-d-Y', strtotime($this->item['start_date'])) : '';  ?></td>

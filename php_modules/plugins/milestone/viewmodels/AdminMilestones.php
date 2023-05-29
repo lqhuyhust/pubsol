@@ -40,6 +40,7 @@ class AdminMilestones extends ViewModel
         $session = $this->container->get('session');
         $user = $this->container->get('user');
         $router = $this->container->get('router');
+        $RequestModel = $this->container->get('RequestModel');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
 
         $filter = $this->filter()['form'];
@@ -78,6 +79,11 @@ class AdminMilestones extends ViewModel
                 $session->set('flashMsg', 'Not Found Milestone');
             }
         }
+        foreach($result as &$item)
+        {
+            $item['excerpt_description'] = $RequestModel->excerpt($item['description']);
+        }
+
         $limit = $limit == 0 ? $total : $limit;
         $list   = new Listing($result, $total, $limit, $this->getColumns() );
         return [

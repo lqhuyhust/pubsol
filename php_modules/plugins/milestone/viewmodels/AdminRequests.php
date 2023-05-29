@@ -32,6 +32,7 @@ class AdminRequests extends ViewModel
         $RequestEntity = $this->container->get('RequestEntity');
         $MilestoneEntity = $this->container->get('MilestoneEntity');
         $TagEntity = $this->container->get('TagEntity');
+        $RequestModel = $this->container->get('RequestModel');
         $UserEntity = $this->container->get('UserEntity');
         $VersionEntity = $this->container->get('VersionEntity');
         $user = $this->container->get('user');
@@ -87,7 +88,7 @@ class AdminRequests extends ViewModel
                     $item['tags'][] = $tmp;
                 }
             }
-
+            $item['excerpt_description'] = $RequestModel->excerpt($item['description']);
             $item['tag_tmp'] = implode(' , ', $tag_tmp);
         }
 
