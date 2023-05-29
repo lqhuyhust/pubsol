@@ -17,8 +17,8 @@
         <?php echo  $this->item['excerpt_description'];  ?></span>
     </td>
     <td><?php echo   $this->item['creator'] ?></td>
-    <td><?php echo  $this->item['start_at'] != '0000-00-00 00:00:00' && $this->item['start_at'] ? date('Y-m-d', strtotime($this->item['start_at'])) : '' ?></td>
-    <td><?php echo  $this->item['finished_at'] != '0000-00-00 00:00:00' && $this->item['finished_at'] ? date('Y-m-d', strtotime($this->item['finished_at'])) : '' ?></td>
+    <td class="min-w-100"><?php echo  $this->item['start_at'] != '0000-00-00 00:00:00' && $this->item['start_at'] ? date('Y-m-d', strtotime($this->item['start_at'])) : '' ?></td>
+    <td class="min-w-100"><?php echo  $this->item['finished_at'] != '0000-00-00 00:00:00' && $this->item['finished_at'] ? date('Y-m-d', strtotime($this->item['finished_at'])) : '' ?></td>
     <td>
         <a class="fs-4 me-1 show_data" 
             href="#"

@@ -83,3 +83,6 @@ span.select2-container {
     max-height: 100vh;
     overflow-y: auto;
 }
+.min-w-100{
+    min-width: 100px;
+}
