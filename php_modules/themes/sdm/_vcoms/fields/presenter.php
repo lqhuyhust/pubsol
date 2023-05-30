@@ -104,14 +104,15 @@ if(!isset($presenter))
             var result = confirm("You are going to delete 1 item. Are you sure ?");
             if (result) {
                 var tmp = data_canvas.splice(canvas_index, 1);
-                console.log(data_canvas);
                 if (total_page_canvas > 1)
                 {
                     total_page_canvas--;
                 }
+                canvas_index = total_page_canvas < canvas_index + 1 ? total_page_canvas - 1: canvas_index;
                 canvas.clear();
                 initCanvas($('#editor-canvas'));
                 reRender();
+                Import(data_canvas[canvas_index])
                 loadPagination(total_page_canvas, canvas_index);
             }
             else

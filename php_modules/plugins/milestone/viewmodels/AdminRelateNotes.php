@@ -35,6 +35,7 @@ class AdminRelateNotes extends ViewModel
         $token =  $this->container->get('token');
         $router =  $this->container->get('router');
         $RequestEntity =  $this->container->get('RequestEntity');
+        $RequestModel =  $this->container->get('RequestModel');
         $RelateNoteEntity =  $this->container->get('RelateNoteEntity');
         $MilestoneEntity =  $this->container->get('MilestoneEntity');
         $VersionEntity =  $this->container->get('VersionEntity');
@@ -103,10 +104,12 @@ class AdminRelateNotes extends ViewModel
                 }
             }
 
-            if (strlen($item['description']) > 100)
+            if (in_array($item['type'], ['sheetjs', 'presenter']))
             {
-                $item['description'] = substr($item['description'], 0, 100) .' ...';
+                $item['description'] = '';
             }
+
+            $item['description'] = $RequestModel->excerpt($item['description']);
 
             if ($note_tmp)
             {

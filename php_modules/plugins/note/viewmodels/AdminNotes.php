@@ -118,7 +118,7 @@ class AdminNotes extends ViewModel
 
             $item['type'] = $item['type'] ? $item['type'] : 'html';
             $user_tmp = $UserEntity->findByPK($item['created_by']);
-            $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
+            $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d/m/Y', strtotime($item['created_at'])) : '';
             $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
         }
         $limit = $limit == 0 ? $total : $limit;

@@ -85,7 +85,7 @@
             <form action="<?php echo $this->link_form_request;?>" method="post" id="form_request">
                 <div class="row">
                     <div class="mb-3 col-12 mx-auto pt-3">
-                        <input name="title" type="text" id="title" required="" placeholder="Request" value="<?php echo $this->request['title'];?>" class="form-control h-50-px fw-bold rounded-0 fs-3">
+                        <input name="title" type="text" id="title" required="" placeholder="Request" value="<?php echo htmlspecialchars($this->request['title']);?>" class="form-control h-50-px fw-bold rounded-0 fs-3">
                     </div>
                 </div>
                 <input type="hidden" name="tags" id="tags">
@@ -120,7 +120,7 @@
                         <label class="form-label fw-bold mb-2">Description</label>
                     </div>
                     <div class="col-12">
-                        <textarea name="description" type="text" id="description" placeholder="Enter description" class="form-control rounded-0 border border-1 py-1 fs-4-5"><?php echo $this->request['description'];?></textarea>                        
+                        <textarea name="description" type="text" id="description" placeholder="Enter description" class="form-control rounded-0 border border-1 py-1 fs-4-5"><?php echo htmlspecialchars($this->request['description']);?></textarea>                        
                     </div>
                 </div>
                 <div class="row g-3 align-items-center m-0">

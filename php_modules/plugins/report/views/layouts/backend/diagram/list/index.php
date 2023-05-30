@@ -42,16 +42,16 @@
 		</div>
 	</main>
 <div class="modal fade" id="reportNewModal" aria-labelledby="reportNewModalTitle" role="dialog">
-	<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="reportNewModalTitle">Create Report</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div class="d-flex justify-content-center">
+				<div class="d-flex justify-content-around flex-wrap">
 				<?php foreach($this->types as $type) : ?>
-					<h4>
+					<h4 class="text-nowrap mb-3">
 						<a class="mx-3" href="<?php echo $type['new_link']?>"><?php echo $type['title']?></a>
 					</h4>
 				<?php endforeach; ?>

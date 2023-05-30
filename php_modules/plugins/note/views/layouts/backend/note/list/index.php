@@ -52,7 +52,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div class="d-flex justify-content-center">
+				<div class="d-flex justify-content-around">
 				<?php foreach($this->types as $type) : ?>
 					<h4>
 						<a class="mx-3" href="<?php echo $type['link']?>"><?php echo $type['title']?></a>

@@ -48,10 +48,10 @@ class Note extends Admin
                 $item['tags'] = $note_tmp['tags'] ;
                 if (strlen($item['description']) > 100)
                 {
-                    $item['description'] = substr($item['description'], 0, 100) .' ...';
+                    $item['description'] = $this->RequestModel->excerpt($item['description']);
                 }
 
-                if (in_array($note_tmp['editor'], ['presenter', 'sheetjs']))
+                if (in_array($note_tmp['type'], ['presenter', 'sheetjs']))
                 {
                     $item['description'] = '';
                 }
