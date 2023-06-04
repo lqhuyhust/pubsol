@@ -50,10 +50,10 @@ class PermissionModel extends Base
             
         }
         
-        $this->user_access = $this->getAccessByUser();
+        $user_access = $this->getAccessByUser();
         foreach($access as $item)
         {
-            if (in_array($item, $this->user_access))
+            if (in_array($item, $user_access))
             {
                 return true;
             }
