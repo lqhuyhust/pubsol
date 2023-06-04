@@ -14,6 +14,6 @@ return [
         'database' => '',
         'prefix' => '',
     ],
-    'extension_allow' => ['png', 'jpg', 'jpeg', 'pdf', 'txt', 'doc', 'docx', 'xlsx'],
-    'redirect_after_login' => 'milestones',
+    'extensionAllow' => ['png', 'jpg', 'jpeg', 'pdf', 'txt', 'doc', 'docx', 'xlsx'],
+    'redirectAfterLogin' => 'milestones',
 ];

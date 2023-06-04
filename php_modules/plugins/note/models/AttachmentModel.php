@@ -21,11 +21,11 @@ class AttachmentModel extends Base
         {
             
             // check extension
-            if ($this->config->extension_allow &&  is_array($this->config->extension_allow))
+            if ($this->config->extensionAllow &&  is_array($this->config->extensionAllow))
             {
                 $extension = explode('.', $file['name']);
                 $extension = end($extension);
-                if (!in_array($extension, $this->config->extension_allow))
+                if (!in_array($extension, $this->config->extensionAllow))
                 {
                     $this->session->set('flashMsg', '.'.$extension.' files are not allowed to upload');
                     return false;

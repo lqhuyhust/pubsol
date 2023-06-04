@@ -22,11 +22,11 @@ class User extends Admin
 
     public function login()
     {
-        $redirect_after_login = $this->config->redirect_after_login ? $this->config->redirect_after_login : ''; 
+        $redirectAfterLogin = $this->config->redirectAfterLogin ? $this->config->redirectAfterLogin : ''; 
         if ($this->user->get('id'))
         {
             return $this->app->redirect(
-                $this->router->url($redirect_after_login)
+                $this->router->url($redirectAfterLogin)
             );
         }
 
@@ -48,7 +48,7 @@ class User extends Admin
             else
             {
                 return $this->app->redirect(
-                    $this->router->url($redirect_after_login)
+                    $this->router->url($redirectAfterLogin)
                 );
             }
         }
