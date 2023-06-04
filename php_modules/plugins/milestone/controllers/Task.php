@@ -1,17 +1,13 @@
-<?php
+<?php namespace App\plugins\milestone\controllers;
 
-
-namespace App\plugins\milestone\controllers;
-
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Task extends Admin 
+class Task extends ControllerMVVM 
 {
     public function detail()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
         
@@ -31,8 +27,7 @@ class Task extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
         $search = trim($this->request->post->get('search_task', '', 'string'));
         $where = ['request_id' => $request_id];
@@ -53,8 +48,7 @@ class Task extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
-        $request_id = $this->validateRequestID();
+                $request_id = $this->validateRequestID();
 
         $title = $this->request->post->get('title', '', 'string');
         $url = $this->request->post->get('url', '', 'string');
@@ -162,8 +156,7 @@ class Task extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-        $request_id = $this->validateRequestID();
+                $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
@@ -183,8 +176,7 @@ class Task extends Admin
 
     public function validateRequestID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
 

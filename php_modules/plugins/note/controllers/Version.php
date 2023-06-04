@@ -17,8 +17,7 @@ class Version extends Admin {
     
     public function rollback()
     {
-        $this->isLoggedIn();
-        $id = $this->validateID();
+                $id = $this->validateID();
         $version = $this->NoteHistoryEntity->findByPK($id);
         if ($version)
         {
@@ -48,8 +47,7 @@ class Version extends Admin {
 
     public function detail()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -92,8 +90,7 @@ class Version extends Admin {
 
     public function validateID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 

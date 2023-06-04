@@ -1,15 +1,13 @@
-<?php
+<?php namespace App\plugins\user\controllers;
 
-
-namespace App\plugins\user\controllers;
 use SPT\Response;
+use SPT\Web\ControllerMVVM;
 
-class Usergroup extends Admin 
+class Usergroup extends ControllerMVVM 
 {
     public function list()
     {
-        $this->isLoggedIn();
-        
+                
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.usergroup.list');
         $this->app->set('page', 'backend');
@@ -17,8 +15,7 @@ class Usergroup extends Admin
 
     public function detail()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
         
         $this->app->set('layout', 'backend.usergroup.form');
@@ -28,8 +25,7 @@ class Usergroup extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
-        $save_close = $this->request->post->get('save_close', '', 'string');
+                $save_close = $this->request->post->get('save_close', '', 'string');
         
         $try = $this->UserGroupModel->validate();
         if (!$try)
@@ -181,8 +177,7 @@ class Usergroup extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
         if(empty($id) && !$id)
         {

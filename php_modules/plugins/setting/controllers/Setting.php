@@ -1,12 +1,9 @@
-<?php
+<?php namespace App\plugins\setting\controllers;
 
-
-namespace App\plugins\setting\controllers;
-
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Setting extends Controller
+class Setting extends ControllerMVVM
 {
     public function form()
     {

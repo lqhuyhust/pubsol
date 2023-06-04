@@ -10,14 +10,13 @@
 
 namespace App\plugins\treephp\controllers;
 
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 
-class Treediagram extends Admin 
+class Treediagram extends ControllerMVVM 
 {
     public function detail()
     {
-        $this->isLoggedIn();
-     
+             
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -37,8 +36,7 @@ class Treediagram extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
-
+        
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.tree_php.list');
@@ -46,8 +44,7 @@ class Treediagram extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
-
+        
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
         $structure = $this->request->post->get('structure', '', 'string');
@@ -236,8 +233,7 @@ class Treediagram extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 

@@ -28,7 +28,7 @@ class Dispatcher
             $app->raiseError('Invalid controller '. $cName);
         }
 
-        $controller = new $controller($app);
+        $controller = new $controller($app->getContainer());
         $controller->{$fName}();
 
         $fName = 'to'. ucfirst($app->get('format', 'html'));

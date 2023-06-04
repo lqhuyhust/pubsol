@@ -10,14 +10,13 @@
 
 namespace App\plugins\calendar\controllers;
 
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 
-class Calendar extends Admin 
+class Calendar extends ControllerMVVM 
 {
     public function diagram()
     {
-        $this->isLoggedIn();
-
+        
         $this->app->set('layout', 'backend.calendar.diagram');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');

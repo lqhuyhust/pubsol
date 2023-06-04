@@ -3,15 +3,14 @@
 
 namespace App\plugins\milestone\controllers;
 
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Documenthistory extends Admin 
+class Documenthistory extends ControllerMVVM 
 {
     public function detail()
     {
-        $this->isLoggedIn();
-        $id = $this->validateID();
+                $id = $this->validateID();
         
         $result = '';
         $document = $this->DocumentHistoryEntity->findByPK($id);
@@ -92,8 +91,7 @@ class Documenthistory extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         if(empty($id))

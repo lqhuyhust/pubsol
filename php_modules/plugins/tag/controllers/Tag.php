@@ -10,22 +10,20 @@
 
 namespace App\plugins\tag\controllers;
 
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 
-class Tag extends Admin {
-
+class Tag extends ControllerMVVM
+{
     public function list()
     {
-        $this->isLoggedIn();
-        $this->app->set('page', 'backend');
+                $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.tag.list');
     }
 
     public function add()
     {
-        $this->isLoggedIn();
-
+        
         $name = $this->request->post->get('name', '', 'string');
         $description = $this->request->post->get('description', '', 'string');
         $parent_id = $this->request->post->get('parent_id', 0, 'int');
@@ -159,8 +157,7 @@ class Tag extends Admin {
 
     public function validateID()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $id = $urlVars ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
@@ -179,8 +176,7 @@ class Tag extends Admin {
 
     public function search()
     {
-        $this->isLoggedIn();
-
+        
         $name = trim($this->request->get->get('search', '', 'string'));
         $ignores = $this->request->get->get('ignores', [], 'array');
 

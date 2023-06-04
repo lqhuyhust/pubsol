@@ -1,11 +1,9 @@
-<?php
-
-
-namespace App\plugins\user\controllers;
+<?php namespace App\plugins\user\controllers;
 
 use SPT\Response;
+use SPT\Web\ControllerMVVM;
 
-class User extends Admin 
+class User extends ControllerMVVM 
 {
     public function gate()
     {
@@ -63,8 +61,7 @@ class User extends Admin
 
     public function detail()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -84,8 +81,7 @@ class User extends Admin
 
     public function profile()
     {
-        $this->isLoggedIn();
-
+        
         $this->app->set('layout', 'backend.user.profile');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
@@ -93,8 +89,7 @@ class User extends Admin
 
     public function saveProfile()
     {
-        $this->isLoggedIn();
-        $id = $this->user->get('id'); 
+                $id = $this->user->get('id'); 
         $save_close = $this->request->post->get('save_close', '', 'string');
        
         // TODO valid the request input
@@ -154,8 +149,7 @@ class User extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
-        $this->app->set('page', 'backend');
+                $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.user.list');
     }
@@ -171,8 +165,7 @@ class User extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
-        $save_close = $this->request->post->get('save_close', '', 'string');
+                $save_close = $this->request->post->get('save_close', '', 'string');
         $try = $this->UserModel->validate();
         if (!$try)
         {
@@ -353,8 +346,7 @@ class User extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 

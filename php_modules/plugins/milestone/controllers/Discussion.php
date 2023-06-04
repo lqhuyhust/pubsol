@@ -3,15 +3,14 @@
 
 namespace App\plugins\milestone\controllers;
 
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Discussion extends Admin 
+class Discussion extends ControllerMVVM 
 {
     public function add()
     {
-        $this->isLoggedIn();
-        $request_id = $this->validateRequestID();
+                $request_id = $this->validateRequestID();
         
         $document = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
         $message = $this->request->post->get('message', '', 'string');
@@ -76,8 +75,7 @@ class Discussion extends Admin
 
     public function validateRequestID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
 

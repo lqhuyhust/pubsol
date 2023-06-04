@@ -1,8 +1,8 @@
 <?php
 namespace App\plugins\googleauth\controllers;
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 
-class Google extends Controller
+class Google extends ControllerMVVM
 {
     public function login()
     {

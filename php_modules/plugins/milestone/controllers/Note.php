@@ -1,17 +1,13 @@
-<?php
+<?php namespace App\plugins\milestone\controllers;
 
-
-namespace App\plugins\milestone\controllers;
-
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Note extends Admin 
+class Note extends ControllerMVVM 
 {
     public function detail()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
         
@@ -31,8 +27,7 @@ class Note extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
         $search = trim($this->request->post->get('search', '', 'string'));
 
@@ -84,8 +79,7 @@ class Note extends Admin
 
     public function getNote()
     {
-        $this->isLoggedIn();
-        $urlVars = $this->request->get('urlVars');
+                $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
         $search = trim($this->request->post->get('search', '', 'post'));
@@ -111,8 +105,7 @@ class Note extends Admin
 
     public function add()
     {
-        $this->isLoggedIn();
-        $request_id = $this->validateRequestID();
+                $request_id = $this->validateRequestID();
 
         //check title sprint
         $title = $this->request->post->get('title', '', 'string');
@@ -257,8 +250,7 @@ class Note extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-        $request_id = $this->validateRequestID();
+                $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
@@ -278,8 +270,7 @@ class Note extends Admin
 
     public function validateRequestID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['request_id'];
 

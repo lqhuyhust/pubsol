@@ -1,26 +1,21 @@
-<?php
+<?php namespace App\plugins\version\controllers;
 
-
-namespace App\plugins\version\controllers;
-
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Feedback extends Admin 
+class Feedback extends ControllerMVVM 
 {
     public function list()
     {
         $this->validateVersionID();
-        $this->isLoggedIn();
-        $this->app->set('page', 'backend');
+                $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.feedback.list');
     }
 
     public function validateVersionID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['version_id'];
 

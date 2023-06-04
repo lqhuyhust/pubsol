@@ -1,17 +1,13 @@
-<?php
+<?php namespace App\plugins\version\controllers;
 
-
-namespace App\plugins\version\controllers;
-
-use SPT\Web\MVVM\ControllerContainer as Controller;
+use SPT\Web\ControllerMVVM;
 use SPT\Response;
 
-class Version extends Admin 
+class Version extends ControllerMVVM 
 {
     public function detail()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -30,16 +26,14 @@ class Version extends Admin
 
     public function list()
     {
-        $this->isLoggedIn();
-        $this->app->set('page', 'backend');
+                $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.version.list');
     }
 
     public function add()
     {
-        $this->isLoggedIn();
-
+        
         //check title sprint
         $name = $this->request->post->get('name', '', 'string');
         $release_date = $this->request->post->get('release_date', '', 'string');
@@ -194,8 +188,7 @@ class Version extends Admin
 
     public function validateID()
     {
-        $this->isLoggedIn();
-
+        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
