@@ -12,7 +12,7 @@ define('ROOT_PATH', __DIR__ . '/../');
 define('APP_PATH', ROOT_PATH. 'php_modules/');
 define('PUBLIC_PATH', __DIR__ . '/');
 define('MEDIA_PATH', PUBLIC_PATH. 'media/');
-define('SPT_PATH_TEMP', PUBLIC_PATH);
+define('SPT_STORAGE_PATH', PUBLIC_PATH);
 
 require ROOT_PATH. 'vendor/autoload.php';
 
