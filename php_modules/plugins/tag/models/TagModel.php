@@ -10,7 +10,7 @@
 
 namespace App\plugins\tag\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class TagModel extends Base
 { 

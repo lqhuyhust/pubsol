@@ -10,7 +10,7 @@
 
 namespace App\plugins\treediagram\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class TreeDiagramModel extends Base
 { 

@@ -10,7 +10,7 @@
 
 namespace App\plugins\timeline\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class TimelineModel extends Base
 { 

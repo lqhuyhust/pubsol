@@ -10,7 +10,7 @@
 
 namespace App\plugins\version\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class VersionModel extends Base 
 { 

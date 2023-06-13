@@ -11,7 +11,7 @@
 namespace App\plugins\setting\models;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class EmailModel extends Base 
 { 
