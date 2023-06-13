@@ -10,7 +10,7 @@
 
 namespace App\plugins\note\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class NoteModel extends Base
 { 
