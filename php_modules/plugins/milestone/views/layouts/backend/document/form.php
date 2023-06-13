@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="card-body pt-0">
                                         <p class="mb-0">
-                                            <?php echo nl2br($item['message']) ?>
+                                            <?php echo $item['message'] ?>
                                         </p>
                                     </div>
                                 </div>

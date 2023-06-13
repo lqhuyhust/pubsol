@@ -34,19 +34,25 @@ class AdminRequests extends ViewModel
         $TagEntity = $this->container->get('TagEntity');
         $RequestModel = $this->container->get('RequestModel');
         $UserEntity = $this->container->get('UserEntity');
+        $TagEntity = $this->container->get('TagEntity');
         $VersionEntity = $this->container->get('VersionEntity');
         $user = $this->container->get('user');
 
+        $clear_filter = $request->post->get('clear_filter', '', 'string');
+        if ($clear_filter)
+        {
+            $session->set('request.filter_tags', []);
+        }
         $filter = $this->filter()['form'];
         $urlVars = $request->get('urlVars');
         $milestone_id = (int) $urlVars['milestone_id'];
 
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
+        $tags   = $filter->getField('filter_tags')->value;
         $search = trim($filter->getField('search')->value);
         $page   = $request->get->get('page', 1);
         if ($page <= 0) $page = 1;
-
         $where = [];
         $where[] = ['milestone_id = '. $milestone_id];
 
@@ -55,6 +61,40 @@ class AdminRequests extends ViewModel
             $where[] = "(`title` LIKE '%".$search."%')";
         }
         
+        $filter_tags = [];
+        if ($tags)
+        {
+            $filter_tags = [];
+            $where_tag = [];
+
+            foreach ($tags as $tag) 
+            {
+                if ($tag)
+                {
+                    $tag_tmp = $TagEntity->findByPK($tag);
+                    if ($tag_tmp)
+                    {
+                        $filter_tags[] = [
+                            'id' => $tag,
+                            'name' => $tag_tmp['name'],
+                        ];
+                    }
+    
+                    $where_tag[] = 
+                    "(`tags` = '" . $tag . "'" .
+                    " OR `tags` LIKE '%" . ',' . $tag . "'" .
+                    " OR `tags` LIKE '" . $tag . ',' . "%'" .
+                    " OR `tags` LIKE '%" . ',' . $tag . ',' . "%' )";
+                }
+                
+            }
+            $where_tag = implode(" OR ", $where_tag);
+
+            if ($where_tag)
+            {
+                $where[] = '('. $where_tag . ')';
+            }
+        }  
         $start  = ($page-1) * $limit;
         $sort = $sort ? $sort : 'title asc';
 
@@ -94,6 +134,24 @@ class AdminRequests extends ViewModel
             }
             $item['excerpt_description'] = $RequestModel->excerpt($item['description']);
             $item['tag_tmp'] = implode(' , ', $tag_tmp);
+
+            $assigns = $item['assignment'] ? json_decode($item['assignment']) : [];
+            $assign_tmp = [];
+            $selected_tmp = [];
+            foreach($assigns as $assign)
+            {
+                $user_tmp = $UserEntity->findByPK($assign);
+                if ($user_tmp)
+                {
+                    $assign_tmp[] = $user_tmp['name'];
+                    $selected_tmp[] = [
+                        'id' => $assign,
+                        'name' => $user_tmp['name'],
+                    ];
+                }
+            }
+            $item['user_assign'] = implode(', ', $assign_tmp);
+            $item['assignment'] = json_encode($selected_tmp);
         }
 
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
@@ -109,10 +167,12 @@ class AdminRequests extends ViewModel
             'version_lastest' => $version_lastest,
             'page' => $page,
             'start' => $start,
+            'filter_tags' => json_encode($filter_tags),
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
             'link_list' => $router->url('requests/'. $milestone_id),
+            'link_tag' => $router->url('tag/search'),
             'title_page' => $title_page,
             'link_form' => $router->url('request/'. $milestone_id),
             'link_detail' => $router->url('detail-request'),
@@ -138,9 +198,9 @@ class AdminRequests extends ViewModel
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'request.search'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'request.limit'),
-                'sort' => $this->state('sort', '', '', 'post', 'request.sort')
+                'sort' => $this->state('sort', '', '', 'post', 'request.sort'),
+                'filter_tags' => $this->state('filter_tags', [], 'array', 'post', 'request.filter_tags'),
             ];
-
             $filter = new Form($this->getFilterFields(), $data);
             $this->_filter = $filter;
         endif;
@@ -165,6 +225,13 @@ class AdminRequests extends ViewModel
                     ['text' => '50', 'value' => 50],
                     ['text' => 'All', 'value' => 0],
                 ],
+                'showLabel' => false
+            ],
+            'filter_tags' => [
+                'option',
+                'type' => 'multiselect',
+                'formClass' => 'form-select',
+                'options' => [],
                 'showLabel' => false
             ],
             'sort' => ['option',

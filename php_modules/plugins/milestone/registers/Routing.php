@@ -39,6 +39,14 @@ class Routing
                     'delete' => ['request_manager', 'request_delete']
                 ],
             ],
+            'request/find-user'=>[
+                'fnc' => [
+                    'get' => 'milestone.request.findUser',
+                ],
+                'permission' => [
+                    'get' => ['request_manager', 'request_manager'],
+                ],
+            ],
             'request' => [
                 'fnc' => [
                     'get' => 'milestone.request.detail',
