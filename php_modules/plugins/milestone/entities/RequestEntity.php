@@ -45,6 +45,10 @@ class RequestEntity extends Entity
                     'type' => 'text',
                     'null' => 'YES',
                 ],
+                'assignment' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
                 'description' => [
                     'type' => 'text',
                     'null' => 'YES',

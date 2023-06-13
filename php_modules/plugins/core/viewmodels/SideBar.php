@@ -43,6 +43,7 @@ class SideBar extends ViewModel
                 
             }
         });
+        
         $menu_type = $app->get('menu_type', 'menu');
         $menu = isset($menu_register[$menu_type]) ? $menu_register[$menu_type] : [];
         ksort($menu);

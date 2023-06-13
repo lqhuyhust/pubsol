@@ -58,7 +58,7 @@ class Note extends ControllerMVVM
 
     public function list()
     {
-                $this->app->set('page', 'backend');
+        $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.note.list');
     }

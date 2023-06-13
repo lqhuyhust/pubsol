@@ -97,7 +97,7 @@ class AttachmentModel extends Base
     {
         if (!$dir)
         {
-            $dir = MEDIA_PATH . 'attachments/'. date('Y'). '/'. date('m'). '/'. date('d');
+            $dir = MEDIA_PATH . 'attachments/'. date('Y/m/d');
         }
 
         if (!is_dir($dir))
@@ -113,4 +113,23 @@ class AttachmentModel extends Base
         }
         return $dir;
     }
+
+    /*public function createFolderSave($dir = '')
+    {
+        if(empty($dir))
+        {
+            $dir = MEDIA_PATH . 'attachments';
+            foreach([date('Y'), date('m'), date('d')] as $d)
+            {
+                $dir .= '/'. $d
+                if(!$this->createFolderSave($dir)) return false; 
+            }
+        }
+        elseif(!is_dir($dir) || !mkdir($dir))
+        {
+            return false;
+        }
+
+        return $dir;
+    }*/
 }
