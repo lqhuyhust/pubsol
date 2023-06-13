@@ -27,6 +27,17 @@ class Permission
                 return true;
             }
 
+            // check permission by object
+            $permissionObject = $app->get('permission_object', []);
+            if ($permissionObject)
+            {
+                $allow_object = $permission->checkPermissionObject($permissionObject[0], $permissionObject[1], $permissionObject[2]);
+                if ($allow_object)
+                {
+                    return true;
+                }
+            }
+
             $app->redirect(
                 $app->getRouter()->url('')
             );
