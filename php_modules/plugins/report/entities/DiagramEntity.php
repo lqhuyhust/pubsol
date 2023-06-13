@@ -41,6 +41,10 @@ class DiagramEntity extends Entity
                 'type' => 'text',
                 'null' => 'YES',
             ],
+            'assignment' => [
+                'type' => 'text',
+                'null' => 'YES',
+            ],
             'created_at' => [
                 'type' => 'datetime',
                 'null' => 'YES',

@@ -22,7 +22,9 @@
 											<th>Type</th>
 											<th>Status</th>
 											<th>Auth</th>
+											<th>Assignment</th>
 											<th>Created At</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -60,3 +62,4 @@
 		</div>
 	</div>
 </div>
+<?php echo $this->render('backend.diagram.form', []); ?>
