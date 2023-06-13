@@ -37,6 +37,11 @@ class AdminNotes extends ViewModel
         $token = $this->container->get('token');
         $user = $this->container->get('user');
 
+        $clear_filter = $request->post->get('clear_filter', '', 'string');
+        if ($clear_filter)
+        {
+            $session->set('note.tags', []);
+        }
         $filter = $this->filter()['form'];
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
