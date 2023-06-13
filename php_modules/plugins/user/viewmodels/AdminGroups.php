@@ -11,7 +11,7 @@ namespace App\plugins\user\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 
 class AdminGroups extends ViewModel
 {

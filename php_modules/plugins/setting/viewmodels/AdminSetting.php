@@ -11,7 +11,7 @@
 
 namespace App\plugins\setting\viewmodels;
 
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;
 
 class AdminSetting extends ViewModel

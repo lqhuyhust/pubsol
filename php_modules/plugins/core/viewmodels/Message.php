@@ -9,7 +9,7 @@
  */
 namespace App\plugins\core\viewmodels; 
 
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 
 class Message extends ViewModel
 {
