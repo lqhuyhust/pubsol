@@ -10,7 +10,7 @@
 
 namespace App\plugins\milestone\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class MilestoneModel extends Base 
 { 

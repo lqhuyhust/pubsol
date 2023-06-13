@@ -10,7 +10,7 @@
 
 namespace App\plugins\googleauth\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class GoogleModel extends Base 
 { 

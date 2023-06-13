@@ -10,7 +10,7 @@
 
 namespace App\plugins\calendar\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class CalendarModel extends Base
 { 
