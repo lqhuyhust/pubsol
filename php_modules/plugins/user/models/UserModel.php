@@ -161,7 +161,7 @@ class UserModel extends Base
 
     public function update($data)
     {
-        if (!$data || !is_array($data) || !$data['username'] || !$data['id'])
+        if (!$data || !is_array($data) || !$data['id'])
         {
             return false;
         }

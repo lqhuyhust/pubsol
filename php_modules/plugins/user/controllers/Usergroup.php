@@ -103,7 +103,6 @@ class Usergroup extends ControllerMVVM
                 'id' => $sth,
             ];
             $try = $this->UserGroupModel->update( $user );
-    
             $msg = $try ? 'Updated Successfully' : 'Updated Fail';
             $this->session->set('flashMsg', $msg);
     
