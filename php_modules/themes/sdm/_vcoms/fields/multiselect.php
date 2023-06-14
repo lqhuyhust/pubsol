@@ -17,7 +17,6 @@ $this->field->value = (array) $this->field->value;
 <?php endif; ?>
 <div>
     <select class="selectpicker d-block <?php echo $this->field->formClass?>" multiple name="<?php echo $this->field->name ?>[]" id="<?php echo $this->field->id ?>" <?php echo $this->field->required?> <?php echo $this->field->autocomplete;?>>
-        <option></option>
         <?php foreach( $this->field->options as $opt )
         {
             if(is_string($opt) || is_numeric($opt) )

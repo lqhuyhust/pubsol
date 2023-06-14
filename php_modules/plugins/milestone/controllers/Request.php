@@ -63,6 +63,7 @@ class Request extends ControllerMVVM
             'description' => $this->request->post->get('description', '', 'string'),
             'start_at' => $this->request->post->get('start_at', '', 'string'),
             'finished_at' => $this->request->post->get('finished_at', '', 'string'),
+            'assignment' => $this->request->post->get('assignment', [], 'array'),
             'milestone_id' => $milestone_id,
         ];
 
@@ -99,6 +100,7 @@ class Request extends ControllerMVVM
                 'description' => $this->request->post->get('description', '', 'string'),
                 'start_at' => $this->request->post->get('start_at', '', 'string'),
                 'finished_at' => $this->request->post->get('finished_at', '', 'string'),
+                'assignment' => $this->request->post->get('assignment', [], 'array'),
                 'milestone_id' => $milestone_id,
                 'id' => $ids,
             ];
@@ -187,5 +189,25 @@ class Request extends ControllerMVVM
         }
 
         return $id;
+    }
+
+    public function findUser()
+    {
+        $search = trim($this->request->get->get('search', '', 'string'));
+
+        $where = [];
+
+        if( !empty($search) )
+        {
+            $where[] = "(`name` LIKE '%".$search."%' ) OR (`email` LIKE '%".$search."%' ) OR (`username` LIKE '%".$search."%' )";
+        }
+
+        $data = $this->UserEntity->list(0,0, $where);
+        
+        $this->app->set('format', 'json');
+        $this->set('status' , 'success');
+        $this->set('data' , $data);
+        $this->set('message' , '');
+        return;
     }
 }

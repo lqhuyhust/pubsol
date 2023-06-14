@@ -90,6 +90,7 @@ class RequestModel extends Base
             );
         }
 
+        $data['assignment'] = $data['assignment'] ? json_encode($data['assignment']) : '';
         $data['start_at'] = $data['start_at'] ? $data['start_at'] : null;
         $data['finished_at'] = $data['finished_at'] ? $data['finished_at'] : null;
 
@@ -140,6 +141,7 @@ class RequestModel extends Base
             'milestone_id' => $data['milestone_id'],
             'title' => $data['title'],
             'tags' => $data['tags'],
+            'assignment' => $data['assignment'],
             'description' => $data['description'],
             'start_at' => $data['start_at'],
             'finished_at' => $data['finished_at'],
@@ -163,6 +165,7 @@ class RequestModel extends Base
             'milestone_id' => $data['milestone_id'],
             'title' => $data['title'],
             'tags' => $data['tags'],
+            'assignment' => $data['assignment'],
             'description' => $data['description'],
             'start_at' => $data['start_at'],
             'finished_at' => $data['finished_at'],
