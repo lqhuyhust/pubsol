@@ -210,46 +210,14 @@ class Note extends ControllerMVVM
 
     public function search()
     {
-        if (!$this->user->get('id'))
-        {
-            $this->app->set('format', 'json');
-            $this->set('status' , 'fail');
-            $this->set('data' , $this->user->get('id'));
-            $this->set('message' , 'You are not allow.');
-            return true;
-        }
-
         $search = trim($this->request->get->get('search', '', 'string'));
         $ignore = $this->request->get->get('ignore', '', 'string');
-
-        $where = [];
-        if ($search)
-        {
-            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
-            $where[] = "(`note` LIKE '%" . $search . "%')";
-            $where[] = "(`title` LIKE '%" . $search . "%')";
-            if ($tags) {
-                foreach ($tags as $tag) {
-                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
-                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
-                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
-                }
-            }
-            $where = ['('. implode(" OR ", $where). ')'];
-        }
-
-        if ($ignore)
-        {
-            $where[] = 'id NOT IN('.$ignore.')';
-        }
-
-        $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
-        $result = $result ? $result : [];
+        
+        $list = $this->NoteModel->searchAjax($search, $ignore);
 
         $this->app->set('format', 'json');
         $this->set('status' , 'success');
-        $this->set('data' , $result);
+        $this->set('data' , $list);
         $this->set('message' , '');
         return;
     }
@@ -258,30 +226,12 @@ class Note extends ControllerMVVM
     {
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
-        if (!$id || !$this->user->get('id'))
-        {
-            $this->app->set('format', 'json');
-            $this->set('status' , 'fail');
-            $this->set('data' , $this->user->get('id'));
-            $this->set('message' , 'You are not allow.');
-            return;
-        }
-        $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
-        $result = [];
-        foreach($list as &$item)
-        {
-            $request = $this->RequestEntity->findByPK($item['request_id']);
-            if ($request)
-            {
-                $request['start_at'] = $request['start_at'] && $request['start_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['start_at'])) : '';
-                $request['finished_at'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['finished_at'])) : '';
-                $result[] = $request;
-            }
-        }
+       
+        $list = $this->NoteModel->getRequest($id);
         
         $this->app->set('format', 'json');
         $this->set('status' , 'success');
-        $this->set('data' , $result);
+        $this->set('data' , $list);
         $this->set('message' , '');
         return;
     }

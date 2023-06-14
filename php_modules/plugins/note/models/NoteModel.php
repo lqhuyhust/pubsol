@@ -196,4 +196,56 @@ class NoteModel extends Base
         $try = $this->NoteEntity->remove($id);
         return $try;
     }
+
+    public function searchAjax($search, $ignore)
+    {
+        $where = [];
+        if ($search)
+        {
+            $tags = $this->TagEntity->list(0, 0, ["`name` LIKE '%" . $search . "%' "]);
+            $where[] = "(`note` LIKE '%" . $search . "%')";
+            $where[] = "(`title` LIKE '%" . $search . "%')";
+            if ($tags) {
+                foreach ($tags as $tag) {
+                    $where[] = "(`tags` = '" . $tag['id'] . "'" .
+                        " OR `tags` LIKE '%" . ',' . $tag['id'] . "'" .
+                        " OR `tags` LIKE '" . $tag['id'] . ',' . "%'" .
+                        " OR `tags` LIKE '%" . ',' . $tag['id'] . ',' . "%' )";
+                }
+            }
+            $where = ['('. implode(" OR ", $where). ')'];
+        }
+
+        if ($ignore)
+        {
+            $where[] = 'id NOT IN('.$ignore.')';
+        }
+
+        $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
+        $result = $result ? $result : [];
+        return $list;
+    }
+
+    public function getRequest($id)
+    {
+        if (!$id)
+        {
+            return false;
+        }
+        
+        $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
+        $result = [];
+        foreach($list as &$item)
+        {
+            $request = $this->RequestEntity->findByPK($item['request_id']);
+            if ($request)
+            {
+                $request['start_at'] = $request['start_at'] && $request['start_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['start_at'])) : '';
+                $request['finished_at'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['finished_at'])) : '';
+                $result[] = $request;
+            }
+        }
+
+        return $result;
+    }
 }
