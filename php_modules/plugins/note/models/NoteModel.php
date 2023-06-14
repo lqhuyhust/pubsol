@@ -92,7 +92,7 @@ class NoteModel extends Base
         {
             if (isset($data['files']) && $data['files'])
             {
-                $this->AttachmentModel->add($data['files']);
+                $this->AttachmentModel->add($data['files'], $newId);
             }
         }
 
@@ -176,7 +176,7 @@ class NoteModel extends Base
             $this->NoteHistoryModel->add($data);
         }
 
-        return $newId;
+        return $try;
     }
 
     public function remove($id)

@@ -10,10 +10,9 @@
 
 namespace App\plugins\note\controllers;
 
-use SPT\Web\MVVM\ControllerContainer as Controller;
-use SPT\Response;
+use SPT\Web\ControllerMVVM;
 
-class Version extends Admin {
+class Version extends ControllerMVVM {
     
     public function rollback()
     {

@@ -89,7 +89,7 @@ class Note extends ControllerMVVM
         
         $newId = $this->NoteModel->add($data);
 
-        $msg = $newId ? 'Created Successfully!' ? 'Error: Created Failed!';
+        $msg = $newId ? 'Created Successfully!': 'Error: Created Failed!';
         $this->session->set('flashMsg', $msg);
         if ($newId)
         {
@@ -135,16 +135,7 @@ class Note extends ControllerMVVM
                 );
             }
             
-            $try = $this->NoteModel->update([
-                'title' => $title,
-                'tags' => $tags,
-                'note' => $note,
-                'type' => $type,
-                'description' => $description,
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $ids,
-            ]);
+            $try = $this->NoteModel->update($data);
             
             if($try)
             {
