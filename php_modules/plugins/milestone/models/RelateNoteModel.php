@@ -64,4 +64,50 @@ class RelateNoteModel extends Base
 
         return true;
     }
+
+    public function getNotes($request_id, $search)
+    {
+        $list = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
+        $result = [];
+        foreach ($list as &$item)
+        {
+            $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
+            if ($note_tmp)
+            {
+                $item['title'] = $note_tmp['title'];
+                $item['description'] = strip_tags((string) $note_tmp['description']) ;
+                $item['tags'] = $note_tmp['tags'] ;
+                if (strlen($item['description']) > 100)
+                {
+                    $item['description'] = $this->RequestModel->excerpt($item['description']);
+                }
+
+                if (in_array($note_tmp['type'], ['presenter', 'sheetjs']))
+                {
+                    $item['description'] = '';
+                }
+            }
+
+            if (!empty($item['tags'])){
+                $t1 = $where = [];
+                $where[] = "(`id` IN (".$item['tags'].") )";
+                $t2 = $this->TagEntity->list(0, 1000, $where,'','`name`');
+
+                foreach ($t2 as $i) $t1[] = $i['name'];
+
+                $item['tags'] = implode(', ', $t1);
+            }
+
+            if ($search)
+            {
+                if (strpos($item['title'], $search) === false && strpos($item['description'], $search) === false && strpos($item['tags'], $search) === false )
+                {
+                    continue;
+                }
+            }
+            $result[] = $item;
+        }
+
+        return $result;
+    }
 }

@@ -5,6 +5,19 @@ use SPT\Response;
 
 class Note extends ControllerMVVM 
 {
+    public function list()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $request_id = (int) $urlVars['request_id'];
+        $search = trim($this->request->post->get('search', '', 'string'));
+
+        $list = $this->RelateNoteModel->getNotes($request_id, $search);
+
+        $this->app->set('format', 'json');
+        $this->set('result', $list);
+        return ;
+    }
+
     public function getNote()
     {
         $urlVars = $this->request->get('urlVars');
