@@ -20,9 +20,11 @@
 									<th width="10px">
 										<input type="checkbox" id="select_all_relate_note">
 									</th>
-									<th>Title</th>
+									<th>Title Note</th>
+									<th>Alias</th>
 									<th>Description</th>
 									<th>Tags</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody id="listRelateNote">

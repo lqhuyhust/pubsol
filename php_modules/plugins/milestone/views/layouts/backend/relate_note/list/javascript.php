@@ -27,17 +27,37 @@
                             <td>
                                 <a target="_blank" href="<?php echo $this->link_note .'/' ?>${item['note_id']}">${item['title']}</a>
                             </td>
-                            <td>${item['description']}</td>
+                            <td>><span class="relate-note-description">${item['description']}</span></td>
                             <td>${item['tags']}</td>
+                            <td><a type="button" class="fs-3 open-edit-relate" data-id="${item['id']}" data-title-note="${item['title']}" data-alias="${item['alias']}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                         </tr>
                         `
                     });
                     $("#listRelateNote").html(list);
+                    modalEdit();
                 }
             }
         })
     }
+    function modalEdit()
+    {
+        $('.open-edit-relate').off('click').on('click', function(e){
+            e.preventDefault();
+            
+            var title = $(this).data('title-note');
+			var id = $(this).data('id');
+			var alias = $(this).data('alias');
+			console.log(title);
+			console.log(alias);
+			$('#note_title').text(title);
+			$('#alias').val(alias);
+			$('#form_update_relate_note').attr('action', '<?php echo $this->link_update_relate_note; ?>/' + id);
+
+            $('#relateEdit').modal('show');
+        });
+    }
     $(document).ready(function() {
+        modalEdit();
         $("#select_all_relate_note").click( function(){
             $('.checkbox-item-relate-note').prop('checked', this.checked);
         });
@@ -91,13 +111,12 @@
         $('#limit').on("change", function (e) {
             $('#filter_form').submit()
         });
-        $(".show_data_relate_note").click(function() {
+        $(".show_data_relate_note").click(function(e) {
+            e.preventDefault();
             var id = $(this).data('id');
             var title = $(this).data('title');
             var description = $(this).data('description');
-
-            $('#title').val(title);
-            $('#description').val(description);
+            $('#formRelateNote').modal('show');
             
         });
         $('#filter_form').on('submit', function (e){
