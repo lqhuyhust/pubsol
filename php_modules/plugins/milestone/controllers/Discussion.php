@@ -18,7 +18,7 @@ class Discussion extends ControllerMVVM
         ];
 
         $data = $this->DiscussionModel->validate($data);
-        if (!$try)
+        if (!$data)
         {
             $this->app->set('format', 'json');
             $this->set('result', 'fail');

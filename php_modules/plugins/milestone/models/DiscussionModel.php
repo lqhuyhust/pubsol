@@ -17,7 +17,7 @@ class DiscussionModel extends Base
     // Write your code here
     public function validate($data)
     {
-        if (!$data || !isset($data['request_id']) || !$data['request'])
+        if (!$data || !isset($data['request_id']) || !$data['request_id'])
         {
             return false;
         }
@@ -47,13 +47,17 @@ class DiscussionModel extends Base
             
             $data['document_id'] = $newId;
         }
+        else
+        {
+            $data['document_id'] = $document['id'];
+        }
 
         return $data;
     } 
     
     public function add($data)
     {
-        if (!$data || !$data['document_id'] || !$data['message'])
+        if (!$data || !isset($data['document_id']) || !$data['document_id'])
         {
             return false;
         }

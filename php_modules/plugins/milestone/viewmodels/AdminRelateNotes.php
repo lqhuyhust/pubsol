@@ -132,6 +132,7 @@ class AdminRelateNotes extends ViewModel
             'list' => $list,
             'page' => $page,
             'start' => $start,
+            'result' => $result,
             'status' => $status,
             'sort' => $sort,
             'user_id' => $user->get('id'),

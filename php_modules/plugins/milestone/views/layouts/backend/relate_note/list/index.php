@@ -1,4 +1,35 @@
 <?php echo $this->render('notification', []); ?>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<h4>Request Notes</h4>
+			<table id="datatables-buttons" class="table table-striped border-top border-1" style="width:100%">
+				<thead>
+					<tr>
+						<th width="10px">
+							#
+						</th>
+						<th>Note</th>
+						<th>Alias</th>
+					</tr>
+				</thead>
+				<tbody id="listAliasNote">
+					<?php foreach($this->result as $index => $item) : ?>
+					<tr>
+						<td><?php echo $index + 1?></td>
+						<td>
+							<a target="_blank" href="<?php echo $this->link_note. '/'. $item['note_id']; ?>"><?php echo  $item['title']  ?></a>
+						</td>
+						<td><?php echo $item['alias']?></td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+				<?php
+				?>
+			</table>
+		</div>
+	</div>
+</div>
 <div class="modal fade" id="relateNoteList" aria-labelledby="relateNoteListTitle" role="dialog">
 	<div class="modal-dialog modal-dialog-centered modal-xl">
 		<div class="modal-content">
