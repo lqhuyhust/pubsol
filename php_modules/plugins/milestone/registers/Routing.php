@@ -132,6 +132,12 @@ class Routing
                 ],
                 'parameters' => ['request_id'],
             ],
+            'relate-note/update-alias' => [
+                'fnc' => [
+                    'post' => 'milestone.note.updateAlias',
+                ],
+                'parameters' => ['id'],
+            ],
             'relate-note' => [
                 'fnc' => [
                     'get' => 'milestone.note.detail',

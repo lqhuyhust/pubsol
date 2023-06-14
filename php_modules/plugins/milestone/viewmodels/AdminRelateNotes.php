@@ -136,6 +136,7 @@ class AdminRelateNotes extends ViewModel
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
+            'link_update_relate_note' => $router->url('relate-note/update-alias'),
             'link_list' => $router->url('relate-notes/' . $request_id),
             'link_note' => $router->url('note/preview'),
             'link_list_relate_note' => $router->url('relate-notes/' . $request_id),

@@ -131,6 +131,21 @@
                 }
             });
         });
+
+        $("#form_update_relate_note").on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $('#form_update_relate_note').attr('action'),
+                data: $('#form_update_relate_note').serialize(),
+                success: function (result) {
+                    modal = bootstrap.Modal.getInstance($('#relateEdit'))
+                    modal.hide();
+                    showMessage(result.result, result.message);
+                    listRelateNote($('#filter_form').serialize());
+                }
+            });
+        });
     });
 </script>
 <?php

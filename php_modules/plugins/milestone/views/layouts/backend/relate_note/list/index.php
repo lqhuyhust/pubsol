@@ -47,4 +47,20 @@
             $('#relateNoteList').modal('show');
         })
 	});
+
+	function modalEdit()
+    {
+        $('.open-edit-relate').off('click').on('click', function(e){
+            e.preventDefault();
+
+            var title = $(this).data('title-note');
+			var id = $(this).data('id');
+			var alias = $(this).data('alias');
+			$('#note_title').text(title);
+			$('#alias').val(alias);
+			$('#form_update_relate_note').attr('action', '<?php echo $this->link_update_relate_note; ?>/' + id);
+
+            $('#relateEdit').modal('show');
+        });
+    }
 </script>
