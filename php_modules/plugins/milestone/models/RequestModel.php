@@ -61,4 +61,116 @@ class RequestModel extends Base
         
         return $string . $ex;
     }   
+
+    public function validate($data)
+    {
+        if (!$data || !is_array($data))
+        {
+            return false;
+        }
+
+        $exist = $this->MilestoneEntity->findByPK($data['milestone_id']);
+        if (!$exist)
+        {
+            $this->session->set('flashMsg', 'Invalid Milestone');
+            return false;
+        }
+
+        if (!$data['title'])
+        {
+            $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
+            return false;
+        }
+
+        $data['tags'] = $data['tags'] ? $this->getTag($data['tags']) : '';
+        
+        if(!$exist) {
+            return $this->app->redirect(
+                $this->router->url('milestones')
+            );
+        }
+
+        $data['start_at'] = $data['start_at'] ? $data['start_at'] : null;
+        $data['finished_at'] = $data['finished_at'] ? $data['finished_at'] : null;
+
+        return $data;
+    }
+
+    public function getTag($tags)
+    {
+        $listTag = explode(',', $tags);
+        $tags_tmp = [];
+        foreach($listTag as $tag)
+        {
+            if (!$tag) continue;
+            $find = $this->TagEntity->findOne(['id', $tag]);
+            if ($find)
+            {
+                $tags_tmp[] = $tag;
+            }
+            else
+            {
+                $find_tmp = $this->TagEntity->findOne(['name' => $tag]);
+                if ($find_tmp)
+                {
+                    $tags_tmp[] = $find_tmp['id'];
+                }
+                else
+                {
+                    $new_tag = $this->TagEntity->add(['name' => $tag]);
+                    if ($new_tag)
+                    {
+                        $tags_tmp[] = $new_tag;
+                    }
+                }
+            }
+        }
+
+        return implode(',', $tags_tmp);
+    }
+
+    public function add($data)
+    {
+        if (!$data || !is_array($data))
+        {
+            return false;
+        }
+
+        $newId =  $this->RequestEntity->add([
+            'milestone_id' => $data['milestone_id'],
+            'title' => $data['title'],
+            'tags' => $data['tags'],
+            'description' => $data['description'],
+            'start_at' => $data['start_at'],
+            'finished_at' => $data['finished_at'],
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $newId;
+    }
+
+    public function update($data)
+    {
+        if (!$data || !is_array($data) || !$data['id'])
+        {
+            return false;
+        }
+
+        $try = $this->RequestEntity->update([
+            'milestone_id' => $data['milestone_id'],
+            'title' => $data['title'],
+            'tags' => $data['tags'],
+            'description' => $data['description'],
+            'start_at' => $data['start_at'],
+            'finished_at' => $data['finished_at'],
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s'),
+            'id' => $data['id'],
+        ]);
+
+        return $try;
+    }
 }

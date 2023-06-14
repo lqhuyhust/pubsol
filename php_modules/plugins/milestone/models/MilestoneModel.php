@@ -85,7 +85,7 @@ class MilestoneModel extends Base
 
     public function update($data)
     {
-        if (!$data || !is_array($data))
+        if (!$data || !is_array($data) || !$data['id'])
         {
             return false;
         }
@@ -98,7 +98,7 @@ class MilestoneModel extends Base
             'status' => $data['status'],
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
-            'id' => $ids,
+            'id' => $data['id'],
         ]);
 
         return $try;

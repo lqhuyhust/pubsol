@@ -1,12 +1,3 @@
-<?php 
-    if(strcmp($this->item['version_id'], '0') == 0) {
-        $status = false;
-    } elseif ($this->version_lastest > $this->item['version_id']) {
-        $status = true;
-    } else {
-        $status = false;
-    }
-?>
 <tr>
     <td>
         <input class="checkbox-item"  type="checkbox" name="ids[]" value="<?php echo $this->item['id']; ?>">
