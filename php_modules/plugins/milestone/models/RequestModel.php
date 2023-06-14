@@ -173,4 +173,68 @@ class RequestModel extends Base
 
         return $try;
     }
+
+    public function getVersionNote($id)
+    {
+        if (!$id)
+        {
+            return false;
+        }
+        $list = $this->VersionNoteEntity->list(0,0, ['request_id = '. $id]);
+        $list = $list ? $list : [];
+
+        return $list;
+    }
+
+    public function addVersion($data)
+    {
+        if (!$data || !is_array($data) || !($data['request_id']) || !$data['log'])
+        {
+            return false;
+        }
+        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_latest = $version_latest ? $version_latest[0] : [];
+        if( !$version_latest )
+        {
+            return false;
+        }
+
+        // TODO: validate new add
+        $newId =  $this->VersionNoteEntity->add([
+            'version_id' => $version_latest['id'],
+            'log' => $data['log'],
+            'request_id' => $data['request_id'],
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $newId;
+    }
+
+    public function updateVersion($data)
+    {
+        if (!$data || !is_array($data) || !($data['id']) || !$data['log'])
+        {
+            return false;
+        }
+
+        $try = $this->VersionNoteEntity->update([
+            'log' => $data['log'],
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s'),
+            'id' => $data['id'],
+        ]);
+
+        return $try;
+    }
+
+    public function removeVersion($id)
+    {
+        if (!$id) return false;
+        $try = $this->VersionNoteEntity->remove($id);
+        
+        return $try;
+    }
 }
