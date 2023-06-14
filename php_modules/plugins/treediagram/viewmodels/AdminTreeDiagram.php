@@ -11,7 +11,7 @@
 
 namespace App\plugins\treediagram\viewmodels;
 
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;
 
 class AdminTreeDiagram extends ViewModel

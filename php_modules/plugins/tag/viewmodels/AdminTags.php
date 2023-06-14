@@ -13,7 +13,7 @@ namespace App\plugins\tag\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\ViewModel;
 
 class AdminTags extends ViewModel
 {

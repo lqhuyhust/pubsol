@@ -13,7 +13,7 @@ namespace App\plugins\calendar\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\ViewModel;
 use stdClass;
 
 class AdminCalendar extends ViewModel
