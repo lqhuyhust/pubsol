@@ -77,7 +77,6 @@ class Bootstrap
                 if(class_exists($class))
                 {
                     $entity = new $class($container->get('query'));
-                    $entity->checkAvailability();
                     $container->share( $class, $entity, true);
                     $alias = explode('\\', $class);
                     $container->alias( $alias[count($alias) - 1], $class);
