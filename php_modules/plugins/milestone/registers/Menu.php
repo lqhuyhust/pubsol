@@ -41,22 +41,15 @@ class Menu
                     'link' => $router->url('detail-request/'. $request_id.'#relate_note_link'),
                     'title' => 'Relate Notes',
                     'icon' => '<i class="fa-solid fa-link"></i>',
+                    'class' => 'relate-note-popup',
                 ],
                 [
-                    'link' => $router->url('detail-request/'. $request_id.'#document_link'),
-                    'title' => 'Document',
-                    'icon' => '<i class="fa-regular fa-folder-open"></i>',
+                    'link' => $router->url('detail-request/'. $request_id),
+                    'title' => 'New Note',
+                    'icon' => '<i class="fa-solid fa-clipboard"></i>',
+                    'class' => 'new-note-popup',
                 ],
             ];
-
-            if ($version)
-            {
-                $menu[] = [
-                    'link' => $router->url('detail-request/'. $request_id.'#version_link'),
-                    'title' => 'Versions',
-                    'icon' => '<i class="fa-solid fa-code-branch"></i>',
-                ];
-            }
             
             return [
                 'request_menu' => $menu,
