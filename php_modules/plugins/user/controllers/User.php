@@ -28,35 +28,15 @@ class User extends ControllerMVVM
             );
         }
 
-        $result = $this->user->login(
+        $result = $this->UserModel->login(
             $this->request->post->get('username', '', 'string'),
             $this->request->post->get('password', '', 'string')
         );
 
-        if ( $result )
-        {
-            if($result['status'] != 1) 
-            {
-                $this->session->set('flashMsg', 'Error: User has been block');
-                $this->user->logout();
-                return $this->app->redirect(
-                    $this->router->url('login')
-                );
-            }
-            else
-            {
-                return $this->app->redirect(
-                    $this->router->url($redirectAfterLogin)
-                );
-            }
-        }
-        else
-        {
-            $this->session->set('flashMsg', 'Username and Password invalid.');
-            return $this->app->redirect(
-                $this->router->url('login')
-            );
-        }
+        $link = $result ? $this->router->url($redirectAfterLogin) : $this->router->url('login');
+        return $this->app->redirect(
+            $link
+        );
     }
 
     public function detail()
@@ -65,7 +45,7 @@ class User extends ControllerMVVM
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
-        $existUser = $this->container->get('UserEntity')->findByPK($id);
+        $existUser = $this->UserModel->findByPK($id);
         if(!empty($id) && !$existUser) 
         {
             $this->session->set('flashMsg', "Invalid user");
@@ -89,7 +69,7 @@ class User extends ControllerMVVM
 
     public function saveProfile()
     {
-                $id = $this->user->get('id'); 
+        $id = $this->user->get('id'); 
         $save_close = $this->request->post->get('save_close', '', 'string');
        
         // TODO valid the request input
@@ -108,7 +88,6 @@ class User extends ControllerMVVM
         
         $user = [
             'name' => $this->request->post->get('name', '', 'string'),
-            // 'username' => $this->request->post->get('username', '' , 'string'),
             'email' => $this->request->post->get('email', '', 'string'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
@@ -127,7 +106,7 @@ class User extends ControllerMVVM
             );
         }
 
-        $try = $this->container->get('UserEntity')->update( $user );
+        $try = $this->UserModel->update( $user );
 
         if($try) 
         {
@@ -149,7 +128,7 @@ class User extends ControllerMVVM
 
     public function list()
     {
-                $this->app->set('page', 'backend');
+        $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.user.list');
     }
@@ -165,7 +144,7 @@ class User extends ControllerMVVM
 
     public function add()
     {
-                $save_close = $this->request->post->get('save_close', '', 'string');
+        $save_close = $this->request->post->get('save_close', '', 'string');
         $try = $this->UserModel->validate();
         if (!$try)
         {
@@ -186,16 +165,12 @@ class User extends ControllerMVVM
         }
 
         // TODO: validate new add
-        $newId =  $this->container->get('UserEntity')->add([
+        $newId = $this->UserModel->add([
             'name' => $this->request->post->get('name', '', 'string'),
             'username' => $this->request->post->get('username', '' , 'string'),
             'email' => $this->request->post->get('email', '' , 'string'),
             'password' => md5($this->request->post->get('password', '')),
             'status' => $this->request->post->get('status', 0),
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
         ]);
 
         if( !$newId )
@@ -273,7 +248,7 @@ class User extends ControllerMVVM
             $passwrd =  $this->request->post->get('password','');
             if($passwrd) $user['password'] = md5($passwrd);
             
-            $try = $this->container->get('UserEntity')->update( $user );
+            $try = $this->UserModel->update( $user );
 
             if($try) 
             {
@@ -313,9 +288,8 @@ class User extends ControllerMVVM
                 }
 
                 //Delete file in source
-                if( $this->container->get('UserEntity')->remove( $id ) )
+                if( $this->UserModel->remove( $id ) )
                 {
-                    $this->UserGroupModel->removeByUser($id);
                     $count++;
                 }
             }
@@ -330,9 +304,8 @@ class User extends ControllerMVVM
                 );
             }
             //Delete file in source
-            if( $this->container->get('UserEntity')->remove($userID ) )
+            if( $this->UserModel->remove($userID ) )
             {
-                $this->UserGroupModel->removeByUser($userID);
                 $count++;
             }
         }  
@@ -346,7 +319,6 @@ class User extends ControllerMVVM
 
     public function validateID()
     {
-        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
