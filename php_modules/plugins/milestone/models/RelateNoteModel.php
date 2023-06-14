@@ -22,10 +22,10 @@ class RelateNoteModel extends Base
             return false;
         }
 
-        $finds = $this->RelatedNoteEntity->list(0, 0, ['note_id' => $id]);
+        $finds = $this->RelateNoteEntity->list(0, 0, ['note_id' => $id]);
         foreach($finds as $item)
         {
-            $try = $this->RelatedNoteEntity->remove($item['id']);
+            $try = $this->RelateNoteEntity->remove($item['id']);
             if (!$try) return false;
         }
 
