@@ -223,7 +223,7 @@ class NoteModel extends Base
 
         $result = $this->NoteEntity->list(0, 0, $where, '`title` asc');
         $result = $result ? $result : [];
-        return $list;
+        return $result;
     }
 
     public function getRequest($id)
