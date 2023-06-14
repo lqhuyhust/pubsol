@@ -57,4 +57,38 @@ class NoteHistoryModel extends Base
 
         return true;
     }
+
+    public function rollback($id)
+    {
+        if (!$id)
+        {
+            return false;
+        }
+
+        $version = $this->NoteHistoryEntity->findByPK($id);
+        if (!$version)
+        {
+            return false;
+        }
+
+        $data = json_decode($version['meta_data'], true);
+        $data['id'] = $version['note_id'];
+        $try = $this->NoteEntity->update($data);
+        if (!$try) return false;
+
+        $remove = $this->NoteHistoryEntity->list(0, 0, ['id > '.$id, 'note_id = '. $version['note_id']]);
+        foreach($remove as $item)
+        {
+            $this->NoteHistoryEntity->remove($item['id']);
+        }
+
+        return $version['note_id'];
+    }
+
+    public function remove($id)
+    {
+        if (!$id) return false;
+        
+        return $this->NoteHistoryEntity->remove($id);
+    }
 }

@@ -16,31 +16,13 @@ class Version extends ControllerMVVM {
     
     public function rollback()
     {
-                $id = $this->validateID();
-        $version = $this->NoteHistoryEntity->findByPK($id);
-        if ($version)
-        {
-            $data = json_decode($version['meta_data'], true);
-            $data['id'] = $version['note_id'];
-            $try = $this->NoteEntity->update($data);
-            if ($try)
-            {
-                $this->session->set('flashMsg', 'Update Successfully');
-                $remove = $this->NoteHistoryEntity->list(0, 0, ['id > '.$id, 'note_id = '. $version['note_id']]);
-                foreach($remove as $item)
-                {
-                    $this->NoteHistoryEntity->remove($item['id']);
-                }
+        $id = $this->validateID();
+        $try = $this->NoteHistory->rollback($id);
 
-                return $this->app->redirect(
-                    $this->router->url('note/'. $data['id'])
-                );
-            }
-        }
-
-        $this->session->set('flashMsg', 'Error: Update Fail');
+        $msg = $try ? 'Update Successfully' : 'Error: Update Fail';
+        $this->session->set('flashMsg', $msg);
         return $this->app->redirect(
-            $this->router->url('note/'. $data['id'])
+            $this->router->url('note/'. $try)
         );
     }
 
@@ -74,7 +56,7 @@ class Version extends ControllerMVVM {
         {
             $version = $this->NoteHistoryEntity->findByPK($ids);
             $link = $version ? $this->router->url('note/'. $version['note_id']) : $this->router->url('notes');
-            if( $this->NoteHistoryEntity->remove($ids ) )
+            if( $this->NoteHistoryModel->remove($ids ) )
             {
                 $count++;
             }
