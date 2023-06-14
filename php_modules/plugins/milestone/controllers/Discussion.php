@@ -10,67 +10,28 @@ class Discussion extends ControllerMVVM
 {
     public function add()
     {
-                $request_id = $this->validateRequestID();
+        $request_id = $this->validateRequestID();
         
-        $document = $this->DocumentEntity->findOne(['request_id = '. $request_id]);
-        $message = $this->request->post->get('message', '', 'string');
-        if (!$message)
-        {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Message discussion can\'t empty!');
-            return;
-        }
-
-        if ($document)
-        {
-            $newId = $this->DiscussionEntity->add([
-                'user_id' => $this->user->get('id'),
-                'document_id' => $document['id'],
-                'message' => $message,
-                'sent_at' => date('Y-m-d H:i:s'),
-                'modified_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
-            $this->app->set('format', 'json');
-            $this->set('result', 'ok');
-            $this->set('message', $msg);
-            return;
-        }
-
-        // TODO: validate new add
-        $document =  $this->DocumentEntity->add([
+        $data = [
+            'message' => $this->request->post->get('message', '', 'string'),
             'request_id' => $request_id,
-            'description' => '',
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
-        if (!$document)
+        ];
+
+        $data = $this->DiscussionModel->validate($data);
+        if (!$try)
         {
-            $msg = 'Comment Fail';
             $this->app->set('format', 'json');
             $this->set('result', 'fail');
-            $this->set('message', $msg);
-            return ;
+            return;
         }
-        
-        $newId = $this->DiscussionEntity->add([
-            'user_id' => $this->user->get('id'),
-            'document_id' => $document,
-            'message' => $message,
-            'sent_at' => date('Y-m-d H:i:s'),
-            'modified_at' => date('Y-m-d H:i:s'),
-        ]);
+
+        $newId = $this->DiscussionModel->add($data);
 
         $msg = $newId ? 'Comment Successfully' : 'Comment Fail';
         $this->app->set('format', 'json');
         $this->set('result', 'ok');
         $this->set('message', $msg);
         return;
-
     }
 
     public function validateRequestID()
