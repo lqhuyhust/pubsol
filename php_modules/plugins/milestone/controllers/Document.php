@@ -34,7 +34,7 @@ class Document extends ControllerMVVM
             'request_id' => $request_id,
         ];
 
-        $check  = $this->DocumentModel->save($data);
+        $try  = $this->DocumentModel->save($data);
        
         $msg = $try ? 'Update Document Successfully!' : 'Error: Update Document Failed!';
         $status = $try ? 'ok' : 'fail';

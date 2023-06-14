@@ -11,9 +11,6 @@
 					<div class=" row align-items-center pt-3">
 						<?php echo $this->render('backend.relate_note.list.filter', []); ?>
 					</div>
-					<div class="row align-items-center">
-						<?php echo $this->render('backend.relate_note.form', []); ?>
-					</div>
 					<form action="<?php echo $this->link_list ?>" method="POST" id="formListRelateNote">
 						<input type="hidden" value="<?php echo $this->token ?>" name="token">
 						<input type="hidden" value="DELETE" name="_method">
@@ -40,6 +37,7 @@
 		</div>
 	</div>
 </div>
+<?php echo $this->render('backend.relate_note.form', []); ?>
 <script>
 	 $(document).ready(function(){
         $('.relate-note-popup').on('click', function(e){

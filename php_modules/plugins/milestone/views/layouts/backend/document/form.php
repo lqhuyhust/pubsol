@@ -74,7 +74,6 @@
                             <?php foreach ($this->history as $item) : ?>
                                 <li class="list-group-item">
                                     <a href="#" class="openHistory" data-id="<?php echo $item['id']; ?>" data-modified_at="<?php echo $item['modified_at']; ?>">Modified at <?php echo $item['modified_at']; ?> by <?php echo $item['modified_by']; ?></a>
-                                    <a href="#" class="ps-3 clear-version ms-auto" data-version-id="<?php echo $item['id'] ?>"><i class="fa-solid fa-trash"></i></a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

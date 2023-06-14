@@ -1,5 +1,5 @@
 <?php echo $this->render('notification', []); ?>
-<div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="formRelateNote" aria-labelledby="formRelateNoteLabel" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered " style="max-width: 600px;">
         <div class="modal-content container px-5 pt-5">
             <form method="post" id="form_relate_note">
@@ -36,7 +36,7 @@
             placeholder: 'Select Notes',
             minimumInputLength: 1,
             multiple: true,
-            dropdownParent : "#exampleModalToggle",
+            dropdownParent : "#formRelateNote",
             closeOnSelect: false,
             ajax: {
                 url: '<?php echo $this->url. 'get-notes/'. $this->request_id ?>',
@@ -90,7 +90,7 @@
                 url: '<?php echo $this->link_form .'/0' ?>',
                 data: $('#form_relate_note').serialize(),
                 success: function (result) {
-                    modal = bootstrap.Modal.getInstance($('#exampleModalToggle'))
+                    modal = bootstrap.Modal.getInstance($('#formRelateNote'))
                     modal.hide();
                     $('#note_id').val(null).trigger('change');
                     showMessage(result.result, result.message);
