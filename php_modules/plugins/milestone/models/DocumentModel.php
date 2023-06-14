@@ -129,4 +129,32 @@ class DocumentModel extends Base
         $result = $discussion ? $discussion : [];
         return $result;
     }
+
+    public function rollback($id)
+    {
+        $document = $this->DocumentHistoryEntity->findByPK($id);
+        if (!$document)
+        {
+            return false;
+        }
+        
+        $try = $this->DocumentEntity->update([
+            'id' => $document['document_id'],
+            'description' => $document['description'],
+        ]);
+
+        if ($try)
+        {
+            $remove_list = $this->DocumentHistoryEntity->list(0, 0, ['id > '. $id, 'document_id = '. $document['document_id']]);
+            if ($remove_list)
+            {
+                foreach($remove_list as $item)
+                {
+                    $this->DocumentHistoryEntity->remove($item['id']);
+                } 
+            }
+        }
+        
+        return $try ? $document : false;
+    }
 }
