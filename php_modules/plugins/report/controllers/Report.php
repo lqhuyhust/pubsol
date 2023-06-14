@@ -12,7 +12,7 @@ class Report extends ControllerMVVM
         $this->app->set('layout', 'backend.diagram.list');
     }
 
-    public function update()
+    public function updateStatus()
     {
         $id = $this->request->post->get('id', '', 'string');
         $find = $this->DiagramEntity->findByPK($id);
@@ -24,7 +24,7 @@ class Report extends ControllerMVVM
             );
         }
 
-        $try = $this->ReportModel->update([
+        $try = $this->ReportModel->updateStatus([
             'id' => $id,
             'status' => $find['status'] ? 0 : 1,
         ]);

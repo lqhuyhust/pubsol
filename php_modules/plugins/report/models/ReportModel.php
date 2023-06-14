@@ -29,15 +29,15 @@ class ReportModel extends Base
         return $types;
     }
 
-    public function update($data)
+    public function updateStatus($data)
     {
         if (!$data || !is_array($data) || !$data['id']) {
             return false;
         }
 
         $try = $this->DiagramEntity->update([
-            'id' => $id,
-            'status' => $find['status'] ? 0 : 1,
+            'id' => $data['id'],
+            'status' => $data['status'],
         ]);
 
         return $try;
