@@ -52,4 +52,96 @@ class TagModel extends Base
 
         return $this->TagEntity->remove($id);
     }
+
+    public function validate($data)
+    {
+        if (!$data || !is_array($data))
+        {
+            return false;
+        }
+
+        if (!$data['name'])
+        {
+            $this->session->set('flashMsg', 'Error: Name can\'t empty! ');
+            return false;
+        }
+
+        $where = ['name' => $name];
+        if (isset($data['id']) && $data['id'])
+        {
+            $where[] = 'id <> '. $data['id'];
+        }
+
+        $findOne = $this->TagEntity->findOne($where);
+        if ($findOne)
+        {
+            $this->session->set('flashMsg', 'Error: Create Failed! Tag already exists');
+            return false;
+        }
+
+        return $data;
+    }
+
+    public function add($data)
+    {
+        if (!$data || !is_array($data))
+        {
+            return false;
+        }
+
+        $newId =  $this->TagEntity->add([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'parent_id' => $data['parent_id'],
+        ]);
+
+        return $newId;
+    }
+
+    public function update($data)
+    {
+        if (!$data || !is_array($data) || !$data['id'])
+        {
+            return false;
+        }
+
+        $try = $this->TagEntity->update([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'parent_id' => $data['parent_id'],
+            'id' => $data['id'],
+        ]);
+
+        return $try;
+    }
+
+    public function search($search, $ignores)
+    {
+        $where = [];
+
+        if( !empty($search) )
+        {
+            $where[] = "(`name` LIKE '%".$search."%' )";
+        }
+
+        if ($ignores && is_array($ignores))
+        {
+            $where[] = "id NOT IN (". implode(',', $ignores).")";
+        }
+
+        $data = $this->TagEntity->list(0,100, $where);
+        foreach($data as &$item)
+        {
+            if ($item['parent_id'])
+            {
+                $tmp = $this->TagEntity->findByPK($item['parent_id']);
+                if ($tmp)
+                {
+                    $item['name'] = $tmp['name']. ' > '. $item['name'];
+                }
+            }
+        }
+
+        return $data;
+    }
 }

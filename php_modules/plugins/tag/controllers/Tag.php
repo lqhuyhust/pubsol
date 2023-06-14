@@ -16,43 +16,30 @@ class Tag extends ControllerMVVM
 {
     public function list()
     {
-                $this->app->set('page', 'backend');
+        $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.tag.list');
     }
 
     public function add()
     {
-        
-        $name = $this->request->post->get('name', '', 'string');
-        $description = $this->request->post->get('description', '', 'string');
-        $parent_id = $this->request->post->get('parent_id', 0, 'int');
+        $data = [
+            'name' => $this->request->post->get('name', '', 'string'),
+            'description' => $this->request->post->get('description', '', 'string'),
+            'parent_id' => $this->request->post->get('parent_id', 0, 'int'),
+        ];
 
-        if (!$name)
+        $data = $this->TagModel->validate($data);
+        if (!$data)
         {
-            $this->session->set('flashMsg', 'Error: Name can\'t empty! ');
-            return $this->app->redirect(
-                $this->router->url('tags')
-            );
-        }
-
-        $findOne = $this->TagEntity->findOne(['name' => $name]);
-        if ($findOne)
-        {
-            $this->session->set('flashMsg', 'Error: Create Failed! Tag already exists');
             return $this->app->redirect(
                 $this->router->url('tags')
             );
         }
         
-        // TODO: validate new add
-        $newId =  $this->TagEntity->add([
-            'name' => $name,
-            'description' => $description,
-            'parent_id' => $parent_id,
-        ]);
+        $try = $this->TagModel->add($data);
 
-        if( !$newId )
+        if( !$try )
         {
             $msg = 'Error: Create Failed!';
             $this->session->set('flashMsg', $msg);
@@ -75,33 +62,22 @@ class Tag extends ControllerMVVM
 
         if(is_numeric($id) && $id)
         {
-            $name = $this->request->post->get('name', '', 'string');
-            $description = $this->request->post->get('description', '', 'string');
-            $parent_id = $this->request->post->get('parent_id', 0, 'int');
-    
-            if (!$name)
+            $data = [
+                'name' => $this->request->post->get('name', '', 'string'),
+                'description' => $this->request->post->get('description', '', 'string'),
+                'parent_id' => $this->request->post->get('parent_id', 0, 'int'),
+                'id' => $id,
+            ];
+        
+            $data = $this->TagModel->validate($data);
+            if (!$data)
             {
-                $this->session->set('flashMsg', 'Error: Name can\'t empty! ');
                 return $this->app->redirect(
                     $this->router->url('tags')
                 );
             }
             
-            $findOne = $this->TagEntity->findOne(['name' => $name, 'id <> '. $id]);
-            if ($findOne)
-            {
-                $this->session->set('flashMsg', 'Error: Update Failed! Tag already exists');
-                return $this->app->redirect(
-                    $this->router->url('tags')
-                );
-            }
-
-            $try = $this->TagEntity->update([
-                'name' => $name,
-                'description' => $description,
-                'parent_id' => $parent_id,
-                'id' => $id,
-            ]);
+            $try = $this->TagModel->update($data);
             
             if($try) 
             {
@@ -157,7 +133,7 @@ class Tag extends ControllerMVVM
 
     public function validateID()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $id = $urlVars ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
@@ -176,34 +152,11 @@ class Tag extends ControllerMVVM
 
     public function search()
     {
-        
-        $name = trim($this->request->get->get('search', '', 'string'));
+        $search = trim($this->request->get->get('search', '', 'string'));
         $ignores = $this->request->get->get('ignores', [], 'array');
 
-        $where = [];
+        $data = $this->TagModel->search($search, $ignores);
 
-        if( !empty($name) )
-        {
-            $where[] = "(`name` LIKE '%".$name."%' )";
-        }
-
-        if ($ignores)
-        {
-            $where[] = "id NOT IN (". implode(',', $ignores).")";
-        }
-
-        $data = $this->TagEntity->list(0,100, $where);
-        foreach($data as &$item)
-        {
-            if ($item['parent_id'])
-            {
-                $tmp = $this->TagEntity->findByPK($item['parent_id']);
-                if ($tmp)
-                {
-                    $item['name'] = $tmp['name']. ' > '. $item['name'];
-                }
-            }
-        }
         $this->app->set('format', 'json');
         $this->set('status' , 'success');
         $this->set('data' , $data);
