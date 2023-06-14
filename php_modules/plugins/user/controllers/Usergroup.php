@@ -38,7 +38,7 @@ class Usergroup extends ControllerMVVM
         // TODO: validate new add
         $status = $this->request->post->get('status', 0, 'string');
 
-        $newId =  $this->GroupModel->add([
+        $newId =  $this->UserGroupModel->add([
             'name' => $this->request->post->get('name', '', 'string'),
             'description' => $this->request->post->get('description', '', 'string'),
             'access' => json_encode($this->request->post->get('access', [], 'array')),

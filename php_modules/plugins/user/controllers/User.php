@@ -45,7 +45,7 @@ class User extends ControllerMVVM
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
-        $existUser = $this->UserModel->findByPK($id);
+        $existUser = $this->UserEntity->findByPK($id);
         if(!empty($id) && !$existUser) 
         {
             $this->session->set('flashMsg', "Invalid user");
