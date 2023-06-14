@@ -123,6 +123,15 @@
                         <textarea name="description" type="text" id="description" placeholder="Enter description" class="form-control rounded-0 border border-1 py-1 fs-4-5"><?php echo htmlspecialchars($this->request['description']);?></textarea>                        
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <label class="form-label fw-bold mb-2">Assigments</label>
+                    </div>
+                    <div class="col-12">
+                        <select name="assignment[]" multiple id="assignment">
+                        </select>
+                    </div>
+                </div>
                 <div class="row g-3 align-items-center m-0">
                     <div class="modal-footer">
                         <input name="token" type="hidden" id="token" value="91e0f6584395a6a937615717605e92c7">                            <input class="form-control rounded-0 border border-1" id="request" type="hidden" name="_method" value="PUT">
@@ -179,6 +188,41 @@
             minimumInputLength: 1,
         });
 
+        $("#assignment").select2({
+            matcher: matchCustom,
+            ajax: {
+                url: "<?php echo $this->link_user_search ?>",
+                dataType: 'json',
+                delay: 100,
+                data: function(params) {
+                    return {
+                        search: params.term,
+                    };
+                },
+                processResults: function(data, params) {
+                    let items = [];
+                    if (data.data.length > 0) {
+                        data.data.forEach(function(item) {
+                            items.push({
+                                id: item.id,
+                                text: item.name
+                            })
+                        })
+                    }
+
+                    return {
+                        results: items,
+                        pagination: {
+                            more: false
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Users',
+            minimumInputLength: 1,
+        });
+        
         $('.js-example-tags').on('select2:select', async function(e) {
              setTags();
         });
@@ -203,6 +247,7 @@
         }
 
         var tags = <?php echo json_encode($this->request['tags']);?>;
+        var assignments = <?php echo json_encode($this->request['assignment']);?>;
         $('#select_tags').val('').trigger('change');
 
         if (Array.isArray(tags))
@@ -210,6 +255,13 @@
             tags.forEach(function(item,index){
                 var newOption = new Option(item.name, item.id, true, true);
                 $('#select_tags').append(newOption).trigger('change');
+            });
+        }
+        if (Array.isArray(assignments))
+        {
+            assignments.forEach(function(item,index){
+                var newOption = new Option(item.name, item.id, true, true);
+                $('#assignment').append(newOption).trigger('change');
             });
         }
         setTags();

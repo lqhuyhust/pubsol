@@ -33,6 +33,10 @@
             <div class="pe-2">
                 <?php $this->ui->field('search');  ?>
             </div>
+            <div class="pe-2 select2-no-index">
+                <?php $this->ui->field('filter_tags');  ?>
+            </div>
+            <input type="hidden" name="clear_filter" id="input_clear_filter">
             <button type='Submit' data-bs-toggle="tooltip" title="Filter" class=" align-middle btn border border-1 ms-2" type="button">
                 <i class="fa-solid fa-filter"></i>
             </button>

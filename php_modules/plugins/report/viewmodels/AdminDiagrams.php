@@ -79,6 +79,24 @@ class AdminDiagrams extends ViewModel
             $user_tmp = $UserEntity->findByPK($item['created_by']);
             $item['auth'] = $user_tmp ? $user_tmp['name'] : '';
             $item['created_at'] = $item['created_at'] && $item['created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y', strtotime($item['created_at'])) : '';
+            
+            $assigns = $item['assignment'] ? json_decode($item['assignment']) : [];
+            $assign_tmp = [];
+            $selected_tmp = [];
+            foreach($assigns as $assign)
+            {
+                $user_tmp = $UserEntity->findByPK($assign);
+                if ($user_tmp)
+                {
+                    $assign_tmp[] = $user_tmp['name'];
+                    $selected_tmp[] = [
+                        'id' => $assign,
+                        'name' => $user_tmp['name'],
+                    ];
+                }
+            }
+            $item['assign'] = implode(', ', $assign_tmp);
+            $item['assignment'] = json_encode($selected_tmp);
         }
 
         $limit = $limit == 0 ? $total : $limit;
@@ -115,7 +133,7 @@ class AdminDiagrams extends ViewModel
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'report.search'),
                 'status' => $this->state('status', '','', 'post', 'report.status'),
-                'limit' => $this->state('limit', 10, 'int', 'post', 'report.limit'),
+                'limit' => $this->state('limit', 20, 'int', 'post', 'report.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'report.sort')
             ];
 

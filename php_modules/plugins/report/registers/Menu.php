@@ -14,11 +14,6 @@ class Menu
         $allow = $permission ? $permission->checkPermission(['report_manager', 'report_read']) : true;
         $path_current = $router->get('actualPath');
 
-        if (!$allow)
-        {
-            return false;
-        }
-        
         $menu_report = [];
         $app->plgLoad('menu', 'registerReportItem', function ($reports) use (&$menu_report){
             if ($reports && is_array($reports))
@@ -28,14 +23,18 @@ class Menu
         });
 
         $active = strpos($path_current, 'reports') !== false ? 'active' : '';
-        $menu = [
-            [
-                'link' => $router->url('reports'), 
-                'title' => 'Report', 
-                'icon' => '<i class="fa-solid fa-magnifying-glass-chart"></i>',
-                'class' => $active,
-            ],
-        ];
+        $menu = [];
+        if($allow)
+        {
+            $menu = [
+                [
+                    'link' => $router->url('reports'), 
+                    'title' => 'Report', 
+                    'icon' => '<i class="fa-solid fa-magnifying-glass-chart"></i>',
+                    'class' => $active,
+                ],
+            ];
+        }        
 
         if ($menu_report)
         {

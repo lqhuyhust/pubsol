@@ -10,6 +10,7 @@
         document.getElementById("search").value = "";
         document.getElementById("sort").value = "title asc";
         $('#tags').val(null).trigger('change');
+        document.getElementById("input_clear_filter").value = 1;
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {

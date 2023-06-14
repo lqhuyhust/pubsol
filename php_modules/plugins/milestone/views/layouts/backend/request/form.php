@@ -48,6 +48,14 @@ echo $this->render('notification', []); ?>
                             <?php $this->ui->field('description'); ?>
                         </div>
                     </div>
+                    <div class="row px-0 mb-3">
+                        <div class="col-12 d-flex align-items-center">
+                            <label class="form-label fw-bold mb-2">Assigments</label>
+                        </div>
+                        <div class="col-12">
+                            <?php $this->ui->field('assignment'); ?>
+                        </div>
+                    </div>
                     <div class="row g-3 align-items-center m-0">
                         <div class="modal-footer">
                             <?php $this->ui->field('token'); ?>
@@ -158,3 +166,58 @@ echo $this->render('notification', []); ?>
         }
     }
 </script>
+<?php
+$js = <<<Javascript
+$(document).ready(function() {
+    $("#assignment").select2({
+        matcher: matchCustom,
+        ajax: {
+            url: "{$this->link_user_search}",
+            dataType: 'json',
+            delay: 100,
+            data: function(params) {
+                return {
+                    search: params.term,
+                };
+            },
+            processResults: function(data, params) {
+                let items = [];
+                if (data.data.length > 0) {
+                    data.data.forEach(function(item) {
+                        items.push({
+                            id: item.id,
+                            text: item.name
+                        })
+                    })
+                }
+
+                return {
+                    results: items,
+                    pagination: {
+                        more: false
+                    }
+                };
+            },
+            cache: true
+        },
+        placeholder: 'Users',
+        minimumInputLength: 1,
+    });
+    function matchCustom(params, data) {
+        // If there are no search terms, return all of the data
+        if ($.trim(params.term) === '') {
+            return data;
+        }
+
+        // Do not display the item if there is no 'text' property
+        if (typeof data.text === 'undefined') {
+            return null;
+        }
+
+        // Return `null` if the term should not be displayed
+        return null;
+    }
+  });
+Javascript;
+
+$this->theme->addInline('js', $js);

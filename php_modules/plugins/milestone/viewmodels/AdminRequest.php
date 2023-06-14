@@ -41,6 +41,7 @@ class AdminRequest extends ViewModel
             'form' => $form,
             'allow_tag' => $allow_tag ? 'true' : 'false',
             'url' => $router->url(),
+            'link_user_search' => $router->url('request/find-user'),
             'link_list' => $router->url('requests/'. $milestone_id),
             'link_tag' => $router->url('tag/search'),
             'link_form' => $router->url('request/'. $milestone_id),
@@ -75,6 +76,15 @@ class AdminRequest extends ViewModel
             ],
             'tags' => ['hidden',
             ],
+            'assignment' => [
+                'option',
+                'type' => 'multiselect',
+                'formClass' => 'form-select',
+                'options' => [],
+                'showLabel' => false,
+                'placeholder' => 'Users',
+                'formClass' => 'form-control',
+            ],
             'token' => ['hidden',
                 'default' => $this->container->get('token')->value(),
             ],
@@ -89,6 +99,7 @@ class AdminRequest extends ViewModel
         $router = $this->container->get('router');
         $RequestEntity = $this->container->get('RequestEntity');
         $TagEntity = $this->container->get('TagEntity');
+        $UserEntity = $this->container->get('UserEntity');
         $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
         $MilestoneEntity = $this->container->get('MilestoneEntity');
 
@@ -109,6 +120,21 @@ class AdminRequest extends ViewModel
                     $request['tags'][] = $tmp;
                 }
             }
+
+            $assigns = $request['assignment'] ? json_decode($request['assignment']) : [];
+            $selected_tmp = [];
+            foreach($assigns as $assign)
+            {
+                $user_tmp = $UserEntity->findByPK($assign);
+                if ($user_tmp)
+                {
+                    $selected_tmp[] = [
+                        'id' => $assign,
+                        'name' => $user_tmp['name'],
+                    ];
+                }
+            }
+            $request['assignment'] = $selected_tmp;
         }
 
         $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
@@ -120,6 +146,7 @@ class AdminRequest extends ViewModel
             'url' => $router->url(),
             'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),
             'link_tag' => $router->url('tag/search'),
+            'link_user_search' => $router->url('request/find-user'),
             'title_page' => $title_page,
             'request' => $request,
         ];

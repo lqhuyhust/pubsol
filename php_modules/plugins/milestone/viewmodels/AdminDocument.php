@@ -63,6 +63,7 @@ class AdminDocument extends ViewModel
         {
             $user_tmp = $UserEntity->findByPK($item['user_id']);
             $item['user'] = $user_tmp ? $user_tmp['name'] : '';
+            $item['message'] = str_replace("\n", '<br>', $item['message']);
         }
 
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');

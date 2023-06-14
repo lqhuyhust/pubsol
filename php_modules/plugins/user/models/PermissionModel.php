@@ -7,7 +7,7 @@ class PermissionModel extends Base
 {
     public function getAccess()
     {
-        if (!isset($this->access)) 
+        if (!$this->get('access')) 
         {
             $register_access = [];
             $this->app->plgLoad('permission', 'registerAccess', function($access) use (&$register_access){
@@ -17,9 +17,9 @@ class PermissionModel extends Base
                 }
             });
     
-            $this->access = $register_access;
+            $this->set('access', $register_access);
         }
-        return $this->access;
+        return $this->get('access');
     }
 
     public function checkPermission($access = null)
@@ -83,5 +83,26 @@ class PermissionModel extends Base
         }
 
         return $access;
+    }
+
+    public function checkPermissionObject($object, $param, $column)
+    {
+        $entity = $this->container->exists($object) ? $this->container->get($object) : null;
+        $assignment = [];
+        $urlVars = $this->request->get('urlVars');
+        $id = $urlVars && isset($urlVars) ? (int) $urlVars[$param] : 0;
+        $user_id = $this->user->get('id');
+        if ($entity)
+        {
+            $row = $entity->findByPK($id);
+            $assignment = $row && $row[$column] ? json_decode($row[$column]) : [];
+        }
+
+        if (in_array($user_id, $assignment))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

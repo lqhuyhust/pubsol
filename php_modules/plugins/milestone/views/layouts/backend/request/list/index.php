@@ -25,6 +25,7 @@
 											<th>Tags</th>
 											<th width="300px">Description</th>
 											<th>Creator</th>
+											<th>Assignment</th>
 											<th>Start at</th>
 											<th>Finished at</th>
 											<th>Action</th>
