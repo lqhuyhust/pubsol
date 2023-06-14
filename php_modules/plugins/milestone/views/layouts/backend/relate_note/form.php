@@ -1,7 +1,3 @@
-<?php 
-$this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
-$this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
-?>
 <?php echo $this->render('notification', []); ?>
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered " style="max-width: 600px;">

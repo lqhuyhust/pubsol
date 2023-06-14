@@ -30,9 +30,9 @@ class Version extends ControllerMVVM
         ];
         
         // TODO: validate new add
-        $newId =  $this->RequestModel->addVersion->add($data);
+        $newId =  $this->RequestModel->addVersion($data);
 
-        if( !$try )
+        if( !$newId )
         {
             $msg = 'Error: Create Change log Failed!';
             $this->app->set('format', 'json');
@@ -100,7 +100,7 @@ class Version extends ControllerMVVM
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->RequestMode->removeVersion( $id ) )
+                if( $this->RequestModel->removeVersion( $id ) )
                 {
                     $count++;
                 }
@@ -108,7 +108,7 @@ class Version extends ControllerMVVM
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->RequestMode->removeVersion($ids ) )
+            if( $this->RequestModel->removeVersion($ids ) )
             {
                 $count++;
             }

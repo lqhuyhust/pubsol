@@ -90,3 +90,7 @@ span.select2-container {
 .sidebar-dropdown .sidebar-item a{
     font-size: 14px;
 }
+
+#version_link {
+    border-top: 2px solid #dee2e6;
+}
