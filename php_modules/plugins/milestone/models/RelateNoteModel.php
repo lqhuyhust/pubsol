@@ -31,4 +31,37 @@ class RelateNoteModel extends Base
 
         return true;
     }   
+
+    public function  remove($id)
+    {
+        if (!$id) return false;
+        $try = $this->RelateNoteEntity->remove($id);
+        
+        return $try;
+    }
+
+    public function addNote($notes, $request_id)
+    {
+        if (!$notes || !$request_id)
+        {
+            return false;
+        }
+
+        foreach($notes as $note_id)
+        {
+            $find = $this->RelateNoteEntity->findOne(['request_id' => $request_id, 'note_id' => $note_id]);
+            if ($find) continue;
+            
+            $newId =  $this->RelateNoteEntity->add([
+                'request_id' => $request_id,
+                'title' => '',
+                'note_id' => $note_id,
+                'description' => '',
+            ]);
+
+            if (!$newId) return false;
+        }
+
+        return true;
+    }
 }

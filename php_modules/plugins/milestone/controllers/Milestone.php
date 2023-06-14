@@ -100,7 +100,7 @@ class Milestone extends ControllerMVVM
             }
             $try = $this->MilestoneModel->update($data);
             
-            $msg = $try ? 'Edit Successfully' : 'Error: Save Failed'
+            $msg = $try ? 'Edit Successfully' : 'Error: Save Failed';
             
             $this->session->set('flashMsg', $msg);
             return $this->app->redirect(
