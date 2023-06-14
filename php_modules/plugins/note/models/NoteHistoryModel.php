@@ -91,4 +91,23 @@ class NoteHistoryModel extends Base
         
         return $this->NoteHistoryEntity->remove($id);
     }
+
+    public function getVersions($id)
+    {
+        if (!$id)
+        {
+            return false;
+        }
+
+        $versions = $this->NoteHistoryEntity->list(0, 0, ['note_id' => $id], 'id desc');
+        $versions = $versions ? $versions : [];
+
+        foreach($versions as &$item)
+        {
+            $user_tmp = $this->UserEntity->findByPK($item['created_by']);
+            $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
+        }
+
+        return $versions;
+    }
 }

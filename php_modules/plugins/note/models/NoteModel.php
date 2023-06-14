@@ -248,4 +248,42 @@ class NoteModel extends Base
 
         return $result;
     }
+
+    public function getDetail($id)
+    {
+        if (!$id)
+        {
+            return false;
+        }
+
+        $data = $this->NoteEntity->findByPK($id);
+        if (!$data)
+        {
+            return false;
+        }
+
+        $data['description'] = $this->replaceContent($data['description'], false);
+        $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
+        $data['description_presenter'] = $data['description'];
+
+        $data['versions'] = $this->NoteHistoryModel->getVersions($id);
+        $data['type'] = !$data['type'] ? 'html' : $data['type'];
+
+        $tag_tmp = $data['tags'] ? explode(',', $data['tags']) : [];
+        
+        $data['data_tags'] = [];
+        foreach($tag_tmp as $tag)
+        {
+            $tmp = $this->TagEntity->findByPK($tag);
+            if ($tmp)
+            {
+                $data['data_tags'][$tmp['id']] = $tmp['name'];
+            }
+        }
+
+        $data['tags'] = implode(', ', $data['data_tags']);
+        
+        $data['attachments'] = $this->AttachmentModel->getByNote($id);
+        return $data;
+    }
 }

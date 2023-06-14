@@ -72,8 +72,8 @@ $this->theme->add($this->url . 'assets/tinymce/tinymce.min.js', '', 'tinymce');
                     <div class="mb-3 col-lg-12 col-sm-12 mx-auto  tag-note select2-no-index">
                         <label class="form-label fw-bold">Tags:</label>
                         <select class="js-example-tags" multiple id="select_tags">
-                            <?php foreach ($this->data_tags as $item) : ?>
-                                <option selected="selected" value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
+                            <?php foreach ($this->data['data_tags'] as $key => $value) : ?>
+                                <option selected="selected" value="<?= $key ?>"><?= $value ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

@@ -169,4 +169,15 @@ class AttachmentModel extends Base
 
         return true;
     }
+
+    public function getByNote($id)
+    {
+        if (!$id)
+        {
+            return false;
+        }
+
+        $list = $this->AttachmentEntity->list(0, 0, ['note_id' => $id]);
+        return $list;
+    }
 }
