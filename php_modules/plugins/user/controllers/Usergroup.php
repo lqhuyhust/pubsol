@@ -15,7 +15,7 @@ class Usergroup extends ControllerMVVM
 
     public function detail()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
         
         $this->app->set('layout', 'backend.usergroup.form');
@@ -25,8 +25,7 @@ class Usergroup extends ControllerMVVM
 
     public function add()
     {
-                $save_close = $this->request->post->get('save_close', '', 'string');
-        
+        $save_close = $this->request->post->get('save_close', '', 'string');
         $try = $this->UserGroupModel->validate();
         if (!$try)
         {
@@ -38,7 +37,8 @@ class Usergroup extends ControllerMVVM
         }
         // TODO: validate new add
         $status = $this->request->post->get('status', 0, 'string');
-        $newId =  $this->GroupEntity->add([
+
+        $newId =  $this->GroupModel->add([
             'name' => $this->request->post->get('name', '', 'string'),
             'description' => $this->request->post->get('description', '', 'string'),
             'access' => json_encode($this->request->post->get('access', [], 'array')),
@@ -102,7 +102,7 @@ class Usergroup extends ControllerMVVM
                 'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $sth,
             ];
-            $try = $this->GroupEntity->update( $user );
+            $try = $this->UserGroupModel->update( $user );
     
             $msg = $try ? 'Updated Successfully' : 'Updated Fail';
             $this->session->set('flashMsg', $msg);
@@ -147,9 +147,8 @@ class Usergroup extends ControllerMVVM
                     );
                 }
 
-                if( $this->GroupEntity->remove( $id ) )
+                if( $this->UserGroupModel->remove( $id ) )
                 {
-                    $this->UserGroupModel->removeByGroup($id);
                     $count++;
                 }
             }
@@ -164,9 +163,8 @@ class Usergroup extends ControllerMVVM
                 );
             }
 
-            if( $this->GroupEntity->remove($sth ) )
+            if( $this->UserGroupModel->remove($sth ) )
             {
-                $this->UserGroupModel->removeByGroup($sth);
                 $count++;
             }
         }  
@@ -177,7 +175,7 @@ class Usergroup extends ControllerMVVM
 
     public function validateID()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
         if(empty($id) && !$id)
         {

@@ -139,4 +139,40 @@ class UserGroupModel extends Base
 
         return true;
     }
+
+    public function add($data)
+    {
+        if (!$data || !is_array($data) || !$data['name'])
+        {
+            return false;
+        }
+
+        $try = $this->GroupEntity->add($data);
+
+        return $try;
+    }
+
+    public function update($data)
+    {
+        if (!$data || !is_array($data) || !$data['name'] || !$data['id'])
+        {
+            return false;
+        }
+
+        $try = $this->GroupEntity->update($data);
+
+        return $try;
+    }
+
+    public function remove($id)
+    {
+        if (!$id) return false;
+        $try = $this->GroupEntity->remove($id);
+        if ($try)
+        {
+            $this->UserGroupModel->removeByGroup($id);
+        }
+        
+        return $try;
+    }
 }
