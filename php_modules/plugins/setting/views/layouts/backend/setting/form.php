@@ -36,7 +36,8 @@
 </div>
 <script>
     $(document).ready(function() {
-        $(".btn_apply").click(function() {
+        $(".btn_apply").click(function(e) {
+            e.preventDefault();
             $('#form-update').submit();
         });
     });
