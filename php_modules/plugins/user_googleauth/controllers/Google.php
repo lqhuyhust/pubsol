@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\googleauth\controllers;
+namespace App\plugins\user_googleauth\controllers;
 use SPT\Web\ControllerMVVM;
 
 class Google extends ControllerMVVM
