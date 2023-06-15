@@ -115,8 +115,8 @@ class UserModel extends Base
         }
 
         $result = $this->user->login(
-            $this->request->post->get('username', '', 'string'),
-            $this->request->post->get('password', '', 'string')
+            $username,
+            $passowrd
         );
 
         if ( $result )
@@ -133,6 +133,7 @@ class UserModel extends Base
         }
         else
         {
+            $this->session->set('flashMsg', 'Username or Password Incorrect');
             return false;
         }
     }
