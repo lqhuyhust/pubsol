@@ -1,8 +1,11 @@
 
-<?php echo $this->render('layouts.backend.relate_note.list', []); ?>
-<?php echo $this->render('layouts.backend.document.form', []); ?>
-<?php //echo $this->render('layouts.backend.task.list', []); ?>
-<?php echo $this->render('layouts.backend.version_latest.list', []); ?>
+<?php 
+$this->theme->add($this->url . 'assets/css/select2.min.css', '', 'select2-css');
+$this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-select2');
+
+echo $this->render('layouts.backend.document.form', []);
+echo $this->render('layouts.backend.version_latest.list', []);
+?>
 <div class="toast message-toast" id="message_ajax">
     <div id="message_form" class="d-flex message-body ">
         <div class="toast-body">
@@ -149,9 +152,32 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="noteNewModal" aria-labelledby="noteNewModalTitle" role="dialog">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="noteNewModalTitle">New Note</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="d-flex justify-content-around">
+				<?php foreach($this->note_types as $type) : ?>
+					<h4>
+						<a  target="_blank" class="mx-3" href="<?php echo $type['link']?>"><?php echo $type['title']?></a>
+					</h4>
+				<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
     var new_tags = [];
     $(document).ready(function(){
+        $('.new-note-popup').on('click', function(e){
+            e.preventDefault();
+            $('#noteNewModal').modal('show');
+        })
         $(".js-example-tags").select2({
             tags: <?php echo $this->allow_tag ?>,
             matcher: matchCustom,

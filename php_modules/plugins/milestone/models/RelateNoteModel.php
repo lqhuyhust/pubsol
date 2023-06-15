@@ -110,4 +110,16 @@ class RelateNoteModel extends Base
 
         return $result;
     }
+
+    public function updateAlias($data)
+    {
+        if (!$data || !isset($data['id']) || !$data['id'])
+        {
+            return false;
+        }
+
+        $try = $this->RelateNoteEntity->update($data);
+        
+        return $try;
+    }
 }

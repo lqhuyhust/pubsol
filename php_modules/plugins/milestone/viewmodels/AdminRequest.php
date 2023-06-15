@@ -140,8 +140,24 @@ class AdminRequest extends ViewModel
         $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
 
         $title_page = '<a class="me-2" href="'.$router->url('notes').'">Notes</a> | <a class="ms-2" href="'. $router->url('requests/'. $milestone['id']).'" >'. $milestone['title'].'</a> >> Request: '. $request['title'].  '<a type="button" class="ms-3" id="edit-request"  data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#formModalToggle" ><i class="fa-solid fa-pen-to-square"></i></a>';
+        $note_types = [
+            [
+                'link' => $router->url('note/0?type=html'),
+                'title' => 'Html',
+            ],
+            [
+                'link' => $router->url('note/0?type=sheetjs'),
+                'title' => 'Sheet',
+            ],
+            [
+                'link' => $router->url('note/0?type=presenter'),
+                'title' => 'Presenter',
+            ],
+        ];
+        
         return [
             'request_id' => $request_id,
+            'note_types' => $note_types,
             'allow_tag' => $allow_tag ? 'true' : 'false',
             'url' => $router->url(),
             'link_form_request' => $router->url('request/'. $milestone['id'] . '/' . $request['id']),

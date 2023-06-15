@@ -44,6 +44,33 @@ class Note extends ControllerMVVM
         return ;
     }
 
+    public function updateAlias()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
+        
+        $alias = $this->request->post->get('alias', '', 'string');
+        $try = $this->RelateNoteModel->updateAlias([
+            'alias' => $alias,
+            'id' => $id
+        ]);
+
+        if( !$try )
+        {
+            $this->app->set('format', 'json');
+            $this->set('result', 'fail');
+            $this->set('message', 'Error: Update Relate Note Failed!');
+            return ;
+        }
+        else
+        {
+            $this->app->set('format', 'json');
+            $this->set('result', 'ok');
+            $this->set('message', 'Update Relate Note Successfully!');
+            return ;
+        }
+    }
+
     public function add()
     {
         $request_id = $this->validateRequestID();

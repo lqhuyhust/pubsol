@@ -9,10 +9,7 @@
                                 data-title="" 
                                 data-description="" 
                                 type="button" 
-                                class="align-middle btn border border-1 show_data_relate_note" 
-                                data-bs-placement="top" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#exampleModalToggle">
+                                class="align-middle btn border border-1 show_data_relate_note" >
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         <?php } ?>

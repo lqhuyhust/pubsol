@@ -90,3 +90,15 @@ span.select2-container {
 .sidebar-dropdown .sidebar-item a{
     font-size: 14px;
 }
+
+#version_link {
+    border-top: 2px solid #dee2e6;
+}
+
+.relate-note-description{
+    overflow: hidden;
+    white-space: nowrap !important;
+    max-width: 500px;
+    text-overflow: ellipsis;
+    display: block;
+}

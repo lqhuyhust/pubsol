@@ -3,16 +3,11 @@
     <div class="container-fluid">
         <div class="row row justify-content-center mx-auto">
             <div class="col-12">
-                <a class="w-100 request-collapse request-collapse-document text-decoration-none d-flex border-bottom " data-bs-toggle="collapse" type="button" data-bs-target="#document_form" aria-expanded="true" aria-controls="document_form">
-                    <h2 >
+                <h2>
                     <i class="fa-regular fa-folder-open pe-2"></i>
-                        <?php echo $this->title_page_document ?>
-                    </h2>
-                    <h2 class="ms-auto">
-                        <i class="icon-collapse fa-solid fa-caret-down"></i>
-                    </h2>
-                </a>
-                <div class="row pt-3 collapse " id="document_form">
+                    <?php echo $this->title_page_document ?>
+                </h2>
+                <div class="row pt-3 " id="document_form">
                     <div class="col-lg-7 col-6 border-end">
                         <?php if ($this->editor) : ?>
                             <form id="form_document" action="<?php echo $this->link_form ?>" method="post">
@@ -22,10 +17,11 @@
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center m-0">
-                                    <?php $this->ui->field('token'); if(!$this->status) {?>
-                                    <div class="col-xl-12 col-sm-12 text-center">
-                                        <button type="submit" class="btn btn-outline-success">Apply</button>
-                                    </div>
+                                    <?php $this->ui->field('token');
+                                    if (!$this->status) { ?>
+                                        <div class="col-xl-12 col-sm-12 text-center">
+                                            <button type="submit" class="btn btn-outline-success">Apply</button>
+                                        </div>
                                     <?php } ?>
                                 </div>
                             </form>
@@ -38,22 +34,23 @@
                         ?>
                     </div>
                     <div class="col-lg-5 col-6">
+                        <?php echo $this->render('layouts.backend.relate_note.list', []); ?>
                         <ul id="list-discussion" class="list-unstyled pt-2" style="max-height: 60vh; overflow:auto;">
-                        <?php foreach ($this->discussion as $item) : ?>
-                            <li class="d-flex <?php echo $this->user_id == $item['user_id'] ? 'ms-5 me-2 justify-content-end' : 'me-5 ms-2 justify-content-between'; ?>  mb-4">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0"><?php echo $this->user_id == $item['user_id'] ? 'You' : $item['user']; ?></p>
-                                        <p class="ms-2 text-muted small mb-0 align-self-center"><i class="far fa-clock"></i> <?php echo $item['sent_at'] ?></p>
+                            <?php foreach ($this->discussion as $item) : ?>
+                                <li class="d-flex <?php echo $this->user_id == $item['user_id'] ? 'ms-5 me-2 justify-content-end' : 'me-5 ms-2 justify-content-between'; ?>  mb-4">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between p-3">
+                                            <p class="fw-bold mb-0"><?php echo $this->user_id == $item['user_id'] ? 'You' : $item['user']; ?></p>
+                                            <p class="ms-2 text-muted small mb-0 align-self-center"><i class="far fa-clock"></i> <?php echo $item['sent_at'] ?></p>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <p class="mb-0">
+                                                <?php echo $item['message'] ?>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="card-body pt-0">
-                                        <p class="mb-0">
-                                            <?php echo $item['message'] ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        <?php endforeach; ?>
+                                </li>
+                            <?php endforeach; ?>
                         </ul>
                         <form id="form_comment" action="<?php echo $this->link_form_comment ?>" method="post">
                             <?php $this->ui->field('token'); ?>
@@ -65,26 +62,24 @@
                                     <div class="form-notch-trailing"></div>
                                 </div>
                             </div>
-                            <?php if(!$this->status) {?>
+                            <?php if (!$this->status) { ?>
                                 <button type="submit" class="mt-2 btn btn-info btn-rounded float-end">Comment</button>
                             <?php } ?>
                         </form>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mb-3">
                         <hr class="bg-danger border-2 border-top border-danger">
                         <h4>History:</h4>
                         <ul class="list-group list-group-flush" id="document_history">
                             <?php foreach ($this->history as $item) : ?>
                                 <li class="list-group-item">
                                     <a href="#" class="openHistory" data-id="<?php echo $item['id']; ?>" data-modified_at="<?php echo $item['modified_at']; ?>">Modified at <?php echo $item['modified_at']; ?> by <?php echo $item['modified_by']; ?></a>
-                                    <a href="#" class="ps-3 clear-version ms-auto" data-version-id="<?php echo $item['id']?>"><i class="fa-solid fa-trash"></i></a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </div>
@@ -105,20 +100,16 @@
     </div>
 </div>
 <script>
-    function loadHistory(data)
-    {
+    function loadHistory(data) {
         $.ajax({
-            url: '<?php echo $this->url. 'get-history/'. $this->request_id ?>',
+            url: '<?php echo $this->url . 'get-history/' . $this->request_id ?>',
             type: 'POST',
             data: data,
-            success: function(resultData)
-            {
+            success: function(resultData) {
                 var list = '';
-                if (Array.isArray(resultData.list))
-                {
-                    
-                    resultData.list.forEach(function(item)
-                    {
+                if (Array.isArray(resultData.list)) {
+
+                    resultData.list.forEach(function(item) {
                         list += `
                         <li class="list-group-item">
                             <a href="#" class="openHistory" data-id="${item['id']}" data-modified_at="${item['modified_at']}">Modified at ${item['modified_at']} by ${item['modified_by']}</a>
@@ -132,31 +123,25 @@
             }
         });
     }
-    function loadDiscussion(data)
-    {
-        const user_id = '<?php echo $this->user_id;?>'
+
+    function loadDiscussion(data) {
+        const user_id = '<?php echo $this->user_id; ?>'
         $.ajax({
-            url: '<?php echo $this->url. 'get-comment/'. $this->request_id ?>',
+            url: '<?php echo $this->url . 'get-comment/' . $this->request_id ?>',
             type: 'POST',
             data: data,
-            success: function(resultData)
-            {
+            success: function(resultData) {
                 var list = '';
-                if (Array.isArray(resultData.list))
-                {
-                    resultData.list.forEach(function(item)
-                    {
-                        if (user_id == item['user_id'])
-                        {
+                if (Array.isArray(resultData.list)) {
+                    resultData.list.forEach(function(item) {
+                        if (user_id == item['user_id']) {
                             var class_name = 'ms-5 me-2 justify-content-end';
                             var name = 'You';
-                        }
-                        else
-                        {
+                        } else {
                             var name = item['user'];
                             var class_name = 'me-5 ms-2 justify-content-between';
                         }
-                        
+
                         list += `
                         <li class="d-flex ${class_name} mb-4">
                             <div class="card">
@@ -180,9 +165,8 @@
         })
     }
 
-    function loadEventHistory()
-    {
-        $('.clear-version').on('click', function(e){
+    function loadEventHistory() {
+        $('.clear-version').on('click', function(e) {
             e.preventDefault();
             var result = confirm("You are going to delete 1 record(s). Are you sure ?");
             if (result) {
@@ -193,35 +177,32 @@
                 console.log(form);
                 $.ajax({
                     type: 'POST',
-                    url: '<?php echo $this->url . 'document/version/';?>' + id,
+                    url: '<?php echo $this->url . 'document/version/'; ?>' + id,
                     data: form,
                     processData: false,
                     contentType: false,
-                    success: function (result) {
-                        if (result.result == 'ok')
-                        {
+                    success: function(result) {
+                        if (result.result == 'ok') {
                             $('#description').val('');
                         }
                         showMessage(result.result, result.message);
                         loadHistory();
                     }
                 });
-            }
-            else
-            {
+            } else {
                 return false;
             }
         });
 
-        $('.openHistory').on('click', function (e){
+        $('.openHistory').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
             var modified = $(this).data('modified_at');
 
             $.ajax({
                 type: 'GET',
-                url: '<?php echo $this->url . 'document/version/';?>' + id,
-                success: function (result) {
+                url: '<?php echo $this->url . 'document/version/'; ?>' + id,
+                success: function(result) {
                     $('#historyDescription').html(result.result);
                 }
             });
@@ -233,19 +214,18 @@
 
     $(document).ready(function() {
         $("#description").attr('rows', 25);
-        $('.request-collapse-document').click(function(){
+        $('.request-collapse-document').click(function() {
             $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
         });
         $("#list-discussion").scrollTop($("#list-discussion")[0].scrollHeight);
-        $("#form_document").on('submit', function(e){
+        $("#form_document").on('submit', function(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
                 url: $("#form_document").attr('action'),
                 data: $('#form_document').serialize(),
-                success: function (result) {
-                    if (result.result == 'ok')
-                    {
+                success: function(result) {
+                    if (result.result == 'ok') {
                         $('#description').val('');
                     }
                     showMessage(result.result, result.message);
@@ -254,39 +234,36 @@
             });
         });
 
-        $('#submit_rollback').on('click', function(e){
+        $('#submit_rollback').on('click', function(e) {
             e.preventDefault();
             var result = confirm("You are going to rollback. Are you sure ?");
             var id = $('input[name="rollback_id"]').val()
             if (result) {
                 $.ajax({
                     type: 'POST',
-                    url: '<?php echo $this->url . 'document/version/';?>' + id,
-                    success: function (result) {
-                        if (result.result == 'ok')
-                        {
+                    url: '<?php echo $this->url . 'document/version/'; ?>' + id,
+                    success: function(result) {
+                        if (result.result == 'ok') {
                             tinyMCE.activeEditor.setContent(result.description);
-                        } 
+                        }
                         showMessage(result.result, result.message);
                         loadHistory();
                         $('#openHistory').modal('hide');
 
                     }
                 });
-            }
-            else
-            {
+            } else {
                 return false;
             }
         });
-        
-        $("#form_comment").on('submit', function(e){
+
+        $("#form_comment").on('submit', function(e) {
             e.preventDefault();
             $.ajax({
                 type: 'POST',
                 url: $("#form_comment").attr('action'),
                 data: $('#form_comment').serialize(),
-                success: function (result) {
+                success: function(result) {
                     showMessage(result.result, result.message);
                     $('textarea[name=message]').val('');
                     loadDiscussion();
@@ -296,5 +273,4 @@
 
         loadEventHistory();
     });
-    
 </script>
