@@ -7,7 +7,6 @@ class Version extends ControllerMVVM
 {
     public function detail()
     {
-        
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
@@ -26,59 +25,32 @@ class Version extends ControllerMVVM
 
     public function list()
     {
-                $this->app->set('page', 'backend');
+        $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.version.list');
     }
 
     public function add()
     {
-        
         //check title sprint
-        $name = $this->request->post->get('name', '', 'string');
-        $release_date = $this->request->post->get('release_date', '', 'string');
-        $description = $this->request->post->get('description', '', 'string');
-
-        $version_number = $this->VersionModel->getVersion();
-
-        if($release_date == '')
-            $release_date = NULL;
-
-        if (!$name)
-        {
-            $this->session->set('flashMsg', 'Error: Title is required! ');
-            return $this->app->redirect(
-                $this->router->url('versions')
-            );
-        }
-
-        $findOne = $this->VersionEntity->findOne(['name = "'. $name. '"']);
-        if ($findOne)
-        {
-            $this->session->set('flashMsg', 'Error: Title already used! ');
-            return $this->app->redirect(
-                $this->router->url('versions')
-            );
-        }
-        // TODO: validate new add
-        $newId =  $this->VersionEntity->add([
-            'name' => $name,
-            'release_date' => $release_date,
-            'description' => $description,
-            'version' => $version_number,
+        $data = [
+            'name' => $this->request->post->get('name', '', 'string'),
+            'release_date' => $this->request->post->get('release_date', '', 'string'),
+            'description' => $this->request->post->get('description', '', 'string'),
             'status' => $this->request->post->get('status', 1, 'string'),
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
 
-        $tmp_version = $this->VersionEntity->findOne(['name = "'. $name. '"']);
-        if($tmp_version) {
-            $try = $this->RequestEntity->update([
-                'version_id' => $tmp_version['version'],
-            ], ['version_id = "0"']);
+
+        $data = $this->VersionModel->validate($data);
+        if (!$data)
+        {
+            return $this->app->redirect(
+                $this->router->url('versions')
+            );
         }
+
+        $newId = $this->VersionModel->add($data);
+
         if( !$newId )
         {
             $msg = 'Error: Created failed!';
@@ -111,31 +83,24 @@ class Version extends ControllerMVVM
         }
         if(is_numeric($ids) && $ids)
         {
-            $name = $this->request->post->get('name', '', 'string');
-            $release_date = $this->request->post->get('release_date', '', 'string');
-            $description = $this->request->post->get('description', '', 'string');
+            $data = [
+                'name' => $this->request->post->get('name', '', 'string'),
+                'release_date' => $this->request->post->get('release_date', '', 'string'),
+                'description' => $this->request->post->get('description', '', 'string'),
+                'status' => $this->request->post->get('status', 1, 'string'),
+                'id' => $ids,
+            ];
+    
+            $data = $this->VersionModel->validate($data);
 
-            if($release_date == '')
-            $release_date = NULL;
-
-            $findOne = $this->VersionEntity->findOne(['name = "'. $name. '"', 'id <> '. $ids]);
-            if ($findOne)
+            if (!$data)
             {
-                $this->session->set('flashMsg', 'Error: Title already used! ');
                 return $this->app->redirect(
                     $this->router->url('versions')
                 );
             }
 
-            $try = $this->VersionEntity->update([
-                'name' => $name,
-                'release_date' => $release_date,
-                'description' => $description,
-                'status' => $this->request->post->get('status', 0, 'string'),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $ids,
-            ]);
+            $try = $this->VersionModel->update($data);
             
             if($try) 
             {
@@ -165,7 +130,7 @@ class Version extends ControllerMVVM
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->VersionEntity->remove( $id ) )
+                if( $this->VersionModel->remove( $id ) )
                 {
                     $count++;
                 }
@@ -173,7 +138,7 @@ class Version extends ControllerMVVM
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->VersionEntity->remove($ids ) )
+            if( $this->VersionModel->remove($ids ) )
             {
                 $count++;
             }

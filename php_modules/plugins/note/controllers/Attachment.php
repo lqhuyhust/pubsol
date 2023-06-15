@@ -66,10 +66,10 @@ class Attachment extends ControllerMVVM
     public function download()
     {
         $id = $this->validateID();
-        $item = $this->AttachmentEntity->findByPK($id);
 
-        if ($id && $item)
+        if ($id)
         {
+            $this->AttachmentModel->download($id);
             $path_file = $item['path'];
             if(file_exists($path_file)) {
                 header('Content-Description: File Attachment');

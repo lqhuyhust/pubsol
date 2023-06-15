@@ -10,7 +10,7 @@
 
 namespace App\plugins\setting\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class OptionModel extends Base 
 { 

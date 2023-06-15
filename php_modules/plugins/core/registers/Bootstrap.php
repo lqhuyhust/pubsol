@@ -63,7 +63,7 @@ class Bootstrap
 
     private static function loadBasicClasses(IApp $app)
     {
-        $SDMplugins = ['calendar','treephp', 'googleauth', 'milestone','tag', 'note', 'report', 'setting', 'timeline', 'user', 'version'];
+        $SDMplugins = ['report_tree', 'user_googleauth', 'milestone','tag', 'note', 'report', 'setting', 'user', 'version'];
         $container = $app->getContainer();
         
         foreach($SDMplugins as $plgName)
@@ -77,7 +77,6 @@ class Bootstrap
                 if(class_exists($class))
                 {
                     $entity = new $class($container->get('query'));
-                    $entity->checkAvailability();
                     $container->share( $class, $entity, true);
                     $alias = explode('\\', $class);
                     $container->alias( $alias[count($alias) - 1], $class);

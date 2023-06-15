@@ -35,67 +35,36 @@ class Milestone extends ControllerMVVM
 
     public function add()
     {
-        
         //check title sprint
-        $title = $this->request->post->get('title', '', 'string');
-        $description = $this->request->post->get('description', '', 'string');
-        $start_date = $this->request->post->get('start_date', '', 'string');
-        $end_date = $this->request->post->get('end_date', '', 'string');
-
-        if ($start_date == '')
-            $start_date = NULL;
-        if ($end_date == '')
-            $end_date = NULL;
-
-        if (!$title) {
-            $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-
-        $findOne = $this->MilestoneEntity->findOne(['title = "' . $title . '"']);
-        if ($findOne) {
-            $this->session->set('flashMsg', 'Error: Title is already in use! ');
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-        // TODO: validate new add
-        $newId =  $this->MilestoneEntity->add([
-            'title' => $title,
-            'description' => $description,
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+        $data = [
+            'title' => $this->request->post->get('title', '', 'string'),
+            'description' => $this->request->post->get('description', '', 'string'),
+            'start_date' => $this->request->post->get('start_date', '', 'string'),
+            'end_date' => $this->request->post->get('end_date', '', 'string'),
             'status' => $this->request->post->get('status', ''),
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
 
-        if (!$newId) {
-            $msg = 'Error: Create Failed!';
-            $this->session->set('flashMsg', $msg);
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-        else
+        $data = $this->MilestoneModel->validate($data);
+        
+        if (!$data)
         {
-            $this->session->set('flashMsg', 'Create Successfully!');
             return $this->app->redirect(
                 $this->router->url('milestones')
             );
         }
+        
+        $try = $this->MilestoneModel->add($data);
+        $msg = $try ? 'Create Successfully!' : 'Error: Create Failed!';
+        $this->session->set('flashMsg', $msg);
+        return $this->app->redirect(
+            $this->router->url('milestones')
+        );
     }
 
     public function update()
     {
 
         $ids = $this->validateID();
-
-        // TODO valid the request input
 
         if (is_array($ids) && $ids != null) {
             // publishment
@@ -112,46 +81,31 @@ class Milestone extends ControllerMVVM
             );
         }
         if (is_numeric($ids) && $ids) {
-            $title = $this->request->post->get('title', '', 'string');
-            $description = $this->request->post->get('description', '', 'string');
-            $start_date = $this->request->post->get('start_date', '', 'string');
-            $end_date = $this->request->post->get('end_date', '', 'string');
-
-            if ($start_date == '')
-                $start_date = NULL;
-            if ($end_date == '')
-                $end_date = NULL;
-                
-            $findOne = $this->MilestoneEntity->findOne(['title = "' . $title . '"', 'id <> ' . $ids]);
-            if ($findOne) {
-                $this->session->set('flashMsg', 'Error: Title is already in use! ');
-                return $this->app->redirect(
-                    $this->router->url('milestone/' . $ids)
-                );
-            }
-
-            $try = $this->MilestoneEntity->update([
-                'title' => $title,
-                'description' => $description,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
+            $data = [
+                'title' => $this->request->post->get('title', '', 'string'),
+                'description' => $this->request->post->get('description', '', 'string'),
+                'start_date' => $this->request->post->get('start_date', '', 'string'),
+                'end_date' => $this->request->post->get('end_date', '', 'string'),
                 'status' => $this->request->post->get('status', ''),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,
-            ]);
-            if ($try) {
-                $this->session->set('flashMsg', 'Edit Successfully');
+            ];
+
+            $data = $this->MilestoneModel->validate($data);
+        
+            if (!$data)
+            {
                 return $this->app->redirect(
                     $this->router->url('milestones')
                 );
-            } else {
-                $msg = 'Error: Save Failed';
-                $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
-                    $this->router->url('milestone/' . $ids)
-                );
             }
+            $try = $this->MilestoneModel->update($data);
+            
+            $msg = $try ? 'Edit Successfully' : 'Error: Save Failed';
+            
+            $this->session->set('flashMsg', $msg);
+            return $this->app->redirect(
+                $this->router->url('milestone/' . $ids)
+            );
         }
     }
 

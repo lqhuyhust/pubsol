@@ -48,101 +48,39 @@ class Request extends ControllerMVVM
 
     public function list()
     {
-                $this->app->set('page', 'backend');
+        $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.request.list');
     }
 
     public function add()
     {
-                $milestone_id = $this->validateMilestoneID();
-        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_latest = $version_latest ? $version_latest[0] : [];
-        $exist = $this->MilestoneEntity->findByPK($milestone_id);
+        $milestone_id = $this->validateMilestoneID();
 
-        $title = $this->request->post->get('title', '', 'string');
-        $tags = $this->request->post->get('tags', '', 'string');
-        $description = $this->request->post->get('description', '', 'string');
-        $start_at = $this->request->post->get('start_at', '0000-00-00 00:00:00', 'string');
-        $finished_at = $this->request->post->get('finished_at', '0000-00-00 00:00:00', 'string');
-        $start_at = $start_at ? $start_at : '0000-00-00 00:00:00';
-        $finished_at = $finished_at ? $finished_at : '0000-00-00 00:00:00';
-
-        $listTag = explode(',', $tags);
-        $tags_tmp = [];
-        foreach($listTag as $tag)
-        {
-            if (!$tag) continue;
-            $find = $this->TagEntity->findOne(['id', $tag]);
-            if ($find)
-            {
-                $tags_tmp[] = $tag;
-            }
-            else
-            {
-                $find_tmp = $this->TagEntity->findOne(['name' => $tag]);
-                if ($find_tmp)
-                {
-                    $tags_tmp[] = $find_tmp['id'];
-                }
-                else
-                {
-                    $new_tag = $this->TagEntity->add(['name' => $tag]);
-                    if ($new_tag)
-                    {
-                        $tags_tmp[] = $new_tag;
-                    }
-                }
-            }
-        }
-
-        if (!$title)
-        {
-            $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
-            return $this->app->redirect(
-                $this->router->url('requests/'. $milestone_id)
-            );
-        }
-        if(!$exist) {
-            $this->session->set('flashMsg', 'Invalid Milestone');
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-        // TODO: validate new add
-        $newId =  $this->RequestEntity->add([
+        $data = [
+            'title' => $this->request->post->get('title', '', 'string'),
+            'tags' => $this->request->post->get('tags', '', 'string'),
+            'description' => $this->request->post->get('description', '', 'string'),
+            'start_at' => $this->request->post->get('start_at', '', 'string'),
+            'finished_at' => $this->request->post->get('finished_at', '', 'string'),
             'milestone_id' => $milestone_id,
-            'version_id' => $version_latest ? $version_latest['version'] : 0,
-            'title' => $title,
-            'tags' => $tags,
-            'description' => $description,
-            'start_at' => $start_at,
-            'finished_at' => $finished_at,
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
 
-        if( !$newId )
+        $data = $this->RequestModel->validate($data);
+        if (!$data)
         {
-            $msg = 'Error: Create Failed!';
-            $this->session->set('flashMsg', $msg);
             return $this->app->redirect(
                 $this->router->url('requests/'. $milestone_id)
             );
         }
-        else
-        {
-            if(!$version_latest){
-                $this->session->set('flashMsg', 'Create Request Successfully! Please create version first');
-            } else {
-                $this->session->set('flashMsg', 'Create Successfully!');
-            }
-            return $this->app->redirect(
-                $this->router->url('requests/'. $milestone_id)
-            );
-        }
+        
+        $try = $this->RequestModel->add($data);
+
+        $msg = $try ? 'Create Successfully!' : 'Error: Create Failed!';
+        $this->session->set('flashMsg', $msg);
+        return $this->app->redirect(
+            $this->router->url('requests/'. $milestone_id)
+        );
     }
 
     public function update()
@@ -151,74 +89,35 @@ class Request extends ControllerMVVM
         $milestone_id = $this->validateMilestoneID();
         // TODO valid the request input
         $detail_request =  $this->request->post->get('detail_request', '', 'string');
+        $link = $detail_request ? 'detail-request/'. $ids : 'requests/'. $milestone_id;
+
         if(is_numeric($ids) && $ids)
         {
-            $title = $this->request->post->get('title', '', 'string');
-            $description = $this->request->post->get('description', '', 'string');
-            $tags = $this->request->post->get('tags', '', 'string');
-            
-            $start_at = $this->request->post->get('start_at', '0000-00-00 00:00:00', 'string');
-            $finished_at = $this->request->post->get('finished_at', '0000-00-00 00:00:00', 'string');
-    
-            $start_at = $start_at ? $start_at : '0000-00-00 00:00:00';
-            $finished_at = $finished_at ? $finished_at : '0000-00-00 00:00:00';
-
-            $listTag = explode(',', $tags);
-            $tags_tmp = [];
-            foreach($listTag as $tag)
-            {
-                if (!$tag) continue;
-                $find = $this->TagEntity->findOne(['id', $tag]);
-                if ($find)
-                {
-                    $tags_tmp[] = $tag;
-                }
-                else
-                {
-                    $find_tmp = $this->TagEntity->findOne(['name' => $tag]);
-                    if ($find_tmp)
-                    {
-                        $tags_tmp[] = $find_tmp['id'];
-                    }
-                    else
-                    {
-                        $new_tag = $this->TagEntity->add(['name' => $tag]);
-                        if ($new_tag)
-                        {
-                            $tags_tmp[] = $new_tag;
-                        }
-                    }
-                }
-            }
-            
-            $try = $this->RequestEntity->update([
+            $data = [
+                'title' => $this->request->post->get('title', '', 'string'),
+                'tags' => $this->request->post->get('tags', '', 'string'),
+                'description' => $this->request->post->get('description', '', 'string'),
+                'start_at' => $this->request->post->get('start_at', '', 'string'),
+                'finished_at' => $this->request->post->get('finished_at', '', 'string'),
                 'milestone_id' => $milestone_id,
-                'title' => $title,
-                'tags' => $tags,
-                'description' => $description,
-                'start_at' => $start_at,
-                'finished_at' => $finished_at,
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
                 'id' => $ids,
-            ]);
-            
-            if($try) 
+            ];
+
+            $data = $this->RequestModel->validate($data);
+            if (!$data)
             {
-                $this->session->set('flashMsg', 'Edit Successfully');
-                $link = $detail_request ? 'detail-request/'. $ids : 'requests/'. $milestone_id;
                 return $this->app->redirect(
                     $this->router->url($link)
                 );
             }
-            else
-            {
-                $msg = 'Error: Save Failed';
-                $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
-                    $this->router->url('requests/'. $milestone_id .'/'. $ids)
-                );
-            }
+
+            $try = $this->RequestModel->update($data);
+            
+            $msg = $try ? 'Edit Successfully!' : 'Error: Edit Failed!';
+            $this->session->set('flashMsg', $msg);
+            return $this->app->redirect(
+                $this->router->url($link)
+            );
         }
     }
 

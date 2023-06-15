@@ -31,7 +31,17 @@
         <h2 class="m-0 d-flex align-items-center"><?php echo $this->title_page; ?></h2>
         <?php if($this->button_header) : ?>
             <div class="ms-auto d-flex">
-                <? echo $this->button_header;?>
+                <?php
+                    if (is_array($this->button_header)) 
+                    {
+                        foreach($this->button_header as $button)
+                        {
+                            echo  '<a href="'. $button['link'].'" class="'. $button['class'].'">
+                                '. $button['title'].'
+                            </a>';
+                        }
+                    }
+                ?>
             </div>
         <?php endif; ?>
     <?php } ?>
