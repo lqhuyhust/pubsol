@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\treephp\registers;
+namespace App\plugins\report_tree\registers;
 
 use SPT\Application\IApp;
 
@@ -11,10 +11,10 @@ class Routing
         return [
             'tree-phps' => [
                 'fnc' => [
-                    'get' => 'treephp.treediagram.list',
-                    'post' => 'treephp.treediagram.list',
-                    'put' => 'treephp.treediagram.update',
-                    'delete' => 'treephp.treediagram.delete'
+                    'get' => 'report_tree.treediagram.list',
+                    'post' => 'report_tree.treediagram.list',
+                    'put' => 'report_tree.treediagram.update',
+                    'delete' => 'report_tree.treediagram.delete'
                 ],
                 'permission' => [
                     'get' => ['treephp_manager', 'treephp_read'],
@@ -25,10 +25,10 @@ class Routing
             ],
             'tree-php' => [
                 'fnc' => [
-                    'get' => 'treephp.treediagram.detail',
-                    'post' => 'treephp.treediagram.add',
-                    'put' => 'treephp.treediagram.update',
-                    'delete' => 'treephp.treediagram.delete'
+                    'get' => 'report_tree.treediagram.detail',
+                    'post' => 'report_tree.treediagram.add',
+                    'put' => 'report_tree.treediagram.update',
+                    'delete' => 'report_tree.treediagram.delete'
                 ],
                 'parameters' => ['id'],
                 'permission' => [

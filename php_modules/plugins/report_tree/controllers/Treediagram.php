@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\treephp\controllers;
+namespace App\plugins\report_tree\controllers;
 
 use SPT\Web\ControllerMVVM;
 

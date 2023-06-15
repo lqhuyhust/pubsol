@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\treephp\viewmodels;
+namespace App\plugins\report_tree\viewmodels;
 
 use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;

@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\treephp\registers;
+namespace App\plugins\report_tree\registers;
 
 use SPT\Application\IApp;
 use SPT\Support\Loader;
