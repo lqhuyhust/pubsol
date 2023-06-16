@@ -11,7 +11,7 @@
 
 namespace App\plugins\note\viewmodels;
 
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;
 
 class AdminNote extends ViewModel
@@ -39,52 +39,9 @@ class AdminNote extends ViewModel
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
-        $version = $request->get->get('version', 0);
-
-        $data = $id ? $NoteEntity->findByPK($id) : [];
-        $data_version = [];
-        if ($data)
-        {
-            $data['description'] = $NoteModel->replaceContent($data['description'], false);
-            if ($version)
-            {
-                $data_version = $NoteHistoryEntity->findByPK($version);
-                if ($data_version)
-                {
-                    $user_tmp = $UserEntity->findByPK($data_version['created_by']);
-                    $data_version['created_by'] = $user_tmp ? $user_tmp['name'] : '';
-                    $data = json_decode($data_version['meta_data'], true);
-                    $data['id'] = $id;
-                    $data['title'] = $data['title'] . ' - '. $data_version['created_at']. ' - by '. $data_version['created_by'];
-                }
-            }
-
-            $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
-            $versions = $NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
-            $versions = $versions ? $versions : [];
-
-            foreach($versions as &$item)
-            {
-                $user_tmp = $UserEntity->findByPK($item['created_by']);
-                $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
-            }
-
-            $data['versions'] = $versions;
-            $data['type'] = !$data['type'] ? 'html' : $data['type'];
-        }
         
-        $data_tags = [];
-        if (!empty($data['tags'])){
-            $where[] = "(`id` IN (".$data['tags'].") )";
-            $data_tags = $TagEntity->list(0, 1000, $where);
-        }
-        $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
-        
-        if ($data && $data['type'] == 'presenter')
-        {
-            $data['description_presenter'] = $data['description'];
-        }
-
+        $data = $NoteModel->getDetail($id);
+        $data = $data ? $data : [];
         $allow_tag = $permission ? $permission->checkPermission(['tag_manager', 'tag_create']) : true;
 
         $allow_type = ['html', 'sheetjs', 'presenter'];
@@ -98,14 +55,12 @@ class AdminNote extends ViewModel
             'form' => $form,
             'data' => $data,
             'type' => $type,
-            'data_tags' => $data_tags,
             'allow_tag' => $allow_tag ? 'true' : 'false',
-            'data_version' => $data_version,
-            'version' => $version,
-            'attachments' => $attachments,
+            'data_version' => $data ? $data['versions'] : [],
+            'attachments' => $data ? $data['attachments'] : [],
             'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Note',
             'url' => $router->url(),
-            'link_list' => $data_version ? $router->url('note/'. $id) : $router->url('notes'),
+            'link_list' => $router->url('notes'),
             'link_form' => $router->url('note'),
             'link_preview' => $id ? $router->url('note/preview/'. $id) : '',
             'link_form_attachment' => $router->url('attachment'),
@@ -130,71 +85,24 @@ class AdminNote extends ViewModel
         $id = (int) $urlVars['id'];
         $version = $request->get->get('version', 0);
 
-        $data = $id ? $NoteEntity->findByPK($id) : [];
-        $data_version = [];
-        if ($data)
-        {
-            $data['description'] = $NoteModel->replaceContent($data['description'], false);
-            if ($version)
-            {
-                $data_version = $NoteHistoryEntity->findByPK($version);
-                if ($data_version)
-                {
-                    $user_tmp = $UserEntity->findByPK($data_version['created_by']);
-                    $data_version['created_by'] = $user_tmp ? $user_tmp['name'] : '';
-                    $data = json_decode($data_version['meta_data'], true);
-                    $data['id'] = $id;
-                    $data['title'] = $data['title'] . ' - '. $data_version['created_at']. ' - by '. $data_version['created_by'];
-                }
-            }
-
-            $data['description_sheetjs'] = base64_encode(strip_tags($data['description']));
-            $versions = $NoteHistoryEntity->list(0, 0, ['note_id' => $data['id']], 'id desc');
-            $versions = $versions ? $versions : [];
-
-            foreach($versions as &$item)
-            {
-                $user_tmp = $UserEntity->findByPK($item['created_by']);
-                $item['created_by'] = $user_tmp ? $user_tmp['name'] : '';
-            }
-
-            $data['versions'] = $versions;
-            $data['type'] = !$data['type'] ? 'html' : $data['type'];
-
-            $tag_tmp = $data['tags'] ? explode(',', $data['tags']) : [];
-            $data['tags'] = [];
-            foreach($tag_tmp as $tag)
-            {
-                $tmp = $TagEntity->findByPK($tag);
-                if ($tmp)
-                {
-                    $data['tags'][] = $tmp['name'];
-                }
-            }
-            $data['tags'] = implode(', ', $data['tags']);
-        }
-        
-        $data_tags = [];
-        if (!empty($data['tags'])){
-            $where[] = "(`id` IN (".$data['tags'].") )";
-            $data_tags = $TagEntity->list(0, 1000, $where);
-        }
-        $attachments = $AttachmentEntity->list(0, 0, ['note_id = '. $id]);
-        
-        if ($data && $data['type'] == 'presenter')
-        {
-            $data['description_presenter'] = $data['description'];
-        }
+        $data = $NoteModel->getDetail($id);
+        $data = $data ? $data : [];
 
         $form = new Form($this->getFormFields(), $data);
         $view_mode = $data ? 'true' : '';
         $title_page = $data['title'];
-        $button_header = '<a href="'. $router->url('notes').'" class="btn btn-outline-secondary">
-                            Cancel
-                        </a>
-                        <a href="'. $router->url('note/'. $id).'" class="btn ms-2 btn-outline-success">
-                            Edit
-                        </a>';
+        $button_header = [
+            [
+                'link' => $router->url('notes'),
+                'class' => 'btn btn-outline-secondary',
+                'title' => 'Cancel',
+            ],
+            [
+                'link' => $router->url('note/'. $id),
+                'class' => 'btn ms-2 btn-outline-success',
+                'title' => 'Edit',
+            ],
+        ];
 
         return [
             'id' => $id,
@@ -202,13 +110,12 @@ class AdminNote extends ViewModel
             'data' => $data,
             'button_header' => $button_header,
             'view_mode' => $view_mode,
-            'data_tags' => $data_tags,
-            'data_version' => $data_version,
+            'data_version' => $data ? $data['versions'] : [],
             'version' => $version,
-            'attachments' => $attachments,
+            'attachments' => $data ? $data['attachments'] : [],
             'title_page' => $title_page,
             'url' => $router->url(),
-            'link_list' => $data_version ? $router->url('note/'. $id) : $router->url('notes'),
+            'link_list' => $router->url('notes'),
             'link_form' => $router->url('note'),
             'link_form_attachment' => $router->url('attachment'),
             'link_form_download_attachment' => $router->url('download/attachment'),

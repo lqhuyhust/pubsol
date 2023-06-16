@@ -105,4 +105,82 @@ class UserModel extends Base
 
         return $access;
     }
+
+    public function login($username, $passowrd)
+    {
+        if (!$passowrd || !$passowrd)
+        {
+            $this->session->set('flashMsg', 'Username and Password invalid.');
+            return false;
+        }
+
+        $result = $this->user->login(
+            $username,
+            $passowrd
+        );
+
+        if ( $result )
+        {
+            if($result['status'] != 1) 
+            {
+                $this->session->set('flashMsg', 'Error: User has been block');
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            $this->session->set('flashMsg', 'Username or Password Incorrect');
+            return false;
+        }
+    }
+
+    public function add($data)
+    {
+        if (!$data || !is_array($data) || !$data['username'])
+        {
+            return false;
+        }
+
+        $newId =  $this->UserEntity->add([
+            'name' => $data['name'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => md5($data['password']),
+            'status' => $data['status'],
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $newId;
+    }
+
+    public function update($data)
+    {
+        if (!$data || !is_array($data) || !$data['id'])
+        {
+            return false;
+        }
+
+        $try = $this->UserEntity->update($data);
+
+        return $try;
+    }
+
+    public function  remove($id)
+    {
+        if (!$id) return false;
+        $try = $this->UserEntity->remove($id);
+        if ($try)
+        {
+            $this->UserGroupModel->removeByUser($id);
+        }
+        
+        return $try;
+    }
 }

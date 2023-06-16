@@ -11,7 +11,7 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 
 class AdminVersionLatest extends ViewModel
 {
@@ -52,8 +52,8 @@ class AdminVersionLatest extends ViewModel
         $request = $RequestEntity->findByPK($request_id);
         $milestone = $request ? $MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         
-        if($version_latest && $tmp_request['version_id']) {
-            $title_page = 'Version changelog : '. $tmp_request['version_id'];
+        if($version_latest) {
+            $title_page = 'Version changelog : '. $version_latest['version'];
         } else {
             $title_page = 'Version changelog (Please create Version first)';
         }
@@ -61,8 +61,6 @@ class AdminVersionLatest extends ViewModel
         $version_lastest = $VersionEntity->list(0, 1, [], 'created_at desc');
         $version_lastest = $version_lastest ? $version_lastest[0]['version'] : '0.0.0';
         $tmp_request = $RequestEntity->list(0, 0, ['id = '.$request_id], 0);
-        foreach($tmp_request as $item) {
-        }
         
         $status = false;
 

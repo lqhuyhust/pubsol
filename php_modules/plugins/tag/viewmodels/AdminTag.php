@@ -11,7 +11,7 @@
 
 namespace App\plugins\tag\viewmodels;
 
-use SPT\View\VM\JDIContainer\ViewModel;
+use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;
 
 class AdminTag extends ViewModel

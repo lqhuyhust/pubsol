@@ -10,7 +10,7 @@
 
 namespace App\plugins\version\models;
 
-use SPT\JDIContainer\Base; 
+use SPT\Container\Client as Base;
 
 class VersionModel extends Base 
 { 
@@ -51,4 +51,95 @@ class VersionModel extends Base
         return $newVersion;
     }
 
+    public function validate($data)
+    {
+        if (!$data || !is_array($data))
+        {
+            return false;
+        }
+
+        if (!$data['name'])
+        {
+            $this->session->set('flashMsg', 'Error: Title is required!');
+            return false;
+        }
+
+        $where = ['name' => $name];
+        if (isset($data['id']) && $data['id'])
+        {
+            $where[] = 'id <> '. $data['id'];
+        }
+
+        $findOne = $this->VersionEntity->findOne($where);
+        if ($findOne)
+        {
+            $this->session->set('flashMsg', 'Error: Title already used!');
+            return false;
+        }
+
+        if($data['release_date'] == '')
+            $data['release_date'] = NULL;
+
+        return $data;
+    }
+
+    public function add($data)
+    {
+        if (!$data || !is_array($data))
+        {
+            return false;
+        }
+
+        $version_number = $this->getVersion();
+        $newId =  $this->VersionEntity->add([
+            'name' => $data['name'],
+            'release_date' => $data['release_date'],
+            'description' => $data['description'],
+            'version' => $version_number,
+            'status' => $data['status'],
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $newId;
+    }
+
+    public function update($data)
+    {
+        if (!$data || !is_array($data) || !$data['id'])
+        {
+            return false;
+        }
+
+        $try = $this->VersionEntity->update([
+            'name' => $data['name'],
+            'release_date' => $data['release_date'],
+            'description' => $data['description'],
+            'version' => $version_number,
+            'status' => $data['status'],
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s'),
+            'id' => $data['id'],
+        ]);
+
+        return $try;
+    }
+
+    public function  remove($id)
+    {
+        if (!$id) return false;
+        $try = $this->VersionEntity->remove($id);
+        if ($try)
+        {
+            $find = $this->VersionNoteEntity->list(0, 0, ['version_id' => $id]);
+            foreach($find as $item)
+            {
+                $this->VersionNoteEntity->remove($item['id']);
+            }
+        }
+        
+        return $try;
+    }
 }

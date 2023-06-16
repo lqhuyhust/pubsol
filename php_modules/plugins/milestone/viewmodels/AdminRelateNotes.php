@@ -11,7 +11,7 @@ namespace App\plugins\milestone\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 
 class AdminRelateNotes extends ViewModel
 {   
@@ -132,12 +132,14 @@ class AdminRelateNotes extends ViewModel
             'list' => $list,
             'page' => $page,
             'start' => $start,
+            'result' => $result,
             'status' => $status,
             'sort' => $sort,
             'user_id' => $user->get('id'),
             'url' => $router->url(),
+            'link_update_relate_note' => $router->url('relate-note/update-alias'),
             'link_list' => $router->url('relate-notes/' . $request_id),
-            'link_note' => $router->url('note'),
+            'link_note' => $router->url('note/preview'),
             'link_list_relate_note' => $router->url('relate-notes/' . $request_id),
             'title_page_relate_note' => $title_page_relate_note,
             'token' => $this->container->get('token')->value(),
@@ -220,24 +222,5 @@ class AdminRelateNotes extends ViewModel
         ];
     }
 
-    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
-    {
-        if(empty($sessionName)) $sessionName = $key;
-        $session = $this->container->get('session');
-        $request = $this->container->get('request');
 
-        $old = $session->get($sessionName, $default);
-
-        if( !is_object( $request->{$request_type} ) )
-        {
-            $var = null;
-        }
-        else
-        {
-            $var = $request->{$request_type}->get($key, $old, $format);
-            $session->set($sessionName, $var);
-        }
-
-        return $var;
-    }
 }

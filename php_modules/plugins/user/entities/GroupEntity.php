@@ -10,7 +10,7 @@
 
 namespace App\plugins\user\entities;
 
-use SPT\Storage\DB\DipatchableEntity as Entity;
+use SPT\Storage\DB\Entity;
 
 class GroupEntity extends Entity
 { 

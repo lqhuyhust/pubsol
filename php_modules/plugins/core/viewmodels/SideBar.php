@@ -10,7 +10,7 @@
 
 namespace App\plugins\core\viewmodels;  
 
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 
 class SideBar extends ViewModel
 {

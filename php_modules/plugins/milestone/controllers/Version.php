@@ -7,13 +7,10 @@ class Version extends ControllerMVVM
 {
     public function list()
     {
-                $this->validateVersion();
-        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_latest = $version_latest ? $version_latest[0] : [];
+        $this->validateVersion();
         $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
-        $list = $this->VersionNoteEntity->list(0,0, ['version_id = '. $version_latest['id'], 'request_id = '. $request_id]);
-        $list = $list ? $list : [];
+        $list = $this->RequestModel->getVersionNote($request_id);
 
         $this->app->set('format', 'json');
         $this->set('result', $list);
@@ -22,30 +19,18 @@ class Version extends ControllerMVVM
 
     public function add()
     {
-                $this->validateVersion();
+        $this->validateVersion();
         //check title sprint
         $request_id = $this->validateRequestID();
 
         $log = $this->request->post->get('log', '', 'string');
-        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
-        $version_latest = $version_latest ? $version_latest[0] : [];
-        if( !$version_latest )
-        {
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', 'Error: Invalid Version!');
-            return ;
-        }
-        // TODO: validate new add
-        $newId =  $this->VersionNoteEntity->add([
-            'version_id' => $version_latest['id'],
+        $data = [
             'log' => $log,
             'request_id' => $request_id,
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
+        
+        // TODO: validate new add
+        $newId =  $this->RequestModel->addVersion($data);
 
         if( !$newId )
         {
@@ -80,14 +65,12 @@ class Version extends ControllerMVVM
         }
         if(is_numeric($ids) && $ids)
         {
-            $log = $this->request->post->get('log', '', 'string');
-
-            $try = $this->VersionNoteEntity->update([
-                'log' => $log,
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
+            $data = [
+                'log' => $this->request->post->get('log', '', 'string'),
                 'id' => $ids,
-            ]);
+            ];
+
+            $try = $this->RequestModel->updateVersion($data);
             
             if($try) 
             {
@@ -117,7 +100,7 @@ class Version extends ControllerMVVM
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->VersionNoteEntity->remove( $id ) )
+                if( $this->RequestModel->removeVersion( $id ) )
                 {
                     $count++;
                 }
@@ -125,7 +108,7 @@ class Version extends ControllerMVVM
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->VersionNoteEntity->remove($ids ) )
+            if( $this->RequestModel->removeVersion($ids ) )
             {
                 $count++;
             }
@@ -139,7 +122,7 @@ class Version extends ControllerMVVM
 
     public function validateID()
     {
-                $this->validateVersion();
+        $this->validateVersion();
         $request_id = $this->validateRequestID();
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];

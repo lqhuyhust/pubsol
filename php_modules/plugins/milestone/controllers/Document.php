@@ -10,7 +10,7 @@ class Document extends ControllerMVVM
 {
     public function detail()
     {
-                $request_id = $this->validateRequestID();
+        $request_id = $this->validateRequestID();
         $request = $this->RequestEntity->findByPK($request_id);
         if (!$request)
         {
@@ -26,58 +26,23 @@ class Document extends ControllerMVVM
 
     public function save()
     {
-                $request_id = $this->validateRequestID();
-
+        $request_id = $this->validateRequestID();
         $description = $this->request->post->get('description', '', 'string');
 
-        $check  = $this->DocumentEntity->findOne(['request_id' => $request_id]);
-        if ($check)
-        {
-            $try = $this->DocumentEntity->update([
-                'description' => $description,
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $check['id'],
-            ]);
-            $document_id = $check['id'];
-        }
-        else
-        {
-            $try =  $this->DocumentEntity->add([
-                'request_id' => $request_id,
-                'description' => $description,
-                'created_by' => $this->user->get('id'),
-                'created_at' => date('Y-m-d H:i:s'),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s')
-            ]);
+        $data = [
+            'description' => $description, 
+            'request_id' => $request_id,
+        ];
 
-            $document_id = $try;
-        }
+        $try  = $this->DocumentModel->save($data);
        
-        if( !$try )
-        {
-            $msg = 'Error: Update Document Failed!';
+        $msg = $try ? 'Update Document Successfully!' : 'Error: Update Document Failed!';
+        $status = $try ? 'ok' : 'fail';
 
-            $this->app->set('format', 'json');
-            $this->set('result', 'fail');
-            $this->set('message', $msg);
-            return ;
-        }
-        else
-        {
-            $try = $this->DocumentHistoryEntity->add([
-                'document_id' => $document_id,
-                'description' => $description,
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s')
-            ]);
-
-            $this->app->set('format', 'json');
-            $this->set('result', 'ok');
-            $this->set('message', 'Update Document Successfully!');
-            return ;
-        }
+        $this->app->set('format', 'json');
+        $this->set('result', $status);
+        $this->set('message', $msg);
+        return ;
     }
 
     public function validateRequestID()
@@ -99,57 +64,29 @@ class Document extends ControllerMVVM
 
     public function getHistory()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
-        $document = $this->DocumentEntity->findOne(['request_id' => $request_id]);
-        $result = [];
-        if ($document)
-        {
-            $list = $this->DocumentHistoryEntity->list(0 ,0 ,['document_id' => $document['id']], 'id DESC');
-            if ($list)
-            {
-                foreach($list as &$item)
-                {
-                    $user_tmp = $this->UserEntity->findByPK($item['modified_by']);
-                    if ($user_tmp)
-                    {
-                        $item['modified_by'] = $user_tmp['name'];
-                    }
-                }
-            }
-            $result = $list ? $list : [];
-        }
+        $list = $this->DocumentModel->getHistory($request_id);
+        $list = $list ? $list : [];
 
         $this->app->set('format', 'json');
         $this->set('result', 'ok');
-        $this->set('list', $result);
+        $this->set('list', $list);
         return ;
     }
 
     public function getComment()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $request_id = (int) $urlVars['request_id'];
 
-        $document = $this->DocumentEntity->findOne(['request_id' => $request_id]);
-        $result = [];
-        if ($document)
-        {
-            $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $document['id']], 'sent_at asc');
-            $discussion = $discussion ? $discussion : [];
-            foreach ($discussion as &$item)
-            {
-                $user_tmp = $this->UserEntity->findByPK($item['user_id']);
-                $item['user'] = $user_tmp ? $user_tmp['name'] : '';
-            }
-
-            $result = $discussion ? $discussion : [];
-        }
+        $list = $this->DocumentModel->getComment($request_id);
+        $list = $list ? $list : [];
 
         $this->app->set('format', 'json');
         $this->set('result', 'ok');
-        $this->set('list', $result);
+        $this->set('list', $list);
         return ;
     }
 }

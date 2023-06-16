@@ -7,14 +7,14 @@ class Report extends ControllerMVVM
 {
     public function list()
     {
-                $this->app->set('page', 'backend');
+        $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
         $this->app->set('layout', 'backend.diagram.list');
     }
 
-    public function update()
+    public function updateStatus()
     {
-                $id = $this->request->post->get('id', '', 'string');
+        $id = $this->request->post->get('id', '', 'string');
         $find = $this->DiagramEntity->findByPK($id);
         if (!$find)
         {
@@ -24,7 +24,7 @@ class Report extends ControllerMVVM
             );
         }
 
-        $try = $this->DiagramEntity->update([
+        $try = $this->ReportModel->updateStatus([
             'id' => $id,
             'status' => $find['status'] ? 0 : 1,
         ]);
@@ -40,68 +40,26 @@ class Report extends ControllerMVVM
     public function delete()
     {
         $ids = $this->validateID();
-        $types = $this->ReportModel->getTypes();
         $count = 0;
         if( is_array($ids))
         {
             foreach($ids as $id)
             {
                 //Delete file in source
-                $find = $this->DiagramEntity->findByPK($id);
-                if ($find)
+                $try = $this->ReportModel->remove($id);
+                if ($try)
                 {
-                    $type = isset($types[$find['report_type']]) ? $types[$find['report_type']] : [];
-                }
-
-                if (isset($type['remove_object']))
-                {
-                    $remove_object = $this->container->get($type['remove_object']);
-                    
-                }
-                
-                if (is_object($remove_object))
-                {
-                    if ($remove_object->remove($id))
-                    {
-                        $count++;
-                    }
-                }
-                else
-                {
-                    if( $this->DiagramEntity->remove( $id ) )
-                    {
-                        $count++;
-                    }
+                    $count ++;
                 }
             }
         }
         elseif( is_numeric($ids) )
         {
             $id = $ids;
-            $find = $this->DiagramEntity->findByPK($id);
-            if ($find)
+            $try = $this->ReportModel->remove($id);
+            if ($try)
             {
-                $type = isset($types[$find['report_type']]) ? $types[$find['report_type']] : [];
-            }
-
-            if (isset($type['remove_object']))
-            {
-                $remove_object = $this->container->get($type['remove_object']);
-                
-            }
-            if (is_object($remove_object))
-            {
-                if ($remove_object->remove($id))
-                {
-                    $count++;
-                }
-            }
-            else
-            {
-                if( $this->DiagramEntity->remove( $id ) )
-                {
-                    $count++;
-                }
+                $count ++;
             }
         }  
         
@@ -114,7 +72,7 @@ class Report extends ControllerMVVM
 
     public function validateID()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $id = $urlVars ? (int) $urlVars['id'] : [];
 
         if(empty($id))

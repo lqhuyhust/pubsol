@@ -10,8 +10,7 @@ class Documenthistory extends ControllerMVVM
 {
     public function detail()
     {
-                $id = $this->validateID();
-        
+        $id = $this->validateID();
         $result = '';
         $document = $this->DocumentHistoryEntity->findByPK($id);
         if ($document)
@@ -27,36 +26,16 @@ class Documenthistory extends ControllerMVVM
     public function rollback()
     {
         $id = $this->validateID();
-        $document = $this->DocumentHistoryEntity->findByPK($id);
-        if ($document)
-        {
-            $try = $this->DocumentEntity->update([
-                'id' => $document['document_id'],
-                'description' => $document['description'],
-            ]);
-            if ($try)
-            {
-                $remove_list = $this->DocumentHistoryEntity->list(0, 0, ['id > '. $id, 'document_id = '. $document['document_id']]);
-                if ($remove_list)
-                {
-                    foreach($remove_list as $item)
-                    {
-                        $this->DocumentHistoryEntity->remove($item['id']);
-                    } 
-                }
-                
-                $this->app->set('format', 'json');
-                $this->set('result', 'ok');
-                $this->set('message', 'Update Successfully');
-                $this->set('description', $document['description']);
-                return ;
-            }
-            
-        }
-
+        $try = $this->DocumentModel-> rollback($id);
+        
+        $result = $try ? 'ok' : 'failed';
+        $message = $try ? 'Update Successfully' : 'Update Failed';
+        $description = $try ? $try['description'] : '';
+        
         $this->app->set('format', 'json');
-        $this->set('result', 'fail');
-        $this->set('message', 'Update Failed');
+        $this->set('result', $result);
+        $this->set('message', $message);
+        $this->set('description', $description);
         return ;
     }
 
@@ -91,7 +70,7 @@ class Documenthistory extends ControllerMVVM
 
     public function validateID()
     {
-                $urlVars = $this->request->get('urlVars');
+        $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         if(empty($id))

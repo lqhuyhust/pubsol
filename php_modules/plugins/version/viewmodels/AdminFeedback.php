@@ -13,7 +13,7 @@ namespace App\plugins\version\viewmodels;
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 
 class AdminFeedback extends ViewModel
 {
@@ -199,24 +199,5 @@ class AdminFeedback extends ViewModel
         ];
     }
 
-    public function state($key, $default='', $format='cmd', $request_type='post', $sessionName='')
-    {
-        if(empty($sessionName)) $sessionName = $key;
-        $session = $this->container->get('session');
-        $request = $this->container->get('request');
 
-        $old = $session->get($sessionName, $default);
-
-        if( !is_object( $request->{$request_type} ) )
-        {
-            $var = null;
-        }
-        else
-        {
-            $var = $request->{$request_type}->get($key, $old, $format);
-            $session->set($sessionName, $var);
-        }
-
-        return $var;
-    }
 }

@@ -11,7 +11,7 @@
 
 namespace App\plugins\setting\viewmodels;
 
-use SPT\Web\MVVM\ViewModel;
+use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;
 
 class AdminSetting extends ViewModel
@@ -48,12 +48,19 @@ class AdminSetting extends ViewModel
             }
         }
         $form = new Form($fields, $data);
-        $button_header = '<button class="btn btn-outline-success btn_apply">
-                            Apply
-                        </button>
-                        <a href="'. $router->url('settings') .'" class="btn ms-2 btn-outline-secondary">
-                            Cancel
-                        </a>';
+        $button_header = [
+            [
+                'link' => '',
+                'class' => 'btn btn-outline-success btn_apply',
+                'title' => 'Apply',
+            ],
+            [
+                'link' => $router->url('settings'),
+                'class' => 'btn ms-2 btn-outline-secondary',
+                'title' => 'Cancel',
+            ],
+        ];
+        
         return [
             'fields' => $fields,
             'form' => $form,
