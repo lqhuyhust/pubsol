@@ -6,7 +6,6 @@ use SPT\Response;
 use SPT\Application\IApp;
 use SPT\Support\Loader;
 use SPT\Extend\Pdo as PdoWrapper;
-use App\plugins\core\libraries\Token;
 use SPT\Session\Instance as Session;
 use SPT\Session\PhpSession;
 use SPT\Session\DatabaseSession;
