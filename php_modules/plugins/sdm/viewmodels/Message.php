@@ -7,7 +7,7 @@
  * @description: Just a basic viewmodel
  * 
  */
-namespace App\plugins\core\viewmodels; 
+namespace App\plugins\sdm\viewmodels; 
 
 use SPT\Web\ViewModel;
 
