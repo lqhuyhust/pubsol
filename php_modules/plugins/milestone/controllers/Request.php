@@ -79,6 +79,7 @@ class Request extends ControllerMVVM
 
         $msg = $try ? 'Create Successfully!' : 'Error: Create Failed!';
         $this->session->set('flashMsg', $msg);
+        
         return $this->app->redirect(
             $this->router->url('requests/'. $milestone_id)
         );

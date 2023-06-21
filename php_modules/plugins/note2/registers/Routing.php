@@ -9,7 +9,22 @@ class Routing
     public static function registerEndpoints()
     {
         return [
-            'note2' => 'note2.note.test'
+            'note2' => 'note2.note.test',
+            'new-note2' => [
+                'fnc' => [
+                    'get' => 'note2.note.detail',
+                    'post' => 'note2.note.add',
+                    'put' => 'note2.note.update',
+                    'delete' => 'note2.note.delete'
+                ],
+                'parameters' => ['type'],
+                'permission' => [
+                    'get' => ['note_manager', 'note_read'],
+                    'post' => ['note_manager', 'note_create'],
+                    'put' => ['note_manager', 'note_update'],
+                    'delete' => ['note_manager', 'note_delete']
+                ],
+            ],
             /*'notes' => [
                 'fnc' => [
                     'get' => 'note.note.list',
@@ -62,21 +77,6 @@ class Routing
                 'parameters' => ['id'],
                 'permission' => [
                     'get' => ['note_manager', 'note_read'],
-                ],
-            ],
-            'note' => [
-                'fnc' => [
-                    'get' => 'note.note.detail',
-                    'post' => 'note.note.add',
-                    'put' => 'note.note.update',
-                    'delete' => 'note.note.delete'
-                ],
-                'parameters' => ['id'],
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                    'post' => ['note_manager', 'note_create'],
-                    'put' => ['note_manager', 'note_update'],
-                    'delete' => ['note_manager', 'note_delete']
                 ],
             ],
             'tag' => [

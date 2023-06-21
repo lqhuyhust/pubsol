@@ -1,26 +1,58 @@
 <?php
 namespace App\plugins\note2\registers;
 
-use SPT\Application\IApp; 
-use SPT\File;
+use SPT\Application\IApp;
+use SPT\Support\Filter;
 
 class Dispatcher
 {
     public static function dispatch(IApp $app)
     {
-        $app->plgLoad('permission', 'CheckSession'); 
+        // $app->plgLoad('permission', 'CheckSession'); 
 
         // prepare note
-        $container = $app->getContainer();
-        if (!$container->exists('file'))
-        {
-            $container->set('file', new File());
-        }
-        
-        $cName = $app->get('controller');
-        $fName = $app->get('function'); 
+        $urlVars = $app->rq('urlVars');
+        $notetype = '';
 
-        $controller = 'App\plugins\note2\controllers\\'. $cName;
+        // todo check public_id
+        if(isset($urlVars['type']) && !isset($urlVars['id']))
+        {
+            $notetype = Filter::cmd($urlVars['type']);
+        }
+        elseif( isset($urlVars['id']) )
+        {
+            // TODO: verify note exist
+            // TODO: setup note data
+           $row = $container->Note2Entity->findByPk();
+           // $notetype =  ..
+        }
+
+        $class = '';
+        $app->childLoad('notetype', 'registerType', function($types) use ($notetype, &$class) {
+            
+            var_dump($notetype);
+            if(isset($types[$notetype]))
+            {
+                $class = $types[$notetype];
+            }
+        });
+        //var_dump($class, $notetype);
+
+        if(empty($class) )
+        {
+            $app->raiseError('Invalid Note type '.$notetype);
+        }
+
+        if(is_array($class))
+        {
+            // TODO: solve more attached info
+        }
+
+        $container = $app->getContainer();
+        $cName = $app->get('controller');
+        $fName = $app->get('function');
+
+        $controller = $class. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);
