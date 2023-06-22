@@ -62,9 +62,9 @@ class Bootstrap
 
     private static function loadBasicClasses(IApp $app)
     {
-        $SDMplugins = ['milestone', 'note2', 'tag', 'note', 'report', 'setting', 'user', 'version'];
+        $SDMplugins = ['milestone', 'note2', 'tag', 'note', 'report', 'setting', 'user', 'user_googleauth','version'];
         
-        //['report_tree', 'user_googleauth', 
+        //['report_tree',  
 
         $container = $app->getContainer();
         
