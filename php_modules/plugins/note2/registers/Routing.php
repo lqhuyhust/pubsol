@@ -12,10 +12,10 @@ class Routing
             'note2' => 'note2.note.test',
             'new-note2' => [
                 'fnc' => [
-                    'get' => 'note2.note.detail',
+                    'get' => 'note2.note.newform',
                     'post' => 'note2.note.add',
-                    'put' => 'note2.note.update',
-                    'delete' => 'note2.note.delete'
+                    //'put' => 'note2.note.update',
+                    //'delete' => 'note2.note.delete'
                 ],
                 'parameters' => ['type'],
                 'permission' => [

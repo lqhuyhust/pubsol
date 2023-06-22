@@ -26,19 +26,18 @@ class AdminNote extends ViewModel
     
     public function form()
     {
-        $request = $this->container->get('request');
-        $NoteEntity = $this->container->get('NoteEntity');
-        $NoteHistoryEntity = $this->container->get('NoteHistoryEntity');
-        $UserEntity = $this->container->get('UserEntity');
-        $TagEntity = $this->container->get('TagEntity');
-        $NoteModel = $this->container->get('NoteModel');
-        $AttachmentEntity = $this->container->get('AttachmentEntity');
-        $router = $this->container->get('router');
+        $request = $this->request;
+        $NoteEntity = $this->NoteEntity;
+        $NoteHistoryEntity = $this->NoteHistoryEntity;
+        $UserEntity = $this->UserEntity;
+        $TagEntity = $this->TagEntity;
+        $NoteModel = $this->NoteModel;
+        $AttachmentEntity = $this->AttachmentEntity;
+        $router = $this->router;
         $type = $this->request->get->get('type', 'html');
-        $permission = $this->container->exists('PermissionModel') ? $this->container->get('PermissionModel') : null;
+        $permission = $this->container->exists('PermissionModel') ? $this->PermissionModel : null;
 
-        $urlVars = $request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = 0;  
         
         $data = $NoteModel->getDetail($id);
         $data = $data ? $data : [];
@@ -72,14 +71,14 @@ class AdminNote extends ViewModel
 
     public function preview()
     {
-        $request = $this->container->get('request');
-        $NoteEntity = $this->container->get('NoteEntity');
-        $NoteHistoryEntity = $this->container->get('NoteHistoryEntity');
-        $UserEntity = $this->container->get('UserEntity');
-        $TagEntity = $this->container->get('TagEntity');
-        $NoteModel = $this->container->get('NoteModel');
-        $AttachmentEntity = $this->container->get('AttachmentEntity');
-        $router = $this->container->get('router');
+        $request = $this->request;
+        $NoteEntity = $this->NoteEntity;
+        $NoteHistoryEntity = $this->NoteHistoryEntity;
+        $UserEntity = $this->UserEntity;
+        $TagEntity = $this->TagEntity;
+        $NoteModel = $this->NoteModel;
+        $AttachmentEntity = $this->AttachmentEntity;
+        $router = $this->router;
 
         $urlVars = $request->get('urlVars');
         $id = (int) $urlVars['id'];
@@ -167,7 +166,7 @@ class AdminNote extends ViewModel
                 'formClass' => 'form-control',
             ],
             'token' => ['hidden',
-                'default' => $this->container->get('token')->value(),
+                'default' => $this->token->value(),
             ],
         ];
 

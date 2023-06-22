@@ -10,11 +10,18 @@
 
 namespace App\plugins\note2_html\controllers;
 
-use SPT\Web\ControllerMVVM;
 use SPT\Response;
+use App\plugins\note2\libraries\NoteController;
 
-class Note extends ControllerMVVM
+class note extends NoteController
 {
+    public function newform()
+    {
+        $this->app->set('layout', 'backend.note.form');
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+    }
+
     public function detail()
     {
         

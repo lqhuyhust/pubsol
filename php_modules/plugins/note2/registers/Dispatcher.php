@@ -3,6 +3,7 @@ namespace App\plugins\note2\registers;
 
 use SPT\Application\IApp;
 use SPT\Support\Filter;
+use App\plugins\note2\libraries\INoteController;
 
 class Dispatcher
 {
@@ -27,16 +28,16 @@ class Dispatcher
            // $notetype =  ..
         }
 
+        // to avoid empty notetype, let set it as default
+
         $class = '';
         $app->childLoad('notetype', 'registerType', function($types) use ($notetype, &$class) {
             
-            var_dump($notetype);
             if(isset($types[$notetype]))
             {
                 $class = $types[$notetype];
             }
         });
-        //var_dump($class, $notetype);
 
         if(empty($class) )
         {
@@ -48,17 +49,26 @@ class Dispatcher
             // TODO: solve more attached info
         }
 
+        $app->set('noteType', $notetype);
+
         $container = $app->getContainer();
         $cName = $app->get('controller');
         $fName = $app->get('function');
 
-        $controller = $class. $cName;
+        $controller = $class. 'controllers\\'. $cName;
+        
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);
         }
 
         $controller = new $controller($app->getContainer());
+        
+        if(!($controller instanceof INoteController))
+        {
+            $app->raiseError('Prohibited controller '. $cName);
+        }
+
         $controller->{$fName}();
 
         $fName = 'to'. ucfirst($app->get('format', 'html'));
