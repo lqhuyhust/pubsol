@@ -1,7 +1,5 @@
 <?php defined( 'APP_PATH' ) or die('');
 
-// use SPT\Router ;
-
 return [
     'bootstrap-css' => [
         ['__domain__/assets/css/bootstrap5.min.css', '' , 'bootstrap-css'],
