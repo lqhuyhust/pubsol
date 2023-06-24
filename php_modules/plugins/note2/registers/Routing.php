@@ -9,7 +9,29 @@ class Routing
     public static function registerEndpoints()
     {
         return [
-            'note2' => 'note2.note.test',
+            'note2' => [
+                'fnc' => [
+                    'get' => 'note2.note.list',
+                    'post' => 'note2.note.list',
+                    'put' => 'note2.note.update',
+                    'delete' => 'note2.note.delete',
+                ]
+            ],
+            'note2/detail' => [
+                'fnc' => [
+                    'get' => 'note2.note.detail',
+                ],
+                'parameters' => ['id'],
+                'loadChildPlugin' => true,
+                'permission' => [
+                    'get' => ['note_manager', 'note_read'],
+                ],
+            ],
+            'note2/search' => [
+                'fnc' => [
+                    'get' => 'note2.note.search',
+                ]
+            ],
             'new-note2' => [
                 'fnc' => [
                     'get' => 'note2.note.newform',
@@ -18,6 +40,7 @@ class Routing
                     //'delete' => 'note2.note.delete'
                 ],
                 'parameters' => ['type'],
+                'loadChildPlugin' => true,
                 'permission' => [
                     'get' => ['note_manager', 'note_read'],
                     'post' => ['note_manager', 'note_create'],
@@ -38,12 +61,7 @@ class Routing
                     'put' => ['note_manager', 'note_update'],
                     'delete' => ['note_manager', 'note_delete']
                 ],
-            ],
-            'note/search' => [
-                'fnc' => [
-                    'get' => 'note.note.search',
-                ]
-            ],
+            ]
             'note/request' => [
                 'fnc' => [
                     'get' => 'note.note.request',
@@ -69,15 +87,6 @@ class Routing
                     'delete' => 'note.version.delete'
                 ],
                 'parameters' => ['id'],
-            ],
-            'note/preview' => [
-                'fnc' => [
-                    'get' => 'note.note.preview',
-                ],
-                'parameters' => ['id'],
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                ],
             ],
             'tag' => [
                 'fnc' => [

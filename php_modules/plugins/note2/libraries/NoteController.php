@@ -76,5 +76,5 @@ class NoteController extends ControllerMVVM implements INoteController
     function delete(){}
 
     // list record by filter(s)
-    function list(){}
+    //function list(){}
 }
