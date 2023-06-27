@@ -7,7 +7,7 @@
  * @description: Just a basic viewmodel
  * 
  */
-namespace DTM\plugins\sdm\viewmodels; 
+namespace DTM\plugins\dtm\viewmodels; 
 
 use SPT\Web\ViewModel;
 

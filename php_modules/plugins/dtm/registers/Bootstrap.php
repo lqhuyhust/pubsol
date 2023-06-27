@@ -1,5 +1,5 @@
 <?php
-namespace DTM\plugins\sdm\registers;
+namespace DTM\plugins\dtm\registers;
 
 use SPT\Query;
 use SPT\Response;
@@ -18,6 +18,8 @@ class Bootstrap
 {
     public static function initialize( IApp $app)
     {
+        $app->set('defaultPlugins', ['milestone', 'note2', 'tag', 'note', 'report', 'setting', 'user', 'version']);
+
         static::prepareDB($app);
         static::prepareSession($app);
         static::loadBasicClasses($app);
@@ -62,44 +64,31 @@ class Bootstrap
 
     private static function loadBasicClasses(IApp $app)
     {
-        $SDMplugins = ['milestone', 'note2', 'tag', 'note', 'report', 'setting', 'user', 'user_googleauth','version'];
-        
-        //['report_tree',  
-
         $container = $app->getContainer();
         
-        foreach($SDMplugins as $plgName)
+        foreach($app->get('defaultPlugins') as $plgName)
         {
             // load entities
-            $path = SPT_PLUGIN_PATH. '/'. $plgName. '/entities';
-            $namespace = $app->getNamespace().'\\plugins\\'. $plgName. '\entities';
-            $inners = Loader::findClass($path, $namespace);
-            foreach($inners as $class)
-            {
-                if(class_exists($class))
-                {
-                    $entity = new $class($container->get('query'));
-                    $container->share( $class, $entity, true);
-                    $alias = explode('\\', $class);
-                    $container->alias( $alias[count($alias) - 1], $class);
-                }
-            } 
+            Loader::findClass( 
+                SPT_PLUGIN_PATH. '/'. $plgName. '/entities',
+                $app->getNamespace().'\\plugins\\'. $plgName. '\entities',
+                function($class, $alias) use ($container)
+                {   
+                    $container->share( $alias, new $class($container->get('query')), true);
+                });
+
 
             // load models
-            $path = SPT_PLUGIN_PATH. '/'. $plgName. '/models';
-            $namespace = $app->getNamespace().'\\plugins\\'.$plgName. '\models';
-            $inners = Loader::findClass($path, $namespace);
-            foreach($inners as $class)
-            {
-                if(class_exists($class))
-                {
-                    $model = new $class($container);
-                    $alias = explode('\\', $class);
-                    $container->share( $alias[count($alias) - 1], $model, true);
-                }
-            }
+            Loader::findClass( 
+                SPT_PLUGIN_PATH. '/'. $plgName. '/models',
+                $app->getNamespace().'\\plugins\\'. $plgName. '\models',
+                function($class, $alias) use ($container)
+                {   
+                    $container->share( $alias, new $class($container), true);
+                });
         }
     }
+
     private static function prepareUser(IApp $app)
     {
         // prepare user

@@ -14,6 +14,6 @@ require __DIR__. '/vendor/autoload.php';
 // more details: https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/tools.html
 
 // replace with mechanism to retrieve EntityManager in your app
-$entityManager = \Demo\plugins\orm_pratice\models\Doctrine\EntityManager::getInstance();
+$entityManager = \DTM\plugins\dtm\models\Doctrine\EntityManager::getInstance();
 
 return ConsoleRunner::createHelperSet($entityManager);

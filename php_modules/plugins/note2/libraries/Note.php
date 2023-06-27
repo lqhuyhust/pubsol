@@ -24,6 +24,5 @@ class Note extends BaseObj
 
         return static::$_instance;
     }
-
     
 }
