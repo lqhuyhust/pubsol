@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\note2\libraries\notetype;
+namespace DTM\plugins\note2\libraries\notetype;
 
 interface INote
 {

@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\tag\models;
+namespace DTM\plugins\tag\models;
 
 use SPT\Container\Client as Base;
 

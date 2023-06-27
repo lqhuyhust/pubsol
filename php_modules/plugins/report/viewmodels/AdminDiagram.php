@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\report\viewmodels;
+namespace DTM\plugins\report\viewmodels;
 
 use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;

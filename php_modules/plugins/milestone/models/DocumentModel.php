@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\milestone\models;
+namespace DTM\plugins\milestone\models;
 
 use SPT\Container\Client as Base;
 

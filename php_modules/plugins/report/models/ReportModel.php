@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\report\models;
+namespace DTM\plugins\report\models;
 
 use SPT\Container\Client as Base;
 

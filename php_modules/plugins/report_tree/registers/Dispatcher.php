@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\report_tree\registers;
+namespace DTM\plugins\report_tree\registers;
 
 use SPT\Application\IApp;
 use Joomla\DI\Container;
@@ -15,7 +15,7 @@ class Dispatcher
 
         $cName = ucfirst($cName);
 
-        $controller = 'App\plugins\report_tree\controllers\\'. $cName;
+        $controller = 'DTM\plugins\report_tree\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);
@@ -34,14 +34,14 @@ class Dispatcher
     private static function registerEntities(Container $container)
     {
         $query = $container->get('query');
-        $e = new \App\plugins\report_tree\entities\TreeStructureEntity($query);
+        $e = new \DTM\plugins\report_tree\entities\TreeStructureEntity($query);
         $e->checkAvailability();
         $container->share( 'TreeStructureEntity', $e, true);
 
-        $e = new \App\plugins\report_tree\entities\DiagramEntity($query);
+        $e = new \DTM\plugins\report_tree\entities\DiagramEntity($query);
         $e->checkAvailability();
         $container->share( 'DiagramEntity', $e, true);
 
-        $container->share( 'TreePhpModel', new \App\plugins\report_tree\models\TreePhpModel($container), true);
+        $container->share( 'TreePhpModel', new \DTM\plugins\report_tree\models\TreePhpModel($container), true);
     }
 }

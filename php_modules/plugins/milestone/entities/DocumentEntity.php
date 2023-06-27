@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\milestone\entities;
+namespace DTM\plugins\milestone\entities;
 
 use SPT\Storage\DB\Entity;
 

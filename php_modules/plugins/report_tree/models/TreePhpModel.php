@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\report_tree\models;
+namespace DTM\plugins\report_tree\models;
 
 use SPT\Container\Client as Base;
 

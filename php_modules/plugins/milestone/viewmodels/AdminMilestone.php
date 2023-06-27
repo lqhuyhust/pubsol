@@ -7,7 +7,7 @@
  * @description: Just a basic viewmodel
  * 
  */
-namespace App\plugins\milestone\viewmodels; 
+namespace DTM\plugins\milestone\viewmodels; 
 
 use SPT\View\Gui\Form;
 use SPT\View\Gui\Listing;

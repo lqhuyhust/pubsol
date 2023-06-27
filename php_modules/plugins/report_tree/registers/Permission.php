@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\report_tree\registers;
+namespace DTM\plugins\report_tree\registers;
 
 use SPT\Application\IApp;
 

@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\note\entities;
+namespace DTM\plugins\note2\entities;
 
 use SPT\Storage\DB\Entity;
 use SPT\Traits\EntityHasStatus;

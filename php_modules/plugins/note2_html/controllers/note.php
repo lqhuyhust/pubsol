@@ -8,10 +8,10 @@
  *
  */
 
-namespace App\plugins\note2_html\controllers;
+namespace DTM\plugins\note2_html\controllers;
 
 use SPT\Response;
-use App\plugins\note2\libraries\NoteController;
+use DTM\plugins\note2\libraries\NoteController;
 
 class note extends NoteController
 {

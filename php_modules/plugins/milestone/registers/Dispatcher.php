@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\milestone\registers;
+namespace DTM\plugins\milestone\registers;
 
 use SPT\Application\IApp;
 use SPT\Response;
@@ -15,7 +15,7 @@ class Dispatcher
         $fName = $app->get('function');
 
         $cName = ucfirst($cName);
-        $controller = 'App\plugins\milestone\controllers\\'. $cName;
+        $controller = 'DTM\plugins\milestone\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);

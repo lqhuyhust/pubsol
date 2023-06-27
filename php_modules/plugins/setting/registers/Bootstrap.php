@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\setting\registers;
+namespace DTM\plugins\setting\registers;
 
 use SPT\Query;
 use SPT\Response;
@@ -12,7 +12,7 @@ use SPT\Session\DatabaseSession;
 use SPT\Session\DatabaseSessionEntity;
 use SPT\User\Instance as UserInstance;
 use SPT\User\SPT\User as UserAdapter;
-use App\plugins\user\entities\UserEntity;
+use DTM\plugins\user\entities\UserEntity;
 
 class Bootstrap
 {

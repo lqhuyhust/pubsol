@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\note\entities;
+namespace DTM\plugins\note\entities;
 
 use SPT\Storage\DB\Entity;
 

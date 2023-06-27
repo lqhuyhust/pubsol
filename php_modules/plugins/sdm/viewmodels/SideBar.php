@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\sdm\viewmodels;  
+namespace DTM\plugins\sdm\viewmodels;  
 
 use SPT\Web\ViewModel;
 

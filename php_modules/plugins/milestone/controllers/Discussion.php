@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\plugins\milestone\controllers;
+namespace DTM\plugins\milestone\controllers;
 
 use SPT\Web\ControllerMVVM;
 use SPT\Response;

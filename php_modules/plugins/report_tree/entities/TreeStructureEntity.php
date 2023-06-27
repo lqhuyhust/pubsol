@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\report_tree\entities;
+namespace DTM\plugins\report_tree\entities;
 
 use SPT\Storage\DB\Entity;
 

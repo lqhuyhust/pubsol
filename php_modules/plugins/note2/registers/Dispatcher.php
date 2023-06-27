@@ -1,8 +1,8 @@
 <?php
-namespace App\plugins\note2\registers;
+namespace DTM\plugins\note2\registers;
 
 use SPT\Application\IApp;
-use App\plugins\note2\libraries\NoteDispatch;
+use DTM\plugins\note2\libraries\NoteDispatch;
 
 class Dispatcher
 {

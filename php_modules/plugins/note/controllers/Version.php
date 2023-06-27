@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\note\controllers;
+namespace DTM\plugins\note\controllers;
 
 use SPT\Web\ControllerMVVM;
 

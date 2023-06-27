@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\user\registers;
+namespace DTM\plugins\user\registers;
 
 use SPT\Application\IApp;
 use SPT\Support\Loader;

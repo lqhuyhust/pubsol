@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\note\registers;
+namespace DTM\plugins\note\registers;
 
 use SPT\Application\IApp;
 

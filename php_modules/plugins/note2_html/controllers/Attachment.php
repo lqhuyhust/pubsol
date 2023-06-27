@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\note2_html\controllers;
+namespace DTM\plugins\note2_html\controllers;
 
 use SPT\Web\ControllerMVVM;
 use SPT\Response;

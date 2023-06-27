@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\note\registers;
+namespace DTM\plugins\note\registers;
 
 use SPT\Application\IApp; 
 use SPT\File;
@@ -22,7 +22,7 @@ class Dispatcher
         
         $cName = ucfirst($cName);
 
-        $controller = 'App\plugins\note\controllers\\'. $cName;
+        $controller = 'DTM\plugins\note\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);

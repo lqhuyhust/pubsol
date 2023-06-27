@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\setting\registers;
+namespace DTM\plugins\setting\registers;
 
 use SPT\Application\IApp;
 use SPT\Response;
@@ -14,7 +14,7 @@ class Dispatcher
         $fName = $app->get('function');
 
         $cName = ucfirst($cName);
-        $controller = 'App\plugins\setting\controllers\\'. $cName;
+        $controller = 'DTM\plugins\setting\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);

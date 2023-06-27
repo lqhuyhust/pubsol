@@ -8,14 +8,14 @@
  *
  */
 
-namespace App\plugins\note2\libraries;
+namespace DTM\plugins\note2\libraries;
 
 use SPT\Application\IApp;
 use SPT\Container\Client as Base;
 use SPT\Support\Filter;
-use App\plugins\note2\libraries\INoteController;
-use App\plugins\note2\libraries\NoteDispatch;
-use App\plugins\note2\libraries\Note;
+use DTM\plugins\note2\libraries\INoteController;
+use DTM\plugins\note2\libraries\NoteDispatch;
+use DTM\plugins\note2\libraries\Note;
 
 class NoteDispatch extends Base
 {
@@ -31,7 +31,7 @@ class NoteDispatch extends Base
 
     private function process($cName, $fName)
     {
-        $controller = 'App\plugins\note2\controllers\\'. $cName;
+        $controller = 'DTM\plugins\note2\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $this->app->raiseError('Invalid controller '. $cName);

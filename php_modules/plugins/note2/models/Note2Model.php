@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\note2\models;
+namespace DTM\plugins\note2\models;
 
 use SPT\Container\Client as Base;
 use SPT\Traits\ErrorString;

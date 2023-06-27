@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\setting\registers;
+namespace DTM\plugins\setting\registers;
 
 use SPT\Application\IApp;
 

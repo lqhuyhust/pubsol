@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\tag\controllers;
+namespace DTM\plugins\tag\controllers;
 
 use SPT\Web\ControllerMVVM;
 

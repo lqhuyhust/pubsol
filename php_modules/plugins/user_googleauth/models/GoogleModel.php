@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\user_googleauth\models;
+namespace DTM\plugins\user_googleauth\models;
 
 use SPT\Container\Client as Base;
 

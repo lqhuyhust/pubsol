@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\milestone\registers;
+namespace DTM\plugins\milestone\registers;
 
 use SPT\Application\IApp;
 

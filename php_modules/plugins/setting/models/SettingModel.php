@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\setting\models;
+namespace DTM\plugins\setting\models;
 
 use SPT\Container\Client as Base;
 

@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\note2_html\entities;
+namespace DTM\plugins\note2_html\entities;
 
 use SPT\Storage\DB\Entity;
 

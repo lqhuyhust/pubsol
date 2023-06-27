@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\report_tree\controllers;
+namespace DTM\plugins\report_tree\controllers;
 
 use SPT\Web\ControllerMVVM;
 

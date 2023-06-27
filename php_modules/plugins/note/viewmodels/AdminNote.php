@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\note\viewmodels;
+namespace DTM\plugins\note\viewmodels;
 
 use SPT\Web\ViewModel;
 use SPT\View\Gui\Form;

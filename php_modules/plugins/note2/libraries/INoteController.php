@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\note2\libraries;
+namespace DTM\plugins\note2\libraries;
 
 interface INoteController
 {

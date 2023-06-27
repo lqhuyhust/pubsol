@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\user\entities;
+namespace DTM\plugins\user\entities;
 
 use SPT\Storage\DB\Entity;
 

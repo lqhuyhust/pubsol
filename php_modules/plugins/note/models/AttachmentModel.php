@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\note\models;
+namespace DTM\plugins\note\models;
 
 use SPT\Container\Client as Base;
 

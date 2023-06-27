@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\version\registers;
+namespace DTM\plugins\version\registers;
 
 use SPT\Application\IApp;
 
