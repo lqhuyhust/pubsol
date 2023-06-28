@@ -1,10 +1,10 @@
 <?php
 /**
- * SPT software - Demo application
+ * SPT software - Pubilc application
  * 
  * @project: https://github.com/smpleader/spt
  * @author: Pham Minh - smpleader
- * @description: How we start an MVC
+ * @description: How public an application 
  * 
  */
 
