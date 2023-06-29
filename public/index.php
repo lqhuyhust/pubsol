@@ -12,14 +12,15 @@ define('ROOT_PATH', __DIR__ . '/../');
 define('APP_PATH', ROOT_PATH. 'php_modules/');
 define('PUBLIC_PATH', __DIR__ . '/');
 define('MEDIA_PATH', PUBLIC_PATH. 'media/');
+define('SPT_VENDOR_PATH', ROOT_PATH. 'vendor/');
 define('SPT_STORAGE_PATH', PUBLIC_PATH);
 
 require ROOT_PATH. 'vendor/autoload.php';
 
-$app = new SPT\Application\Web(
+$app = new \DTM\core\libraries\SDM(
     new \SPT\Container\Joomla,
     PUBLIC_PATH,
-    APP_PATH. 'plugins',
+    APP_PATH. 'plugins/',
     APP_PATH. 'config.php',
     'App'
 );
