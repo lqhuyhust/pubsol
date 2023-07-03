@@ -38,6 +38,7 @@ class AdminTemplate extends ViewModel
     {
         $data = $this->getItem();
         $form = new Form($this->getFormFields(), $data);
+        $id = empty($data) ? 0 : $data['id'];
 
         return [
             'title_page' => 'Template form',
