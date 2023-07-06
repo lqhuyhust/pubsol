@@ -2,7 +2,7 @@
 namespace Tests\user\viewmodels;
 
 use DTM\user\viewmodels\AdminUsers;
-use SPT\View\Gui\Listing;
+use SPT\Web\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminUsersTest extends TestCase

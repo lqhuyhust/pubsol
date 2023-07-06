@@ -2,7 +2,7 @@
 namespace Tests\milestone\viewmodels;
 
 use DTM\milestone\viewmodels\AdminRequests;
-use SPT\View\Gui\Listing;
+use SPT\Web\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminRequestsTest extends TestCase

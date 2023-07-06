@@ -2,7 +2,7 @@
 namespace Tests\tag\viewmodels;
 
 use DTM\version\viewmodels\AdminVersion;
-use SPT\View\Gui\Listing;
+use SPT\Web\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminVersionTest extends TestCase

@@ -3,7 +3,7 @@ namespace Tests\milestone\viewmodels;
 
 use DTM\milestone\viewmodels\AdminVersionLatest;
 use Tests\Test as TestCase;
-use SPT\View\Gui\Listing;
+use SPT\Web\Gui\Listing;
 
 class AdminVersionLatestTest extends TestCase
 {
