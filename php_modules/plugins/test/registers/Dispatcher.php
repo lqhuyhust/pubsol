@@ -10,7 +10,11 @@ class Dispatcher
     {
         //$app->plgLoad('permission', 'CheckSession'); 
         // prepare note
-        $container = $app->getContainer(); 
+        $container = $app->getContainer();
+        if (!$container->exists('file'))
+        {
+            $container->set('file', new File());
+        }
         
         $cName = $app->get('controller');
         $fName = $app->get('function'); 
@@ -20,21 +24,11 @@ class Dispatcher
         {
             $app->raiseError('Invalid controller '. $cName);
         }
-        
-        // set plugin info 
 
         $controller = new $controller($app->getContainer());
         $controller->{$fName}();
-        $controller->setCurrentPlugin();
-        $controller->useDefaultTheme();
 
         $fName = 'to'. ucfirst($app->get('format', 'html'));
-
-        // theme
-        if(empty( $app->get('theme', '') ))
-        {
-            $app->set('theme', $app->cf('defaultTheme'));
-        }
         
         $app->finalize(
             $controller->{$fName}()

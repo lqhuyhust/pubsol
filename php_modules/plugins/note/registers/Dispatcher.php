@@ -26,23 +26,11 @@ class Dispatcher
         {
             $app->raiseError('Invalid controller '. $cName);
         }
-        
-        // set plugin info
-        $plugin = $app->plugin();
-        $app->set('currentPlugin', $plugin['name']);
-        $app->set('namespace', $plugin['namespace']);
-        $app->set('pluginPath', $plugin['path']);
 
         $controller = new $controller($app->getContainer());
         $controller->{$fName}();
 
         $fName = 'to'. ucfirst($app->get('format', 'html'));
-
-        // theme
-        if(empty( $app->get('theme', '') ))
-        {
-            $app->set('theme', $app->cf('defaultTheme'));
-        }
         
         $app->finalize(
             $controller->{$fName}()

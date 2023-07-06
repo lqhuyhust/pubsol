@@ -1,0 +1,9 @@
+{
+    "title": "Theme Blue: Full width single column",
+    "positions":
+    [
+        {"name":"Header", "limit": 0},
+        {"name":"Slider", "limit": 5},
+        {"name":"Footer", "limit": 4}
+    ]
+}
