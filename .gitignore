@@ -90,3 +90,5 @@ composer.phar
 RoboFile.ini
 
 log
+.phpunit.result.cache
+tests/config.php
