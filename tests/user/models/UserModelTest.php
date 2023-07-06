@@ -110,6 +110,7 @@ class UserModelTest extends TestCase
 
      /**
      * @dataProvider dataUpdate
+     * @depends testAdd
      */
     public function testUpdate($data, $result)
     {

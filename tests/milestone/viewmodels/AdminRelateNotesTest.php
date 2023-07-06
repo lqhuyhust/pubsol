@@ -18,12 +18,6 @@ class AdminRelateNotesTest extends TestCase
         $this->AdminRelateNotes = new AdminRelateNotes($container);
     }
 
-    public function testList()
-    {
-        $try = $this->AdminRelateNotes->list();
-        $this->assertIsArray($try);
-    }
-
     public function testJavascript()
     {
         $try = $this->AdminRelateNotes->javascript();

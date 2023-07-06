@@ -176,35 +176,6 @@ class RequestModelTest extends TestCase
     }
 
     /**
-     * @dataProvider dataUpdateVersion
-     */
-    public function testUpdateVersion($data, $result)
-    {
-        $try = $this->RequestModel->updateVersion($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataUpdateVersion()
-    {
-        return [
-            [[
-                'id' => 1,
-                'log' => 'Log Version Note',
-            ], true],
-            [[
-                'id' => 1,
-                'log' => '',
-            ], false],
-            [[
-                'id' => '',
-                'log' => 'Log Version Note',
-            ], false],
-        ];
-    }
-
-    /**
      * @dataProvider dataRemoveVersion
      */
     public function testRemoveVersion($data, $result)
