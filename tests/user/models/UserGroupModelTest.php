@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class UserGroupModelTest extends TestCase
 { 
+    private $UserGroupModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();
@@ -122,11 +124,22 @@ class UserGroupModelTest extends TestCase
                 'modified_by' => 1,
                 'modified_at' => date('Y-m-d H:i:s')
             ], true],
+            [[
+                'name' => 'Test 2',
+                'description' => '',
+                'access' => '',
+                'status' => 0,
+                'created_by' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'modified_by' => 1,
+                'modified_at' => date('Y-m-d H:i:s')
+            ], true],
         ];
     }
 
     /**
      * @dataProvider dataUpdate
+     * @depends testAdd
      */
     public function testUpdate($data, $result)
     {

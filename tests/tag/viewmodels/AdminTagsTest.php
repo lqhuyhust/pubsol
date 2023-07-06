@@ -1,12 +1,13 @@
 <?php
 namespace Tests\tag\viewmodels;
 
-use App\plugins\tag\viewmodels\AdminTags;
+use DTM\tag\viewmodels\AdminTags;
 use SPT\View\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminTagsTest extends TestCase
 {
+    private $AdminTags;
 
     protected function setUp(): void
     {

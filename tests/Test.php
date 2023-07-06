@@ -29,10 +29,10 @@ class Test extends TestCase
         $_SERVER['HTTP_HOST'] = 'Test';
         $_SERVER['REQUEST_URI'] = '/';
 
-        static::$app = new \SPT\Application\Web(
+        static::$app = new \DTM\core\libraries\SDM(
             new \SPT\Container\Joomla,
             PUBLIC_PATH,
-            APP_PATH. 'plugins',
+            APP_PATH. 'plugins/',
             __DIR__.'/config.php',
             'App'
         );

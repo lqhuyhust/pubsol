@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class MilestoneModelTest extends TestCase
 { 
+    private $MilestoneModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

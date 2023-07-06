@@ -1,11 +1,13 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use App\plugins\milestone\viewmodels\AdminDocument;
+use DTM\milestone\viewmodels\AdminDocument;
 use Tests\Test as TestCase;
 
 class AdminDocumentTest extends TestCase
 {
+    private $AdminDocument;
+    
     protected function setUp(): void
     {
         $app = $this->prepareApp();

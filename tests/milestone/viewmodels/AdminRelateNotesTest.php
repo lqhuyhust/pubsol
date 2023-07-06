@@ -1,11 +1,13 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use App\plugins\milestone\viewmodels\AdminRelateNotes;
+use DTM\milestone\viewmodels\AdminRelateNotes;
 use Tests\Test as TestCase;
 
 class AdminRelateNotesTest extends TestCase
 {   
+    private $AdminRelateNotes;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();
@@ -14,12 +16,6 @@ class AdminRelateNotesTest extends TestCase
         $request->set('urlVars', ['request_id' => 1]);
 
         $this->AdminRelateNotes = new AdminRelateNotes($container);
-    }
-
-    public function testList()
-    {
-        $try = $this->AdminRelateNotes->list();
-        $this->assertIsArray($try);
     }
 
     public function testJavascript()

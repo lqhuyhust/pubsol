@@ -1,11 +1,13 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use App\plugins\milestone\viewmodels\AdminRelateNote;
+use DTM\milestone\viewmodels\AdminRelateNote;
 use Tests\Test as TestCase;
 
 class AdminRelateNoteTest extends TestCase
 {
+    private $AdminRelateNote;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

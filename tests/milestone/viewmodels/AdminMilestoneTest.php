@@ -1,11 +1,13 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use App\plugins\milestone\viewmodels\AdminMilestone;
+use DTM\milestone\viewmodels\AdminMilestone;
 use Tests\Test as TestCase;
 
 class AdminMilestoneTest extends TestCase
 {
+    private $AdminMilestone;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

@@ -1,12 +1,14 @@
 <?php
 namespace Tests\tag\viewmodels;
 
-use App\plugins\version\viewmodels\AdminVersions;
+use DTM\version\viewmodels\AdminVersions;
 use SPT\View\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminVersionsTest extends TestCase
 {
+    private $AdminVersions;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

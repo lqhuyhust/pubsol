@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class DocumentModelTest extends TestCase
 { 
+    private $DocumentModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

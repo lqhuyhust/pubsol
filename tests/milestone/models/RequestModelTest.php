@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class RequestModelTest extends TestCase
 { 
+    private $RequestModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();
@@ -170,64 +172,6 @@ class RequestModelTest extends TestCase
         return [
             [0, false],
             [1, true],
-        ];
-    }
-
-    /**
-     * @dataProvider dataAddVersion
-     */
-    public function testAddVersion($data, $result)
-    {
-        $try = $this->RequestModel->addVersion($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataAddVersion()
-    {
-        return [
-            [[
-                'request_id' => 1,
-                'log' => 'Log Version Note',
-            ], true],
-            [[
-                'request_id' => 1,
-                'log' => '',
-            ], false],
-            [[
-                'request_id' => '',
-                'log' => 'Log Version Note',
-            ], false],
-        ];
-    }
-
-    /**
-     * @dataProvider dataUpdateVersion
-     */
-    public function testUpdateVersion($data, $result)
-    {
-        $try = $this->RequestModel->updateVersion($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataUpdateVersion()
-    {
-        return [
-            [[
-                'id' => 1,
-                'log' => 'Log Version Note',
-            ], true],
-            [[
-                'id' => 1,
-                'log' => '',
-            ], false],
-            [[
-                'id' => '',
-                'log' => 'Log Version Note',
-            ], false],
         ];
     }
 

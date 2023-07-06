@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class RelateNoteModelTest extends TestCase
 { 
+    private $RelateNoteModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

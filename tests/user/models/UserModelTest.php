@@ -10,6 +10,8 @@ use Tests\Test as TestCase;
 
 class UserModelTest extends TestCase
 { 
+    private $UserModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();
@@ -88,8 +90,17 @@ class UserModelTest extends TestCase
             [
                 [
                     'name' => 'Test',
-                    'username' => 'Test',
-                    'password' => '12345667',
+                    'username' => 'admin',
+                    'password' => '123123',
+                    'status' => 1,
+                    'email' => 'admin@gmail.com',
+                ], true
+            ],
+            [
+                [
+                    'name' => 'Test 2',
+                    'username' => 'admin2',
+                    'password' => '123123',
                     'status' => 1,
                     'email' => 'admin@gmail.com',
                 ], true
@@ -99,6 +110,7 @@ class UserModelTest extends TestCase
 
      /**
      * @dataProvider dataUpdate
+     * @depends testAdd
      */
     public function testUpdate($data, $result)
     {

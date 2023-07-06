@@ -1,12 +1,14 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use App\plugins\milestone\viewmodels\AdminRequests;
+use DTM\milestone\viewmodels\AdminRequests;
 use SPT\View\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminRequestsTest extends TestCase
 {
+    private $AdminRequests;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();
