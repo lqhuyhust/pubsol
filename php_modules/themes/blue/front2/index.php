@@ -14,6 +14,8 @@ $this->theme->prepareAssets([
     'carousel-js',
     'lightbox-js',
 ]);
+$widget = $this->_view->getVar('widgetPosition');
+
 ?>
 <!doctype html>
 <html lang="en" class="h-100" data-bs-theme="auto">
@@ -39,20 +41,11 @@ $this->theme->prepareAssets([
     <?php $this->theme->echo('inlineCss', $this->url()) ?>
 </head>
 <body>
-    <div class="container-fluid bg-primary text-white d-lg-flex">
-        <div class="container py-3">
-            <?php echo $this->render('positions.header', [], 'vcom'); ?>
-        </div>
-    </div>
+    <?php include 'position/header.php' ?>
     <!-- Topbar End -->
 
     <!-- Navbar Start -->
-    <div class="container-fluid bg-white sticky-top">
-        <div class="container">
-            <?php echo $this->render('positions.menu', [], 'vcom'); ?>
-            
-        </div>
-    </div>
+    <?php include 'position/menu.php' ?>
     <!-- Navbar End -->
 
 
