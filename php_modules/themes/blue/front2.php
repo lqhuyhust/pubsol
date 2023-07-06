@@ -41,7 +41,7 @@ $this->theme->prepareAssets([
 <body>
     <div class="container-fluid bg-primary text-white d-lg-flex">
         <div class="container py-3">
-            <?php echo $this->renderPosition('header'); ?>
+            <?php echo $this->render('positions.header', [], 'vcom'); ?>
         </div>
     </div>
     <!-- Topbar End -->
@@ -49,7 +49,7 @@ $this->theme->prepareAssets([
     <!-- Navbar Start -->
     <div class="container-fluid bg-white sticky-top">
         <div class="container">
-            <?php echo $this->renderPosition('menu'); ?>
+            <?php echo $this->render('positions.menu', [], 'vcom'); ?>
             
         </div>
     </div>
@@ -60,7 +60,7 @@ $this->theme->prepareAssets([
 
     <div class="container-fluid px-0 mb-5">
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <?php echo $this->renderPosition('slider'); ?>
+            <?php echo $this->render('positions.slider', [], 'vcom'); ?>
         </div>
     </div>
     <!-- Carousel End -->
@@ -69,7 +69,7 @@ $this->theme->prepareAssets([
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-0 feature-row">
-                <?php echo $this->renderPosition('feature'); ?>
+                <?php echo $this->render('positions.feature', [], 'vcom'); ?>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@ $this->theme->prepareAssets([
     <div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
-                <?php echo $this->renderPosition('footer'); ?>
+                <?php echo $this->render('positions.footer', [], 'vcom'); ?>
             </div>
         </div>
     </div>
@@ -97,7 +97,7 @@ $this->theme->prepareAssets([
     <div class="container-fluid copyright py-4">
         <div class="container">
             <div class="row">
-                <?php echo $this->renderPosition('copyright'); ?>
+                <?php echo $this->render('positions.copyright', [], 'vcom'); ?>
                 
             </div>
         </div>
