@@ -12,7 +12,7 @@ namespace App\plugins\page\models;
 
 use SPT\Container\Client as Base;
 
-class ModuleHtmlModel extends Base
+class WidgetHtmlModel extends Base
 { 
     public function validate($data)
     {
@@ -46,10 +46,10 @@ class ModuleHtmlModel extends Base
         }
 
         $settings = isset($data['content']) ? json_encode(['content' => $data['content']]) : '';
-        $newId =  $this->ModuleEntity->add([
+        $newId =  $this->WidgetEntity->add([
             'title' => $data['title'],
             'settings' => $settings,
-            'module_type' => 'html',
+            'widget_type' => 'html',
             'template_id' => $data['template_id'],
             'position_name' => $data['position_name'],
             'created_at' => date('Y-m-d H:i:s'),
@@ -71,7 +71,7 @@ class ModuleHtmlModel extends Base
 
         $settings = isset($data['content']) ? json_encode(['content' => $data['content']]) : '';
         
-        $try = $this->ModuleEntity->update([
+        $try = $this->WidgetEntity->update([
             'title' => $data['title'],
             'settings' => $settings,
             'id' => $data['id'],
@@ -93,7 +93,7 @@ class ModuleHtmlModel extends Base
             return false;
         }
 
-        $try = $this->ModuleEntity->remove($id);
+        $try = $this->WidgetEntity->remove($id);
 
         return $try;
     }
@@ -105,10 +105,10 @@ class ModuleHtmlModel extends Base
             return false;
         }
 
-        $module = $this->ModuleEntity->findByPK($id);
-        $settings = $module['settings'] ? json_decode($module['settings'], true) : [];
-        $module['content'] = isset($settings['content']) ? $settings['content'] : '';
+        $widget = $this->WidgetEntity->findByPK($id);
+        $settings = $widget['settings'] ? json_decode($widget['settings'], true) : [];
+        $widget['content'] = isset($settings['content']) ? $settings['content'] : '';
 
-        return $module;
+        return $widget;
     }
 }

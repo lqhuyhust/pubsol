@@ -11,8 +11,8 @@
 
 namespace App\plugins\page\viewmodels;
 
-use SPT\View\Gui\Form;
-use SPT\View\Gui\Listing;
+use SPT\Web\Gui\Form;
+use SPT\Web\Gui\Listing;
 use SPT\Web\ViewModel;
 
 class AdminTemplates extends ViewModel
@@ -20,9 +20,11 @@ class AdminTemplates extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.template.list',
-            'layouts.backend.template.list.row',
-            'layouts.backend.template.list.filter'
+            'layout'=>[
+                'backend.template.list',
+                'backend.template.list.row',
+                'backend.template.list.filter'
+            ]
         ];
     }
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\plugins\page\registers;
 
-class Moduletype
+class Widgettype
 {
     public static function registerType()
     {
@@ -9,12 +9,12 @@ class Moduletype
             'html' => [
                 'path' => 'html',
                 'name' => 'Html',
-                'link' => 'module/html',
+                'link' => 'widget/html',
             ],
             'text' => [
                 'path' => 'text',
                 'name' => 'Text',
-                'link' => 'module/text',
+                'link' => 'widget/text',
             ],
         ];
     }

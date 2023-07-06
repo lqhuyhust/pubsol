@@ -12,14 +12,14 @@
 namespace App\plugins\page\viewmodels;
 
 use SPT\Web\ViewModel;
-use SPT\View\Gui\Form;
+use SPT\Web\Gui\Form;
 
 class AdminPage extends ViewModel
 {
     public static function register()
     {
         return [
-            'layouts.backend.page.form',
+            'layout'=>'backend.page.form',
         ];
     }
 

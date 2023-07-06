@@ -12,14 +12,14 @@
 namespace App\plugins\page\viewmodels;
 
 use SPT\Web\ViewModel;
-use SPT\View\Gui\Form;
+use SPT\Web\Gui\Form;
 
 class AdminTemplate extends ViewModel
 {
     public static function register()
     {
         return [
-            'layouts.backend.template.form',
+            'layout'=>'backend.template.form',
             'vcoms.positions.header',
             'vcoms.positions.slider',
             'vcoms.positions.left',
@@ -50,17 +50,17 @@ class AdminTemplate extends ViewModel
         $data = $this->getItem();
         $form = new Form($this->getFormFields(), $data);
         $id = empty($data) ? 0 : $data['id'];
-        $modules = $this->ModuleModel->getModuleTypes();
+        $widgets = $this->WidgetModel->getWidgetTypes();
 
         return [
             'title_page' => 'Template form',
             'id' => $id,
             'form' => $form,
             'url' => $this->router->url(),
-            'modules' => $modules,
+            'widgets' => $widgets,
             'link_form' => $this->router->url('template'),
             'link_list' => $this->router->url('templates'),
-            'link_load_module' => $this->router->url('template/load-module'),
+            'link_load_widget' => $this->router->url('template/load-widget'),
             'data' => $data,
         ];
         
@@ -84,10 +84,11 @@ class AdminTemplate extends ViewModel
         $data = $this->getItem();
         $positionData = empty($data) ? '' : $data['positions'];
 
-        $modules = $this->ModuleModel->getModuleTypes();
-        foreach($modules as $key => $value)
+        $widgetOptions = [];
+        $widgets = $this->WidgetModel->getWidgetTypes();
+        foreach($widgets as $key => $value)
         {
-            $moduleOptions[] = [
+            $widgetOptions[] = [
                 'text' => $value['name'],
                 'value' => $key
             ];
@@ -109,11 +110,11 @@ class AdminTemplate extends ViewModel
             'position' => [
                 'hidden',
             ],
-            'modules' => [
+            'widgets' => [
                 'option',
                 'type' => 'select',
                 'formClass' => 'form-select',
-                'options' => $moduleOptions,
+                'options' => $widgetOptions,
                 'showLabel' => false,
                 'formClass' => 'form-control',
             ],
@@ -145,70 +146,70 @@ class AdminTemplate extends ViewModel
         return $fields;
     }
 
-    public function getModuleTypes($position)
+    public function getWidgetTypes($position)
     {
         $page_id = $this->app->get('page_id');
         $page = $this->PageEntity->findByPK($page_id);
         
         $template_id = $page['template_id'];
 
-        //find modules
-        $modules = $this->ModuleModel->getModuleByPosition($template_id, $position);
+        //find widgets
+        $widgets = $this->WidgetModel->getWidgetByPosition($template_id, $position);
 
-        return $modules;
+        return $widgets;
     }
 
     public function header()
     {
-        $modules = $this->getModuleTypes('header');
+        $widgets = $this->getWidgetTypes('header');
 
         return [
-            'modules' => $modules,
+            'widgets' => $widgets,
         ];
     }
 
     public function slider()
     {
-        $modules = $this->getModuleTypes('slider');
+        $widgets = $this->getWidgetTypes('slider');
 
         return [
-            'modules' => $modules,
+            'widgets' => $widgets,
         ];
     }
 
     public function footer()
     {
-        $modules = $this->getModuleTypes('footer');
+        $widgets = $this->getWidgetTypes('footer');
 
         return [
-            'modules' => $modules,
+            'widgets' => $widgets,
         ];
     }
 
     public function left()
     {
-        $modules = $this->getModuleTypes('left');
+        $widgets = $this->getWidgetTypes('left');
 
         return [
-            'modules' => $modules,
+            'widgets' => $widgets,
         ];
     }
 
     public function feature()
     {
-        $modules = $this->getModuleTypes('feature');
+        $widgets = $this->getWidgetTypes('feature');
 
         return [
-            'modules' => $modules,
+            'widgets' => $widgets,
         ];
     }
 
     public function menu()
     {
-        $modules = $this->getModuleTypes('menu');
+        $widgets = $this->getWidgetTypes('menu');
 
         return [
-            'modules' => $modules,
+            'widgets' => $widgets,
         ];
     }
 }

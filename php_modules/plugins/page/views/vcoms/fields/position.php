@@ -11,9 +11,9 @@ $index = 0;
                 <?php if ($position->limit):?>
                 <?php endif; ?>
                 <h3><?php echo isset($position->label) ? $position->label: $position->name; ?>:</h3>
-                <div data-position_name="<?php echo $position->name?>" class="d-flex modules">
+                <div data-position_name="<?php echo $position->name?>" class="d-flex widgets">
                 </div>
-                <a data-position_name="<?php echo $position->name?>" class="new-position-module ms-2">
+                <a data-position_name="<?php echo $position->name?>" class="new-position-widget ms-2">
                     <i class="fa-solid fa-circle-plus fs-3"></i>
                 </a>
             </div>

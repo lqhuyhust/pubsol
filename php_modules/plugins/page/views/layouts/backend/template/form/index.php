@@ -55,15 +55,15 @@
         </div>
     </form>
 </div>
-<div class="modal fade" id="selectModuleType" tabindex="-1" aria-labelledby="selectModuleTypeLabel" aria-hidden="true">
+<div class="modal fade" id="selectWidgetType" tabindex="-1" aria-labelledby="selectWidgetTypeLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectModuleTypeLabel">Select Module Type</h5>
+                <h5 class="modal-title" id="selectWidgetTypeLabel">Select Widget Type</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <?php $this->ui->field('modules'); ?>
+                <?php $this->ui->field('widgets'); ?>
                 <?php $this->ui->field('id'); ?>
                 <?php $this->ui->field('position'); ?>
             </div>
@@ -74,21 +74,21 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="moduleForm" tabindex="-1" aria-labelledby="moduleFormLabel" aria-hidden="true">
+<div class="modal fade" id="widgetForm" tabindex="-1" aria-labelledby="widgetFormLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="moduleFormLabel">Module</h5>
+                <h5 class="modal-title" id="widgetFormLabel">Widget</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <iframe width="100%" style="height: 50vh" id="module_form_load" src="" frameborder="0"></iframe>
+                <iframe width="100%" style="height: 50vh" id="widget_form_load" src="" frameborder="0"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveModule">Save</button>
+                <button type="button" class="btn btn-primary" id="saveWidget">Save</button>
             </div>
         </div>
     </div>
 </div>
-<?php echo $this->render('backend.template.form.javascript', []); ?>
+<?php echo $this->render('backend.template.form.javascript'); ?>

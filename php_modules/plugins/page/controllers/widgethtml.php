@@ -12,13 +12,20 @@ namespace App\plugins\page\controllers;
 
 use SPT\Web\ControllerMVVM;
 
-class moduletext extends ControllerMVVM
+class widgethtml extends ControllerMVVM
 {
     public function detail()
     {
         $this->app->set('page', 'backend-full');
         $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.module.text.form');
+        $this->app->set('layout', 'backend.widget.html.form');
+    }
+
+    public function list()
+    {
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+        $this->app->set('layout', 'backend.widget.list');
     }
 
     public function add()
@@ -30,19 +37,19 @@ class moduletext extends ControllerMVVM
             'position_name' => $this->request->post->get('position_name', '', 'string'),
         ];
 
-        $try = $this->ModuleTextModel->add($data);
+        $try = $this->WidgetHtmlModel->add($data);
 
         if( !$try )
         {
             return $this->app->redirect(
-                $this->router->url('module/text')
+                $this->router->url('widget/html')
             );
         }
         else
         {
             $this->session->set('flashMsg', 'Create Successfully!');
             return $this->app->redirect(
-                $this->router->url('module/text/'. $try)
+                $this->router->url('widget/html/'. $try)
             );
         }
     }
@@ -61,7 +68,7 @@ class moduletext extends ControllerMVVM
                 'id' => $id,
             ];
     
-            $try = $this->ModuleTextModel->update($data);
+            $try = $this->WidgetHtmlModel->update($data);
             
             if($try) 
             {
@@ -69,13 +76,13 @@ class moduletext extends ControllerMVVM
             }
 
             return $this->app->redirect(
-                $this->router->url('module/text/'. $id)
+                $this->router->url('widget/html/'. $id)
             );
         }
 
         $this->session->set('flashMsg', 'Error: Invalid Task!');
         return $this->app->redirect(
-            $this->router->url('module/text/0')
+            $this->router->url('widget/html/0')
         );
     }
 
@@ -88,7 +95,7 @@ class moduletext extends ControllerMVVM
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->ModuleTextModel->remove( $id ) )
+                if( $this->WidgetHtmlModel->remove( $id ) )
                 {
                     $count++;
                 }
@@ -96,12 +103,11 @@ class moduletext extends ControllerMVVM
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->ModuleTextModel->remove($ids ) )
+            if( $this->WidgetHtmlModel->remove($ids ) )
             {
                 $count++;
             }
         }  
-        
 
         $this->app->set('format', 'json');
         $this->set('status' , 'success');
@@ -118,7 +124,7 @@ class moduletext extends ControllerMVVM
             $ids = $this->request->post->get('ids', [], 'array');
             if(count($ids)) return $ids;
 
-            $this->session->set('flashMsg', 'Invalid Template');
+            $this->session->set('flashMsg', 'Invalid Widget');
             return $this->app->redirect(
                 $this->router->url('templates'),
             );

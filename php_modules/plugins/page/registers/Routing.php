@@ -11,21 +11,21 @@ class Routing
         // NOW: we set default home here
         return [
             // TEMPLATE
-            'module/html' => [
+            'widget/html' => [
                 'fnc' => [
-                    'get' => 'page.modulehtml.detail',
-                    'post' => 'page.modulehtml.add',
-                    'put' => 'page.modulehtml.update',
-                    'delete' => 'page.modulehtml.delete'
+                    'get' => 'page.widgethtml.detail',
+                    'post' => 'page.widgethtml.add',
+                    'put' => 'page.widgethtml.update',
+                    'delete' => 'page.widgethtml.delete'
                 ],
                 'parameters' => ['id'],
             ],
-            'module/text' => [
+            'widget/text' => [
                 'fnc' => [
-                    'get' => 'page.moduletext.detail',
-                    'post' => 'page.moduletext.add',
-                    'put' => 'page.moduletext.update',
-                    'delete' => 'page.moduletext.delete'
+                    'get' => 'page.widgettext.detail',
+                    'post' => 'page.widgettext.add',
+                    'put' => 'page.widgettext.update',
+                    'delete' => 'page.widgettext.delete'
                 ],
                 'parameters' => ['id'],
             ],
@@ -40,9 +40,9 @@ class Routing
                     //..
                 ],
             ],
-            'template/load-module' => [
+            'template/load-widget' => [
                 'fnc' => [
-                    'get' => 'page.template.loadModule',
+                    'get' => 'page.template.loadWidget',
                 ],
                 'parameters' => ['id'],
             ],

@@ -48,7 +48,7 @@ class TemplateModel extends Base
         return $this->templates;
     }
 
-    public function getModules($id)
+    public function getWidgets($id)
     {
         if (!$id)
         {
@@ -56,7 +56,7 @@ class TemplateModel extends Base
         }
 
         $where = ['template_id' => $id];
-        $list = $this->ModuleEntity->list(0, 0, $where);
+        $list = $this->WidgetEntity->list(0, 0, $where);
         
         return $list;
     }
@@ -100,7 +100,7 @@ class TemplateModel extends Base
             return false;
         }
 
-        $this->ModuleModel->removeByTemplate($id);
+        $this->WidgetModel->removeByTemplate($id);
         
         return $this->TemplateEntity->remove($id);
     }

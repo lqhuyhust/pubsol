@@ -154,14 +154,14 @@ class template extends ControllerMVVM
         return;
     }
 
-    public function loadModule()
+    public function loadWidget()
     {
         $id = $this->validateID();
-        $modules = $this->TemplateModel->getModules($id);
+        $widgets = $this->TemplateModel->getwidgets($id);
 
         $this->app->set('format', 'json');
         $this->set('status' , 'success');
-        $this->set('list' , $modules);
+        $this->set('list' , $widgets);
         $this->set('message' , '');
         return;
     }

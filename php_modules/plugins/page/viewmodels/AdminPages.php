@@ -11,8 +11,8 @@
 
 namespace App\plugins\page\viewmodels;
 
-use SPT\View\Gui\Form;
-use SPT\View\Gui\Listing;
+use SPT\Web\Gui\Form;
+use SPT\Web\Gui\Listing;
 use SPT\Web\ViewModel;
 
 class AdminPages extends ViewModel
@@ -20,9 +20,11 @@ class AdminPages extends ViewModel
     public static function register()
     {
         return [
-            'layouts.backend.page.list',
-            'layouts.backend.page.list.row',
-            'layouts.backend.page.list.filter'
+            'layout'=>[
+                'backend.page.list',
+                'backend.page.list.row',
+                'backend.page.list.filter'
+            ]
         ];
     }
 

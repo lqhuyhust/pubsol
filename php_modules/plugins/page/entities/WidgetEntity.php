@@ -12,9 +12,9 @@ namespace App\plugins\page\entities;
 
 use SPT\Storage\DB\Entity;
 
-class ModuleEntity extends Entity
+class WidgetEntity extends Entity
 {
-    protected $table = '#__cms_modules';
+    protected $table = '#__cms_widgets';
     protected $pk = 'id';
 
     public function getFields()
@@ -40,7 +40,7 @@ class ModuleEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
-                'module_type' => [
+                'widget_type' => [
                     'type' => 'varchar',
                     'limit' => 255,
                 ],

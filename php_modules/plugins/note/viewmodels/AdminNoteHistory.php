@@ -12,7 +12,7 @@
 namespace App\plugins\note\viewmodels;
 
 use SPT\Web\ViewModel;
-use SPT\View\Gui\Form;
+use SPT\Web\Gui\Form;
 
 class AdminNoteHistory extends ViewModel
 {

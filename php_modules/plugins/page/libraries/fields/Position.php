@@ -10,7 +10,7 @@
 
 namespace App\plugins\page\libraries\fields;
 
-class Position extends \SPT\View\Gui\FieldType\Input
+class Position extends \SPT\Web\Gui\FieldType\Input
 {
     public $hub;
     public $data;

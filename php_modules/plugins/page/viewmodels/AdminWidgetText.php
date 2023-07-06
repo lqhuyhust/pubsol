@@ -12,15 +12,14 @@
 namespace App\plugins\page\viewmodels;
 
 use SPT\Web\ViewModel;
-use SPT\View\Gui\Form;
+use SPT\Web\Gui\Form;
 
-class AdminModuleHtml extends ViewModel
+class AdminWidgetText extends ViewModel
 {
     public static function register()
     {
         return [
-            'layouts.backend.module.html.form',
-            'widgets.html',
+            'layout'=>'backend.widget.text.form',
         ];
     }
 
@@ -29,7 +28,7 @@ class AdminModuleHtml extends ViewModel
         $urlVars = $this->request->get('urlVars');
         $id = $urlVars ? (int) $urlVars['id'] : 0;
 
-        $data = $id ? $this->ModuleEntity->findByPK($id) : [];
+        $data = $id ? $this->WidgetEntity->findByPK($id) : [];
 
         if ($data)
         {
@@ -54,7 +53,7 @@ class AdminModuleHtml extends ViewModel
             'title_page' => 'Template form',
             'id' => $id,
             'url' => $this->router->url(''),
-            'link_form' => $this->router->url('module/html'),
+            'link_form' => $this->router->url('widget/text'),
             'form' => $form,
             'message' => $message,
             'data' => $data,
@@ -82,9 +81,9 @@ class AdminModuleHtml extends ViewModel
                 'required' => 'required',
             ],
             'content' => [
-                'tinymce',
+                'textarea',
                 'showLabel' => false,
-                'formClass' => 'd-none',
+                'formClass' => 'form-control',
             ],
             'token' => ['hidden',
                 'default' => $this->token->value(),
@@ -92,10 +91,5 @@ class AdminModuleHtml extends ViewModel
         ];
 
         return $fields;
-    }
-
-    public function html($layoutData, $viewData)
-    {
-        return [];
     }
 }
