@@ -45,7 +45,7 @@ class TemplateEntity extends Entity
                     'type' => 'text' 
                 ],
                 'status' => [
-                    'type' => 'tinymce',
+                    'type' => 'int',
                 ],
                 'created_at' => [
                     'type' => 'datetime' 
