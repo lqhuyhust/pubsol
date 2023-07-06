@@ -33,9 +33,7 @@ class PageDispatch extends Base
         }
 
         $controller = new $controller($this->getContainer());
-        $controller->{$fName}();
-        $controller->setCurrentPlugin();
-        $controller->useDefaultTheme();
+        $controller->{$fName}(); 
 
         $fName = 'to'. ucfirst($this->app->get('format', 'html'));
 
