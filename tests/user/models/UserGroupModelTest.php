@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class UserGroupModelTest extends TestCase
 { 
+    private $UserGroupModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

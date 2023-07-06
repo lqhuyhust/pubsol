@@ -1,11 +1,13 @@
 <?php
 namespace Tests\user\viewmodels;
 
-use App\plugins\user\viewmodels\AdminUser;
+use DTM\user\viewmodels\AdminUser;
 use Tests\Test as TestCase;
 
 class AdminUserTest extends TestCase
 {
+    private $AdminUser;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

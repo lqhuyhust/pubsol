@@ -1,12 +1,14 @@
 <?php
 namespace Tests\tag\viewmodels;
 
-use App\plugins\version\viewmodels\AdminFeedback;
+use DTM\version\viewmodels\AdminFeedback;
 use SPT\View\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminFeedbackTest extends TestCase
 {
+    private $AdminFeedback;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

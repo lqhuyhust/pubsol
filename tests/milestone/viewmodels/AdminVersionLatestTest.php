@@ -1,12 +1,13 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use App\plugins\milestone\viewmodels\AdminVersionLatest;
+use DTM\milestone\viewmodels\AdminVersionLatest;
 use Tests\Test as TestCase;
 use SPT\View\Gui\Listing;
 
 class AdminVersionLatestTest extends TestCase
 {
+    private $AdminVersionLatest;
 
     protected function setUp(): void
     {

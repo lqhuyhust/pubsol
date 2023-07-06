@@ -1,11 +1,13 @@
 <?php
 namespace Tests\user\viewmodels;
 
-use App\plugins\user\viewmodels\AdminGroup;
+use DTM\user\viewmodels\AdminGroup;
 use Tests\Test as TestCase;
 
 class AdminGroupTest extends TestCase
 {
+    private $AdminGroup;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

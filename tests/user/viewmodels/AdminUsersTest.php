@@ -1,12 +1,14 @@
 <?php
 namespace Tests\user\viewmodels;
 
-use App\plugins\user\viewmodels\AdminUsers;
+use DTM\user\viewmodels\AdminUsers;
 use SPT\View\Gui\Listing;
 use Tests\Test as TestCase;
 
 class AdminUsersTest extends TestCase
 {
+    private $AdminUsers;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

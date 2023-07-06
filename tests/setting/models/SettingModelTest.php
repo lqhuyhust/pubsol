@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class SettingModelTest extends TestCase 
 { 
+    private $SettingModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

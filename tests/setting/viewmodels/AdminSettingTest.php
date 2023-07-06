@@ -1,11 +1,13 @@
 <?php
 namespace Tests\setting\viewmodels;
 
-use App\plugins\setting\viewmodels\AdminSetting;
+use DTM\setting\viewmodels\AdminSetting;
 use Tests\Test as TestCase;
 
 class AdminSettingTest extends TestCase
 {
+    private $AdminSetting;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

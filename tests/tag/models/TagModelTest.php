@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class TagModelTest extends TestCase
 { 
+    private $TagModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class VersionModelTest extends TestCase
 { 
+    private $VersionModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

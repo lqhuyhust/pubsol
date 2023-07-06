@@ -5,6 +5,8 @@ use Tests\Test as TestCase;
 
 class OptionModelTest extends TestCase 
 { 
+    private $OptionModel;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();

@@ -5,14 +5,17 @@ use Tests\Test as TestCase;
 
 class PermissionModelTest extends TestCase
 {
+    private $PermissionModel;
+    private $request;
+
     protected function setUp(): void
     {
         $app = $this->prepareApp();
         $container = $app->getContainer();
         $_SERVER['REQUEST_METHOD'] = 'get';
         $this->PermissionModel = $container->get('PermissionModel');
-        $this->user = $container->get('user');
-        $this->user->set('id', 1);
+        $user = $container->get('user');
+        $user->set('id', 1);
         $this->request = $container->get('request');
     }
 
