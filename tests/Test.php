@@ -25,7 +25,6 @@ class Test extends TestCase
         define('SPT_STORAGE_PATH', PUBLIC_PATH);
 
         require ROOT_PATH. 'vendor/autoload.php';
-        $config_file = __DIR__.'/config.php';
 
         $_SERVER['HTTP_HOST'] = 'Test';
         $_SERVER['REQUEST_URI'] = '/';
@@ -34,7 +33,7 @@ class Test extends TestCase
             new \SPT\Container\Joomla,
             PUBLIC_PATH,
             APP_PATH. 'plugins',
-            $config_file,
+            __DIR__.'/config.php',
             'App'
         );
         return static::$app;
