@@ -31,5 +31,34 @@ return [
     'js-backend' => [
         ['__domain__/assets/js/app.js', [], 'js-backend', '']
     ],
-
+    'animate-css' => [
+        ['__domain__/assets/blue/lib/animate/animate.min.css', '', 'animate-css'],
+    ],
+    'carousel-css' => [
+        ['__domain__/assets/blue/lib/owlcarousel/assets/owl.carousel.min.css', '', 'carousel-css'],
+    ],
+    'lightbox-css' => [
+        ['__domain__/assets/blue/lib/lightbox/css/lightbox.min.css', '', 'lightbox-css'],
+    ],
+    'style-css' => [
+        ['__domain__/assets/blue/css/style.css', '', 'style-css'],
+    ],
+    'wow-js' => [
+        ['__domain__/assets/blue/lib/wow/wow.min.js', '', 'wow-js'],
+    ],
+    'easing-js' => [
+        ['__domain__/assets/blue/lib/easing/easing.min.js', '', 'easing-js'],
+    ],
+    'waypoints-js' => [
+        ['__domain__/assets/blue/lib/waypoints/waypoints.min.js', '', 'waypoints-js'],
+    ],
+    'carousel-js' => [
+        ['__domain__/assets/blue/lib/owlcarousel/owl.carousel.min.js', '', 'carousel-js'],
+    ],
+    'lightbox-js' => [
+        ['__domain__/assets/blue/lib/lightbox/js/lightbox.min.js', '', 'lightbox-js'],
+    ],
+    'main-js' => [
+        ['__domain__/assets/blue/js/main.js', '', 'main-js'],
+    ],
 ];
