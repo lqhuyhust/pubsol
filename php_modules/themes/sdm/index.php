@@ -20,9 +20,9 @@ $this->theme->prepareAssets([
 </head>
 <body class="hold-transition sidebar-mini">
     <!-- Site wrapper -->
-    <?php  echo $this->render('widgets.header'); ?>
+    <?php  echo $this->renderWidget('core::header'); ?>
     <?php echo $this->theme->getBody(); ?>
-    <?php  echo $this->render('widgets.footer'); ?>
+    <?php  echo $this->renderWidget('core::footer'); ?>
             
     <?php $this->theme->echo('js', $this->url) ?> 
     <?php $this->theme->echo('inlineJs', $this->url) ?>

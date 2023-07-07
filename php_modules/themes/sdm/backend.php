@@ -25,9 +25,9 @@ $content = $this->render($this->mainLayout);
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     <div class="wrapper">
-        <?php echo $this->renderWidget('backend.sidebar'); ?>
+        <?php echo $this->renderWidget('core::backend.sidebar'); ?>
         <div class="main">
-            <?php echo $this->renderWidget('backend.header'); ?>
+            <?php echo $this->renderWidget('core::backend.header'); ?>
 
             <main class="content p-0">
                 <?php echo $content; ?>
