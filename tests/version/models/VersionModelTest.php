@@ -11,6 +11,10 @@ class VersionModelTest extends TestCase
     {
         $app = $this->prepareApp();
         $container = $app->getContainer();
+        $OptionModel = $container->get('OptionModel');
+        $OptionModel->set('version_level', 1);
+        $OptionModel->set('version_level_deep', 2);
+        
         $this->VersionModel = $container->get('VersionModel');
     }
 
