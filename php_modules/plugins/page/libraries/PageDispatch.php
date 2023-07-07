@@ -79,6 +79,7 @@ class PageDispatch extends Base
 
         $try = $contentTypes[$content_type]['fnc'];
         $try = explode('.', $try);
+        
         if(count($try) !== 3)
         {
             $this->app->raiseError('Not correct page type', 500);
