@@ -49,15 +49,16 @@ class PageDispatch extends Base
         $slug = trim($slug, '/');
         $content_type = '';
 
-        $row = $this->PageEntity->findOne(['slug' => $slug]);
-        if (!$row)
+        $currentPage = $this->PageModel->getCurrentPage($slug);
+        if (!$currentPage)
         {
             $this->app->raiseError('Invalid Request', 500);
         }
-        $this->app->set('page_id', $row['id']);
-        $this->PageModel->setTemplate($row['template_id']);
+        
+        $this->app->set('currentPage', $currentPage);
+
         // TODO: use Note2Entity
-        $content_type = $row['content_type']; 
+        $content_type = $currentPage['content_type']; 
 
         // to avoid empty notetype, let set default
 

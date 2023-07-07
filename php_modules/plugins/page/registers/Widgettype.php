@@ -7,12 +7,12 @@ class Widgettype
     {
         return [
             'html' => [
-                'path' => 'html',
+                'layout' => 'page::html',
                 'name' => 'Html',
                 'link' => 'widget/html',
             ],
             'text' => [
-                'path' => 'text',
+                'layout' => 'page::text',
                 'name' => 'Text',
                 'link' => 'widget/text',
             ],
