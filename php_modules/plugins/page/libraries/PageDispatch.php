@@ -45,7 +45,8 @@ class PageDispatch extends Base
     private function childProcess($cName, $fName)
     {
         // prepare note
-        $urlVars = $this->app->rq('urlVars');
+        $slug = $this->router->get('actualPath');
+        $slug = trim($slug, '/');
         $content_type = '';
 
         // todo check public_id
