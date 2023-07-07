@@ -45,26 +45,18 @@ class PageDispatch extends Base
     private function childProcess($cName, $fName)
     {
         // prepare note
-        $urlVars = $this->app->rq('urlVars');
+        $slug = $this->router->get('actualPath');
+        $slug = trim($slug, '/');
         $content_type = '';
 
-        // todo check public_id
-        if( isset($urlVars['slug']) )
+        $row = $this->PageEntity->findOne(['slug' => $slug]);
+        if (!$row)
         {
-            // TODO: verify note exist
-            // TODO: setup note data
-            $row = $this->PageEntity->findOne(['slug' => $urlVars['slug']]);
-            if (!$row)
-            {
-                $this->app->raiseError('Invalid Request', 500);
-            }
-            $this->app->set('page_id', $row['id']);
-            $this->PageModel->setTemplate($row['template_id']);
-            // TODO: use Note2Entity
-            $content_type = $row['content_type']; 
+            $this->app->raiseError('Invalid Request', 500);
         }
-
-        // to avoid empty notetype, let set default
+        $this->app->set('page_id', $row['id']);
+        $this->PageModel->setTemplate($row['template_id']);
+        $content_type = $row['content_type']; 
 
         $class = '';
 
