@@ -134,6 +134,7 @@ class AdminTemplate extends ViewModel
             'positions' => [
                 'App\\plugins\\page\\libraries\\fields\\Position',
                 'type' => 'position',
+                'layout' => 'page::fields.position',
                 'showLabel' => false,
                 'data' => $positionData,
                 'hub' => $positionHub
