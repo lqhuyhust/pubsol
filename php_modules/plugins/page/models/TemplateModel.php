@@ -15,7 +15,7 @@ use SPT\Container\Client as Base;
 class TemplateModel extends Base
 { 
     private $templates;
-    public function getTemplatePaths()
+    public function getPathList()
     {
         if(null === $this->templates)
         {
@@ -61,7 +61,7 @@ class TemplateModel extends Base
         return $list;
     }
     
-    public function newTemplate()
+    public function new()
     {
         $where = ['created_by' => $this->user->get('id'), 'status' => 2];
         $find = $this->TemplateEntity->findOne($where);
@@ -187,7 +187,7 @@ class TemplateModel extends Base
         $widgets = $this->getWidgets($id);
 
         $positions= [];
-        $types = $this->WidgetModel->getWidgetTypes();
+        $types = $this->WidgetModel->getTypes();
         foreach($widgets as $widget)
         {
             if (!isset($positions[$widget['position_name']]))

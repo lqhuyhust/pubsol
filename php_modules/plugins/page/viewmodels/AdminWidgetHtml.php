@@ -92,9 +92,4 @@ class AdminWidgetHtml extends ViewModel
 
         return $fields;
     }
-
-    public function html($layoutData, $viewData)
-    {
-        return [];
-    }
 }

@@ -20,12 +20,6 @@ class AdminTemplate extends ViewModel
     {
         return [
             'layout'=>'backend.template.form',
-            'vcoms.positions.header',
-            'vcoms.positions.slider',
-            'vcoms.positions.left',
-            'vcoms.positions.footer',
-            'vcoms.positions.feature',
-            'vcoms.positions.menu',
         ];
     }
 
@@ -37,7 +31,7 @@ class AdminTemplate extends ViewModel
         $newTemplate = [];
         if (!$id)
         {
-            $newTemplate = $this->TemplateModel->newTemplate();
+            $newTemplate = $this->TemplateModel->new();
         }
 
         $data = $id ? $this->TemplateEntity->findByPK($id) : $newTemplate;
@@ -50,7 +44,7 @@ class AdminTemplate extends ViewModel
         $data = $this->getItem();
         $form = new Form($this->getFormFields(), $data);
         $id = empty($data) ? 0 : $data['id'];
-        $widgets = $this->WidgetModel->getWidgetTypes();
+        $widgets = $this->WidgetModel->getTypes();
 
         return [
             'title_page' => 'Template form',
@@ -68,7 +62,7 @@ class AdminTemplate extends ViewModel
 
     public function getFormFields()
     {
-        $paths = $this->TemplateModel->getTemplatePaths();
+        $paths = $this->TemplateModel->getPathList();
         $pathOptions = [];
         $positionHub = [];
         foreach($paths as $path=>$arr)
@@ -85,7 +79,7 @@ class AdminTemplate extends ViewModel
         $positionData = empty($data) ? '' : $data['positions'];
 
         $widgetOptions = [];
-        $widgets = $this->WidgetModel->getWidgetTypes();
+        $widgets = $this->WidgetModel->getTypes();
         foreach($widgets as $key => $value)
         {
             $widgetOptions[] = [
@@ -145,72 +139,5 @@ class AdminTemplate extends ViewModel
         ];
 
         return $fields;
-    }
-
-    public function getWidgetTypes($position)
-    {
-        $page_id = $this->app->get('page_id');
-        $page = $this->PageEntity->findByPK($page_id);
-        
-        $template_id = $page['template_id'];
-
-        //find widgets
-        $widgets = $this->WidgetModel->getWidgetByPosition($template_id, $position);
-
-        return $widgets;
-    }
-
-    public function header()
-    {
-        $widgets = $this->getWidgetTypes('header');
-
-        return [
-            'widgets' => $widgets,
-        ];
-    }
-
-    public function slider()
-    {
-        $widgets = $this->getWidgetTypes('slider');
-
-        return [
-            'widgets' => $widgets,
-        ];
-    }
-
-    public function footer()
-    {
-        $widgets = $this->getWidgetTypes('footer');
-
-        return [
-            'widgets' => $widgets,
-        ];
-    }
-
-    public function left()
-    {
-        $widgets = $this->getWidgetTypes('left');
-
-        return [
-            'widgets' => $widgets,
-        ];
-    }
-
-    public function feature()
-    {
-        $widgets = $this->getWidgetTypes('feature');
-
-        return [
-            'widgets' => $widgets,
-        ];
-    }
-
-    public function menu()
-    {
-        $widgets = $this->getWidgetTypes('menu');
-
-        return [
-            'widgets' => $widgets,
-        ];
     }
 }
