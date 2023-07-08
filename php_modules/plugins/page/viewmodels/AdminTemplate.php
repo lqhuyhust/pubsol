@@ -68,7 +68,7 @@ class AdminTemplate extends ViewModel
 
     public function getFormFields()
     {
-        $paths = $this->TemplateModel->getTemplatePaths();
+        $paths = $this->TemplateModel->getPathList();
         $pathOptions = [];
         $positionHub = [];
         foreach($paths as $path=>$arr)

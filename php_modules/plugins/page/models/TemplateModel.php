@@ -15,7 +15,7 @@ use SPT\Container\Client as Base;
 class TemplateModel extends Base
 { 
     private $templates;
-    public function getTemplatePaths()
+    public function getPathList()
     {
         if(null === $this->templates)
         {
