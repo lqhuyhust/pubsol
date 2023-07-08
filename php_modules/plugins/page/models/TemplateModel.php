@@ -61,7 +61,7 @@ class TemplateModel extends Base
         return $list;
     }
     
-    public function newTemplate()
+    public function new()
     {
         $where = ['created_by' => $this->user->get('id'), 'status' => 2];
         $find = $this->TemplateEntity->findOne($where);
