@@ -8,6 +8,7 @@
                     echo $this->renderWidget($wdg['layout']);
                 }
             } ?>
+        </div>
     <!-- 
             <h1>Our Blog</h1>
          -->
