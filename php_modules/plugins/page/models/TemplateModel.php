@@ -187,7 +187,7 @@ class TemplateModel extends Base
         $widgets = $this->getWidgets($id);
 
         $positions= [];
-        $types = $this->WidgetModel->getWidgetTypes();
+        $types = $this->WidgetModel->getTypes();
         foreach($widgets as $widget)
         {
             if (!isset($positions[$widget['position_name']]))

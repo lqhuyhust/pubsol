@@ -15,7 +15,7 @@ use SPT\Container\Client as Base;
 class WidgetModel extends Base
 { 
     private $widget_types;
-    public function getWidgetTypes()
+    public function getTypes()
     {
         if(null === $this->widget_types)
         {
@@ -38,7 +38,7 @@ class WidgetModel extends Base
 
         $where = ['template_id' => $template_id, 'position_name' => $position];
         $widgets = $this->WidgetEntity->list(0, 0, $where);
-        $widget_types = $this->getWidgetTypes();
+        $widget_types = $this->getTypes();
         foreach($widgets as &$item)
         {
             $item['path'] = isset($widget_types[$item['widget_type']]) ? $widget_types[$item['widget_type']]['path'] : '';
@@ -59,7 +59,7 @@ class WidgetModel extends Base
             return false;
         }
 
-        $widget_types = $this->getWidgetTypes();
+        $widget_types = $this->getTypes();
         $widgets = $this->WidgetEntity->list(0, 0, ['template_id' => $id]);
         foreach($widgets as &$item)
         {
