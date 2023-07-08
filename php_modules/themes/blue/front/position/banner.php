@@ -1,8 +1,8 @@
-<div class="container-fluid bg-white sticky-top">
-        <div class="container">
-        <?php if(is_array($widget) && !empty($widget['menu']))
+<div class="callout large primary">
+    <div class="text-center">
+    <?php if(is_array($widget) && !empty($widget['banner']))
         {
-            foreach($widget['menu'] as $wdg)
+            foreach($widget['banner'] as $wdg)
             {   
                 $this->_view->setVar('currentWidget', $wdg);
                 echo $this->renderWidget($wdg['layout']);
