@@ -2,9 +2,9 @@
     "title": "Theme Blue: Full width two column",
     "positions":
     [
-        {"name":"header", "label": "Header", "limit": 1},
-        {"name":"slider", "label": "Slider", "limit": 5},
-        {"name":"footer", "label": "Footer", "limit": 4},
-        {"name":"left", "label": "Left", "limit": 4}
+        {"name":"top_bar", "label": "Top Bar", "limit": 2},
+        {"name":"banner", "label": "Banner", "limit": 1},
+        {"name":"footer", "label": "Footer", "limit": 3},
+        {"name":"sidebar", "label": "Sidebar Left", "limit": 2}
     ]
 }

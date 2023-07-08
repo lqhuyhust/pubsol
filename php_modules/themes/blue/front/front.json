@@ -1,0 +1,9 @@
+{
+    "title": "Theme Blue: Full width two column",
+    "positions":
+    [
+        {"name":"top_bar", "label": "Top Bar", "limit": 2},
+        {"name":"banner", "label": "Banner", "limit": 1},
+        {"name":"footer", "label": "Footer", "limit": 3}
+    ]
+}
