@@ -20,7 +20,7 @@ class TemplateModel extends Base
         if(null === $this->templates)
         {
             $this->templates = [];
-            foreach(new \DirectoryIterator(SPT_THEME_PATH.'../') as $file) 
+            foreach(new \DirectoryIterator($this->app->get('themePath')) as $file) 
             {
                 if (!$file->isDot() && $file->isDir()) 
                 {
@@ -28,10 +28,10 @@ class TemplateModel extends Base
                     $path = $file->getPath(). '/'.$template;
                     foreach(new \DirectoryIterator( $path ) as $file) 
                     {
-                        if (!$file->isDot() && $file->isFile() && $file->getExtension() == 'php') 
+                        if (!$file->isDot() && (($file->isFile() && $file->getExtension() == 'php') || ($file->isDir()))) 
                         {
                             $basename = $file->getBasename('.php');
-                            $json = $path. '/'. $basename. '.json'; 
+                            $json = $file->isDir() ? $path. '/'. $basename. '/'. $basename. '.json' : $path. '/'. $basename. '.json';
                             if(file_exists($json))
                             {
                                 $this->templates[$template.'/'. $basename] = [
@@ -180,5 +180,31 @@ class TemplateModel extends Base
         ]);
 
         return $try;
+    }
+
+    public function getWidgetPosition($id)
+    {
+        $widgets = $this->getWidgets($id);
+
+        $positions= [];
+        $types = $this->WidgetModel->getWidgetTypes();
+        foreach($widgets as $widget)
+        {
+            if (!isset($positions[$widget['position_name']]))
+            {
+                $positions[$widget['position_name']] = [];
+            }
+
+            $settings = $widget['settings'] ? json_decode($widget['settings'], true) : [];
+            foreach($settings as $key => $value)
+            {
+                $widget[$key] = $value;
+            }
+            $widget['layout'] = isset($types[$widget['widget_type']]) ? $types[$widget['widget_type']]['layout'] : '' ;
+
+            $positions[$widget['position_name']][] = $widget;
+        }
+
+        return $positions;
     }
 }

@@ -29,19 +29,13 @@ class PageModel extends Base
         return $this->types;
     }
 
-    public function setTemplate($id)
+    public function setTemplate($path)
     {
-        if (!$id)
-        {
-            return false;
-        }
-        $template = $this->TemplateEntity->findByPK($id);
-        if (!$template)
+        if (!$path)
         {
             return false;
         }
 
-        $path = $template['path'];
         $path = explode('/', $path);
         if (count($path) != 2)
         {
@@ -193,5 +187,22 @@ class PageModel extends Base
         }
 
         return $index ? $text . '-'. $index : $text;
+    }
+
+    public function getCurrentPage($slug)
+    {
+        if (!$slug) return false;
+        
+        $page = $this->PageEntity->findOne(['slug' => $slug]);
+        if (!$page) return false;
+
+        $template = $this->TemplateEntity->findByPK($page['template_id']);
+        $page['template'] = $template ? $template['path'] : '';
+        $this->setTemplate($page['template']); 
+
+        $widgetPosition = $this->TemplateModel->getWidgetPosition($page['template_id']);
+        $page['widgetPosition'] = $widgetPosition ? $widgetPosition : [];
+
+        return $page;
     }
 }

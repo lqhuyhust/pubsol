@@ -145,6 +145,10 @@ class page extends ControllerMVVM
 
     public function basic()
     {
+        $currentPage = $this->app->get('currentPage');
+        $widgetPosition = is_array($currentPage) && isset($currentPage['widgetPosition']) ? $currentPage['widgetPosition'] : [];
         $this->app->set('layout', 'frontend.page.basic');
+        $this->set('widgetPosition', $widgetPosition);
+        return true;
     }
 }
