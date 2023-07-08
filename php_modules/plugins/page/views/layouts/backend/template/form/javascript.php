@@ -108,6 +108,7 @@
             let template_id = $('#id').val();
             let widget_type = $('#widgets').val();
             $('#widgetForm').modal('show');
+            $('#selectWidgetType').modal('hide');
             var link = widgets[widget_type] ? widgets[widget_type].link: ''; 
             $('#widget_form_load').attr('src', '<?php echo $this->url;?>' + link);
         })
@@ -123,6 +124,10 @@
             $("#widget_form_load").contents().find('form#form_model #position_name').val(position)
             $("#widget_form_load").contents().find('form#form_model #submit_button').click()
         });
+
+        let key = $('#path').val();
+        $('.position-template').addClass('d-none');
+        $(`.position-template[data-template-path="${key}"]`).removeClass('d-none');
     })
     
 </script>

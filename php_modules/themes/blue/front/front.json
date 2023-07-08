@@ -1,5 +1,5 @@
 {
-    "title": "Theme Blue: Full width two column",
+    "title": "Theme Blue: Full width one column",
     "positions":
     [
         {"name":"top_bar", "label": "Top Bar", "limit": 2},
