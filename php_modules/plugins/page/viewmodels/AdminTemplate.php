@@ -37,7 +37,7 @@ class AdminTemplate extends ViewModel
         $newTemplate = [];
         if (!$id)
         {
-            $newTemplate = $this->TemplateModel->newTemplate();
+            $newTemplate = $this->TemplateModel->new();
         }
 
         $data = $id ? $this->TemplateEntity->findByPK($id) : $newTemplate;
