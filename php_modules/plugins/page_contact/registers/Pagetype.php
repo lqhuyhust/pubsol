@@ -6,10 +6,10 @@ class Pagetype
     public static function registerType()
     {
         return [
-            'basic' => [
+            'contact' => [
                 'fnc' => 'page_contact.front.display',
                 'name' => 'Contact page',
-                'namespace' => 'App\plugins\page\controllers\\',
+                'namespace' => 'App\plugins\page_contact\controllers\\',
             ],
         ];
     }
