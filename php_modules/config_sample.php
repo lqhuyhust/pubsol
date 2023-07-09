@@ -2,7 +2,8 @@
 
 return [ 
     'subpath' => '',
-    'defaultTheme' => 'green',
+    'defaultTheme' => 'blue',
+    'adminTheme' => 'admin',
     'secrect' => 'sid', 
     'expireSessionDuration' => 60,
     'defaultEndpoint' => [
