@@ -48,8 +48,7 @@ class PageDispatch extends Base
     {
         // prepare note
         $slug = $this->router->get('actualPath');
-        $slug = trim($slug, '/');
-        $page_type = '';
+        $slug = trim($slug, '/'); 
 
         $currentPage = $this->PageModel->getCurrentPage($slug);
         if (!$currentPage)
@@ -57,35 +56,11 @@ class PageDispatch extends Base
             $this->app->raiseError('Invalid Request', 500);
         }
         
-        $this->app->set('currentPage', $currentPage);
-
-        // TODO: use Note2Entity
-        $page_type = $currentPage['page_type']; 
-
-        // to avoid empty notetype, let set default
-
-        $class = '';
-
-        $pageTypes = $this->PageModel->getPageTypes();
-
-        if(empty($pageTypes[$page_type]) )
-        {
-            $this->app->raiseError('Invalid Page type '.$page_type);
-        }
-        else
-        {
-            $class = $pageTypes[$page_type]['namespace'];
-        } 
-
-        $this->app->set('page_type', $page_type);
-
-        $try = $pageTypes[$page_type]['fnc'];
-        $try = explode('.', $try);
+        $this->app->set('object', $currentPage);
         
-        if(count($try) !== 3)
-        {
-            $this->app->raiseError('Not correct page type', 500);
-        }
+        $class = $currentPage['type']['namespace'];
+        $try = $currentPage['type']['fnc'];
+        $try = explode('.', $try);
 
         list($plgName, $cName, $fName) = $try;
 
@@ -99,6 +74,7 @@ class PageDispatch extends Base
         
         $controller->{$fName}();
         $controller->setCurrentPlugin($plgName);
+        $controller->set('widgetPosition', $currentPage['widgetPosition']);
 
         $fName = 'to'. ucfirst($this->app->get('format', 'html'));
 

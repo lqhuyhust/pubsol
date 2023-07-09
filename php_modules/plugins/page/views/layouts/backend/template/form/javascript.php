@@ -57,9 +57,8 @@
         });
 
         $('.widgets .button-remove-widget').on('click', function(e){
-            var result = confirm("You are going to delete 1 widget. Are you sure ?");
-            e.preventDefault();
-            console.log('true');
+            var result = confirm("You are going to delete a widget. This can't be recovered!");
+            e.preventDefault(); 
             if (result) {
                 let id = $(this).data('id');
                 let widget_type = $(this).data('type');
@@ -77,12 +76,12 @@
                         var list = '';
                         if (resultData.status == 'success')
                         {
-                            alert('Delete successfully');
+                            alert('Widget get removed successfully');
                             loadWidget();
                         }
                         else
                         {
-                            alert('Delete Failed');
+                            alert("Widget can't removed");
                         }
                     }
                 });
@@ -90,6 +89,13 @@
             return true;
         });
     }
+
+    function closeFrame(wdg)
+    {
+        $('#widgetForm').modal('hide');
+        console.log('closeFrame', wdg);
+    }
+
     $(document).ready(function(){
         loadWidget();
         $('#path').on('change', function(){

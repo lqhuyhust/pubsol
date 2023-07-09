@@ -20,8 +20,8 @@ class WidgetModel extends Base
         if(null === $this->widget_types)
         {
             $widget_types = [];
-            $this->app->familyLoad('widgettype', 'registerType', function($types) use (&$widget_types) {
-                $widget_types = array_merge($types, $widget_types);
+            $this->app->plgLoad('widgettype', 'registerType', function($types) use (&$widget_types) {
+                $widget_types += $types;
             });
 
             $this->widget_types = $widget_types;

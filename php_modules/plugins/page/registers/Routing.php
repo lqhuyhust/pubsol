@@ -7,28 +7,8 @@ class Routing
 {
     public static function registerEndpoints()
     {
-        // TODO: should register home follow configuration and add it here
-        // NOW: we set default home here
         return [
-            // TEMPLATE
-            'widget/html' => [
-                'fnc' => [
-                    'get' => 'page.widgethtml.detail',
-                    'post' => 'page.widgethtml.add',
-                    'put' => 'page.widgethtml.update',
-                    'delete' => 'page.widgethtml.delete'
-                ],
-                'parameters' => ['id'],
-            ],
-            'widget/text' => [
-                'fnc' => [
-                    'get' => 'page.widgettext.detail',
-                    'post' => 'page.widgettext.add',
-                    'put' => 'page.widgettext.update',
-                    'delete' => 'page.widgettext.delete'
-                ],
-                'parameters' => ['id'],
-            ],
+            // TEMPLATE 
             'templates' => [
                 'fnc' => [
                     'get' => 'page.template.list',

@@ -44,6 +44,9 @@ class WidgetEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
+                'content' => [
+                    'type'=>'text'
+                ],
                 'created_at' => [
                     'type' => 'datetime' 
                 ],

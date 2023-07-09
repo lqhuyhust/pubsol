@@ -20,8 +20,8 @@ class PageModel extends Base
         if(null === $this->types)
         {
             $types = [];
-            $this->app->familyLoad('Pagetype', 'registerType', function($items) use (&$types) {
-                $types = array_merge($items, $types);
+            $this->app->childLoad('Pagetype', 'registerType', function($items) use (&$types) {
+                $types += $items;
             });
 
             $this->types = $types;
@@ -189,12 +189,15 @@ class PageModel extends Base
         return $index ? $text . '-'. $index : $text;
     }
 
-    public function getCurrentPage($slug)
-    {
-        if (!$slug) return false;
-        
+    public function getCurrentPage(string $slug)
+    {   
         $page = $this->PageEntity->findOne(['slug' => $slug]);
         if (!$page) return false;
+
+        $types = $this->getPageTypes();
+        if (empty($types[$page['page_type']]) ) return false;
+
+        $page['type'] = $types[$page['page_type']];
 
         $template = $this->TemplateEntity->findByPK($page['template_id']);
         $page['template'] = $template ? $template['path'] : '';
