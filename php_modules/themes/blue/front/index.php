@@ -14,10 +14,9 @@ $widget = $this->_view->getVar('widgetPosition');
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SDM</title>
+    <title><?php echo $this->ui->title() ?></title>
     <?php $this->theme->echo('css', $this->url()) ?>
     <?php $this->theme->echo('inlineCss', $this->url()) ?>
-    <!-- optional CDN for Foundation Icons ^^ -->
 </head>
 
 <body>
