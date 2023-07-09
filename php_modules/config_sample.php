@@ -2,9 +2,8 @@
 
 return [ 
     'subpath' => '',
-    'defaultTheme' => 'sdm',
-    'secrect' => 'sid',
-    'master'=>'dtm',
+    'defaultTheme' => 'green',
+    'secrect' => 'sid', 
     'expireSessionDuration' => 60,
     'defaultEndpoint' => [
         'fnc' => 'milestone.milestone.list'
