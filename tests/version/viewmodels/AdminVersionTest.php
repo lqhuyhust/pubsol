@@ -1,5 +1,5 @@
 <?php
-namespace Tests\tag\viewmodels;
+namespace Tests\version\viewmodels;
 
 use DTM\version\viewmodels\AdminVersion;
 use SPT\Web\Gui\Listing;
