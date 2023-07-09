@@ -27,7 +27,7 @@ class widgettext extends ControllerMVVM
             'title' => $this->request->post->get('title', '', 'string'),
             'content' => $this->request->post->get('content', '', 'string'),
             'template_id' => $this->request->post->get('template_id', 0, 'int'),
-            'position_name' => $this->request->post->get('position_name', '', 'string'),
+            'position' => $this->request->post->get('position', '', 'string'),
         ];
 
         $try = $this->WidgetTextModel->add($data);
@@ -57,7 +57,7 @@ class widgettext extends ControllerMVVM
                 'title' => $this->request->post->get('title', '', 'string'),
                 'content' => $this->request->post->get('content', '', 'string'),
                 'template_id' => $this->request->post->get('template_id', 0, 'int'),
-                'position_name' => $this->request->post->get('position_name', '', 'string'),
+                'position' => $this->request->post->get('position', '', 'string'),
                 'id' => $id,
             ];
     

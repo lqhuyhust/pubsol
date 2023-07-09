@@ -70,7 +70,7 @@ class AdminWidgetHtml extends ViewModel
             'template_id' => [
                 'hidden',
             ],
-            'position_name' => [
+            'position' => [
                 'hidden',
             ],
             'title' => [

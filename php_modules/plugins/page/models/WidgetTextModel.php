@@ -27,7 +27,7 @@ class WidgetTextModel extends Base
             return false;
         }
 
-        if (!isset($data['template_id']) || !isset($data['position_name']))
+        if (!isset($data['template_id']) || !isset($data['position']))
         {
             $this->session->set('flashMsg', 'Invalid Template or Position');
             return false;
@@ -51,7 +51,7 @@ class WidgetTextModel extends Base
             'settings' => $settings,
             'widget_type' => 'text',
             'template_id' => $data['template_id'],
-            'position_name' => $data['position_name'],
+            'position' => $data['position'],
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
             'locked_at' => date('Y-m-d H:i:s'),

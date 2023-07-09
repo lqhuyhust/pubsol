@@ -35,7 +35,7 @@ class page extends ControllerMVVM
             'template_id' => $this->request->post->get('template_id', '', 'string'),
             'title' => $this->request->post->get('title', '', 'string'),
             'slug' => $this->request->post->get('slug', '', 'string'),
-            'content_type' => $this->request->post->get('content_type', '', 'string'),
+            'page_type' => $this->request->post->get('page_type', '', 'string'),
         ];
 
         $try = $this->PageModel->add($data);
@@ -67,7 +67,7 @@ class page extends ControllerMVVM
                 'title' => $this->request->post->get('title', '', 'string'),
                 'slug' => $this->request->post->get('slug', '', 'string'),
                 'template_id' => $this->request->post->get('template_id', '', 'string'),
-                'content_type' => $this->request->post->get('content_type', '', 'string'),
+                'page_type' => $this->request->post->get('page_type', '', 'string'),
                 'id' => $id,
             ];
             

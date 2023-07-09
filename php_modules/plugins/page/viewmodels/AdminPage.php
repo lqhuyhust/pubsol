@@ -63,9 +63,9 @@ class AdminPage extends ViewModel
             ];
         }
 
-        $content_type = $this->PageModel->getContentTypes();
+        $page_type = $this->PageModel->getPageTypes();
         $typeOptions = [];
-        foreach($content_type as $key => $value)
+        foreach($page_type as $key => $value)
         {
             $typeOptions[] = [
                 'text' => $value['name'],
@@ -99,7 +99,7 @@ class AdminPage extends ViewModel
                 'placeholder' => 'auto generate slug',
                 'formClass' => 'form-control',
             ],
-            'content_type' => [
+            'page_type' => [
                 'option',
                 'type' => 'select',
                 'formClass' => 'form-select',

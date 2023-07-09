@@ -190,9 +190,9 @@ class TemplateModel extends Base
         $types = $this->WidgetModel->getTypes();
         foreach($widgets as $widget)
         {
-            if (!isset($positions[$widget['position_name']]))
+            if (!isset($positions[$widget['position']]))
             {
-                $positions[$widget['position_name']] = [];
+                $positions[$widget['position']] = [];
             }
 
             $settings = $widget['settings'] ? json_decode($widget['settings'], true) : [];
@@ -202,7 +202,7 @@ class TemplateModel extends Base
             }
             $widget['layout'] = isset($types[$widget['widget_type']]) ? $types[$widget['widget_type']]['layout'] : '' ;
 
-            $positions[$widget['position_name']][] = $widget;
+            $positions[$widget['position']][] = $widget;
         }
 
         return $positions;

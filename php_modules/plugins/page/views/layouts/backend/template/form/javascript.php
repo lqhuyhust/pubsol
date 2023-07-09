@@ -12,9 +12,9 @@
                 {
                     $('.position-template .widgets').html('');
                     resultData.list.forEach(function(item) {
-                        if (item.position_name)
+                        if (item.position)
                         {
-                            $(`.position-item[data-position_name=${item.position_name}]`).each(function(index){
+                            $(`.position-item[data-position=${item.position}]`).each(function(index){
                                 var count = $(this).find(`.button-widget`).length;
                                 var limit = $(this).data('limit');
                                 count++;
@@ -32,7 +32,7 @@
                                 }
                                 
                                 var html = `<div class="mx-3 mb-1 position-relative">
-                                    <button data-position="${item.position_name}" data-id="${item.id}" data-type="${item.widget_type}" type="button" class="btn btn-primary button-widget">${item.title}</button>
+                                    <button data-position="${item.position}" data-id="${item.id}" data-type="${item.widget_type}" type="button" class="btn btn-primary button-widget">${item.title}</button>
                                     <button data-id="${item.id}" data-type="${item.widget_type}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger button-remove-widget"><i class="fa-solid fa-minus"></i></button>
                                 </div>`;
                                 $(this).find(`.widgets`).append(html);
@@ -99,7 +99,7 @@
         })
 
         $('.new-position-widget').on('click', function(){
-            let position = $(this).data('position_name');
+            let position = $(this).data('position');
             $('#position').val(position);
             $('#selectWidgetType').modal('show');
         });
@@ -121,7 +121,7 @@
             let position = $('#position').val();
             console.log(template_id, position);
             $("#widget_form_load").contents().find('form#form_model #template_id').val(template_id)
-            $("#widget_form_load").contents().find('form#form_model #position_name').val(position)
+            $("#widget_form_load").contents().find('form#form_model #position').val(position)
             $("#widget_form_load").contents().find('form#form_model #submit_button').click()
         });
 

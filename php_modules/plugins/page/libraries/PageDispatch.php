@@ -49,7 +49,7 @@ class PageDispatch extends Base
         // prepare note
         $slug = $this->router->get('actualPath');
         $slug = trim($slug, '/');
-        $content_type = '';
+        $page_type = '';
 
         $currentPage = $this->PageModel->getCurrentPage($slug);
         if (!$currentPage)
@@ -60,26 +60,26 @@ class PageDispatch extends Base
         $this->app->set('currentPage', $currentPage);
 
         // TODO: use Note2Entity
-        $content_type = $currentPage['content_type']; 
+        $page_type = $currentPage['page_type']; 
 
         // to avoid empty notetype, let set default
 
         $class = '';
 
-        $contentTypes = $this->PageModel->getContentTypes();
+        $pageTypes = $this->PageModel->getPageTypes();
 
-        if(empty($contentTypes[$content_type]) )
+        if(empty($pageTypes[$page_type]) )
         {
-            $this->app->raiseError('Invalid Page type '.$content_type);
+            $this->app->raiseError('Invalid Page type '.$page_type);
         }
         else
         {
-            $class = $contentTypes[$content_type]['namespace'];
+            $class = $pageTypes[$page_type]['namespace'];
         } 
 
-        $this->app->set('content_type', $content_type);
+        $this->app->set('page_type', $page_type);
 
-        $try = $contentTypes[$content_type]['fnc'];
+        $try = $pageTypes[$page_type]['fnc'];
         $try = explode('.', $try);
         
         if(count($try) !== 3)

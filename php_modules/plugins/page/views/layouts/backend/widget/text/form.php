@@ -20,7 +20,7 @@
                     </div>
                     <?php $this->ui->field('id'); ?>
                     <?php $this->ui->field('template_id'); ?>
-                    <?php $this->ui->field('position_name'); ?>
+                    <?php $this->ui->field('position'); ?>
                 </div>
                 
                 <div class="col-6 text-end pe-0 ">

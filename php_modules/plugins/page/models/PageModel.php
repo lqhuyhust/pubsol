@@ -15,12 +15,12 @@ use SPT\Container\Client as Base;
 class PageModel extends Base
 { 
     private $types;
-    public function getContentTypes()
+    public function getPageTypes()
     {
         if(null === $this->types)
         {
             $types = [];
-            $this->app->familyLoad('contenttype', 'registerType', function($items) use (&$types) {
+            $this->app->familyLoad('Pagetype', 'registerType', function($items) use (&$types) {
                 $types = array_merge($items, $types);
             });
 
@@ -108,7 +108,7 @@ class PageModel extends Base
             'template_id' => $data['template_id'],
             'slug' => $data['slug'],
             'permission' => '',
-            'content_type' => $data['content_type'],
+            'page_type' => $data['page_type'],
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
             'locked_at' => date('Y-m-d H:i:s'),
@@ -131,7 +131,7 @@ class PageModel extends Base
             'template_id' => $data['template_id'],
             'slug' => $data['slug'],
             'permission' => '',
-            'content_type' => $data['content_type'],
+            'page_type' => $data['page_type'],
             'id' => $data['id'],
         ]);
 

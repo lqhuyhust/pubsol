@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\page\registers;
+namespace App\plugins\widget_html\registers;
 
 class Widgettype
 {
@@ -10,12 +10,7 @@ class Widgettype
                 'layout' => 'page::html',
                 'name' => 'Html',
                 'link' => 'widget/html',
-            ],
-            'text' => [
-                'layout' => 'page::text',
-                'name' => 'Text',
-                'link' => 'widget/text',
-            ],
+            ]
         ];
     }
 }

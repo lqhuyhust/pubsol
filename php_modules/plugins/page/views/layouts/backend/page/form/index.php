@@ -13,7 +13,7 @@
                         <?php $this->ui->field('template_id'); ?>
                     </div>
                     <div class="col-12 pt-2">
-                        <?php $this->ui->field('content_type'); ?>
+                        <?php $this->ui->field('page_type'); ?>
                     </div>
                 </div>
             </div>

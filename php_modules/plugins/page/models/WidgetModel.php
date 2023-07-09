@@ -36,7 +36,7 @@ class WidgetModel extends Base
             return false;
         }
 
-        $where = ['template_id' => $template_id, 'position_name' => $position];
+        $where = ['template_id' => $template_id, 'position' => $position];
         $widgets = $this->WidgetEntity->list(0, 0, $where);
         $widget_types = $this->getTypes();
         foreach($widgets as &$item)

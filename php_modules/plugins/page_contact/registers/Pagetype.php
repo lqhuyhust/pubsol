@@ -1,14 +1,14 @@
 <?php
-namespace App\plugins\page\registers;
+namespace App\plugins\page_contact\registers;
 
-class Contenttype
+class Pagetype
 {
     public static function registerType()
     {
         return [
             'basic' => [
-                'fnc' => 'page.page.basic',
-                'name' => 'Basic',
+                'fnc' => 'page_contact.front.display',
+                'name' => 'Contact page',
                 'namespace' => 'App\plugins\page\controllers\\',
             ],
         ];

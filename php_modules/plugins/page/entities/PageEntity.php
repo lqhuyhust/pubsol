@@ -33,7 +33,7 @@ class PageEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
-                'content_type' => [
+                'page_type' => [
                     'type' => 'varchar',
                     'limit' => 255,
                 ],

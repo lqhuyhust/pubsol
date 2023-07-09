@@ -36,7 +36,7 @@ class WidgetEntity extends Entity
                 'template_id' => [
                     'type' => 'int'
                 ],
-                'position_name' => [
+                'position' => [
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
