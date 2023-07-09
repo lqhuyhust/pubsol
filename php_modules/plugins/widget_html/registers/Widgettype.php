@@ -7,7 +7,7 @@ class Widgettype
     {
         return [
             'html' => [
-                'layout' => 'page::html',
+                'layout' => 'widget_html::html',
                 'name' => 'Html',
                 'link' => 'widget/html',
             ]
