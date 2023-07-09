@@ -33,7 +33,9 @@ class PageDispatch extends Base
         }
 
         $controller = new $controller($this->getContainer());
-        $controller->{$fName}(); 
+        $controller->{$fName}();
+
+        $this->app->set('theme', $this->app->cf('adminTheme'));
 
         $fName = 'to'. ucfirst($this->app->get('format', 'html'));
 
