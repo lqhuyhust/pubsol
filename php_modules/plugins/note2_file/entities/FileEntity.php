@@ -36,15 +36,7 @@ class FileEntity extends Entity
                 'type' => [
                     'type' => 'varchar',
                     'limit' => 45,
-                ]/*
-                'uploaded_at' => [
-                    'type' => 'datetime',
-                    'null' => 'YES',
-                ],
-                'uploaded_by' => [
-                    'type' => 'int',
-                    'option' => 'unsigned',
-                ]*/
+                ]
         ];
     }
 }

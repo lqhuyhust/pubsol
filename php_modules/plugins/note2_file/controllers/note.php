@@ -24,19 +24,6 @@ class note extends NoteController
 
     public function detail()
     {
-        
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-
-        $exist = $this->NoteEntity->findByPK($id);
-
-        if(!empty($id) && !$exist)
-        {
-            $this->session->set('flashMsg', "Invalid note");
-            return $this->app->redirect(
-                $this->router->url('notes')
-            );
-        }
         $this->app->set('layout', 'backend.note.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
@@ -44,30 +31,9 @@ class note extends NoteController
 
     public function preview()
     {
-        
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-
-        $exist = $this->NoteEntity->findByPK($id);
-
-        if(!$exist)
-        {
-            $this->session->set('flashMsg', "Invalid note");
-            return $this->app->redirect(
-                $this->router->url('notes')
-            );
-        }
         $this->app->set('layout', 'backend.note.preview');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
-    }
-
-
-    public function list()
-    {
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.note.list');
     }
 
     public function add()
@@ -77,9 +43,7 @@ class note extends NoteController
             'title' => $this->request->post->get('title', '', 'string'),
             'tags' => $this->request->post->get('tags', '', 'string'),
             'description' => $this->request->post->get('description', '', 'string'),
-            'description_sheetjs' => $this->request->post->get('description_sheetjs', '', 'string'),
-            'description_presenter' => $this->request->post->get('description_presenter', '', 'string'),
-            'files' => $this->request->file->get('files', [], 'array'),
+            'file' => $this->request->file->get('file', [], 'array'),
             'note' => $this->request->post->get('note', '', 'string'),
             'type' => $this->request->post->get('type', 'html', 'string'),
         ];

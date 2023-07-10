@@ -5,7 +5,7 @@
             <div id="col-8" class="col-lg-8 col-sm-12">
                 <input id="input_title" type="hidden" class="d-none" name="title" required>
                 <label class="form-label fw-bold pt-2">File:</label>
-                <input name="files[]" type="file" multiple id="file" class="form-control">
+                <input name="file" type="file" id="file" class="form-control">
                 <label class="form-label fw-bold">Notice:</label>
                 <?php $this->ui->field('note'); ?>
             </div>
