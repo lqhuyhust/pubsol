@@ -1,0 +1,37 @@
+<script>
+     $(document).ready(function(e) {
+        var editor = '<?php echo $this->data ? $this->data['type'] : $this->type ?>';
+        
+        $(".btn_save_close").click(function(e) {
+            e.preventDefault();
+            $("#save_close").val(1);
+            $('input#input_title').val($('input#title').val());
+            if (!$('input#title').val())
+            {
+                alert("Please enter a valid Title");
+                $('html, body').animate({
+                    scrollTop: 0
+                });
+                $('input#title').focus();
+                return false;
+            }
+            $('#form_submit').submit();
+        });
+
+        $(".btn_apply").click(function(e) {
+            e.preventDefault();
+            $("#save_close").val(0);
+            $('input#input_title').val($('input#title').val());
+            if (!$('input#title').val())
+            {
+                alert("Please enter a valid Title");
+                $('html, body').animate({
+                    scrollTop: 0
+                });
+                $('input#title').focus();
+                return false;
+            }
+            $('#form_submit').submit();
+        });
+    });
+</script>

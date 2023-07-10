@@ -33,10 +33,6 @@ class FileEntity extends Entity
                 'path' => [
                     'type' => 'text'
                 ],
-                'type' => [
-                    'type' => 'varchar',
-                    'limit' => 45,
-                ]
         ];
     }
 }
