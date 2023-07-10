@@ -17,48 +17,48 @@ class TemplateModel extends Base
     private $templates;
     public function getPathList($themePath = '', $subPath = '')
     {
-        if ($this->templates) return $this->templates;
+        if ($this->templates)
+        {
+            return $this->templates;
+        }
 
         $themePath = $themePath ? $themePath : $this->app->get('themePath');
         $templates = [];
         foreach(new \DirectoryIterator($themePath) as $file) 
         {
-            $basename = $file->getBasename('.php');
+            $template = $file->getBasename();
+            $path = $file->getPath(). '/'.$template;
 
-            if (!$file->isDot() && $file->isDir())
+            if ($file->isDir())
             {
-                $path = $file->getPath() . '/'. $basename;
-            }
-            elseif(!$file->isDot() && $file->isFile() && $file->getExtension() == 'php')
-            {
-                $path =  $file->getPath();
+                $basename = $file->getBasename('.php');
+                $json = $path . '/'. $basename. '.json';
             }
             else
             {
-                continue;
+                
             }
 
-            $json = $path . '/'. $basename. '.json';
-            $template = $subPath ? $subPath.'/'. $basename : $basename;
-
-            if (file_exists($json))
+            if (!$file->isDot() && (($file->isFile() && $file->getExtension() == 'php') || ($file->isDir()))) 
             {
-                $templates[$template] = [
-                    $template,
-                    $basename,
-                    json_decode(file_get_contents($json) )
-                ];
-            }
-            else
-            {
-                if ($file->isDir())
+                $basename = $file->getBasename('.php');
+                $json = $file->isDir() ? $path. '/'. $basename. '/'. $basename. '.json' : $path. '/'. $basename. '.json';
+                if(file_exists($json))
                 {
-                    $templates = array_merge($templates, $this->getPathList($path, $template));
+                    $templates[$template.'/'. $basename] = [
+                        $template,
+                        $basename,
+                        json_decode(file_get_contents($json) )
+                    ];
+                }
+                elseif($file->isDir())
+                {
+                    $templates = array_merge($this->getPathList($path, $template), $templates);
                 }
             }
         }
 
-        if (!$subPath) 
+        if (!$subPath)
         {
             $this->templates = $templates;
         }
@@ -208,9 +208,9 @@ class TemplateModel extends Base
         $types = $this->WidgetModel->getTypes();
         foreach($widgets as $widget)
         {
-            if (!isset($positions[$widget['position']]))
+            if (!isset($positions[$widget['position_name']]))
             {
-                $positions[$widget['position']] = [];
+                $positions[$widget['position_name']] = [];
             }
 
             $settings = $widget['settings'] ? json_decode($widget['settings'], true) : [];
@@ -220,7 +220,7 @@ class TemplateModel extends Base
             }
             $widget['layout'] = isset($types[$widget['widget_type']]) ? $types[$widget['widget_type']]['layout'] : '' ;
 
-            $positions[$widget['position']][] = $widget;
+            $positions[$widget['position_name']][] = $widget;
         }
 
         return $positions;
