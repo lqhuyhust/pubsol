@@ -15,37 +15,55 @@ use SPT\Container\Client as Base;
 class TemplateModel extends Base
 { 
     private $templates;
-    public function getPathList()
+    public function getPathList($themePath = '', $subPath = '')
     {
-        if(null === $this->templates)
+        if ($this->templates) return $this->templates;
+
+        $themePath = $themePath ? $themePath : $this->app->get('themePath');
+        $templates = [];
+        foreach(new \DirectoryIterator($themePath) as $file) 
         {
-            $this->templates = [];
-            foreach(new \DirectoryIterator($this->app->get('themePath')) as $file) 
+            $basename = $file->getBasename('.php');
+
+            if (!$file->isDot() && $file->isDir())
             {
-                if (!$file->isDot() && $file->isDir()) 
+                $path = $file->getPath() . '/'. $basename;
+            }
+            elseif(!$file->isDot() && $file->isFile() && $file->getExtension() == 'php')
+            {
+                $path =  $file->getPath();
+            }
+            else
+            {
+                continue;
+            }
+
+            $json = $path . '/'. $basename. '.json';
+            $template = $subPath ? $subPath.'/'. $basename : $basename;
+
+            if (file_exists($json))
+            {
+                $templates[$template] = [
+                    $template,
+                    $basename,
+                    json_decode(file_get_contents($json) )
+                ];
+            }
+            else
+            {
+                if ($file->isDir())
                 {
-                    $template = $file->getBasename();
-                    $path = $file->getPath(). '/'.$template;
-                    foreach(new \DirectoryIterator( $path ) as $file) 
-                    {
-                        if (!$file->isDot() && (($file->isFile() && $file->getExtension() == 'php') || ($file->isDir()))) 
-                        {
-                            $basename = $file->getBasename('.php');
-                            $json = $file->isDir() ? $path. '/'. $basename. '/'. $basename. '.json' : $path. '/'. $basename. '.json';
-                            if(file_exists($json))
-                            {
-                                $this->templates[$template.'/'. $basename] = [
-                                    $template,
-                                    $basename,
-                                    json_decode(file_get_contents($json) )
-                                ];
-                            }
-                        }
-                    }
+                    $templates = array_merge($templates, $this->getPathList($path, $template));
                 }
             }
         }
-        return $this->templates;
+
+        if (!$subPath) 
+        {
+            $this->templates = $templates;
+        }
+
+        return $templates;
     }
 
     public function getWidgets($id)
