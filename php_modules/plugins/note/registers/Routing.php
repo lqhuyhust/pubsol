@@ -63,6 +63,7 @@ class Routing
                     'get' => ['note_manager', 'note_read'],
                 ],
             ],
+            // Conflict note2/detail in note2 Routing
             // 'note' => [
             //     'fnc' => [
             //         'get' => 'note.note.detail',
