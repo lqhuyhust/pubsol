@@ -29,9 +29,9 @@ class NoteFileModel extends Base
             return [];
         }
 
-        $file = $this->Note2Entity->findOne('note_id', $id);
+        $file = $this->FileEntity->findOne(['note_id' => $id]);
         $note['path'] = $file ? $file['path'] : '';
-        $note['type'] = $file ? $file['type'] : '';
+        $note['file_type'] = $file ? $file['file_type'] : '';
 
         return $note;
     }
@@ -88,7 +88,7 @@ class NoteFileModel extends Base
         }
 
         $file_name = $this->upload($data['file']);
-        if ($file_name)
+        if (!$file_name)
         {
             $this->error = 'Upload Failed';
             return false;
@@ -101,6 +101,7 @@ class NoteFileModel extends Base
             'data' => '',
             'tags' => '',
             'type' => 'file',
+            'parent_id' => 0,
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
@@ -110,12 +111,16 @@ class NoteFileModel extends Base
 
         if ($newId)
         {
+            $file_type = explode('.', $file_name);
+            $file_type = strtolower(end($file_type));
+
             $try = $this->FileEntity->add([
                 'note_id' => $newId,
                 'path' => 'media/attachments/' . date('Y/m/d'). '/'. $file_name,
+                'file_type' => $file_type,
             ]);
 
-            if ($try)
+            if (!$try)
             {
                 $this->error = 'Error: Can\'t create the record.';
                 return false;
@@ -196,22 +201,13 @@ class NoteFileModel extends Base
         return $try;
     }
 
-    public function getData($id)
-    {
-        $widget = $this->WidgetEntity->findByPK($id);
-        $settings = $widget['settings'] ? json_decode($widget['settings'], true) : [];
-        $widget['content'] = isset($settings['content']) ? $settings['content'] : '';
-
-        return $widget;
-    }
-
     public function createFolderSave($dir = '')
     {
         if (!$dir) {
-            $dir = MEDIA_PATH . 'attachments';
+            $dir = MEDIA_PATH ;
         }
 
-        foreach ([date('Y'), date('m'), date('d')] as $item) 
+        foreach (['attachments', date('Y'), date('m'), date('d')] as $item) 
         {
             $dir .= '/' . $item;
 
