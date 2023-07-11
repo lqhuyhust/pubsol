@@ -58,7 +58,7 @@ class NoteFileModel extends Base
                 return false;
             }
 
-            if ($this->config->exits('extensionAllow') && $this->config->extensionAllow &&  is_array($this->config->extensionAllow)) 
+            if ($this->config->exists('extensionAllow') && $this->config->extensionAllow &&  is_array($this->config->extensionAllow)) 
             {
                 $extension = explode('.', $data['file']['name']);
                 $extension = end($extension);
