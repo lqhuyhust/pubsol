@@ -14,9 +14,9 @@ class SettingModelTest extends TestCase
         $this->SettingModel = $container->get('SettingModel');
     }
 
-    public function testGetSetting()
+    public function testGetTypes()
     {
-        $try = $this->SettingModel->getSetting();
+        $try = $this->SettingModel->getTypes();
         $this->assertIsArray($try);
     }
 }
