@@ -194,7 +194,7 @@ class NoteFileModel extends Base
         $file = $this->FileEntity->findOne(['note_id' => $id]);
         if ($file)
         {
-            $this->fileEntity->remove($file['id']);
+            $this->FileEntity->remove($file['id']);
         }
 
         $try = $this->Note2Entity->remove($id);
