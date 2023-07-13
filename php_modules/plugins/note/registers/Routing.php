@@ -63,21 +63,22 @@ class Routing
                     'get' => ['note_manager', 'note_read'],
                 ],
             ],
-            'note' => [
-                'fnc' => [
-                    'get' => 'note.note.detail',
-                    'post' => 'note.note.add',
-                    'put' => 'note.note.update',
-                    'delete' => 'note.note.delete'
-                ],
-                'parameters' => ['id'],
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                    'post' => ['note_manager', 'note_create'],
-                    'put' => ['note_manager', 'note_update'],
-                    'delete' => ['note_manager', 'note_delete']
-                ],
-            ],
+            // Conflict note2/detail in note2 Routing
+            // 'note' => [
+            //     'fnc' => [
+            //         'get' => 'note.note.detail',
+            //         'post' => 'note.note.add',
+            //         'put' => 'note.note.update',
+            //         'delete' => 'note.note.delete'
+            //     ],
+            //     'parameters' => ['id'],
+            //     'permission' => [
+            //         'get' => ['note_manager', 'note_read'],
+            //         'post' => ['note_manager', 'note_create'],
+            //         'put' => ['note_manager', 'note_update'],
+            //         'delete' => ['note_manager', 'note_delete']
+            //     ],
+            // ],
             'tag' => [
                 'fnc' => [
                     'get' => 'note.tag.list',

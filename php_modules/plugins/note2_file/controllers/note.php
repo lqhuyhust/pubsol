@@ -24,50 +24,16 @@ class note extends NoteController
 
     public function detail()
     {
-        
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-
-        $exist = $this->NoteEntity->findByPK($id);
-
-        if(!empty($id) && !$exist)
-        {
-            $this->session->set('flashMsg', "Invalid note");
-            return $this->app->redirect(
-                $this->router->url('notes')
-            );
-        }
-        $this->app->set('layout', 'backend.note.form');
+        $this->app->set('layout', 'backend.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
     }
 
     public function preview()
     {
-        
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-
-        $exist = $this->NoteEntity->findByPK($id);
-
-        if(!$exist)
-        {
-            $this->session->set('flashMsg', "Invalid note");
-            return $this->app->redirect(
-                $this->router->url('notes')
-            );
-        }
-        $this->app->set('layout', 'backend.note.preview');
+        $this->app->set('layout', 'backend.preview');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
-    }
-
-
-    public function list()
-    {
-        $this->app->set('page', 'backend');
-        $this->app->set('format', 'html');
-        $this->app->set('layout', 'backend.note.list');
     }
 
     public function add()
@@ -75,93 +41,68 @@ class note extends NoteController
         //check title sprint
         $data = [
             'title' => $this->request->post->get('title', '', 'string'),
-            'tags' => $this->request->post->get('tags', '', 'string'),
-            'description' => $this->request->post->get('description', '', 'string'),
-            'description_sheetjs' => $this->request->post->get('description_sheetjs', '', 'string'),
-            'description_presenter' => $this->request->post->get('description_presenter', '', 'string'),
-            'files' => $this->request->file->get('files', [], 'array'),
-            'note' => $this->request->post->get('note', '', 'string'),
-            'type' => $this->request->post->get('type', 'html', 'string'),
+            'file' => $this->request->file->get('file', [], 'array'),
+            'notice' => $this->request->post->get('notice', '', 'string'),
         ];
         
         $save_close = $this->request->post->get('save_close', '', 'string');
         
-
-        if (!$this->NoteModel->validate($data))
+        $newId = $this->NoteFileModel->add($data);
+        if (!$newId)
         {
+            $this->session->set('flashMsg', 'Create failed.'. $this->NoteFileModel->getError()); 
             return $this->app->redirect(
-                $this->router->url('note/0')
+                $this->router->url('new-note2/file')
             );
         }
-        
-        $newId = $this->NoteModel->add($data);
 
-        $msg = $newId ? 'Created Successfully!': 'Error: Created Failed!';
-        $this->session->set('flashMsg', $msg);
-        if ($newId)
-        {
-            $link = $save_close ? 'notes' : 'note/'. $newId;
-        }
-        else
-        {
-            $link = 'note/0';
-        }
-
+        $this->session->set('flashMsg', 'Create Successfully'); 
+        $link = $save_close ? $this->router->url('note2') : $this->router->url('note2/detail/'. $newId);
         return $this->app->redirect(
-            $this->router->url($link)
+            $link
         );
-        
     }
 
     public function update()
     {
-        $ids = $this->validateID();
+        $id = $this->NoteFileModel->getCurrentId();
 
         // TODO valid the request input
 
-        if(is_numeric($ids) && $ids)
+        if(is_numeric($id) && $id)
         {
             $data = [
                 'title' => $this->request->post->get('title', '', 'string'),
-                'tags' => $this->request->post->get('tags', '', 'string'),
-                'description' => $this->request->post->get('description', '', 'string'),
-                'description_sheetjs' => $this->request->post->get('description_sheetjs', '', 'string'),
-                'description_presenter' => $this->request->post->get('description_presenter', '', 'string'),
-                'files' => $this->request->file->get('files', [], 'array'),
-                'note' => $this->request->post->get('note', '', 'string'),
-                'type' => $this->request->post->get('type', 'html', 'string'),
-                'id' => $ids,
+                'file' => $this->request->file->get('file', [], 'array'),
+                'notice' => $this->request->post->get('notice', '', 'string'),
+                'id' => $id,
             ];
 
             $save_close = $this->request->post->get('save_close', '', 'string');
 
-            if (!$this->NoteModel->validate($data))
+            $try = $this->NoteFileModel->update($data);
+            
+            if(!$try)
             {
+                $this->session->set('flashMsg', 'Create failed.'. $this->NoteFileModel->getError()); 
                 return $this->app->redirect(
-                    $this->router->url('note/'. $ids)
+                    $this->router->url('note2/detail/'. $id)
                 );
+                
             }
-            
-            $try = $this->NoteModel->update($data);
-            
-            if($try)
-            {
-                $this->session->set('flashMsg', 'Updated successfully');
-                $link = $save_close ? 'notes' : 'note/'. $ids;
+            $this->session->set('flashMsg', 'Updated successfully');
+            $link = $save_close ? 'note2' : 'note2/detail/'. $id;
 
-                return $this->app->redirect(
-                    $this->router->url($link)
-                );
-            }
-            else
-            {
-                $msg = 'Error: Updated failed';
-                $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
-                    $this->router->url('note/'. $ids)
-                );
-            }
+            return $this->app->redirect(
+                $this->router->url($link)
+            );
         }
+
+        $this->session->set('flashMsg', 'Invalid Note');
+
+        return $this->app->redirect(
+            $this->router->url('note2')
+        );
     }
 
     public function delete()
@@ -213,33 +154,5 @@ class note extends NoteController
         }
 
         return $id;
-    }
-
-    public function search()
-    {
-        $search = trim($this->request->get->get('search', '', 'string'));
-        $ignore = $this->request->get->get('ignore', '', 'string');
-        
-        $list = $this->NoteModel->searchAjax($search, $ignore);
-
-        $this->app->set('format', 'json');
-        $this->set('status' , 'success');
-        $this->set('data' , $list);
-        $this->set('message' , '');
-        return;
-    }
-
-    public function request()
-    {
-        $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
-       
-        $list = $this->NoteModel->getRequest($id);
-        
-        $this->app->set('format', 'json');
-        $this->set('status' , 'success');
-        $this->set('data' , $list);
-        $this->set('message' , '');
-        return;
     }
 }
