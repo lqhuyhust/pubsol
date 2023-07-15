@@ -174,7 +174,7 @@ class NoteFileModel extends Base
             
             if( false === $uploader->upload($file) )
             {
-                $this->session->set('flashMsg', 'Invalid attachment');
+                $this->error = 'Invalid attachment';
                 return false;
             }
             
