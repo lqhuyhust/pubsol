@@ -16,6 +16,7 @@
                 <div class="mt-3">
                     <?php $this->ui->field('notice'); ?>
                 </div>
+                <input id="save_close" type="hidden" name="save_close">
             </div>
         </div>
     </form>
