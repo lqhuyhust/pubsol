@@ -20,20 +20,16 @@ class NoteAttachmentModel extends Base
     {
         if (!$id)
         {
-            return false;
+            $where = ['status' => -1, 'created_by' => $this->user->get('id')];
         }
-
-        $note = $this->Note2Entity->findByPK($id);
-        if (!$note)
+        else
         {
-            return [];
+            $where = ['note_ids LIKE "%('. $id .')%"' ];
         }
 
-        $file = $this->FileEntity->findOne(['note_id' => $id]);
-        $note['path'] = $file ? $file['path'] : '';
-        $note['file_type'] = $file ? $file['file_type'] : '';
-
-        return $note;
+        $notes = $this->FileEntity->listNote(0, 0, $where);
+        
+        return $notes;
     }
 
     public function validate($data, $is_update = false)
