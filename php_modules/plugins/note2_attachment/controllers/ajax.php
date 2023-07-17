@@ -43,4 +43,19 @@ class ajax extends NoteController
         return ;
     }
 
+    public function delete()
+    {
+        $urlVars = $this->request->get('urlVars');
+        $id = isset($urlVars['id']) ? $urlVars['id'] : 0;
+
+        $try = $this->NoteAttachmentModel->remove($id);
+        $status = $try ? 'done' : 'failed';
+        $msg = $try ? 'Remove Done' : 'Error: '. $this->NoteAttachmentModel->getError();
+        
+        $this->app->set('format', 'json');
+        $this->set('status', $status);
+        $this->set('message', $msg);
+        return ;
+
+    }
 }

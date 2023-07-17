@@ -78,4 +78,36 @@ class NoteAttachmentModel extends Base
 
         return true;
     }
+
+    public function remove($id)
+    {
+        if (!$id)
+        {
+            $this->error = 'Invalid attachment';
+            return false;
+        }
+
+        $file = $this->FileEntity->findOne(['note_id' => $id]);
+        if (!$file)
+        {
+            $this->error = 'Invalid Attachment';
+            return false;
+        }
+
+        // remove file
+        if (file_exists(PUBLIC_PATH. $file['path']))
+        {
+            if (!unlink(PUBLIC_PATH. $file['path']))
+            {
+                $this->error = 'Can`t remove file attachment';
+                return false;
+            }
+        }
+
+        // remove note
+        $this->FileEntity->remove($file['id']);
+        $try = $this->Note2Entity->remove($id);
+
+        return $try;
+    }
 }

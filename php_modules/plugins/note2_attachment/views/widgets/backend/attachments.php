@@ -14,7 +14,7 @@
             </a>
             <div class="card-body d-flex">
                 <p class="card-text fw-bold m-0 me-2"><?php echo $item['title']; ?></p>
-                <a data-id="<?php echo $item['id']; ?>" class="ms-auto button_delete_item fs-4"><i class="fa-solid fa-trash"></i></a>
+                <a data-id="<?php echo $item['id']; ?>" class="ms-auto remove_attachment_item fs-4"><i class="fa-solid fa-trash"></i></a>
             </div>
         </div>
         <?php endforeach; ?>
