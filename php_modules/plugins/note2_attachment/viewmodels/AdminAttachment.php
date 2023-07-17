@@ -29,8 +29,7 @@ class AdminAttachment extends ViewModel
     public function attachments($layoutData, $viewData)
     {
         $id = $viewData['id'] ? $viewData['id'] : 0;
-        $attachments = $this->NoteAttachmentModel->getDetail($id);
-        
+        $attachments = $this->NoteAttachmentModel->attachmentOfNote($id);
         return [
             'attachments' => $attachments,
         ];

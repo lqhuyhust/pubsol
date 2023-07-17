@@ -20,7 +20,7 @@ class ajax extends NoteController
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? $urlVars['id'] : 0;
 
-        $list = $this->NoteAttachmentModel->getDetail($id);
+        $list = $this->NoteAttachmentModel->attachmentOfNote($id);
         $this->app->set('format', 'json');
         $this->set('list', $list);
         return ;

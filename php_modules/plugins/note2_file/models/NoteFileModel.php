@@ -189,16 +189,31 @@ class NoteFileModel extends Base
     {
         if (!$id)
         {
+            $this->error = 'Invalid id';
             return false;
         }
 
         $file = $this->FileEntity->findOne(['note_id' => $id]);
-        if ($file)
+        if (!$file)
         {
-            $this->FileEntity->remove($file['id']);
+            $this->error = 'Invalid File';
+            return false;
         }
 
+        // remove file
+        if (file_exists(PUBLIC_PATH. $file['path']))
+        {
+            if (!unlink(PUBLIC_PATH. $file['path']))
+            {
+                $this->error = 'Can`t remove file';
+                return false;
+            }
+        }
+
+        // remove note
+        $this->FileEntity->remove($file['id']);
         $try = $this->Note2Entity->remove($id);
+
         return $try;
     }
 

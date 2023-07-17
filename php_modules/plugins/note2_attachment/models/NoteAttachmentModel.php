@@ -10,17 +10,15 @@
 
 namespace App\plugins\note2_attachment\models;
 
-use SPT\Container\Client as Base;
+use App\plugins\note2_file\models\NoteFileModel;
 
-class NoteAttachmentModel extends Base
+class NoteAttachmentModel extends NoteFileModel
 { 
-    use \SPT\Traits\ErrorString;
-    
-    public function getDetail($id)
+    public function attachmentOfNote($id)
     {
         if (!$id)
         {
-            $where = ['status' => -1, 'created_by' => $this->user->get('id')];
+            $where = ['status' => -1, 'created_by' => $this->user->get('id'), 'type' => 'file'];
         }
         else
         {
@@ -32,7 +30,7 @@ class NoteAttachmentModel extends Base
         return $notes;
     }
 
-    public function add($data, $id)
+    public function add($data)
     {
         if (!$data || !is_array($data) || !count($data['name']))
         {
@@ -77,37 +75,5 @@ class NoteAttachmentModel extends Base
         }
 
         return true;
-    }
-
-    public function remove($id)
-    {
-        if (!$id)
-        {
-            $this->error = 'Invalid attachment';
-            return false;
-        }
-
-        $file = $this->FileEntity->findOne(['note_id' => $id]);
-        if (!$file)
-        {
-            $this->error = 'Invalid Attachment';
-            return false;
-        }
-
-        // remove file
-        if (file_exists(PUBLIC_PATH. $file['path']))
-        {
-            if (!unlink(PUBLIC_PATH. $file['path']))
-            {
-                $this->error = 'Can`t remove file attachment';
-                return false;
-            }
-        }
-
-        // remove note
-        $this->FileEntity->remove($file['id']);
-        $try = $this->Note2Entity->remove($id);
-
-        return $try;
     }
 }
