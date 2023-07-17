@@ -31,7 +31,12 @@ class ajax extends NoteController
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? $urlVars['id'] : 0;
         $files = $this->request->file->get('file', [], 'array');
-        $try = $this->NoteAttachmentModel->add($files, $id);
+        $try = $this->NoteAttachmentModel->add([
+            'file' => $this->request->file->get('file', [], 'array'),
+            'title' => '',
+            'status' => $id ? 1 : '-1',
+            'note_ids' => '('. $id .')',
+        ]);
         
         $status = $try ? 'done' : 'failed';
         $msg = $try ? 'Upload Done' : 'Error: '. $this->NoteAttachmentModel->getError();

@@ -44,12 +44,6 @@ class NoteFileModel extends Base
             return false;
         }
 
-        if (!$data['title'])
-        {
-            $this->error = 'Error: Title can\'t empty.';
-            return false;
-        }
-
         if (!$is_update)
         {
             if (!isset($data['file']) || !$data['file'] || !$data['file']['name'])
@@ -67,6 +61,14 @@ class NoteFileModel extends Base
                     $this->error = 'File are not allowed to upload';
                     return false;
                 }
+            }
+        }
+        else
+        {
+            if (!$data['title'])
+            {
+                $this->error = 'Error: Title can\'t empty.';
+                return false;
             }
         }
 
@@ -87,45 +89,73 @@ class NoteFileModel extends Base
             return false;
         }
 
-        $file_name = $this->upload($data['file']);
-        if (!$file_name)
+        $files = [];
+        if (is_array($data['file']['name']))
         {
-            $this->error = 'Upload Failed';
-            return false;
+            for ($i=0; $i < count($data['file']['name']); $i++) 
+            { 
+                $tmp = $data;
+                $tmp['title'] = $data['title'] ? $data['title'] : $data['file']['name'][$i];
+                $tmp['file'] = [
+                    'name' => $data['file']['name'][$i],
+                    'full_path' => $data['file']['full_path'][$i],
+                    'type' => $data['file']['type'][$i],
+                    'tmp_name' => $data['file']['tmp_name'][$i],
+                    'error' => $data['file']['error'][$i],
+                    'size' => $data['file']['size'][$i],
+                ];
+
+                $files[] = $tmp;
+            }
+        }
+        else
+        {
+            $files[] = $data;
         }
 
-        $newId =  $this->Note2Entity->add([
-            'title' => $data['title'],
-            'public_id' => '',
-            'alias' => '',
-            'data' => '',
-            'tags' => '',
-            'type' => 'file',
-            'status' => isset($data['status']) ? $data['status'] : 0,
-            'note_ids' => isset($data['note_ids']) ? $data['note_ids'] : '',
-            'notice' => isset($data['notice']) ? $data['notice'] : '',
-            'created_at' => date('Y-m-d H:i:s'),
-            'created_by' => $this->user->get('id'),
-            'locked_at' => date('Y-m-d H:i:s'),
-            'locked_by' => $this->user->get('id'),
-        ]);
-
-        if ($newId)
+        foreach($files as $item)
         {
-            $file_type = explode('.', $file_name);
-            $file_type = strtolower(end($file_type));
-
-            $try = $this->FileEntity->add([
-                'note_id' => $newId,
-                'path' => 'media/attachments/' . date('Y/m/d'). '/'. $file_name,
-                'file_type' => $file_type,
-            ]);
-
-            if (!$try)
+            $file_name = $this->upload($item['file']);
+            if (!$file_name)
             {
-                $this->error = 'Error: Can\'t create the record.';
+                $this->error = 'Upload Failed';
                 return false;
             }
+
+            $newId =  $this->Note2Entity->add([
+                'title' => $item['title'],
+                'public_id' => '',
+                'alias' => '',
+                'data' => '',
+                'tags' => '',
+                'type' => 'file',
+                'status' => isset($item['status']) ? $item['status'] : 0,
+                'note_ids' => isset($item['note_ids']) ? $item['note_ids'] : '',
+                'notice' => isset($item['notice']) ? $item['notice'] : '',
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => $this->user->get('id'),
+                'locked_at' => date('Y-m-d H:i:s'),
+                'locked_by' => $this->user->get('id'),
+            ]);
+
+            if ($newId)
+            {
+                $file_type = explode('.', $file_name);
+                $file_type = strtolower(end($file_type));
+
+                $try = $this->FileEntity->add([
+                    'note_id' => $newId,
+                    'path' => 'media/attachments/' . date('Y/m/d'). '/'. $file_name,
+                    'file_type' => $file_type,
+                ]);
+
+                if (!$try)
+                {
+                    $this->error = 'Error: Can\'t create the record.';
+                    return false;
+                }
+            }
+
         }
 
         return $newId;
