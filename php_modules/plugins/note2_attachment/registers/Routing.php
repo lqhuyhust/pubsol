@@ -9,13 +9,13 @@ class Routing
     public static function registerEndpoints()
     {
         return [
-            'note/attachment/delete' => [
+            'note2/attachment/delete' => [
                 'fnc' => [
                     'delete' => 'note2_attachment.ajax.delete',
                 ],
                 'parameters' => ['id'],
             ],
-            'note/attachment' => [
+            'note2/attachment' => [
                 'fnc' => [
                     'get' => 'note2_attachment.ajax.list',
                     'post' => 'note2_attachment.ajax.add',

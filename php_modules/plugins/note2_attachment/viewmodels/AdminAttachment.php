@@ -21,15 +21,27 @@ class AdminAttachment extends ViewModel
         return [
             'widget'=>[
                 'backend.attachments',
+                'backend.javascript',
             ],
         ];
     }
     
-    private function attachments($layoutData, $viewData)
+    public function attachments($layoutData, $viewData)
     {
         $id = $viewData['id'] ? $viewData['id'] : 0;
-        $this->NoteAttachmentModel->getData($id);
+        $attachments = $this->NoteAttachmentModel->getDetail($id);
+        
+        return [
+            'attachments' => $attachments,
+        ];
+    }
 
-        return $data;
+    public function javascript($layoutData, $viewData)
+    {
+        $id = isset($viewData['id']) ? $viewData['id'] : 0; 
+        return [
+            'link_attachment' => $this->router->url('note2/attachment/' . $id),
+            'link_attachment_remove' => $this->router->url('note2/attachment/delete'),
+        ];
     }
 }
