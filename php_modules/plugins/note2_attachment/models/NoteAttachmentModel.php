@@ -25,7 +25,7 @@ class NoteAttachmentModel extends NoteFileModel
             $where = ['note_ids LIKE "%('. $id .')%"' ];
         }
 
-        $notes = $this->FileEntity->listNote(0, 0, $where);
+        $notes = $this->FileEntity->list(0, 0, $where);
         
         return $notes;
     }

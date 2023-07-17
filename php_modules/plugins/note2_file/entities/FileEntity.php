@@ -40,7 +40,7 @@ class FileEntity extends Entity
         ];
     }
 
-    public function listNote( $start, $limit, array $where = [], $order = '')
+    public function list( $start, $limit, array $where = [], $order = '', $select = '*')
     {
         $list = $this->db->select( 'notes.*, note_files.note_id as note_id, note_files.path as path, note_files.file_type as file_type' )
                             ->table( $this->table . ' as note_files' )
