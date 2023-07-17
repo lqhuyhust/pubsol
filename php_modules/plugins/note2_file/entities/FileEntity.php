@@ -39,4 +39,22 @@ class FileEntity extends Entity
                 ]
         ];
     }
+
+    public function listNote( $start, $limit, array $where = [], $order = '')
+    {
+        $list = $this->db->select( 'notes.*, note_files.note_id as note_id, note_files.path as path, note_files.file_type as file_type' )
+                            ->table( $this->table . ' as note_files' )
+                            ->join('INNER JOIN #__note2 as notes ON notes.id = note_files.note_id');
+        if( count($where) )
+        {
+            $list->where( $where );
+        }
+
+        if($order)
+        {
+            $list->orderby($order);
+        }
+
+        return $list->countTotal(true)->list( $start, $limit);
+    }
 }
