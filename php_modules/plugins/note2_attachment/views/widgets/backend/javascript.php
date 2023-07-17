@@ -11,6 +11,7 @@
             }
 
             var form = new FormData($('#form_submit')[0]);
+            form.append('_method', 'POST');
             $.ajax({
                 url: '<?php echo $this->link_attachment ?>',
                 type: 'POST',

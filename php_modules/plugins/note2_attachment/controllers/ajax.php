@@ -30,7 +30,6 @@ class ajax extends NoteController
     {
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? $urlVars['id'] : 0;
-
         $files = $this->request->file->get('file', [], 'array');
         $try = $this->NoteAttachmentModel->add($files, $id);
         
