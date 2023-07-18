@@ -30,6 +30,18 @@ class AdminAttachment extends ViewModel
     {
         $id = $viewData['id'] ? $viewData['id'] : 0;
         $attachments = $this->NoteAttachmentModel->attachmentOfNote($id);
+        foreach($attachments as &$item)
+        {
+            $item['image'] = $item['path'];
+            if (file_exists(PUBLIC_PATH. '/'. $item['image']))
+            {
+                if (!is_array(getimagesize(PUBLIC_PATH. '/'. $item['image'])))
+                {
+                    $item['image'] = 'media/default/default_file.png';
+                }
+            }
+        }
+
         return [
             'attachments' => $attachments,
         ];

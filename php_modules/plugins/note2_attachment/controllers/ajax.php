@@ -21,6 +21,17 @@ class ajax extends NoteController
         $id = isset($urlVars['id']) ? $urlVars['id'] : 0;
 
         $list = $this->NoteAttachmentModel->attachmentOfNote($id);
+        foreach($list as &$item)
+        {
+            $item['image'] = $item['path'];
+            if (file_exists(PUBLIC_PATH. '/'. $item['image']))
+            {
+                if (!is_array(getimagesize(PUBLIC_PATH. '/'. $item['image'])))
+                {
+                    $item['image'] = 'media/default/default_file.png';
+                }
+            }
+        }
         $this->app->set('format', 'json');
         $this->set('list', $list);
         return ;

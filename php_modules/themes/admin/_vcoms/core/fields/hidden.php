@@ -1,1 +1,0 @@
-<input name="<?php echo $this->field->name ?>" type="hidden" id="<?php echo $this->field->id ?>" value="<?php echo $this->field->value?>" />
