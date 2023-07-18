@@ -44,7 +44,7 @@
                             list += `
                             <div class="card border shadow-none d-flex flex-column me-2 justify-content-center" style="width: auto;">
                                 <a href="${url}/${item.path}" target="_blank" class="h-100 my-2 px-2 mx-auto" style="">
-                                    <img style="height: 120px; max-width: 100%;" src="${url}/${item.path}">
+                                    <img style="height: 120px; max-width: 100%;" src="${url}/${item.image}">
                                 </a>
                                 <div class="card-body d-flex">
                                     <p class="card-text fw-bold m-0 me-2">${item.title}</p>
