@@ -14,6 +14,9 @@
                     <?php endif; ?>
                 </div>
                 <div class="mt-3">
+                    <?php echo $this->renderWidget('tag::backend.tags'); ?>
+                </div>
+                <div class="mt-3">
                     <?php $this->ui->field('notice'); ?>
                 </div>
                 <input id="save_close" type="hidden" name="save_close">

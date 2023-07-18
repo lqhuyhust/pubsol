@@ -90,6 +90,8 @@ class NoteFileModel extends Base
         }
 
         $files = [];
+        $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+
         if (is_array($data['file']['name']))
         {
             for ($i=0; $i < count($data['file']['name']); $i++) 
@@ -127,7 +129,7 @@ class NoteFileModel extends Base
                 'public_id' => '',
                 'alias' => '',
                 'data' => '',
-                'tags' => '',
+                'tags' => $item['tags'],
                 'type' => 'file',
                 'status' => isset($item['status']) ? $item['status'] : 0,
                 'note_ids' => isset($item['note_ids']) ? $item['note_ids'] : '',
@@ -168,8 +170,11 @@ class NoteFileModel extends Base
             return false;
         }
         
+        $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+
         $try = $this->Note2Entity->update([
             'title' => $data['title'],
+            'tags' => $data['tags'],
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'id' => $data['id'],
         ]);
