@@ -17,7 +17,7 @@ define('SPT_VENDOR_PATH', ROOT_PATH. 'vendor/');
 define('SPT_STORAGE_PATH', PUBLIC_PATH);
 
 require ROOT_PATH . 'vendor/autoload.php';
-$app = new SPT\Application\Cli(
+$app = new DTM\core\libraries\Cli(
     new SPT\Container\Joomla,
     PUBLIC_PATH,
     APP_PATH. 'plugins/',
