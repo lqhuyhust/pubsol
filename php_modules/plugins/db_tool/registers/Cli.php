@@ -9,11 +9,11 @@ class Cli
     public static function registerCommands()
     {
         return [
-            'check-availability' => [
+            'db-structure' => [
                 'description' => 'Check availability database',
                 'fnc' => 'db_tool.database.checkavailability'
             ],
-            'generate-data' => [
+            'data-sample' => [
                 'description' => 'Generate Data Sample',
                 'fnc' => 'db_tool.database.generatedata'
             ]
