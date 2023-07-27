@@ -21,10 +21,30 @@ class database extends ControllerMVVM
         foreach($entities as $entity)
         {
             $try = $this->{$entity}->checkAvailability();
-            $status = $try ? 'success' : 'failed';
+            $status = $try !== false ? 'success' : 'failed';
             echo str_pad($entity, 30) . $status ."\n";
         }
 
         echo "done.\n";
+    }
+
+    public function generatedata()
+    {
+        $try = $this->DbToolModel->truncate();
+        if (!$try)
+        {
+            echo $this->DbToolModel->getError() . "\n";
+            return ;
+        }
+        echo "Truncate table done\n";
+
+        $try = $this->DbToolModel->generate();
+        if (!$try)
+        {
+            echo $this->DbToolModel->getError(). "\n";
+            return ;
+        }
+
+        echo "Generate data done\n";
     }
 }
