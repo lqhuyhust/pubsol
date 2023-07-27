@@ -17,6 +17,14 @@ class database extends ControllerMVVM
 {
     public function checkavailability()
     {
-        echo 'done';
+        $entities = $this->DbToolModel->getEntities();
+        foreach($entities as $entity)
+        {
+            $try = $this->{$entity}->checkAvailability();
+            $status = $try ? 'success' : 'failed';
+            echo str_pad($entity, 30) . $status ."\n";
+        }
+
+        echo "done.\n";
     }
 }

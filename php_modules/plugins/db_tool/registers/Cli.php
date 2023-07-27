@@ -9,7 +9,7 @@ class Cli
     public static function registerCommands()
     {
         return [
-            '--database.checkavailability' => [
+            'checkavailability' => [
                 'description' => 'Check availability database',
                 'fnc' => 'db_tool.database.checkavailability'
             ]

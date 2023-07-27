@@ -1,5 +1,5 @@
 <?php
-namespace DTM\db_tool\registers;
+namespace App\plugins\db_tool\registers;
 
 use SPT\Application\IApp; 
 use SPT\File;
@@ -11,7 +11,7 @@ class Dispatcher
         $cName = $app->get('controller');
         $fName = $app->get('function');
 
-        $controller = 'DTM\db_tool\controllers\\'. $cName;
+        $controller = 'App\plugins\db_tool\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);
