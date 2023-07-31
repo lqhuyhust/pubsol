@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'treephp_manager', 'treephp_read', 'treephp_create', 'treephp_update', 'treephp_delete' 
+            'timeline_manager', 'timeline_read', 'timeline_create', 'timeline_update', 'timeline_delete' 
         ];
     }
 }
