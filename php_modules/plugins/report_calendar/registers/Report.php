@@ -9,10 +9,10 @@ class Report
     public static function registerType( IApp $app )
     {
         return [
-            'timeline' => [
-                'title' => 'Timeline',
+            'calendar' => [
+                'title' => 'Calendar',
                 'namespace' => 'App\plugins\report_calendar\\',
-                'remove_object' => 'ReportTimelineModel',
+                'remove_object' => 'CalendarModel',
             ],
         ];
     }

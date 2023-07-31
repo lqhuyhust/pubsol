@@ -9,7 +9,7 @@ class Permission
     public static function registerAccess()
     {
         return [
-            'treephp_manager', 'treephp_read', 'treephp_create', 'treephp_update', 'treephp_delete' 
+            'calendar_manager', 'calendar_read', 'calendar_create', 'calendar_update', 'calendar_delete' 
         ];
     }
 }
