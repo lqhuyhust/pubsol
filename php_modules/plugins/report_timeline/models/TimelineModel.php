@@ -145,6 +145,8 @@ class TimelineModel extends Base
             }
         }
 
+        $find['filter_tag'] = $filter_tag;
+        
         $requests = $this->RequestEntity->list(0, 0, $where, 'start_at asc');
         foreach($requests as &$request)
         {

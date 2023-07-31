@@ -57,16 +57,7 @@ $this->theme->add($this->url . 'assets/timeline/css/style.css', '', 'timeline_st
                                         <?php foreach($this->data['requests'] as $index => $item) : ?>
                                         <tr>
                                             <th><a href="<?php echo $this->link_detail_request . '/'. $item['id'] ?>" target="_blank"><?php echo ($index +1) .'. '. $item['title'];?> </a>
-                                                <a class="fa-solid fa-eye popover-eye"  data-bs-content="<?php //Relate Notes: -> this is bad
-                                                           /* if ($item['relate_notes'])
-                                                            {
-                                                                foreach($item['relate_notes'] as $note)
-                                                                {
-                                                                    echo "<br><a target='_blank' href='". $this->link_note . "/". $note["id"]."'>- ". htmlspecialchars($note["title"])."</a>";
-                                                                }
-                                                            }*/
-                                                            // Tags: <?php echo $item['tags'] ? '<br>- '. htmlspecialchars(implode('<br>- ', $item['tags'])) : '';  
-                                                        ?>Assignments: <?php echo $item['assignment'] ? '<br>- '. htmlspecialchars(implode('<br>- ', $item['assignment'])) : '';  ?> 
+                                                <a class="fa-solid fa-eye popover-eye"  data-bs-content="Assignments: <?php echo $item['assignment'] ? '<br>- '. htmlspecialchars(implode('<br>- ', $item['assignment'])) : '';  ?> 
                                                         <br><br>Status: <?php echo $item['status'] ? 'Done' : 'Not Done' ?>"
                                                         ></a>
                                                     <br/><small><?php echo htmlspecialchars(implode(' | ', $item['tags'])) ?></small>

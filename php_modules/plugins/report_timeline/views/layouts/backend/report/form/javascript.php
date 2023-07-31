@@ -36,7 +36,17 @@
         $('#clear_filter').on('click', function() {
             $("#milestone").val('').trigger('change');
             $("#tags").val('').trigger('change');
-            $('#filter_form').submit();
+            $('input#input_title').val($('input#title').val());
+            
+            if (!$('input#title').val()) {
+                alert("Please enter a valid Title");
+                $('html, body').animate({
+                    scrollTop: 0
+                });
+                $('input#title').focus();
+                return false;
+            }
+            $('#form_submit').submit();
         });
         if (!$('th.today').length)
         {

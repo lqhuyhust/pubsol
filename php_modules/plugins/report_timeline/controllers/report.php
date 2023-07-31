@@ -93,7 +93,7 @@ class report extends ReportController
         {
             $this->session->set('flashMsg', $this->TimelineModel->getError());
             return $this->app->redirect(
-                $this->router->url('report/detail/'. $ids)
+                $this->router->url('report/detail/'. $id)
             );
         }
     }
