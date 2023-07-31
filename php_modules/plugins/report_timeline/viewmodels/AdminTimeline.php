@@ -28,7 +28,7 @@ class AdminTimeline extends ViewModel
         $urlVars = $this->request->get('urlVars');
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
-        $data = $id ? $this->ReportTimelineModel->getDetail($id) : [];
+        $data = $this->TimelineModel->getDetail($id);
 
         return $data;
     }
@@ -37,7 +37,10 @@ class AdminTimeline extends ViewModel
     {
         $data = $this->getItem();
         $data = $data ? $data : [];
-        $id  = $data ? $data['id'] : '';
+        $id  = $data && isset($data['id']) ? $data['id'] : '';
+        $rang_day = $data['rang_day'];
+        $start_date = $rang_day[0];
+        $end_date = $rang_day[1] + 24 * 60 * 60;
 
         $form = new Form($this->getFormFields(), $data);
 
@@ -45,12 +48,15 @@ class AdminTimeline extends ViewModel
             'id' => $id,
             'form' => $form,
             'data' => $data,
-            'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Diagrams',
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'title_page_edit' => $data && $id && $data['title'] ? $data['title'] : 'New Diagrams',
             'url' => $this->router->url(),
             'link_request' => $this->router->url('report/find-request'),
             'link_note' => $this->router->url('note2-detail'),
             'link_list' => $this->router->url('reports'),
-            'link_form' => $id ? $this->router->url('report/detail') : $this->router->url('new-report/tree'),
+            'link_tag' => $this->router->url('tag/search'),
+            'link_form' => $id ? $this->router->url('report/detail') : $this->router->url('new-report/timeline'),
             'link_search' => $this->router->url('note2/search'),
         ];
         
@@ -58,12 +64,17 @@ class AdminTimeline extends ViewModel
 
     public function getFormFields()
     {
+        $milestones = $this->MilestoneEntity->list(0, 0);
+        $option_milestone = [];
+        foreach ($milestones as $milestone) 
+        {
+            $option_milestone[] = [
+                'text' => $milestone['title'],
+                'value' => $milestone['id'],
+            ];
+        }
+
         $fields = [
-            'file' => [
-                'file',
-                'showLabel' => false,
-                'formClass' => 'form-control',
-            ],
             'title' => [
                 'text',
                 'showLabel' => false,
@@ -71,14 +82,23 @@ class AdminTimeline extends ViewModel
                 'formClass' => 'form-control border-0 border-bottom fs-2 py-0',
                 'required' => 'required',
             ],
-            'notes' => [
-                'hidden',
+            'milestone' => [
+                'option',
+                'type' => 'multiselect',
+                'default' => '0',
+                'formClass' => '',
+                'placeholder' => 'All Milestone',
+                'options' => $option_milestone,
+                'showLabel' => false
             ],
-            'removes' => [
-                'hidden',
-            ],
-            'structure' => [
-                'hidden',
+            'tags' => [
+                'option',
+                'type' => 'multiselect',
+                'default' => '0',
+                'formClass' => '',
+                'placeholder' => 'All Tag',
+                'options' => [],
+                'showLabel' => false
             ],
             'token' => ['hidden',
                 'default' => $this->container->get('token')->value(),

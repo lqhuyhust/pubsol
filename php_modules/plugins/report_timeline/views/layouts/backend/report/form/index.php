@@ -10,7 +10,7 @@ $this->theme->add($this->url . 'assets/timeline/css/style.css', '', 'timeline_st
                     <div class="card border-0 shadow-none mb-0">
                         <div class="card-body pb-0">
                             <div class="row align-items-center">
-                                <form id="form_submit" class="row pe-0 pb-2" action="<?php echo $this->link_list .'/'. $this->id ?>" method="POST">
+                                <form id="form_submit" class="row pe-0 pb-2" action="<?php echo $this->link_form .'/'. $this->id ?>" method="POST">
                                     <div class="col-lg-11 col-sm-12">
                                         <input id="input_title" type="hidden" name="title">
                                         <input type="hidden" name="save_close" id="save_close">
@@ -54,7 +54,7 @@ $this->theme->add($this->url . 'assets/timeline/css/style.css', '', 'timeline_st
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach($this->requests as $index => $item) : ?>
+                                        <?php foreach($this->data['requests'] as $index => $item) : ?>
                                         <tr>
                                             <th><a href="<?php echo $this->link_detail_request . '/'. $item['id'] ?>" target="_blank"><?php echo ($index +1) .'. '. $item['title'];?> </a>
                                                 <a class="fa-solid fa-eye popover-eye"  data-bs-content="<?php //Relate Notes: -> this is bad

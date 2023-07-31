@@ -40,13 +40,6 @@ class report extends ReportController
     {
         //check title sprint
         $save_close = $this->request->post->get('save_close', '', 'string');
-        if (!$title)
-        {
-            $this->session->set('flashMsg', 'Error: Title is required! ');
-            return $this->app->redirect(
-                $this->router->url('new-report/timeline')
-            );
-        }
         
         $try = $this->TimelineModel->add([
             'title' => $this->request->post->get('title', '', 'string'),
@@ -66,7 +59,7 @@ class report extends ReportController
         {
             // save struct
             $this->session->set('flashMsg', 'Created Successfully!');
-            $link = $save_close ? 'reports' : 'report/detail/'. $newId;
+            $link = $save_close ? 'reports' : 'report/detail/'. $try;
             return $this->app->redirect(
                 $this->router->url($link)
             );

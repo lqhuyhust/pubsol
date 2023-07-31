@@ -105,24 +105,76 @@ class TimelineModel extends Base
 
     public function getDetail($id)
     {
-        if (!$id)
-        {
-            $this->error = 'Invalid id';
-            return false;
-        }
-
         $find = $this->ReportEntity->findByPK($id);
-        if (!$find)
-        {
-            $this->error = 'Invalid report';
-            return false;
-        }
-
-        $data = $find['data'];
+        
+        $find = $find ? $find : [];
+        $data = $find ? $find['data'] : '';
         $data = $data ? json_decode($data, true) : [];
 
-        $data['milestone'] = $data ? $data['milestone'] : [];
-        $data['tags'] = $data ? $data['tags'] : [];
+        $find['milestone'] = $data ? $data['milestone'] : [];
+        $find['tags'] = $data ? $data['tags'] : [];
+
+        // get request
+        $where = ['start_at IS NOT NULL'];
+        
+        if ($find['milestone'])
+        {
+            $where[] = 'milestone_id in ('. implode(',', $find['milestone']).')';
+        }
+
+        $filter_tag = [];
+        if ($find['tags'])
+        {
+            $where_tag = [];
+            foreach($find['tags'] as $tag)
+            {
+                if($tag)
+                {
+                    $where_tag[] = '(tags LIKE "'.$tag.'" OR tags LIKE "'.$tag.',%" OR tags LIKE "%,'.$tag.',%" OR tags LIKE "%,'.$tag.'")';
+                }
+                $tag_tmp = $this->TagEntity->findByPK($tag);
+                if ($tag_tmp)
+                {
+                    $filter_tag[] = $tag_tmp;
+                }
+            }
+
+            if ($where_tag)
+            {
+                $where[] = ['('. implode(" OR ", $where_tag) .')'];
+            }
+        }
+
+        $requests = $this->RequestEntity->list(0, 0, $where, 'start_at asc');
+        foreach($requests as &$request)
+        {
+            $tags = $request['tags'] ? explode(',', $request['tags']) : [];
+            $request['tags'] = [];
+            foreach($tags as $tag)
+            {
+                $tag_tmp = $this->TagEntity->findByPK($tag);
+                if ($tag_tmp)
+                {
+                    $request['tags'][] = $tag_tmp['name'];
+                }
+            }
+
+            $assigns = $request['assignment'] ? json_decode($request['assignment']) : [];
+            $selected_tmp = [];
+            foreach($assigns as $assign)
+            {
+                $user_tmp = $this->UserEntity->findByPK($assign);
+                if ($user_tmp)
+                {
+                    $selected_tmp[] = $user_tmp['name'];
+                }
+            }
+            $request['assignment'] = $selected_tmp;
+
+            $request['status'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' && strtotime($request['finished_at']) <= strtotime('now') ? 1 : 0;
+        }
+        $find['requests'] = $requests ? $requests : [];
+        $find['rang_day'] = $this->getRangeDay($where);
 
         return $find;
     }
