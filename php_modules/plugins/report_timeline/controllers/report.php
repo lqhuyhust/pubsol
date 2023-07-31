@@ -42,10 +42,10 @@ class report extends ReportController
         }
         
         $try = $this->TimelineModel->add([
-            'title' => $title,
+            'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
-            'milestones' => implode(',', $milestone),
-            'tags' => implode(',', $tags),
+            'milestone' => $this->request->post->get('milestone', [], 'array'),
+            'tags' => $this->request->post->get('tags', [], 'array'),
         ]);
         
         if( !$try )
@@ -75,10 +75,10 @@ class report extends ReportController
 
         $try = $this->TimelineModel->update([
             'id' => $id,
-            'title' => $title,
+            'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
-            'milestones' => implode(',', $milestone),
-            'tags' => implode(',', $tags),
+            'milestone' => $this->request->post->get('milestone', [], 'array'),
+            'tags' => $this->request->post->get('tags', [], 'array'),
         ]);
         
         if($try)

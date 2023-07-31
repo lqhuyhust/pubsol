@@ -17,38 +17,12 @@ class TimelineModel extends Base
 { 
     use ErrorString; 
 
-    public function findNotes($config)
-    {
-        $notes = [];
-        foreach($config as $key => &$item)
-        {
-            if ($item['id'])
-            {
-                $notes[] = $item['id'];
-            }
-
-            if (isset($item['children']) && $item['children'])
-            {
-                $notes = array_merge($notes, $this->findNotes($item['children']) ) ;
-            }
-        }
-
-        return $notes;
-    }
-
     public function remove($id)
     {
         // remove in tree structure
         if (!$id)
         {
             return false;
-        }
-
-        $list = $this->TreeStructureEntity->list(0, 0, ['diagram_id = '. $id]);
-        
-        foreach($list as $item)
-        {
-            $this->TreeStructureEntity->remove($item['id']);
         }
 
         $try = $this->ReportEntity->remove($id);
@@ -83,7 +57,11 @@ class TimelineModel extends Base
         $newId =  $this->ReportEntity->add([
             'title' => $data['title'],
             'status' => 1,
-            'type' => 'tree',
+            'data' => json_encode([
+                'milestone' => $data['milestone'] ? $data['milestone'] : [],
+                'tags' => $data['tags'] ? $data['tags'] : [],
+            ]),
+            'type' => 'timeline',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
@@ -93,25 +71,6 @@ class TimelineModel extends Base
         if (!$newId)
         {
             $this->error = "Can't create report";
-        }
-
-        if ($newId && $data['structure'])
-        {
-            $structure = json_decode($data['structure'], true);
-            foreach($structure as $item)
-            {
-                $this->TreeStructureEntity->add([
-                    'diagram_id' => $newId,
-                    'note_id' => $item['id'],
-                    'tree_position' => $item['id'] ? $item['position'] : 0,
-                    'tree_level' => $item['id'] ? $item['level'] : 0,
-                    'parent_id' => $item['id'] ? $item['parent'] : 0,
-                    'tree_left' => 0,
-                    'tree_right' => 0,
-                ]);
-            }
-
-            $try = $this->TreeStructureEntity->rebuild($newId);
         }
 
         return $newId;
@@ -127,48 +86,18 @@ class TimelineModel extends Base
 
         $try = $this->ReportEntity->update([
             'title' => $data['title'],
+            'data' => json_encode([
+                'milestone' => $data['milestone'] ? $data['milestone'] : [],
+                'tags' => $data['tags'] ? $data['tags'] : [],
+            ]),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
         ]);
 
-        if ($try && $data['structure'])
+        if (!$try)
         {
-            $structure = json_decode($data['structure'], true);
-            $removes = json_decode($data['removes'], true);
-            foreach($removes as $item)
-            {
-                $find = $this->TreeStructureEntity->findOne(['note_id = '. $item, 'diagram_id = '. $data['id'] ]);
-                if ($find)
-                {
-                    $this->TreeStructureEntity->remove($find['id']);
-                }
-            }
-
-            foreach($structure as $item)
-            {
-                $find = $this->TreeStructureEntity->findOne(['note_id = '. $item['id'], 'diagram_id = '. $data['id'] ]);
-                if ($find)
-                {
-                    $try = $this->TreeStructureEntity->update([
-                        'id' => $find['id'],
-                        'tree_position' => $item['id'] ? $item['position'] : 0,
-                        'tree_level' => $item['id'] ? $item['level'] : 0,
-                        'parent_id' => $item['id'] ? $item['parent'] : 0,
-                    ]);
-                }else{
-                    $try = $this->TreeStructureEntity->add([
-                        'diagram_id' => $data['id'],
-                        'note_id' => $item['id'],
-                        'tree_position' => $item['id'] ? $item['position'] : 0,
-                        'tree_level' => $item['id'] ? $item['level'] : 0,
-                        'parent_id' => $item['id'] ? $item['parent'] : 0,
-                        'tree_left' => 0,
-                        'tree_right' => 0,
-                    ]);
-                }
-            }
-            $try = $this->TreeStructureEntity->rebuild($data['id']);
+            $this->error = "Can't update report";
         }
 
         return $try;
@@ -189,41 +118,12 @@ class TimelineModel extends Base
             return false;
         }
 
-        $list_tree = $this->getTree($id);
-        $find['list_tree'] = $list_tree;
-        $ignore = [];
+        $data = $find['data'];
+        $data = $data ? json_decode($data, true) : [];
 
-        foreach($list_tree as $item)
-        {
-            $ignore[] = $item['note_id'];
-        }
-
-        $find['ignore'] = $ignore;
+        $data['milestone'] = $data ? $data['milestone'] : [];
+        $data['tags'] = $data ? $data['tags'] : [];
 
         return $find;
-    }
-
-    public function findRequest($id)
-    {
-        if (!$id)
-        {
-            $this->error = 'Invalid id';
-            return false;
-        }
-        
-        $list = $this->RelateNoteEntity->list(0, 0, ['note_id = '. $id]);
-        $result = [];
-        foreach($list as &$item)
-        {
-            $request = $this->RequestEntity->findByPK($item['request_id']);
-            if ($request)
-            {
-                $request['start_at'] = $request['start_at'] && $request['start_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['start_at'])) : '';
-                $request['finished_at'] = $request['finished_at'] && $request['finished_at'] != '0000-00-00 00:00:00' ? date('m-d-Y', strtotime($request['finished_at'])) : '';
-                $result[] = $request;
-            }
-        }
-
-        return $result;
     }
 }
