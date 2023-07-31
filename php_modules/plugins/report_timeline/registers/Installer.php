@@ -1,5 +1,5 @@
 <?php
-namespace DTM\report_timeline\registers;
+namespace App\plugins\report_timeline\registers;
 
 use SPT\Application\IApp;
 

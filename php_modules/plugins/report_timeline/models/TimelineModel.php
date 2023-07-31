@@ -8,48 +8,14 @@
  * 
  */
 
-namespace DTM\report_timeline\models;
+namespace App\plugins\report_timeline\models;
 
 use SPT\Container\Client as Base;
 use SPT\Traits\ErrorString;
 
-class TreePhpModel extends Base
+class TimelineModel extends Base
 { 
     use ErrorString; 
-
-    // Write your code here
-    public function getTree($id)
-    {
-        $list = $this->TreeStructureEntity->list(0, 0, ['diagram_id ='.$id], 'tree_left asc');
-        $removes = [];
-        foreach($list as &$item)
-        {
-            if (in_array($item['id'], $removes))
-            {
-                $this->TreeStructureEntity->remove($item['id']);
-                continue;
-            }
-
-            $note = $this->Note2Entity->findByPK($item['note_id']);
-            if (!$note)
-            {
-                $removes[] = $item['id'];
-                $this->TreeStructureEntity->remove($item['id']);
-            }
-            else
-            {
-                $item['title'] = $note['title'];
-            }
-        }
-
-        if ($removes)
-        {
-            $this->TreeStructureEntity->rebuild($id);
-            $list = $this->getTree($id);
-        }
-        
-        return $list;
-    }
 
     public function findNotes($config)
     {
