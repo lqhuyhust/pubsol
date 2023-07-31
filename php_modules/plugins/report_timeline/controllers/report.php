@@ -40,19 +40,17 @@ class report extends ReportController
                 $this->router->url('new-report/timeline')
             );
         }
-
-        $data = [
+        
+        $try = $this->TimelineModel->add([
             'title' => $title,
             'status' => 1,
             'milestones' => implode(',', $milestone),
             'tags' => implode(',', $tags),
-        ];
+        ]);
         
-        $try = $this->TimelineModel->add($data);
-        
-        if( !$newId )
+        if( !$try )
         {
-            $this->session->set('flashMsg', $this->TimelineModel);
+            $this->session->set('flashMsg', $this->TimelineModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-report/timeline')
             );
@@ -61,7 +59,7 @@ class report extends ReportController
         {
             // save struct
             $this->session->set('flashMsg', 'Created Successfully!');
-            $link = $save_close ? 'reports' : 'timeline-diagram/'. $newId;
+            $link = $save_close ? 'reports' : 'report/detail/'. $newId;
             return $this->app->redirect(
                 $this->router->url($link)
             );
@@ -70,53 +68,33 @@ class report extends ReportController
 
     public function update()
     {
-        $ids = $this->validateID();
+        $id = $this->validateID();
 
         // TODO valid the request input
+        $save_close = $this->request->post->get('save_close', '', 'string');
 
-        if(is_numeric($ids) && $ids)
+        $try = $this->TimelineModel->update([
+            'id' => $id,
+            'title' => $title,
+            'status' => 1,
+            'milestones' => implode(',', $milestone),
+            'tags' => implode(',', $tags),
+        ]);
+        
+        if($try)
         {
-            $title = $this->request->post->get('title', '', 'string');
-            $milestone = $this->request->post->get('milestone', [], 'array');
-            $tags = $this->request->post->get('tags', [], 'array');
-            $save_close = $this->request->post->get('save_close', '', 'string');
-
-            if (!$title)
-            {
-                $this->session->set('flashMsg', 'Error: Title is required! ');
-                return $this->app->redirect(
-                    $this->router->url('timeline-diagram/0')
-                );
-            }
-
-            $config = [
-                'milestones' => implode(',', $milestone),
-                'tags' => implode(',', $tags),
-            ];
-            $try = $this->DiagramEntity->update([
-                'title' => $title,
-                'config' => json_encode($config),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $ids,
-            ]);
-            
-            if($try)
-            {
-                $this->session->set('flashMsg', 'Updated successfully');
-                $link = $save_close ? 'reports' : 'timeline-diagram/'. $ids;
-                return $this->app->redirect(
-                    $this->router->url($link)
-                );
-            }
-            else
-            {
-                $msg = 'Error: Updated failed';
-                $this->session->set('flashMsg', $msg);
-                return $this->app->redirect(
-                    $this->router->url('timeline-diagram/'. $ids)
-                );
-            }
+            $this->session->set('flashMsg', 'Updated successfully');
+            $link = $save_close ? 'reports' : 'report/detail/'. $id;
+            return $this->app->redirect(
+                $this->router->url($link)
+            );
+        }
+        else
+        {
+            $this->session->set('flashMsg', $this->TimelineModel->getError());
+            return $this->app->redirect(
+                $this->router->url('report/detail/'. $ids)
+            );
         }
     }
 
@@ -130,7 +108,7 @@ class report extends ReportController
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->DiagramEntity->remove( $id ) )
+                if( $this->TimelineModel->remove($id) )
                 {
                     $count++;
                 }
@@ -138,7 +116,7 @@ class report extends ReportController
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->DiagramEntity->remove($ids ) )
+            if( $this->TimelineModel->remove($ids) )
             {
                 $count++;
             }
@@ -153,8 +131,6 @@ class report extends ReportController
 
     public function validateID()
     {
-        
-
         $urlVars = $this->request->get('urlVars');
         $id = (int) $urlVars['id'];
 
