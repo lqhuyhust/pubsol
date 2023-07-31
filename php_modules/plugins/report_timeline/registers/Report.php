@@ -12,7 +12,7 @@ class Report
             'timeline' => [
                 'title' => 'Timeline',
                 'namespace' => 'App\plugins\report_timeline\\',
-                'remove_object' => 'ReportTimelineModel',
+                'remove_object' => 'TimelineModel',
             ],
         ];
     }
