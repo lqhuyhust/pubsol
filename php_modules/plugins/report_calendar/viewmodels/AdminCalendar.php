@@ -14,7 +14,7 @@ namespace App\plugins\report_calendar\viewmodels;
 use SPT\Web\ViewModel;
 use SPT\Web\Gui\Form;
 
-class AdminTimeline extends ViewModel
+class AdminCalendar extends ViewModel
 {
     public static function register()
     {
@@ -28,7 +28,7 @@ class AdminTimeline extends ViewModel
         $urlVars = $this->request->get('urlVars');
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
-        $data = $this->TimelineModel->getDetail($id);
+        $data = $this->CalendarModel->getDetail($id);
 
         return $data;
     }

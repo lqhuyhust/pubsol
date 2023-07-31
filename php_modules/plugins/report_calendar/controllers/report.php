@@ -41,7 +41,7 @@ class report extends ReportController
         //check title sprint
         $save_close = $this->request->post->get('save_close', '', 'string');
         
-        $try = $this->TimelineModel->add([
+        $try = $this->CalendarModel->add([
             'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
             'milestone' => $this->request->post->get('milestone', [], 'array'),
@@ -50,9 +50,9 @@ class report extends ReportController
         
         if( !$try )
         {
-            $this->session->set('flashMsg', $this->TimelineModel->getError());
+            $this->session->set('flashMsg', $this->CalendarModel->getError());
             return $this->app->redirect(
-                $this->router->url('new-report/timeline')
+                $this->router->url('new-report/calendar')
             );
         }
         else
@@ -73,7 +73,7 @@ class report extends ReportController
         // TODO valid the request input
         $save_close = $this->request->post->get('save_close', '', 'string');
 
-        $try = $this->TimelineModel->update([
+        $try = $this->CalendarModel->update([
             'id' => $id,
             'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
@@ -91,7 +91,7 @@ class report extends ReportController
         }
         else
         {
-            $this->session->set('flashMsg', $this->TimelineModel->getError());
+            $this->session->set('flashMsg', $this->CalendarModel->getError());
             return $this->app->redirect(
                 $this->router->url('report/detail/'. $id)
             );
@@ -108,7 +108,7 @@ class report extends ReportController
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->TimelineModel->remove($id) )
+                if( $this->CalendarModel->remove($id) )
                 {
                     $count++;
                 }
@@ -116,7 +116,7 @@ class report extends ReportController
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->TimelineModel->remove($ids) )
+            if( $this->CalendarModel->remove($ids) )
             {
                 $count++;
             }
@@ -139,7 +139,7 @@ class report extends ReportController
             $ids = $this->request->post->get('ids', [], 'array');
             if(count($ids)) return $ids;
 
-            $this->session->set('flashMsg', 'Invalid timeline diagram');
+            $this->session->set('flashMsg', 'Invalid calendar diagram');
             return $this->app->redirect(
                 $this->router->url('reports'),
             );

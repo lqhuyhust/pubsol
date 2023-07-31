@@ -13,7 +13,7 @@ namespace App\plugins\report_calendar\models;
 use SPT\Container\Client as Base;
 use SPT\Traits\ErrorString;
 
-class TimelineModel extends Base
+class CalendarModel extends Base
 { 
     use ErrorString; 
 
@@ -61,7 +61,7 @@ class TimelineModel extends Base
                 'milestone' => $data['milestone'] ? $data['milestone'] : [],
                 'tags' => $data['tags'] ? $data['tags'] : [],
             ]),
-            'type' => 'timeline',
+            'type' => 'calendar',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
