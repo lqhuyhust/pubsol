@@ -15,6 +15,13 @@ use SPT\Web\ControllerMVVM;
 
 class report extends ReportController 
 {
+    public function newform()
+    {
+        $this->app->set('layout', 'backend.report.form');
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+    }
+    
     public function detail()
     {
         $this->app->set('layout', 'backend.report.form');

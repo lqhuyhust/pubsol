@@ -28,7 +28,7 @@ class AdminTimeline extends ViewModel
         $urlVars = $this->request->get('urlVars');
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
-        $data = $this->ReportTimelineModel->getDetail($id);
+        $data = $id ? $this->ReportTimelineModel->getDetail($id) : [];
 
         return $data;
     }

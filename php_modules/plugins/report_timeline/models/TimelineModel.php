@@ -126,4 +126,18 @@ class TimelineModel extends Base
 
         return $find;
     }
+
+    public function getRangeDay($where = [])
+    {
+        $where[10] = 'start_at IS NOT NULL && start_at > 0';
+        $start = $this->query->table('#__requests')->detail($where, 'UNIX_TIMESTAMP(MIN(start_at)) as minstart, UNIX_TIMESTAMP(MAX(start_at)) as maxstart');
+
+        $where[10] = 'finished_at IS NOT NULL';
+        $finish = $this->query->table('#__requests')->detail($where, 'UNIX_TIMESTAMP(MAX(finished_at)) as maxfinish, UNIX_TIMESTAMP(NOW() - INTERVAL 3 DAY) as minstart, UNIX_TIMESTAMP(NOW() + INTERVAL 3 DAY) as maxstart');
+        
+        return [
+            min($start['minstart'], $finish['minstart']),
+            max($start['maxstart'],  $finish['maxfinish']) // $finish['maxstart'],
+        ];
+    }
 }
