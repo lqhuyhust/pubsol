@@ -1,6 +1,7 @@
 <?php
 $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_style');
 ?>
+<?php echo $this->renderWidget('core::notification'); ?>
 <div class="main min-height-auto">
     <main class="content p-0 ">
         <div class="container-fluid p-0">
