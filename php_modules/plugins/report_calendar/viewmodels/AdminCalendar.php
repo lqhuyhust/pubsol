@@ -45,11 +45,36 @@ class AdminCalendar extends ViewModel
         $start_date = strtotime("sunday -1 week", strtotime($first_day_this_month));
         $end_date = strtotime("saturday 0 week", strtotime($last_day_this_month));
 
+        $days = [];
+        $date = $start_date;
+        while($date <= $end_date)
+        {
+            $event = [];
+            foreach($data['requests'] as $request)
+            {
+                $tmp_start = strtotime(date('d-m-Y', strtotime($request['start_at'])));
+                $tmp_end = strtotime(date('d-m-Y', strtotime($request['finished_at'])));
+
+                if ($date >= $tmp_start && $date <= $tmp_end)
+                {
+                    $event[] = $request;
+                }
+            }
+
+            $days[] = [
+                'event' => $event,
+                'date' => $date,
+            ];
+
+            $date += 86400;
+        }
+
         return [
             'id' => $id,
             'form' => $form,
             'data' => $data,
             'start_date' => $start_date,
+            'days' => $days,
             'end_date' => $end_date,
             'filter_tag' => $filter_tag,
             'title_page_edit' => $data && $id && $data['title'] ? $data['title'] : 'New Diagrams',
