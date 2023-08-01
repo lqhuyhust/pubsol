@@ -110,7 +110,8 @@
             form.append('current_day', $('#current_day').val());
             var action = $(this).data('action');
             form.append('action', action);
-            
+            $('.calendar-action').attr('disabled', true);
+
             $.ajax({  
                 type: 'POST',  
                 url: detail_link, 
@@ -118,7 +119,44 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
+                    if (response.status == 'success')
+                    {
+                        $('#calendar .calendar-month').text(response.month);
+                        if (response.data)
+                        {
+                            html = '';
+                            $('#current_day').val(response.current_day);
+                            response.data.forEach(function(item, index){
+                                if (item.day == 'Sunday')
+                                {
+                                    html += `<tr class="days">`;
+                                }
+
+                                html += `<td class="day ${item.class}">
+                                            <div class="date">${item.date}</div>`;
+                                item.event.forEach(function(event){
+                                    var title = event.status == 'start' || item.day == 'Sunday' ? event.title : '';
+                                    html += `<div class="event ${event.status}">
+                                                <div class="event-desc">
+                                                    <a target="_blank" href="<?php echo  $this->link_request  . '/' ?>${event.id}" >${title}</a>
+                                                </div>
+                                            </div>`
+                                });
+                                html += `</td>`;
+                                if (item.day == 'Saturday')
+                                {
+                                    html+= '</tr>';
+                                }
+                            });
+
+                            $('#calendar #table-main').html(html);
+                        }
+                        $('.calendar-action').removeAttr('disabled');
+                    }
+                    else
+                    {
+                        alert(response.message);
+                    }
                 }
             });
         });

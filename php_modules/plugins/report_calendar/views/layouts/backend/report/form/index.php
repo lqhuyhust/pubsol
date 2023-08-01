@@ -57,32 +57,33 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
                                         <th scope="col">Friday</th>
                                         <th scope="col">Saturday</th>
                                     </tr>
-                                    <?php foreach($this->days as $day) :
-                                        if (date('l', $day['date']) == 'Sunday') {
-                                            echo '<tr class="days">';
-                                        }
+                                    <tbody id="table-main">
+                                        <?php foreach ($this->days as $day) :
+                                            if (date('l', $day['date']) == 'Sunday') {
+                                                echo '<tr class="days">';
+                                            }
 
-                                        $class = date('m') != date('m', $day['date']) ? 'other-month' : '';
-                                        echo '<td class="day ' . $class . '">
+                                            $class = date('m') != date('m', $day['date']) ? 'other-month' : '';
+                                            echo '<td class="day ' . $class . '">
                                                 <div class="date">' . date('d', $day['date']) . '</div>';
-                                        if ($day['event'])
-                                        {
-                                            foreach($day['event'] as $event)
-                                            {
-                                                $title = $event['status'] == 'start' || date('l', $day['date']) == 'Sunday' ? $event['title'] : "";  
-                                                echo '<div class="event '. $event['status']. '">
+                                            if ($day['event']) {
+                                                foreach ($day['event'] as $event) {
+                                                    $title = $event['status'] == 'start' || date('l', $day['date']) == 'Sunday' ? $event['title'] : "";
+                                                    echo '<div class="event ' . $event['status'] . '">
                                                 <div class="event-desc">
-                                                    <a target="_blank" href="'. $this->link_request. '/'. $event['id'].'" >'. $title.' </a>
+                                                    <a target="_blank" href="' . $this->link_request . '/' . $event['id'] . '" >' . $title . ' </a>
                                                     </div>
                                                 </div>';
+                                                }
                                             }
-                                        }
-                                        
-                                        if (date('l', $day['date']) == 'Saturday') {
-                                            echo '</tr>';
-                                        }
+                                            echo '</td>';
+                                            if (date('l', $day['date']) == 'Saturday') {
+                                                echo '</tr>';
+                                            }
 
-                                    endforeach; ?>
+                                        endforeach; ?>
+                                    </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -91,5 +92,5 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
             </div>
     </main>
 </div>
-<input type="hidden" id="current_day" value="<?php echo strtotime(date('d-m-Y'));?>">
+<input type="hidden" id="current_day" value="<?php echo strtotime(date('d-m-Y')); ?>">
 <?php echo $this->render('backend.report.form.javascript') ?>
