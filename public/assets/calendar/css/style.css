@@ -80,10 +80,20 @@ caption {
 	padding: 0;
 }
 
+#calendar .event.start{
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
+#calendar .event.end{
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+
 #calendar .event {
-  flex: 0 0 auto;
+  	flex: 0 0 auto;
 	font-size: 13px;
-	border-radius: 4px;
+	/* border-radius: 4px; */
 	padding: 5px;
 	margin-bottom: 5px;
 	line-height: 14px;

@@ -59,7 +59,8 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
                                         {
                                             foreach($day['event'] as $event)
                                             {
-                                                echo '<div class="event">
+                                                $title = $event['status'] == 'start' ? 'start' : '';  
+                                                echo '<div class="event '. $event['status']. '">
                                                 <div class="event-desc">
                                                     '. $event['title'].'
                                                     </div>
