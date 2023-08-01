@@ -62,7 +62,6 @@ class AdminCalendar extends ViewModel
                     $event[] = $request;
                 }
             }
-
             $days[] = [
                 'event' => $event,
                 'date' => $date,
@@ -84,6 +83,7 @@ class AdminCalendar extends ViewModel
             'link_request' => $this->router->url('report/find-request'),
             'link_note' => $this->router->url('note2-detail'),
             'link_list' => $this->router->url('reports'),
+            'link_request' => $this->router->url('detail-request'),
             'link_tag' => $this->router->url('tag/search'),
             'link_form' => $id ? $this->router->url('report/detail') : $this->router->url('new-report/calendar'),
             'link_search' => $this->router->url('note2/search'),

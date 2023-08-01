@@ -37,7 +37,17 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
                             </div>
                             <div class="outline">
                                 <table id="calendar">
-                                    <caption><?php echo date('F Y'); ?></caption>
+                                    <caption class="d-flex justify-content-between">
+                                        <div class="actions">
+                                            <button class="btn btn-secondary"><i class="fa-solid fa-chevron-left"></i></button>
+                                            <button class="btn btn-secondary"><i class="fa-solid fa-chevron-right"></i></button>
+                                            <button class="btn btn-secondary">Today</button>
+                                        </div>
+                                        <div>
+                                            <?php echo date('F Y'); ?>
+                                        </div>
+                                        <div></div>
+                                    </caption>
                                     <tr class="weekdays">
                                         <th scope="col">Sunday</th>
                                         <th scope="col">Monday</th>
@@ -59,10 +69,10 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
                                         {
                                             foreach($day['event'] as $event)
                                             {
-                                                $title = $event['status'] == 'start' ? 'start' : '';  
+                                                $title = $event['status'] == 'start' || date('l', $day['date']) == 'Sunday' ? $event['title'] : "";  
                                                 echo '<div class="event '. $event['status']. '">
                                                 <div class="event-desc">
-                                                    '. $event['title'].'
+                                                    <a target="_blank" href="'. $this->link_request. '/'. $event['id'].'" >'. $title.' </a>
                                                     </div>
                                                 </div>';
                                             }
