@@ -102,6 +102,26 @@
             // Return `null` if the term should not be displayed
             return null;
         }
+
+        var detail_link = '<?php echo $this->link_ajax .'/' .$this->id ?>';
+
+        $('.calendar-action').on('click', function(){
+            var form = new FormData();
+            form.append('current_day', $('#current_day').val());
+            var action = $(this).data('action');
+            form.append('action', action);
+            
+            $.ajax({  
+                type: 'POST',  
+                url: detail_link, 
+                data: form,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        });
     });
     
 </script>

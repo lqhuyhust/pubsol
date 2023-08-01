@@ -39,11 +39,11 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
                                 <table id="calendar">
                                     <caption class="d-flex justify-content-between">
                                         <div class="actions">
-                                            <button class="btn btn-secondary"><i class="fa-solid fa-chevron-left"></i></button>
-                                            <button class="btn btn-secondary"><i class="fa-solid fa-chevron-right"></i></button>
-                                            <button class="btn btn-secondary">Today</button>
+                                            <button data-action='0' class="calendar-action btn btn-secondary"><i class="fa-solid fa-chevron-left"></i></button>
+                                            <button data-action='1' class="calendar-action btn btn-secondary"><i class="fa-solid fa-chevron-right"></i></button>
+                                            <button data-action='2' class="calendar-action btn btn-secondary">Today</button>
                                         </div>
-                                        <div>
+                                        <div class="calendar-month">
                                             <?php echo date('F Y'); ?>
                                         </div>
                                         <div></div>
@@ -91,4 +91,5 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
             </div>
     </main>
 </div>
+<input type="hidden" id="current_day" value="<?php echo strtotime(date('d-m-Y'));?>">
 <?php echo $this->render('backend.report.form.javascript') ?>
