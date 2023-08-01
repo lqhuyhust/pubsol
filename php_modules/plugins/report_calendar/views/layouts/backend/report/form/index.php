@@ -64,6 +64,8 @@ $this->theme->add($this->url . 'assets/calendar/css/style.css', '', 'calendar_st
                                             }
 
                                             $class = date('m') != date('m', $day['date']) ? 'other-month' : '';
+                                            $class = date('d-m-Y') == date('d-m-Y', $day['date']) ? 'today' : $class;
+                                            
                                             echo '<td class="day ' . $class . '">
                                                 <div class="date">' . date('d', $day['date']) . '</div>';
                                             if ($day['event']) {

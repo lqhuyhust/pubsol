@@ -48,6 +48,7 @@ class ajax extends ReportController
         while($date <= $end_date)
         {
             $class = date('m', $day) != date('m', $date) ? 'other-month' : '';
+            $class = date('d-m-Y', $day) == date('d-m-Y', $date) ? 'today' : $class;
 
             $event = [];
             foreach($data['requests'] as $request)

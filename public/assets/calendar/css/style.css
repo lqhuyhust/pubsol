@@ -121,6 +121,11 @@ caption {
 	color: #666;
 }
 
+#calendar .today {
+	background: #90daf1;
+	color: #666;
+}
+
 /* ============================
 				Mobile Responsiveness
    ============================*/
