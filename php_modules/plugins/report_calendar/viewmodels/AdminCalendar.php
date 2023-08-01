@@ -38,19 +38,20 @@ class AdminCalendar extends ViewModel
         $data = $this->getItem();
         $data = $data ? $data : [];
         $id  = $data && isset($data['id']) ? $data['id'] : '';
-        $rang_day = $data['rang_day'];
-        $start_date = $rang_day[0];
-        $end_date = $rang_day[1] + 24 * 60 * 60;
         $filter_tag = isset($data['filter_tag']) ? $data['filter_tag'] : [];
         $form = new Form($this->getFormFields(), $data);
+        $first_day_this_month = date('01-m-Y');
+        $last_day_this_month  = date('t-m-Y');
+        $start_date = strtotime("sunday -1 week", strtotime($first_day_this_month));
+        $end_date = strtotime("saturday 0 week", strtotime($last_day_this_month));
 
         return [
             'id' => $id,
             'form' => $form,
             'data' => $data,
             'start_date' => $start_date,
-            'filter_tag' => $filter_tag,
             'end_date' => $end_date,
+            'filter_tag' => $filter_tag,
             'title_page_edit' => $data && $id && $data['title'] ? $data['title'] : 'New Diagrams',
             'url' => $this->router->url(),
             'link_request' => $this->router->url('report/find-request'),
