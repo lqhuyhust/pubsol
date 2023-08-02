@@ -65,7 +65,7 @@ class DocumentModelTest extends TestCase
     public function testGetHistory($data, $result)
     {
         $try = $this->DocumentModel->getHistory($data);
-        $try = $try ? true : false;
+        $try = is_array($try) ? true : false;
 
         $this->assertEquals($try, $result);
     }
