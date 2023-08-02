@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\comment\registers;
+namespace App\plugins\history\registers;
 
 use SPT\Application\IApp; 
 use SPT\File;
@@ -10,17 +10,10 @@ class Dispatcher
     {
         $app->plgLoad('permission', 'CheckSession'); 
         
-        // prepare note
-        $container = $app->getContainer();
-        if (!$container->exists('file'))
-        {
-            $container->set('file', new File());
-        }
-        
         $cName = $app->get('controller');
         $fName = $app->get('function');
         
-        $controller = 'App\plugins\comment\controllers\\'. $cName;
+        $controller = 'App\plugins\history\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);

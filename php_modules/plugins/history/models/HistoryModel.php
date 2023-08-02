@@ -102,7 +102,7 @@ class HistoryModel extends Base
 
     public function list($start, $limit, $where)
     {
-        $list = $this->HistoryEntity->list($start, $limit, $where, 'created_at asc');
+        $list = $this->HistoryEntity->list($start, $limit, $where, 'created_at desc');
         $list = $list ? $list : [];
         
         foreach ($list as &$item)
@@ -112,5 +112,18 @@ class HistoryModel extends Base
         }
 
         return $list;
+    }
+
+    public function detail($id)
+    {
+        if (!$id)
+        {
+            $this->error = 'Invalid id';
+            return false;
+        }
+
+        $history = $this->HistoryEntity->findByPK($id);
+        
+        return $history;
     }
 }

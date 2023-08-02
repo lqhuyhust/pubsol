@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\comment\registers;
+namespace App\plugins\history\registers;
 
 use SPT\Application\IApp;
 
