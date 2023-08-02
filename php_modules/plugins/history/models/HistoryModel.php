@@ -24,15 +24,9 @@ class HistoryModel extends Base
             return false;
         }
 
-        if(!$data['comment'])
-        {
-            $this->error = "Comment can't empty";
-            return false;
-        }
-
         if(!$data['object'] || !$data['object_id'])
         {
-            $this->error = "Invalid object comment";
+            $this->error = "Invalid object history";
             return false;
         }
 
@@ -46,17 +40,17 @@ class HistoryModel extends Base
             return false;
         }
 
-        $try = $this->CommentEntity->add([
+        $try = $this->HistoryEntity->add([
             'object' => $data['object'],
             'object_id' => $data['object_id'],
-            'comment' => $data['comment'],
+            'data' => $data['data'],
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
         ]);
 
         if (!$try)
         {
-            $this->error = "Can't create comment";
+            $this->error = "Can't create history";
             return false;
         }
 
@@ -70,17 +64,17 @@ class HistoryModel extends Base
             return false;
         }
 
-        $try = $this->CommentEntity->update([
+        $try = $this->HistoryEntity->update([
             'object' => $data['object'],
             'object_id' => $data['object_id'],
-            'comment' => $data['comment'],
+            'data' => $data['data'],
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
         ]);
 
         if (!$try)
         {
-            $this->error = "Can't update comment";
+            $this->error = "Can't update history";
             return false;
         }
 
@@ -95,11 +89,11 @@ class HistoryModel extends Base
             return false;
         }
 
-        $try = $this->CommentEntity->remove($id);
+        $try = $this->HistoryEntity->remove($id);
 
         if (!$try)
         {
-            $this->error = "Can't remove comment";
+            $this->error = "Can't remove history";
             return false;
         }
 
@@ -108,7 +102,7 @@ class HistoryModel extends Base
 
     public function list($start, $limit, $where)
     {
-        $list = $this->CommentEntity->list($start, $limit, $where, 'created_at asc');
+        $list = $this->HistoryEntity->list($start, $limit, $where, 'created_at asc');
         $list = $list ? $list : [];
         
         foreach ($list as &$item)
