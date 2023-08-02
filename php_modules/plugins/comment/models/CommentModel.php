@@ -14,6 +14,8 @@ use SPT\Container\Client as Base;
 
 class CommentModel extends Base
 { 
+    use \SPT\Traits\ErrorString;
+
     public function validate($data)
     {
         if (!$data && !is_array($data))
@@ -102,5 +104,19 @@ class CommentModel extends Base
         }
 
         return $try;
+    }
+
+    public function list($start, $limit, $where)
+    {
+        $list = $this->CommentEntity->list($start, $limit, $where, 'created_at asc');
+        $list = $list ? $list : [];
+        
+        foreach ($list as &$item)
+        {
+            $user_tmp = $this->UserEntity->findByPK($item['created_by']);
+            $item['user'] = $user_tmp ? $user_tmp['name'] : '';
+        }
+
+        return $list;
     }
 }

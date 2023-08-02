@@ -8,7 +8,7 @@
  * 
  */
 
-namespace App\plugins\note\entities;
+namespace App\plugins\comment\entities;
 
 use SPT\Storage\DB\Entity;
 
