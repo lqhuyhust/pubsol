@@ -12,10 +12,6 @@ class Dispatcher
         
         // prepare note
         $container = $app->getContainer();
-        if (!$container->exists('file'))
-        {
-            $container->set('file', new File());
-        }
         
         $cName = $app->get('controller');
         $fName = $app->get('function');
