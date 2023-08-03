@@ -37,7 +37,7 @@ class AdminTemplates extends ViewModel
         $page = $this->state('page', 1, 'int', 'get', 'template.page');
         if ($page <= 0) $page = 1;
 
-        $where = [];
+        $where = ['status <> 2'];
 
         if (!empty($search)) {
             $where[] = "(`title` LIKE '%" . $search . "%') OR (`path` LIKE '%" . $search . "%')";
