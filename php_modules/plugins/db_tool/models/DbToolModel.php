@@ -54,9 +54,9 @@ class DbToolModel extends Base
         $user = [
             'username' => 'admin',
             'name' => 'Administrator',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@g.com',
             'status' => 1,
-            'password' => md5('123456'),
+            'password' => md5('123123'),
             'created_by' => 0,
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => 0,
