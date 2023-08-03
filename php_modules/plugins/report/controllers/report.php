@@ -15,7 +15,7 @@ class report extends ControllerMVVM
     public function updateStatus()
     {
         $id = $this->request->post->get('id', '', 'string');
-        $find = $this->DiagramEntity->findByPK($id);
+        $find = $this->ReportEntity->findByPK($id);
         if (!$find)
         {
             $this->session->set('flashMsg', 'Invalid Report');
