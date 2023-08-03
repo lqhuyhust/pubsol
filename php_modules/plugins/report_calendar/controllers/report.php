@@ -10,7 +10,7 @@
 
 namespace App\plugins\report_calendar\controllers;
 
-use DTM\report\libraries\ReportController;
+use App\plugins\report\libraries\ReportController;
 use SPT\Web\ControllerMVVM;
 
 class report extends ReportController 

@@ -1,7 +1,7 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use DTM\milestone\viewmodels\AdminMilestone;
+use App\plugins\milestone\viewmodels\AdminMilestone;
 use Tests\Test as TestCase;
 
 class AdminMilestoneTest extends TestCase
