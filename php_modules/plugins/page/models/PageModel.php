@@ -11,9 +11,12 @@
 namespace App\plugins\page\models;
 
 use SPT\Container\Client as Base;
+use SPT\Traits\ErrorString;
 
 class PageModel extends Base
 { 
+    use ErrorString; 
+
     private $types;
     public function getPageTypes()
     {
@@ -67,7 +70,7 @@ class PageModel extends Base
 
         if (!$data['title'])
         {
-            $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
+            $this->error = 'Error: Title can\'t empty! ';
             return false;
         }
 
@@ -76,13 +79,13 @@ class PageModel extends Base
             $where = ['slug' => $data['slug']];
             if (isset($data['id']))
             {
-                $where['id'] = $data['id'];
+                $where[] = 'id <> '.$data['id'];
             }
 
             $find = $this->PageEntity->findOne($where);
             if ($find)
             {
-                $this->session->set('flashMsg', 'Error: Slug already used! ');
+                $this->error = 'Error: Slug already used! ';
                 return false;
             }
         }

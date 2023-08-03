@@ -81,7 +81,7 @@ class page extends ControllerMVVM
             }
             else
             {
-                $this->session->set('flashMsg', 'Error: Update Failed!');
+                $this->session->set('flashMsg', 'Error: '. $this->PageModel->getError());
                 return $this->app->redirect(
                     $this->router->url('page/'. $id)
                 );
