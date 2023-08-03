@@ -11,7 +11,7 @@
 namespace App\plugins\note2_attachment\controllers;
 
 use SPT\Response;
-use DTM\note2\libraries\NoteController;
+use App\plugins\note2\libraries\NoteController;
 
 class ajax extends NoteController
 {
