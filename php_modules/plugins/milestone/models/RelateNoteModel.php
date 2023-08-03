@@ -69,7 +69,7 @@ class RelateNoteModel extends Base
     {
         $list = $this->RelateNoteEntity->list( 0, 0, ['request_id' => $request_id], 0);
         $result = [];
-        foreach ($list as &$item)
+        foreach ($list as $index => &$item)
         {
             $note_tmp = $this->Note2Entity->findByPK($item['note_id']);
             if ($note_tmp)
@@ -86,6 +86,10 @@ class RelateNoteModel extends Base
                 {
                     $item['description'] = '';
                 }
+            }
+            else
+            {
+                unset($list[$index]);
             }
 
             if (!empty($item['tags'])){

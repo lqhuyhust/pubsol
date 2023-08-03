@@ -138,7 +138,7 @@ class milestone extends ControllerMVVM
     {
         
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = $urlVars ? (int) $urlVars['id'] : 0;
 
         if (empty($id)) {
             $ids = $this->request->post->get('ids', [], 'array');
