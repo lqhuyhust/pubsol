@@ -1,7 +1,7 @@
 <?php
 namespace Tests\version\viewmodels;
 
-use DTM\version\viewmodels\AdminVersions;
+use App\plugins\version\viewmodels\AdminVersions;
 use SPT\Web\Gui\Listing;
 use Tests\Test as TestCase;
 
