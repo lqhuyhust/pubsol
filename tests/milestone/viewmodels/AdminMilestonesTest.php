@@ -1,7 +1,7 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use DTM\milestone\viewmodels\AdminMilestones;
+use App\plugins\milestone\viewmodels\AdminMilestones;
 use SPT\Web\Gui\Listing;
 use Tests\Test as TestCase;
 

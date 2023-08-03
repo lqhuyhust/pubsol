@@ -2,7 +2,7 @@
 
 namespace Tests\note2\viewmodels;
 
-use DTM\note2\viewmodels\AdminNotes;
+use App\plugins\note2\viewmodels\AdminNotes;
 use SPT\Web\Gui\Listing;
 use Tests\Test as TestCase;
 

@@ -1,7 +1,7 @@
 <?php
 namespace Tests\note2\viewmodels;
 
-use DTM\note2\viewmodels\AdminNoteWidget;
+use App\plugins\note2\viewmodels\AdminNoteWidget;
 use Tests\Test as TestCase;
 
 class AdminNoteWidgetTest extends TestCase

@@ -1,7 +1,7 @@
 <?php
 namespace Tests\milestone\viewmodels;
 
-use DTM\milestone\viewmodels\AdminDocument;
+use App\plugins\milestone\viewmodels\AdminDocument;
 use Tests\Test as TestCase;
 
 class AdminDocumentTest extends TestCase
