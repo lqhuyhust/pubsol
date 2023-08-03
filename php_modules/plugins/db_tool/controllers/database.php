@@ -46,5 +46,14 @@ class database extends ControllerMVVM
         }
 
         echo "Generate data done\n";
+        
+        $try = $this->DbToolModel->setFolderUpload();
+        if (!$try)
+        {
+            echo $this->DbToolModel->getError(). "\n";
+            return ;
+        }
+
+        echo "Setup folder upload\n";
     }
 }
