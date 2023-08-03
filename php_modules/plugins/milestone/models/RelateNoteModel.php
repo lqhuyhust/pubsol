@@ -75,7 +75,7 @@ class RelateNoteModel extends Base
             if ($note_tmp)
             {
                 $item['title'] = $note_tmp['title'];
-                $item['description'] = strip_tags((string) $note_tmp['description']) ;
+                $item['description'] = strip_tags((string) $note_tmp['data']) ;
                 $item['tags'] = $note_tmp['tags'] ;
                 if (strlen($item['description']) > 100)
                 {
