@@ -9,7 +9,7 @@ class Routing
     public static function registerEndpoints()
     {
         return [
-            'note2' => [
+            'notes' => [
                 'fnc' => [
                     'get' => 'note2.note.list',
                     'post' => 'note2.note.list',

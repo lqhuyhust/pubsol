@@ -130,7 +130,7 @@ class AdminNotes extends ViewModel
             'sort' => $sort,
             'user_id' => $this->user->get('id'),
             'url' => $this->router->url(),
-            'link_list' => $this->router->url('note2'),
+            'link_list' => $this->router->url('notes'),
             'link_tag' => $this->router->url('tag/search'),
             'title_page' => 'Note Manager',
             'link_form' => $this->router->url('note'),

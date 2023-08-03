@@ -49,7 +49,7 @@ class note extends ControllerMVVM
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         return $this->app->redirect(
-            $this->router->url('note2'),
+            $this->router->url('notes'),
         );
     }
 

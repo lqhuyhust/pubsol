@@ -63,7 +63,7 @@ class history extends NoteController
 
             $this->session->set('flashMsg', 'Invalid version');
             return $this->app->redirect(
-                $this->router->url('note2'),
+                $this->router->url('notes'),
             );
         }
 
