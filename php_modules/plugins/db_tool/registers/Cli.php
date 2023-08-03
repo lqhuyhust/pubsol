@@ -13,7 +13,7 @@ class Cli
                 'description' => 'Check availability database',
                 'fnc' => 'db_tool.database.checkavailability'
             ],
-            'data-sample' => [
+            'install-data' => [
                 'description' => 'Generate Data Sample',
                 'fnc' => 'db_tool.database.generatedata'
             ]
