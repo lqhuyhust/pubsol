@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\core\registers;
+namespace App\plugins\note2_file\registers;
 
 use SPT\Application\IApp;
 use SPT\File;
