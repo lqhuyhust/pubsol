@@ -7,7 +7,7 @@
  * @description: Just a basic viewmodel
  * 
  */
-namespace DTM\report\viewmodels; 
+namespace App\plugins\report\viewmodels; 
 
 use SPT\Web\Gui\Form;
 use SPT\Web\Gui\Listing;
