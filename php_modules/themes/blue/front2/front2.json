@@ -7,5 +7,5 @@
         {"name":"footer", "label": "Footer", "limit": 3},
         {"name":"sidebar", "label": "Sidebar Left", "limit": 2}
     ],
-    "image": "blue/image/tow_column.png"
+    "image": "assets/blue/images/two_column.png"
 }

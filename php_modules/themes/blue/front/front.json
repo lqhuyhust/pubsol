@@ -6,5 +6,5 @@
         {"name":"banner", "label": "Banner", "limit": 1},
         {"name":"footer", "label": "Footer", "limit": 3}
     ],
-    "image": "blue/image/one_column.png"
+    "image": "assets/blue/images/one_column.png"
 }

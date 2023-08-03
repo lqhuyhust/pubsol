@@ -1,8 +1,12 @@
 <div class="container-fluid p-0 align-items-center row justify-content-center mx-auto">
     <form action="<?php echo $this->link_form . '/'  . $this->id?>" method="post" id="form_template">
-        <div class="row g-3 align-items-center">
+        <div class="row g-3">
             <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
-                Image here
+                <?php foreach($this->paths as $key => $template) : ?>
+                <div data-template="<?php echo $key; ?>" class="d-none image-template">
+                    <img class="img-fluid" src="<?php echo $this->url($template[2]->image); ?>" alt="">
+                </div>
+                <?php endforeach; ?>
             </div>
             <div class="mb-3 col-lg-6 col-sm-12 mx-auto pt-3">
                 <div class="row px-0 mb-3">

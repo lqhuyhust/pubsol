@@ -97,11 +97,28 @@
     }
 
     $(document).ready(function(){
+        // load image template
+        function loadImage(wdg)
+        {
+            var template = $('#path').val();
+            $('.image-template').addClass('d-none');
+            $('.image-template').each(function(index){
+                var data = $(this).data('template');
+                if (template == data)
+                {
+                    $(this).removeClass('d-none');
+                }
+            })
+        }
+
+        loadImage();
+
         loadWidget();
         $('#path').on('change', function(){
             let key = $(this).val();
             $('.position-template').addClass('d-none');
             $(`.position-template[data-template-path="${key}"]`).removeClass('d-none');
+            loadImage();
         })
 
         $('.new-position-widget').on('click', function(){
