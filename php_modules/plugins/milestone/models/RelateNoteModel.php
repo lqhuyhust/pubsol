@@ -90,6 +90,7 @@ class RelateNoteModel extends Base
             else
             {
                 unset($list[$index]);
+                continue;
             }
 
             if (!empty($item['tags'])){
