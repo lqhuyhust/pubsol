@@ -11,12 +11,42 @@ use Tests\Test as TestCase;
 class UserModelTest extends TestCase
 { 
     private $UserModel;
+    static $data;
 
     protected function setUp(): void
     {
         $app = $this->prepareApp();
         $container = $app->getContainer();
         $this->UserModel = $container->get('UserModel');
+        $UserEntity = $container->get('UserEntity');
+
+        // Prepare data
+        if (!static::$data)
+        {
+            $find = $UserEntity->findOne(['username' => 'admin']);
+            if ($find)
+            {
+                $UserEntity->remove($find['id']);
+            }
+
+            $find = $UserEntity->findByPK(2);
+            if(!$find)
+            {
+                $UserEntity->add([
+                    'id' => 2,
+                    'name' => 'admin 2',
+                    'username' => 'admin2',
+                    'email' => 'admin@g.com',
+                    'password' => md5('123123'),
+                    'status' => 1,
+                    'created_by' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'modified_by' => 0,
+                    'modified_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            static::$data = true;
+        }
     }
 
     /**
@@ -42,7 +72,7 @@ class UserModelTest extends TestCase
                 [
                     'username' => 'Test2',
                     'password' => '12345667',
-                    'email' => 'admin1@gmail.com',
+                    'email' => 'admin1@g.com',
                 ], 1, true
             ],
         ];
@@ -89,20 +119,17 @@ class UserModelTest extends TestCase
                 ], false],
             [
                 [
+                    'username' => '',
+                    'password' => '',
+                    'email' => 'admin@g.com',
+                ], false],
+            [
+                [
                     'name' => 'Test',
                     'username' => 'admin',
                     'password' => '123123',
                     'status' => 1,
-                    'email' => 'admin@gmail.com',
-                ], true
-            ],
-            [
-                [
-                    'name' => 'Test 2',
-                    'username' => 'admin2',
-                    'password' => '123123',
-                    'status' => 1,
-                    'email' => 'admin@gmail.com',
+                    'email' => 'admin@g.com',
                 ], true
             ],
         ];
@@ -135,7 +162,7 @@ class UserModelTest extends TestCase
                     'username' => 'Test',
                     'id' => 2,
                     'status' => 1,
-                    'email' => 'admin@gmail.com',
+                    'email' => 'admin@g.com',
                 ], true
             ],
         ];
@@ -160,6 +187,7 @@ class UserModelTest extends TestCase
 
     /**
      * @dataProvider dataLogin
+     * @depends testAdd
      */
     public function testLogin($username, $password, $result)
     {
