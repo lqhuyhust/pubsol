@@ -74,7 +74,7 @@ class AdminRelateNotes extends ViewModel
                 {
                     $item['title'] = $note_tmp['title'];
                     $item['type'] = $note_tmp['type'];
-                    $item['data'] = strip_tags((string) $note_tmp['data']) ;
+                    $item['description'] = strip_tags((string) $note_tmp['data']) ;
                     $item['tags'] = $note_tmp['tags'] ;
                 }
                 else
@@ -129,7 +129,7 @@ class AdminRelateNotes extends ViewModel
             'url' => $this->router->url(),
             'link_update_relate_note' => $this->router->url('relate-note/update-alias'),
             'link_list' => $this->router->url('relate-notes/' . $request_id),
-            'link_note' => $this->router->url('note/preview'),
+            'link_note' => $this->router->url('note2/detail'),
             'link_list_relate_note' => $this->router->url('relate-notes/' . $request_id),
             'title_page_relate_note' => $title_page_relate_note,
             'token' => $this->token->value(),
@@ -146,7 +146,7 @@ class AdminRelateNotes extends ViewModel
             'request_id' => $request_id,
             'link_list' => $this->router->url('relate-notes/' . $request_id),
             'link_form' => $this->router->url('relate-note/'. $request_id),
-            'link_note' => $this->router->url('note'),
+            'link_note' => $this->router->url('note2/detail'),
             'link_list_relate_note' => $this->router->url('relate-notes/' . $request_id),
             'token' => $this->token->value(),
         ];

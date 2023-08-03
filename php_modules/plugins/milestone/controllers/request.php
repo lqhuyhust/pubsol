@@ -157,9 +157,9 @@ class request extends ControllerMVVM
 
     public function validateID()
     {
-                $milestone_id = $this->validateMilestoneID();
+        $milestone_id = $this->validateMilestoneID();
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = $urlVars ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
         {

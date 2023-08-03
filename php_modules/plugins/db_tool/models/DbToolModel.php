@@ -122,4 +122,21 @@ class DbToolModel extends Base
 
         return true;
     }
+
+    public function setFolderUpload()
+    {
+        // check permission in folder media
+        if (is_readable(MEDIA_PATH) && is_writable(MEDIA_PATH) && is_executable(MEDIA_PATH))
+        {
+            return true;
+        }
+
+        if (!chmod(MEDIA_PATH, 755))
+        {
+            $this->error = "Can't change permission folder upload";
+            return false;
+        }
+
+        return true;
+    }
 }

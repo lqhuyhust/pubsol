@@ -183,7 +183,15 @@ class RequestModel extends Base
         {
             return false;
         }
-        $list = $this->VersionNoteEntity->list(0,0, ['request_id = '. $id]);
+        $version_latest = $this->VersionEntity->list(0, 1, [], 'created_at desc');
+        $version_latest = $version_latest ? $version_latest[0] : [];
+
+        if(!$version_latest)
+        {
+            return [];
+        }
+
+        $list = $this->VersionNoteEntity->list(0,0, ['request_id = '. $id, 'version_id' => $version_latest['id']]);
         $list = $list ? $list : [];
 
         return $list;

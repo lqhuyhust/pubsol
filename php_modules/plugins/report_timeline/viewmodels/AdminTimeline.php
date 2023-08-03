@@ -54,6 +54,7 @@ class AdminTimeline extends ViewModel
             'title_page_edit' => $data && $id && $data['title'] ? $data['title'] : 'New Diagrams',
             'url' => $this->router->url(),
             'link_request' => $this->router->url('report/find-request'),
+            'link_detail_request' => $this->router->url('detail-request'),
             'link_note' => $this->router->url('note2-detail'),
             'link_list' => $this->router->url('reports'),
             'link_tag' => $this->router->url('tag/search'),

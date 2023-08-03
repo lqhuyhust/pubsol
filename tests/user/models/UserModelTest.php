@@ -26,6 +26,15 @@ class UserModelTest extends TestCase
             $find = $UserEntity->findOne(['username' => 'admin']);
             if ($find)
             {
+                $UserEntity->update([
+                    'id' => $find['id'],
+                    'password' => md5('123123'),
+                ]);
+            }
+
+            $find = $UserEntity->findOne(['username' => 'admin_test']);
+            if ($find)
+            {
                 $UserEntity->remove($find['id']);
             }
 
@@ -72,6 +81,7 @@ class UserModelTest extends TestCase
                 [
                     'username' => 'Test2',
                     'password' => '12345667',
+                    'confirm_password' => '12345667',
                     'email' => 'admin1@g.com',
                 ], 1, true
             ],
@@ -126,10 +136,11 @@ class UserModelTest extends TestCase
             [
                 [
                     'name' => 'Test',
-                    'username' => 'admin',
+                    'username' => 'admin_test',
                     'password' => '123123',
+                    'confirm_password' => '123123',
                     'status' => 1,
-                    'email' => 'admin@g.com',
+                    'email' => 'admin2@g.com',
                 ], true
             ],
         ];
@@ -162,7 +173,7 @@ class UserModelTest extends TestCase
                     'username' => 'Test',
                     'id' => 2,
                     'status' => 1,
-                    'email' => 'admin@g.com',
+                    'email' => 'admin3@g.com',
                 ], true
             ],
         ];

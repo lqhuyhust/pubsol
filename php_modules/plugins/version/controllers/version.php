@@ -155,7 +155,7 @@ class version extends ControllerMVVM
     {
         
         $urlVars = $this->request->get('urlVars');
-        $id = (int) $urlVars['id'];
+        $id = $urlVars ? (int) $urlVars['id'] : 0;
 
         if(empty($id))
         {

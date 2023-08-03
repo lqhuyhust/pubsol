@@ -22,7 +22,7 @@ class Menu
         $active = strpos($path_current, 'note') !== false ? 'active' : '';
         $menu = [
             [
-                'link' => $router->url('note2'),
+                'link' => $router->url('notes'),
                 'title' => 'Notes',
                 'icon' => '<i class="fa-solid fa-clipboard"></i>',
                 'class' => $active

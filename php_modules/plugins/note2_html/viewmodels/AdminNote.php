@@ -74,7 +74,7 @@ class AdminNote extends ViewModel
 
         $button_header = [
             [
-                'link' => $this->router->url('note2/detail/'.$data['id']),
+                'link' => isset($data['id']) ? $this->router->url('note2/detail/'.$data['id']) : $this->router->url('notes') ,
                 'class' => 'btn btn-outline-secondary',
                 'title' => 'Cancel',
             ],
@@ -90,9 +90,8 @@ class AdminNote extends ViewModel
             'form' => $form,
             'button_header' => $button_header,
             'data' => $data,
-            'title_page' => $data['title'] . ' - Modified at: '. $history['created_at'] ,
+            'title_page' => isset($data['id']) ? $data['title'] . ' - Modified at: '. $history['created_at'] : 'Modified at: '. $history['created_at']  ,
             'url' => $this->router->url(),
-            'link_list' => $this->router->url('note2/detail/'. $data['id']),
             'link_history' => $this->router->url('history/note-html'),
             'link_form' => $this->router->url('history/note-html'),
         ];

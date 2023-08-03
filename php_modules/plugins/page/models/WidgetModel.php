@@ -73,4 +73,17 @@ class WidgetModel extends Base
 
         return $widgets;
     }
+
+    public function removeByTemplate($id)
+    {
+        if (!$id)
+        {
+            $this->error = 'Invalid id';
+            return false;
+        }
+
+        $try = $this->WidgetEntity->removeByTemplate($id);
+        
+        return $try;
+    }
 }

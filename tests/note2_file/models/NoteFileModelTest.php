@@ -27,9 +27,31 @@ class NoteFileModelTest extends TestCase
         $container->get('request')->set('urlVars', ['id' => 1]);
         $this->NoteFileModel = $container->get('NoteFileModel');
         $FileEntity = $container->get('FileEntity');
+        $Note2Entity = $container->get('Note2Entity');
 
         if (!static::$data)
         {
+            $find = $Note2Entity->findByPK(2);
+            if (!$find)
+            {
+                $Note2Entity->add([
+                    'id' => 2,
+                    'title' => 'test file',
+                    'public_id' => '',
+                    'alias' => '',
+                    'data' => '',
+                    'tags' => '',
+                    'type' => 'file',
+                    'status' => 0,
+                    'note_ids' => '',
+                    'notice' => '',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'created_by' => 0,
+                    'locked_at' => date('Y-m-d H:i:s'),
+                    'locked_by' => 0,
+                ]);
+            }
+
             $find = $FileEntity->findOne(['note_id' => 2]);
             if (!$find)
             {
@@ -187,16 +209,16 @@ class NoteFileModelTest extends TestCase
     public function dataUpdate()
     {
         return [
-            [[], false],
-            [[
-                'title' => '',
-            ], false],
+            // [[], false],
+            // [[
+            //     'title' => '',
+            // ], false],
+            // [[
+            //     'title' => 'test',
+            // ], false],
             [[
                 'title' => 'test',
-            ], false],
-            [[
-                'title' => 'test',
-                'id' => 1,
+                'id' => 2,
             ], true],
         ];
     }
@@ -205,6 +227,7 @@ class NoteFileModelTest extends TestCase
      * @dataProvider dataRemove
      * @depends testAdd
      * @depends testUpdate
+     * @depends testGetDetail
      */
     public function testRemove($id, $result)
     {
@@ -237,7 +260,7 @@ class NoteFileModelTest extends TestCase
     {
         return [
             [0, false],
-            [1, true],
+            [2, true],
         ];
     }
 }

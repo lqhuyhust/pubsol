@@ -45,10 +45,12 @@ class AdminTemplate extends ViewModel
         $form = new Form($this->getFormFields(), $data);
         $id = empty($data) ? 0 : $data['id'];
         $widgets = $this->WidgetModel->getTypes();
+        $paths = $this->TemplateModel->getPathList();
 
         return [
             'title_page' => 'Template form',
             'id' => $id,
+            'paths' => $paths,
             'form' => $form,
             'url' => $this->router->url(),
             'widgets' => $widgets,
@@ -95,7 +97,7 @@ class AdminTemplate extends ViewModel
                 'formClass' => 'form-select',
                 'options' => $pathOptions,
                 'placeholder' => 'Template',
-                'label' => 'Template',
+                'showLabel' => false,
                 'formClass' => 'form-control',
             ],
             'id' => [

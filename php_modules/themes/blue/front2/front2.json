@@ -6,5 +6,6 @@
         {"name":"banner", "label": "Banner", "limit": 1},
         {"name":"footer", "label": "Footer", "limit": 3},
         {"name":"sidebar", "label": "Sidebar Left", "limit": 2}
-    ]
+    ],
+    "image": "assets/blue/images/two_column.png"
 }
