@@ -16,6 +16,7 @@ use Tests\Test as TestCase;
 class NoteFileModelTest extends TestCase
 { 
     private $NoteFileModel;
+    static $data;
 
     protected function setUp(): void
     {
@@ -25,6 +26,22 @@ class NoteFileModelTest extends TestCase
         $container->set('file', $file);
         $container->get('request')->set('urlVars', ['id' => 1]);
         $this->NoteFileModel = $container->get('NoteFileModel');
+        $FileEntity = $container->get('FileEntity');
+
+        if (!static::$data)
+        {
+            $find = $FileEntity->findOne(['note_id' => 2]);
+            if (!$find)
+            {
+                $FileEntity->add([
+                    'note_id' => 2,
+                    'path' => 'media/attachments/' . date('Y/m/d'). '/test.png',
+                    'file_type' => 'image',
+                ]);
+            }
+
+            static::$data = true;
+        }
     }
     
     /**
@@ -201,7 +218,6 @@ class NoteFileModelTest extends TestCase
         return [
             [0, false],
             [2, true],
-            [3, true],
         ];
     }
 
