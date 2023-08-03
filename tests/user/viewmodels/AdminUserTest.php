@@ -13,6 +13,7 @@ class AdminUserTest extends TestCase
         $app = $this->prepareApp();
         $container = $app->getContainer();
         $request = $container->get('request');
+        $request->set('urlVars', ['id' => 2]);
 
         $this->AdminUser = new AdminUser($container);
     }
