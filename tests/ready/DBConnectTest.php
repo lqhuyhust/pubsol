@@ -4,6 +4,7 @@ namespace Tests\ready;
 use Tests\Test as TestCase;
 use SPT\Application\Configuration;
 use SPT\Extend\Pdo as PdoWrapper;
+use SPT\Support\Loader;
 
 class DBConnectTest extends TestCase
 {
@@ -23,6 +24,29 @@ class DBConnectTest extends TestCase
         }
 
         $this->assertTrue($try);
+    }
+
+    public function testEntity()
+    {
+        $app = $this->prepareApp();
+        $container = $app->getContainer();
+        $plgList = $app->plugin(true);
+        
+        foreach($plgList as $plg)
+        {
+            Loader::findClass( 
+                $plg['path']. '/entities', 
+                $plg['namespace']. '\entities', 
+                function($classname, $fullname) use ($container, &$entities)
+                {
+                    if ($container->exists($classname))
+                    {
+                        $entity = $container->get($classname);
+                        $try = $entity->checkAvailability();
+                        $this->assertNotFalse($try);
+                    }
+            });
+        }
     }
 
 }
