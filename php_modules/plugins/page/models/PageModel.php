@@ -70,12 +70,17 @@ class PageModel extends Base
 
         if (!$data['title'])
         {
-            $this->error = 'Error: Title can\'t empty! ';
+            $this->error = 'Title can\'t empty! ';
             return false;
         }
 
         if ($data['slug'])
         {
+            if (!preg_match('/^[a-z0-9-]+$/', $data['slug'])) {
+                $this->error = 'Slug invalid format!';
+                return false;
+            }
+            
             $where = ['slug' => $data['slug']];
             if (isset($data['id']))
             {
@@ -85,7 +90,7 @@ class PageModel extends Base
             $find = $this->PageEntity->findOne($where);
             if ($find)
             {
-                $this->error = 'Error: Slug already used! ';
+                $this->error = 'Slug already used! ';
                 return false;
             }
         }
