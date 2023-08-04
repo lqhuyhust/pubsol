@@ -76,7 +76,7 @@
                         var list = '';
                         if (resultData.status == 'success')
                         {
-                            alert('Widget get removed successfully');
+                            alert('Widget removed successfully');
                             loadWidget();
                         }
                         else
@@ -124,6 +124,11 @@
         $('.new-position-widget').on('click', function(){
             let position = $(this).data('position');
             $('#position').val(position);
+            $('#selectWidgetModal').modal('show');
+        });
+
+        $('#createWidget').on('click', function(){
+            $('#selectWidgetModal').modal('hide');
             $('#selectWidgetType').modal('show');
         });
 

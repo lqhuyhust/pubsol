@@ -86,4 +86,23 @@ class WidgetModel extends Base
         
         return $try;
     }
+
+    public function search($search, $position)
+    {
+        $where = [];
+        if ($search)
+        {
+            $where[] = "title LIKE '%$search%'";
+        }
+
+        if ($position)
+        {
+            $where[] = "position Not LIKE '%($position)%'";
+        }
+
+        $list = $this->WidgetEntity->list(0,0, $where);
+        $list = $list ? $list : [];
+        
+        return $list;
+    }
 }

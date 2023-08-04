@@ -59,6 +59,7 @@
         </div>
     </form>
 </div>
+<?php echo $this->renderWidget('widget::backend.select_widget'); ?>
 <?php 
 include 'widgetModal.php'; 
 include 'widgetsModal.php'; 
