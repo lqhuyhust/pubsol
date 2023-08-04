@@ -60,17 +60,27 @@ class Routing
                     'get' => 'page.page.search',
                 ],
             ],
-            'page' => [
+            'new-page' => [
                 'fnc' => [
                     'get' => 'page.page.detail',
                     'post' => 'page.page.add',
+                ],
+                'parameters' => ['type'],
+                'permission' => [ 
+                    // ..
+                ],
+                'loadChildPluginType' => true,
+            ],
+            'page/detail' => [
+                'fnc' => [
+                    'get' => 'page.page.detail',
                     'put' => 'page.page.update',
-                    'delete' => 'page.page.delete'
                 ],
                 'parameters' => ['id'],
                 'permission' => [ 
                     // ..
                 ],
+                'loadChildPluginType' => true,
             ],
         ];
     }

@@ -18,7 +18,7 @@ class PageModel extends Base
     use ErrorString; 
 
     private $types;
-    public function getPageTypes()
+    public function getTypes()
     {
         if(null === $this->types)
         {
@@ -202,7 +202,7 @@ class PageModel extends Base
         $page = $this->PageEntity->findOne(['slug' => $slug]);
         if (!$page) return false;
 
-        $types = $this->getPageTypes();
+        $types = $this->getTypes();
         if (empty($types[$page['page_type']]) ) return false;
 
         $page['type'] = $types[$page['page_type']];

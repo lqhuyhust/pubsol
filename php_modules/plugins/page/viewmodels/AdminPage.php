@@ -63,7 +63,7 @@ class AdminPage extends ViewModel
             ];
         }
 
-        $page_type = $this->PageModel->getPageTypes();
+        $page_type = $this->PageModel->getTypes();
         $typeOptions = [];
         foreach($page_type as $key => $value)
         {
