@@ -35,6 +35,9 @@ class AdminTemplate extends ViewModel
         }
 
         $data = $id ? $this->TemplateEntity->findByPK($id) : $newTemplate;
+        $data_form = $this->session->get('data_form', []);
+        $this->session->set('data_form', []);
+        $data = $data_form ? $data_form : $data;
 
         return $data;
     }

@@ -41,15 +41,18 @@ class report extends ReportController
         //check title sprint
         $save_close = $this->request->post->get('save_close', '', 'string');
         
-        $try = $this->CalendarModel->add([
+        $data = [
             'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
             'milestone' => $this->request->post->get('milestone', [], 'array'),
             'tags' => $this->request->post->get('tags', [], 'array'),
-        ]);
+        ];
+
+        $try = $this->CalendarModel->add($data);
         
         if( !$try )
         {
+            $this->session->set('data_form', $data);
             $this->session->set('flashMsg', $this->CalendarModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-report/calendar')
@@ -73,13 +76,15 @@ class report extends ReportController
         // TODO valid the request input
         $save_close = $this->request->post->get('save_close', '', 'string');
 
-        $try = $this->CalendarModel->update([
+        $data = [
             'id' => $id,
             'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
             'milestone' => $this->request->post->get('milestone', [], 'array'),
             'tags' => $this->request->post->get('tags', [], 'array'),
-        ]);
+        ];
+
+        $try = $this->CalendarModel->update($data);
         
         if($try)
         {
@@ -91,6 +96,7 @@ class report extends ReportController
         }
         else
         {
+            $this->session->set('data_form', $data);
             $this->session->set('flashMsg', $this->CalendarModel->getError());
             return $this->app->redirect(
                 $this->router->url('report/detail/'. $id)
