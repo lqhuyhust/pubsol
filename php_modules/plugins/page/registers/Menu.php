@@ -13,19 +13,12 @@ class Menu
         $path_current = $router->get('actualPath');
 
         $active = strpos($path_current, 'pages') !== false ? 'active' : '';
-        $active_template = strpos($path_current, 'templates') !== false ? 'active' : '';
         $menu = [
             [
                 'link' => $router->url('pages'),
                 'title' => 'Pages', 
                 'icon' => '<i class="fa-solid fa-clipboard"></i>',
                 'class' => $active,
-            ],
-            [
-                'link' => $router->url('templates'),
-                'title' => 'Templates', 
-                'icon' => '<i class="fa-solid fa-clipboard"></i>',
-                'class' => $active_template,
             ],
         ];
         

@@ -8,41 +8,6 @@ class Routing
     public static function registerEndpoints()
     {
         return [
-            // TEMPLATE 
-            'templates' => [
-                'fnc' => [
-                    'get' => 'page.template.list',
-                    'post' => 'page.template.list',
-                    'put' => 'page.template.update',
-                    'delete' => 'page.template.delete'
-                ],
-                'permission' => [ 
-                    //..
-                ],
-            ],
-            'template/load-widget' => [
-                'fnc' => [
-                    'get' => 'page.template.loadWidget',
-                ],
-                'parameters' => ['id'],
-            ],
-            'template/search' => [
-                'fnc' => [
-                    'get' => 'page.template.search',
-                ],
-            ],
-            'template' => [
-                'fnc' => [
-                    'get' => 'page.template.detail',
-                    'post' => 'page.template.add',
-                    'put' => 'page.template.update',
-                    'delete' => 'page.template.delete'
-                ],
-                'parameters' => ['id'],
-                'permission' => [ 
-                    // ..
-                ],
-            ],
             // PAGE
             'pages' => [
                 'fnc' => [
