@@ -126,7 +126,7 @@ class PageDispatch extends Base
         $plgName = $this->app->get('mainPlugin');
         $plgName = $plgName['name'].'_'.$pagetype;
 
-        $controller = $class. 'controllers\\'. $cName;
+        $controller = $class . $cName;
         if(!class_exists($controller))
         {
             $this->app->raiseError('Invalid controller '. $cName);

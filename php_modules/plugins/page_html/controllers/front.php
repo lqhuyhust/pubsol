@@ -16,6 +16,6 @@ class front extends ControllerMVVM
 {
     public function display()
     {
-        $this->app->set('layout', 'demo');
+        $this->app->set('layout', 'html');
     }
 }

@@ -62,7 +62,7 @@ class Routing
             ],
             'new-page' => [
                 'fnc' => [
-                    'get' => 'page.page.detail',
+                    'get' => 'page.page.newform',
                     'post' => 'page.page.add',
                 ],
                 'parameters' => ['type'],

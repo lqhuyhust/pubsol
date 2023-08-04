@@ -41,6 +41,9 @@ class PageEntity extends Entity
                     'type' => 'varchar',
                     'limit' => 255,
                 ],
+                'data' => [
+                    'type' => 'text'
+                ],
                 'permission' => [
                     'type' => 'text'
                 ],

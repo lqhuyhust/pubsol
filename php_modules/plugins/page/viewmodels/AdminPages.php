@@ -65,7 +65,7 @@ class AdminPages extends ViewModel
             'url' => $this->router->url(),
             'link_list' => $this->router->url('pages'),
             'title_page' => 'Pages',
-            'link_form' => $this->router->url('page'),
+            'link_form' => $this->router->url('page/detail'),
             'token' => $this->token->value(),
         ];
     }
