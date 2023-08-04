@@ -14,29 +14,35 @@
                     resultData.list.forEach(function(item) {
                         if (item.position)
                         {
-                            $(`.position-item[data-position=${item.position}]`).each(function(index){
-                                var count = $(this).find(`.button-widget`).length;
-                                var limit = $(this).data('limit');
-                                count++;
-                                if (count >= limit)
-                                {
-                                    $(this).find(`.new-position-widget`).addClass('d-none');
-                                    if (count > limit)
-                                    {
-                                        return true;
-                                    }
-                                }
-                                else
-                                {
-                                    $(this).find(`.new-position-widget`).removeClass('d-none');
-                                }
-                                
-                                var html = `<div class="mx-3 mb-1 position-relative">
-                                    <button data-position="${item.position}" data-id="${item.id}" data-type="${item.widget_type}" type="button" class="btn btn-primary button-widget">${item.title}</button>
-                                    <button data-id="${item.id}" data-type="${item.widget_type}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger button-remove-widget"><i class="fa-solid fa-minus"></i></button>
-                                </div>`;
-                                $(this).find(`.widgets`).append(html);
-                            })
+                            position = item.position;
+                            if (Array.isArray(position))
+                            {
+                                position.forEach(function(value, i){
+                                    $(`.position-item[data-position=${value}]`).each(function(index){
+                                        var count = $(this).find(`.button-widget`).length;
+                                        var limit = $(this).data('limit');
+                                        count++;
+                                        if (count >= limit)
+                                        {
+                                            $(this).find(`.new-position-widget`).addClass('d-none');
+                                            if (count > limit)
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            $(this).find(`.new-position-widget`).removeClass('d-none');
+                                        }
+                                        
+                                        var html = `<div class="mx-3 mb-1 position-relative">
+                                            <button data-position="${value}" data-id="${item.id}" data-type="${item.widget_type}" type="button" class="btn btn-primary button-widget">${item.title}</button>
+                                            <button data-id="${item.id}" data-type="${item.widget_type}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger button-remove-widget"><i class="fa-solid fa-minus"></i></button>
+                                        </div>`;
+                                        $(this).find(`.widgets`).append(html);
+                                    })
+                                })
+                            }
                         }
                     })
 
@@ -125,6 +131,7 @@
             let position = $(this).data('position');
             $('#position').val(position);
             $('#selectWidgetModal').modal('show');
+            $("#selectWidgets").val(null).trigger('change');
         });
 
         $('#createWidget').on('click', function(){

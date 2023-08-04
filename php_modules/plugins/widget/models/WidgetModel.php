@@ -105,4 +105,68 @@ class WidgetModel extends Base
         
         return $list;
     }
+
+    
+    public function convertPosition($positions)
+    {
+        if (!$positions)
+        {
+            return [];
+        }
+
+        $positions_tmp = [];
+
+        if (is_string($positions))
+        {
+            $positions_tmp = ['('. $positions .')'];
+        }
+        elseif(is_array($positions))
+        {
+            foreach($positions as $position)
+            {
+                $positions_tmp[] = '('. $position .')';
+            }
+        }
+
+        return $positions_tmp;
+    }
+
+    public function updateposition($widgets, $position)
+    {
+        if (!$widgets || !$position)
+        {
+            $this->error = 'Invalid widget or position';
+            return false;
+        }
+
+        foreach($widgets as $item)
+        {
+            $widget = $this->WidgetEntity->findByPK($item);
+            if ($widget)
+            {
+                $position_tmp = $widget['position'];
+                $position_tmp = str_replace([')', '('], '', $position_tmp);
+                $position_tmp = explode(',', $position_tmp);
+                if(!in_array($position, $position_tmp))
+                {
+                    $position_tmp[] = $position;
+                }
+
+                $position_tmp = $this->convertPosition($position_tmp);
+
+                $try = $this->WidgetEntity->update([
+                    'position' => implode(',', $position_tmp),
+                    'id' => $item,
+                ]);
+
+                if (!$try)
+                {
+                    $this->error = "Can't update widgets";
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

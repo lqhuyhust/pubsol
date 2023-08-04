@@ -20,7 +20,6 @@ class Routing
                 'fnc' => [
                     'post' => 'widget.ajax.updateposition',
                 ],
-                'parameters' => ['id'],
             ],
         ];
     }

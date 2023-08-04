@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-        $("#selectWidgets").select2({
+        $("#select_widgets").select2({
             matcher: matchCustom,
             ajax: {
                 url: "<?php echo $this->link_widgets ?>",
@@ -19,7 +19,7 @@
                         data.data.forEach(function(item) {
                             items.push({
                                 id: item.id,
-                                text: item.name
+                                text: item.title
                             })
                         })
                     }
@@ -34,7 +34,6 @@
                 cache: true
             },
             placeholder: 'Widgets',
-            dropdownParent: $("#selectWidgetModal"),
             minimumInputLength: 1,
         });
 
@@ -52,5 +51,28 @@
             // Return `null` if the term should not be displayed
             return null;
         }
+
+        $('#add-widget-position').on('click', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: '<?php echo $this->form_add_widget; ?>',
+                data: $('#form_add_widget').serialize(),
+                success: function (result) {
+                    if (result.status == 'success')
+                    {
+                        alert('Update widget successfull')
+                    }
+                    else
+                    {
+                        alert(message);
+                    }
+
+                    $('#select_widgets').val().trigger('change');
+                    $('#selectWidgetModal').modal('hide');
+                    loadWidget();
+                }
+            });
+        })
     })
 </script>

@@ -35,6 +35,7 @@ class AdminWidget extends ViewModel
     {
         return [
             'link_widgets' => $this->router->url('widgets'),
+            'form_add_widget' => $this->router->url('widget/update-position'),
         ];
         
     }

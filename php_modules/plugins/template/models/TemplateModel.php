@@ -57,6 +57,12 @@ class TemplateModel extends Base
 
         $where = ['template_id' => $id];
         $list = $this->WidgetEntity->list(0, 0, $where);
+        foreach($list as &$item)
+        {
+            $positions = $item['position'];
+            $positions = str_replace([')', '('], '', $positions);
+            $item['position'] = explode(',', $positions);
+        }
         
         return $list;
     }

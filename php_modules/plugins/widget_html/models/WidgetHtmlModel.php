@@ -53,13 +53,16 @@ class WidgetHtmlModel extends Base
             return false;
         }
 
+        $position = $this->WidgetModel->convertPosition($data['position']);
+        $position = $position ? implode(',', $position) : '';
+
         $newId =  $this->WidgetEntity->add([
             'title' => $data['title'],
             'settings' => '', // TODO
             'content' => $data['content'],
             'widget_type' => 'html',
             'template_id' => $data['template_id'],
-            'position' => $data['position'],
+            'position' => $position,
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
             'locked_at' => date('Y-m-d H:i:s'),

@@ -10,17 +10,20 @@ $this->theme->add($this->url . 'assets/js/select2.full.min.js', '', 'bootstrap-s
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div class="d-flex">
-					<select name="selectWidgets" class="select-widget" multiple id="selectWidgets">
-					</select>
-					<div class="ms-2">
-						<button id="add-widget-position"class="btn btn-primary">Add</button>
+				<form id="form_add_widget">
+					<div class="d-flex">
+						<select name="select_widgets" class="select-widget" multiple id="select_widgets">
+						</select>
+						<div class="ms-2">
+							<button id="add-widget-position"class="btn btn-primary">Add</button>
+						</div>
 					</div>
-				</div>
+					
+					<div class="d-flex justify-content-around">
+						<?php $this->ui->field('position'); ?>
+					</div>
+				</form>
 				
-				<div class="d-flex justify-content-around">
-					<?php $this->ui->field('position'); ?>
-				</div>
 			</div>
 			<div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
