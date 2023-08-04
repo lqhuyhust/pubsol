@@ -11,9 +11,11 @@
 namespace App\plugins\widget\models;
 
 use SPT\Container\Client as Base;
+use SPT\Traits\ErrorString;
 
 class WidgetModel extends Base
 { 
+    use ErrorString;
     private $widget_types;
     public function getTypes()
     {
