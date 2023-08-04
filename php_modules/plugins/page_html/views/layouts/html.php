@@ -1,1 +1,0 @@
-<?php echo $this->page ? $this->page['data'] : '';?>

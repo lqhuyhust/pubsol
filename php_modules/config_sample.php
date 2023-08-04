@@ -4,10 +4,12 @@ return [
     'subpath' => '',
     'defaultTheme' => 'blue',
     'adminTheme' => 'admin',
-    'secrect' => 'sid', 
+    'secrect' => 'sid',
     'expireSessionDuration' => 60,
-    'defaultEndpoint' => [
-        'fnc' => 'milestone.milestone.list'
+    'homeEndpoint' => [
+        'fnc' => [
+            'get' => 'milestone.milestone.list'
+        ],
     ],
     'db' => [
         'host' => '',
@@ -16,6 +18,5 @@ return [
         'database' => '',
         'prefix' => '',
     ],
-    'extensionAllow' => ['png', 'jpg', 'jpeg', 'pdf', 'txt', 'doc', 'docx', 'xlsx'],
     'redirectAfterLogin' => 'milestones',
 ];

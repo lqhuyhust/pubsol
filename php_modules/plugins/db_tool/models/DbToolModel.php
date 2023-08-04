@@ -126,6 +126,14 @@ class DbToolModel extends Base
     public function setFolderUpload()
     {
         // check permission in folder media
+        if (!file_exists(MEDIA_PATH))
+        {
+            if(!mkdir(MEDIA_PATH))
+            {
+                $this->error = "Can't create folder media";
+                return false;
+            }
+        }
         if (is_readable(MEDIA_PATH) && is_writable(MEDIA_PATH) && is_executable(MEDIA_PATH))
         {
             return true;
