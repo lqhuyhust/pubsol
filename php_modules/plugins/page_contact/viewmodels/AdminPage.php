@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\page_html\viewmodels;
+namespace App\plugins\page_contact\viewmodels;
 
 use SPT\Web\ViewModel;
 use SPT\Web\Gui\Form;
@@ -37,7 +37,6 @@ class AdminPage extends ViewModel
         $data = $this->getItem();
         $form = new Form($this->getFormFields(), $data);
         $id = empty($data) ? 0 : $data['id'];
-
         $button_header = [
             [
                 'link' => $this->router->url('pages') ,
@@ -55,14 +54,13 @@ class AdminPage extends ViewModel
                 'title' => 'Apply',
             ],
         ];
-
         return [
             'title_page' => 'Page contact',
             'id' => $id,
             'button_header' => $button_header,
             'form' => $form,
             'url' => $this->router->url(),
-            'link_form' => $id ? $this->router->url('page/detail') : $this->router->url('new-page/html'),
+            'link_form' => $id ? $this->router->url('page/detail') : $this->router->url('new-page/contact'),
             'link_list' => $this->router->url('pages'),
             'data' => $data,
         ];

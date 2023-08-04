@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\page_html\controllers;
+namespace App\plugins\page_contact\controllers;
 
 use SPT\Web\ControllerMVVM;
 
@@ -37,14 +37,13 @@ class page extends ControllerMVVM
             'slug' => $this->request->post->get('slug', '', 'string'),
         ];
 
-        $try = $this->PageHtmlModel->add($data);
-        $save_close = $this->request->post->get('save_close', '', 'string');
+        $try = $this->PageContactModel->add($data);
         
         if( !$try )
         {
-            $this->session->set('flashMsg', $this->PageHtmlModel->getError());
+            $this->session->set('flashMsg', $this->PageContactModel->getError());
             return $this->app->redirect(
-                $this->router->url('new-page/html')
+                $this->router->url('new-page/contact')
             );
         }
         else
@@ -73,8 +72,7 @@ class page extends ControllerMVVM
             ];
             
             $save_close = $this->request->post->get('save_close', '', 'string');
-
-            $try = $this->PageHtmlModel->update($data);
+            $try = $this->PageContactModel->update($data);
             if($try) 
             {
                 $link = $save_close ? 'pages' : 'page/detail/'. $id;
@@ -85,7 +83,7 @@ class page extends ControllerMVVM
             }
             else
             {
-                $this->session->set('flashMsg', 'Error: '. $this->PageHtmlModel->getError());
+                $this->session->set('flashMsg', 'Error: '. $this->PageContactModel->getError());
                 return $this->app->redirect(
                     $this->router->url('page/detail/'. $id)
                 );
@@ -107,7 +105,7 @@ class page extends ControllerMVVM
             foreach($ids as $id)
             {
                 //Delete file in source
-                if( $this->PageHtmlModel->remove( $id ) )
+                if( $this->PageContactModel->remove( $id ) )
                 {
                     $count++;
                 }
@@ -115,7 +113,7 @@ class page extends ControllerMVVM
         }
         elseif( is_numeric($ids) )
         {
-            if( $this->PageHtmlModel->remove($ids ) )
+            if( $this->PageContactModel->remove($ids ) )
             {
                 $count++;
             }
