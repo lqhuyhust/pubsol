@@ -18,5 +18,12 @@ return [
         'database' => '',
         'prefix' => '',
     ],
+    'db_test' => [
+        'host' => '192.168.56.11',
+        'username' => 'root',
+        'password' => '123123',
+        'database' => 'sdm_test', 
+        'prefix' => '',
+    ],
     'redirectAfterLogin' => 'milestones',
 ];
