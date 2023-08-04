@@ -12,6 +12,10 @@
         document.getElementById('filter_form').submit();
     };
     $(document).ready(function() {
+        $('#new_page').on('click', function(e){
+            e.preventDefault();
+            $('#pageNewModal').modal('show');
+        })
         $("#select_all").click( function(){
             $('.checkbox-item').prop('checked', this.checked);
         });

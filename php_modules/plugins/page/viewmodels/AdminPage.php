@@ -20,6 +20,7 @@ class AdminPage extends ViewModel
     {
         return [
             'layout'=>'backend.page.form',
+            'widget'=>'backend.popup_new',
         ];
     }
 
@@ -113,5 +114,22 @@ class AdminPage extends ViewModel
         ];
 
         return $fields;
+    }
+
+    public function popup_new()
+    {
+        $types = $this->PageModel->getTypes();
+        $page_type = [];
+        foreach($types as $type => $t)
+        {
+            $page_type[] = [
+                    'link' => $this->router->url('new-page/'. $type ),
+                    'title' => $t['name'] 
+                ];
+        }
+
+        return [
+            'page_type' => $page_type,
+        ];
     }
 }

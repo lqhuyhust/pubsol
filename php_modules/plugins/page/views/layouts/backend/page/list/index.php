@@ -38,4 +38,4 @@
 		</div>
 	</main>
 </div>
-</div>
+<?php echo $this->renderWidget('page::backend.popup_new');?>

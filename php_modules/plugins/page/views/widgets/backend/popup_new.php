@@ -9,7 +9,7 @@
 				<div class="d-flex justify-content-around">
 				<?php foreach($this->page_type as $type) : ?>
 					<h4>
-						<a  target="_blank" class="mx-3" href="<?php echo $type['link']?>"><?php echo $type['title']?></a>
+						<a class="mx-3" href="<?php echo $type['link']?>"><?php echo $type['title']?></a>
 					</h4>
 				<?php endforeach; ?>
 				</div>
