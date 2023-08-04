@@ -21,6 +21,28 @@ class front extends ControllerMVVM
 
     public function submit()
     {
-        $this->app->set('layout', 'contact');
+        $page = $this->PageEntity->findOne(['page_type' => 'contact']);
+        $link = $page ? $page['slug'] : '';
+
+        $data = [
+            'title' => $this->request->post->get('title', '', 'string'),
+            'slug' => $this->request->post->get('slug', '', 'string'),
+            'data' => $this->request->post->get('data', '', 'string'),
+            'template_id' => $this->request->post->get('template_id', '', 'string'),
+        ];
+
+        $try = $this->PageContactModel->send($data);
+        
+        if (!$try)
+        {
+            $this->session->set('flashMsg', 'Error: '. $this->PageContactModel->getError());
+        }
+        else{
+            $this->session->set('flashMsg', 'Thank you for contacting us');
+        }
+
+        return $this->app->redirect(
+            $this->router->url($link)
+        );
     }
 }

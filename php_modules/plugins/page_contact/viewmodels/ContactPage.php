@@ -9,7 +9,7 @@
  * 
  */
 
-namespace App\plugins\page_html\viewmodels;
+namespace App\plugins\page_contact\viewmodels;
 
 use SPT\Web\ViewModel;
 use SPT\Web\Gui\Form;
@@ -19,16 +19,19 @@ class ContactPage extends ViewModel
     public static function register()
     {
         return [
-            'layout'=>'html',
+            'layout'=>'contact',
         ];
     }
 
-    public function html()
+    public function contact()
     {
         $page = $this->app->get('object', []);
+        $message = $this->session->get('flashMsg', '');
+        $this->session->set('flashMsg', '');
         
         return [
             'page' => $page,
+            'message' => $message,
             'link_submit' => $this->router->url('contact/submit'),
         ];
     }

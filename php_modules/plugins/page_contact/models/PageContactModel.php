@@ -112,4 +112,27 @@ class PageContactModel extends Base
 
         return $try;
     }
+
+    public function send($data)
+    {
+        $admin_mail = $this->OptionModel->get('admin_mail', '');
+        if (!$admin_mail)
+        {
+            $this->error = 'Invalid admin mail';
+        }
+        
+        $body = 'Full Name '. $data['full-name']. '
+        Email: '. $data['email']. '
+        Message: '. $data['message']. '
+        '; 
+        
+        $try = $this->EmailModel->send($admin_mail, 'administrator', $body, 'Contact Mail' );
+        if (!$try)
+        {
+            $this->error = "Can't send mail to admin";
+            return false;
+        }
+
+        return true;
+    }
 }
