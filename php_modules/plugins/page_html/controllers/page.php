@@ -42,6 +42,7 @@ class page extends ControllerMVVM
         
         if( !$try )
         {
+            $this->session->set('data_form', $data);
             $this->session->set('flashMsg', $this->PageHtmlModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-page/html')
@@ -85,6 +86,7 @@ class page extends ControllerMVVM
             }
             else
             {
+                $this->session->set('data_form', $data);
                 $this->session->set('flashMsg', 'Error: '. $this->PageHtmlModel->getError());
                 return $this->app->redirect(
                     $this->router->url('page/detail/'. $id)

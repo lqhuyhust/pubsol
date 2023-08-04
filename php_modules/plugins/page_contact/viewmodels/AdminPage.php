@@ -28,6 +28,9 @@ class AdminPage extends ViewModel
         $urlVars = $this->request->get('urlVars');
         $id = isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
         $data = $id ? $this->PageEntity->findByPK($id) : [];
+        $data_form = $this->session->get('data_form', []);
+        $this->session->set('data_form', []);
+        $data = $data_form ? $data_form : $data;
 
         return $data;
     }

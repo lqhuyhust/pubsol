@@ -40,6 +40,7 @@ class template extends ControllerMVVM
         
         if( !$try )
         {
+            $this->session->set('data_form', $data);
             $msg = 'Error: Create Failed!';
             $this->session->set('flashMsg', $msg);
             return $this->app->redirect(
@@ -78,6 +79,7 @@ class template extends ControllerMVVM
             }
             else
             {
+                $this->session->set('data_form', $data);
                 $this->session->set('flashMsg', 'Error: Update Failed!');
                 return $this->app->redirect(
                     $this->router->url('template/'. $id)
