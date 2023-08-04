@@ -1,1 +1,0 @@
-<h4>This is basic page</h4>
