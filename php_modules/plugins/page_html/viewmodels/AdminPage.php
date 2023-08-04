@@ -57,7 +57,7 @@ class AdminPage extends ViewModel
         ];
 
         return [
-            'title_page' => 'Page contact',
+            'title_page' => 'Page html',
             'id' => $id,
             'button_header' => $button_header,
             'form' => $form,
