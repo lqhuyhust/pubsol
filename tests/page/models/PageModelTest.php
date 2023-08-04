@@ -1,5 +1,5 @@
 <?php
-namespace Tests\note2\models;
+namespace Tests\page\models;
 
 use Tests\Test as TestCase;
 
