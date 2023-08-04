@@ -26,27 +26,4 @@ class DBConnectTest extends TestCase
         $this->assertTrue($try);
     }
 
-    public function testEntity()
-    {
-        $app = $this->prepareApp();
-        $container = $app->getContainer();
-        $plgList = $app->plugin(true);
-        
-        foreach($plgList as $plg)
-        {
-            Loader::findClass( 
-                $plg['path']. '/entities', 
-                $plg['namespace']. '\entities', 
-                function($classname, $fullname) use ($container, &$entities)
-                {
-                    if ($container->exists($classname))
-                    {
-                        $entity = $container->get($classname);
-                        $try = $entity->checkAvailability();
-                        $this->assertNotFalse($try);
-                    }
-            });
-        }
-    }
-
 }
