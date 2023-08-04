@@ -1,11 +1,11 @@
 <?php
-namespace Tests\page_contact\models;
+namespace Tests\page_html\models;
 
 use Tests\Test as TestCase;
 
-class PageContactModelTest extends TestCase
+class PageHtmlModelTest extends TestCase
 { 
-    private $PageContactModel;
+    private $PageHtmlModel;
     static $data;
 
     protected function setUp(): void
@@ -14,28 +14,28 @@ class PageContactModelTest extends TestCase
         $container = $app->getContainer();
         $app->set('mainPlugin', ['name' => 'page']);
         $container->get('request')->set('urlVars', ['id' => 1]);
-        $this->PageContactModel = $container->get('PageContactModel');
+        $this->PageHtmlModel = $container->get('PageHtmlModel');
         $PageEntity = $container->get('PageEntity');
 
         if (!static::$data)
         {
-            $find = $PageEntity->findOne(['slug' => 'pagecontact']);
+            $find = $PageEntity->findOne(['slug' => 'pagehtml']);
             if ($find)
             {
                 $PageEntity->remove($find['id']);
             }
 
-            $find = $PageEntity->findByPK(3);
+            $find = $PageEntity->findByPK(4);
             if(!$find)
             {
                 $PageEntity->add([
-                    'id' => 3,
+                    'id' => 4,
                     'title' => 'test',
                     'template_id' => 1,
-                    'slug' => 'test3',
+                    'slug' => 'test4',
                     'permission' => '',
                     'data' => '',
-                    'page_type' => 'contact',
+                    'page_type' => 'html',
                     'created_at' => date('Y-m-d H:i:s'),
                     'created_by' => 0,
                     'locked_at' => date('Y-m-d H:i:s'),
@@ -51,7 +51,7 @@ class PageContactModelTest extends TestCase
      */
     public function testValidate($data, $result)
     {
-        $try = $this->PageContactModel->validate($data);
+        $try = $this->PageHtmlModel->validate($data);
         $try = $try ? true : false;
         $this->assertEquals($try, $result);
     }
@@ -81,7 +81,7 @@ class PageContactModelTest extends TestCase
      */
     public function testAdd($data, $result)
     {
-        $try = $this->PageContactModel->add($data);
+        $try = $this->PageHtmlModel->add($data);
         $this->assertEquals($try, $result);
     }
 
@@ -96,7 +96,7 @@ class PageContactModelTest extends TestCase
                 [
                     'title' => 'test contact page',
                     'template_id' => 1,
-                    'slug' => 'pagecontact',
+                    'slug' => 'pagehtml',
                     'data' => '',
                 ], true
             ],
@@ -108,7 +108,7 @@ class PageContactModelTest extends TestCase
      */
     public function testUpdate($data, $result)
     {
-        $try = $this->PageContactModel->update($data);
+        $try = $this->PageHtmlModel->update($data);
         $this->assertEquals($try, $result);
     }
 
@@ -123,9 +123,9 @@ class PageContactModelTest extends TestCase
                 [
                     'title' => 'test contact page',
                     'template_id' => 1,
-                    'slug' => 'pagecontact3',
+                    'slug' => 'pagehtml3',
                     'data' => '',
-                    'id' => 3,
+                    'id' => 4,
                 ], true
             ],
         ];
