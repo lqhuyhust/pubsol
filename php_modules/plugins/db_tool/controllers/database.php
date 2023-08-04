@@ -30,6 +30,15 @@ class database extends ControllerMVVM
 
     public function generatedata()
     {
+        $entities = $this->DbToolModel->getEntities();
+        foreach($entities as $entity)
+        {
+            $try = $this->{$entity}->checkAvailability();
+            $status = $try !== false ? 'success' : 'failed';
+            echo str_pad($entity, 30) . $status ."\n";
+        }
+        echo "Generate data structure done\n";
+
         $try = $this->DbToolModel->truncate();
         if (!$try)
         {
