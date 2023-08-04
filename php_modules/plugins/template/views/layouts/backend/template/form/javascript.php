@@ -37,7 +37,7 @@
                                         
                                         var html = `<div class="mx-3 mb-1 position-relative">
                                             <button data-position="${value}" data-id="${item.id}" data-type="${item.widget_type}" type="button" class="btn btn-primary button-widget">${item.title}</button>
-                                            <button data-id="${item.id}" data-type="${item.widget_type}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger button-remove-widget"><i class="fa-solid fa-minus"></i></button>
+                                            <button data-id="${item.id}" data-position="${value}" data-type="${item.widget_type}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger button-remove-widget"><i class="fa-solid fa-minus"></i></button>
                                         </div>`;
                                         $(this).find(`.widgets`).append(html);
                                     })
@@ -68,10 +68,11 @@
             if (result) {
                 let id = $(this).data('id');
                 let widget_type = $(this).data('type');
+                let position = $(this).data('position');
                 var link = widgets[widget_type] ? '<?php echo $this->url;?>' + widgets[widget_type].link + '/' + id: ''; 
                 var form = new FormData();
                 form.append("_method", 'DELETE');
-                console.log(link);
+                form.append("position", position);
                 $.ajax({
                     url: link,
                     type: 'POST',

@@ -93,9 +93,37 @@ class WidgetHtmlModel extends Base
         return $try;
     }
 
-    public function remove($id)
+    public function remove($id, $position = '')
     {
-        return $this->WidgetEntity->remove($id);
+        if ($position)
+        {
+            $find = $this->WidgetEntity->findByPK($id);
+            if (!$find)
+            {
+                return false;
+            }
+
+            $position_tmp = $find['position'];
+            $position_tmp = str_replace([')', '('], '', $position_tmp);
+            $position_tmp = explode(',', $position_tmp);
+            foreach($position_tmp as $index => $value)
+            {
+                if ($value == $position)
+                {
+                    unset($position_tmp[$index]);
+                }
+            }
+
+            $try = $this->WidgetEntity->update([
+                'position' => implode(',', $position_tmp),
+                'id' => $id,
+            ]);
+            
+            return $try;
+        }
+        else{
+            return $this->WidgetEntity->remove($id);
+        }
     }
 
     public function getData($id)

@@ -68,7 +68,7 @@
                         alert(message);
                     }
 
-                    $('#select_widgets').val().trigger('change');
+                    $('#select_widgets').val(null).trigger('change');
                     $('#selectWidgetModal').modal('hide');
                     loadWidget();
                 }

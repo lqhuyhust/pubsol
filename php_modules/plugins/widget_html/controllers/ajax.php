@@ -78,9 +78,10 @@ class ajax extends ControllerMVVM
 
     public function delete()
     {
+        $position = $this->request->post->get('position', '', 'string');
         if($id = $this->WidgetHtmlModel->getCurrentId())
         {
-            $this->WidgetHtmlModel->remove( $id );
+            $this->WidgetHtmlModel->remove( $id, $position );
         }
         $this->set('status', 'success');
         $this->app->set('format', 'json');
