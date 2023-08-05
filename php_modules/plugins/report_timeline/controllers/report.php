@@ -51,7 +51,7 @@ class report extends ReportController
         
         if( !$try )
         {
-            $this->session->set('data_form', $data);
+            $this->session->setform('report_timeline', $data);
             $this->session->set('flashMsg', $this->TimelineModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-report/timeline')
@@ -87,7 +87,6 @@ class report extends ReportController
         
         if($try)
         {
-            $this->session->set('data_form', $data);
             $this->session->set('flashMsg', 'Updated successfully');
             $link = $save_close ? 'reports' : 'report/detail/'. $id;
             return $this->app->redirect(

@@ -49,7 +49,7 @@ class report extends ReportController
         
         if( !$newId )
         {
-            $this->session->set('data_form', $data);
+            $this->session->setform('report_tree', $data);
             $this->session->set('flashMsg', $this->TreePhpModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-report/tree')
@@ -93,7 +93,6 @@ class report extends ReportController
             }
             else
             {
-                $this->session->set('data_form', $data);
                 $this->session->set('flashMsg', $this->TreePhpModel->getError());
                 return $this->app->redirect(
                     $this->router->url('report/detail/'. $ids)

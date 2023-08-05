@@ -52,7 +52,7 @@ class report extends ReportController
         
         if( !$try )
         {
-            $this->session->set('data_form', $data);
+            $this->session->setform('report_calendar', $data);
             $this->session->set('flashMsg', $this->CalendarModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-report/calendar')
@@ -96,7 +96,6 @@ class report extends ReportController
         }
         else
         {
-            $this->session->set('data_form', $data);
             $this->session->set('flashMsg', $this->CalendarModel->getError());
             return $this->app->redirect(
                 $this->router->url('report/detail/'. $id)
