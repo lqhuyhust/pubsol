@@ -75,7 +75,7 @@ class RelateNoteModelTest extends TestCase
     public function testGetNotes($request_id, $search, $result)
     {
         $try = $this->RelateNoteModel->getNotes($request_id, $search);
-        $try = is_array($try) ? true : false;
+        $try = $try ? true : false;
 
         $this->assertEquals($try , $result);
     }
