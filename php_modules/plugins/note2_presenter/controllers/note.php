@@ -59,7 +59,7 @@ class note extends NoteController
         $newId = $this->NotePresenterModel->add($data);
         if (!$newId)
         {
-            $this->session->set('data_form', $data);
+            $this->session->setform('note_presenter', $data);
             $this->session->set('flashMsg', 'Create failed.'. $this->NotePresenterModel->getError()); 
             return $this->app->redirect(
                 $this->router->url('new-note2/presenter')
@@ -101,7 +101,6 @@ class note extends NoteController
             
             if(!$try)
             {
-                $this->session->set('data_form', $data);
                 $this->session->set('flashMsg', 'Create failed.'. $this->NotePresenterModel->getError()); 
                 return $this->app->redirect(
                     $this->router->url('note2/detail/'. $id)

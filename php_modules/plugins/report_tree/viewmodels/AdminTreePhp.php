@@ -29,8 +29,8 @@ class AdminTreePhp extends ViewModel
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         $data = $this->TreePhpModel->getDetail($id);
-        $data_form = $this->session->get('data_form', []);
-        $this->session->set('data_form', []);
+        $data_form = $this->session->getform('report_tree', []);
+        $this->session->setform('report_tree', []);
         $data = $data_form ? $data_form : $data;
         return $data;
     }

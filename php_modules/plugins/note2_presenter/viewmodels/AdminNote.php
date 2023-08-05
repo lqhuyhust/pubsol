@@ -33,8 +33,8 @@ class AdminNote extends ViewModel
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         $data = $this->NotePresenterModel->getDetail($id);
-        $data_form = $this->session->get('data_form', []);
-        $this->session->set('data_form', []);
+        $data_form = $this->session->getform('note_presenter', []);
+        $this->session->setform('note_presenter', []);
         $data = $data_form ? $data_form : $data;
         
         return $data;

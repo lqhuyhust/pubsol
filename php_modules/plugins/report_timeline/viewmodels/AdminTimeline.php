@@ -29,8 +29,8 @@ class AdminTimeline extends ViewModel
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         $data = $this->TimelineModel->getDetail($id);
-        $data_form = $this->session->get('data_form', []);
-        $this->session->set('data_form', []);
+        $data_form = $this->session->getform('report_timeline', []);
+        $this->session->setform('report_timeline', []);
         $data = $data_form ? $data_form : $data;
         
         return $data;
