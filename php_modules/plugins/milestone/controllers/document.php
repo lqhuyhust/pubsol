@@ -44,6 +44,8 @@ class document extends ControllerMVVM
                 'object_id' => $request_id,
                 'object' => 'request',
                 'data' => $data['description'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => $this->user->get('id'),
             ]);
         }
 

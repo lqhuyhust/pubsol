@@ -70,6 +70,8 @@ class note extends NoteController
             'object' => 'note',
             'object_id' => $newId,
             'data' => $data['data'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user->get('id'),
         ]);
 
         $this->session->set('flashMsg', 'Create Successfully'); 
@@ -111,6 +113,8 @@ class note extends NoteController
                 'object' => 'note',
                 'object_id' => $id,
                 'data' => $data['data'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => $this->user->get('id'),    
             ]);
             
             $this->session->set('flashMsg', 'Updated successfully');

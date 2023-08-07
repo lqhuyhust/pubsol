@@ -16,6 +16,8 @@ class discussion extends ControllerMVVM
             'comment' => $this->request->post->get('message', '', 'string'),
             'object_id' => $request_id,
             'object' => 'request',
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user->get('id'),
         ];
 
         $newId = $this->CommentModel->add($data);
