@@ -40,21 +40,11 @@ class version extends ControllerMVVM
             'status' => $this->request->post->get('status', 1, 'string'),
         ];
 
-
-        $data = $this->VersionModel->validate($data);
-        if (!$data)
-        {
-            return $this->app->redirect(
-                $this->router->url('versions')
-            );
-        }
-
         $newId = $this->VersionModel->add($data);
-
         if( !$newId )
         {
-            $msg = 'Error: Created failed!';
-            $this->session->set('flashMsg', $msg);
+            $this->session->setform('version', $data);
+            $this->session->set('flashMsg', 'Error: '. $this->VersionModel->getError());
             return $this->app->redirect(
                 $this->router->url('versions')
             );
@@ -91,15 +81,6 @@ class version extends ControllerMVVM
                 'id' => $ids,
             ];
     
-            $data = $this->VersionModel->validate($data);
-
-            if (!$data)
-            {
-                return $this->app->redirect(
-                    $this->router->url('versions')
-                );
-            }
-
             $try = $this->VersionModel->update($data);
             
             if($try) 
@@ -111,8 +92,7 @@ class version extends ControllerMVVM
             }
             else
             {
-                $msg = 'Error: Updated Failed';
-                $this->session->set('flashMsg', $msg);
+                $this->session->set('flashMsg', 'Error: '. $this->VersionModel->getError());
                 return $this->app->redirect(
                     $this->router->url('versions')
                 );
