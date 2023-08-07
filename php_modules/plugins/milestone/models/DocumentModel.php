@@ -100,11 +100,9 @@ class DocumentModel extends Base
         {
             return false;
         }
+        $find_document['description'] = $document['data'];
 
-        $try = $this->DocumentEntity->update([
-            'id' => $find_document['id'],
-            'description' => $document['data'],
-        ]);
+        $try = $this->DocumentEntity->update($find_document);
 
         if ($try)
         {

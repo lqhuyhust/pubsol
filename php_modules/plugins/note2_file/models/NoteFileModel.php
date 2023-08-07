@@ -154,7 +154,7 @@ class NoteFileModel extends Base
             'title' => $data['title'],
             'tags' => $data['tags'],
             'notice' => isset($data['notice']) ? $data['notice'] : '',
-            'id' => $data['id'],
+            'id' => isset($data['id']) ? $data['id'] : 0,
         ]);
 
         if (!$try)

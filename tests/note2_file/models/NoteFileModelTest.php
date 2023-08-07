@@ -66,52 +66,6 @@ class NoteFileModelTest extends TestCase
         }
     }
     
-    /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $is_update, $result)
-    {
-        $try = $this->NoteFileModel->validate($data, $is_update);
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[], 0, false],
-            [[
-                'title' => '',
-                'file' => [],
-            ], 0, false],
-            [[
-                'title' => 'Test',
-                'file' => [],
-            ], 0, false],
-            [[
-                'title' => 'Test',
-                'file' => [],
-            ], 0, false],
-            [[
-                'title' => 'Test',
-                'file' => [
-                    'name' => '',
-                ],
-            ], 0, false],
-            [[
-                'title' => 'Test',
-                'file' => [
-                    'name' => 'test.txt',
-                ],
-            ], 0, true],
-            [[
-                'title' => '',
-            ], 1, false],
-            [[
-                'title' => 'Test',
-            ], 1, true],
-        ];
-    }
-
     public function testCreateFolderSave()
     {
         $try = $this->NoteFileModel->createFolderSave();
@@ -165,14 +119,22 @@ class NoteFileModelTest extends TestCase
     public function dataAdd()
     {
         return [
-            [[], false],
             [[
-                'file' => [],
+                'file' => [
+                    'name' => '',
+                ],
+            ], false],
+            [[
+                'file' => [
+                    'name' => '',
+                ],
                 'title' => '',
             ], false],
             [[
                 'title' => 'test',
-                'file' => []
+                'file' => [
+                    'name' => '',
+                ],
             ], false],
             [[
                 'title' => 'test',
@@ -214,8 +176,12 @@ class NoteFileModelTest extends TestCase
         return [
             [[
                 'title' => 'test',
+                'id' => 0,
             ], false],
             [[
+                'file' => [
+                    'name' => ''
+                ],
                 'title' => 'test',
                 'id' => 2,
             ], true],

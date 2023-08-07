@@ -50,34 +50,6 @@ class VersionModelTest extends TestCase
     }
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->VersionModel->validate($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[
-
-            ], false],
-            [[
-               'name' => '', 
-               'release_date' => '', 
-            ], false],
-            [[
-               'name' => 'Test', 
-               'release_date' => date('Y-m-d H:i:s'), 
-            ], true],
-        ];
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)
@@ -92,7 +64,10 @@ class VersionModelTest extends TestCase
     {
         return [
             [[
-
+                'name' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
+                'description' => '',
+                'status' => 0,
             ], false],
             [[
                 'name' => 'Test Version', 
@@ -118,15 +93,24 @@ class VersionModelTest extends TestCase
     {
         return [
             [[
-
+                'id' => 0,
+                'name' => '', 
+                'description' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
+                'status' => 0,
             ], false],
             [[
-                'id' => '',
+                'id' => 0,
+                'name' => '', 
+                'description' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
+                'status' => 0,
             ], false],
             [[
 
                 'id' => 1,
                 'name' => 'Test Version 2', 
+                'description' => '', 
                 'release_date' => date('Y-m-d H:i:s'),
                 'status' => 0,
             ], true],

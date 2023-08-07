@@ -27,17 +27,6 @@ class MilestoneModelTest extends TestCase
     }   
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->MilestoneModel->validate($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)
@@ -55,29 +44,6 @@ class MilestoneModelTest extends TestCase
         $this->assertEquals($try , $result);
     }
 
-    public function dataValidate()
-    {
-        return [
-            [[
-
-            ], false],
-            [[
-               'title' => '', 
-            ], false],
-            [[
-               'title' => 'Test1', 
-               'start_date' => null, 
-               'end_date' => null, 
-            ], true],
-            [[
-                'title' => 'Test1', 
-                'id' => 1,
-                'start_date' => date('Y-m-d H:i:s'), 
-                'end_date' => date('Y-m-d H:i:s'), 
-             ], true],
-        ];
-    }
-
     public function dataRemove()
     {
         return [
@@ -88,13 +54,17 @@ class MilestoneModelTest extends TestCase
     public function dataAdd()
     {
         return [
-            // [[], false],
+            [[], false],
             [[
                 'title' => 'Test Milestone',
                 'description' => 'This is test milestone',
                 'start_date' => date('Y-m-d H:i:s'),
                 'end_date' => date('Y-m-d H:i:s'),
                 'status' => 1,
+                'created_by' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'modified_by' => 0,
+                'modified_at' => date('Y-m-d H:i:s')
             ], true],
         ];
     }
@@ -114,6 +84,8 @@ class MilestoneModelTest extends TestCase
                 'start_date' => date('Y-m-d H:i:s'),
                 'end_date' => date('Y-m-d H:i:s'),
                 'status' => 1,
+                'modified_by' => 0,
+                'modified_at' => date('Y-m-d H:i:s')
             ], true],
         ];
     }

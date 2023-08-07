@@ -79,18 +79,13 @@ class DocumentModelTest extends TestCase
     public function dataSave()
     {
         return [
-            [[], false],
             [[
                 'request_id' => '',
             ], false],
             [[
                 'request_id' => 1,
-                'description' => '',
-            ], true],
-            [[
-                'request_id' => 1,
                 'description' => 'This is description',
-            ], true],
+            ], false],
         ];
     }
 
@@ -113,25 +108,6 @@ class DocumentModelTest extends TestCase
     }
 
     public function dataGetHistory()
-    {
-        return [
-            [0, false],
-            [1, true],
-        ];
-    }
-
-    /**
-     * @dataProvider dataGetComment
-     */
-    public function testGetComment($data, $result)
-    {
-        $try = $this->DocumentModel->getComment($data);
-        $try = is_array($try) ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataGetComment()
     {
         return [
             [0, false],

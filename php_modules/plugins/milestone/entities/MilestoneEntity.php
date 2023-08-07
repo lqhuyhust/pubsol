@@ -85,17 +85,6 @@ class MilestoneEntity extends Entity
             return false;
         }
 
-        $where = ['title = "' . $data['title'] . '"'];
-        if (isset($data['id']) && $data['id'])
-        {
-            $where[] = 'id <> '. $data['id'];
-        }
-        $findOne = $this->findOne($where);
-        if ($findOne) {
-            $this->error = 'Error: Title is already in use! ';
-            return false;
-        }
-
         if ($data['start_date'] == '')
             $data['start_date'] = NULL;
         if ($data['end_date'] == '')
