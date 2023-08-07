@@ -14,6 +14,8 @@ use SPT\Container\Client as Base;
 
 class DocumentModel extends Base 
 { 
+    use \SPT\Traits\ErrorString;
+
     // Write your code here
     public function remove($id)
     {
@@ -24,36 +26,35 @@ class DocumentModel extends Base
 
     public function save($data)
     {
-        if (!$data || !$data['request_id'])
+        $find = $this->DocumentEntity->findOne(['request_id' => $data['request_id']]);
+        if ($find)
         {
+            $data['id'] = $find['id'];
+        }
+
+        $data = $this->DocumentEntity->bind($data);
+        if (!$data)
+        {
+            $this->error = $this->DocumentEntity->getError();
             return false;
         }
 
-        $find = $this->DocumentEntity->findOne(['request_id' => $data['request_id']]);
-
-        if ($find)
+        if ($find && $data['readyUpdate'])
         {
-            $try = $this->DocumentEntity->update([
-                'description' => $data['description'],
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $find['id'],
-            ]);
+            $try = $this->DocumentEntity->update($data);
             $document_id = $find['id'];
         }
         else
         {
-            $try =  $this->DocumentEntity->add([
-                'request_id' => $data['request_id'],
-                'description' => $data['description'],
-                'created_by' => $this->user->get('id'),
-                'created_at' => date('Y-m-d H:i:s'),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s')
-            ]);
+            $try =  $this->DocumentEntity->add($data);
             $document_id = $try;
         }
 
+        if (!$try)
+        {
+            $this->error = $this->DocumentEntity->getError();
+            return false;
+        }
         return $try;
     }
 
