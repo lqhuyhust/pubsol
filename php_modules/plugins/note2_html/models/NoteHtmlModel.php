@@ -59,6 +59,7 @@ class NoteHtmlModel extends Base
 
     public function add($data)
     {
+        $data = $this->Note2Entity->bind($data);
         $try = $this->validate($data);
         if (!$try)
         {
@@ -89,6 +90,7 @@ class NoteHtmlModel extends Base
 
     public function update($data)
     {
+        $data = $this->Note2Entity->bind($data);
         $try = $this->validate($data);
 
         if (!$try || !$data['id'])
