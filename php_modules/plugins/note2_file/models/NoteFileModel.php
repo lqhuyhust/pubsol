@@ -36,7 +36,7 @@ class NoteFileModel extends Base
         return $note;
     }
 
-    public function validate($data, $is_update = false)
+    public function validate($data, $isUpdate = false)
     {
         if (!$data || !is_array($data))
         {
@@ -50,10 +50,13 @@ class NoteFileModel extends Base
             return false;
         }
 
-        if (!$data['title'])
+        if ($isUpdate)
         {
-            $this->error = 'Title can\'t empty.';
-            return false;
+            if (!$data['title'])
+            {
+                $this->error = 'Title can\'t empty.';
+                return false;
+            }
         }
 
         return true;
