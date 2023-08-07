@@ -48,15 +48,6 @@ class milestone extends ControllerMVVM
             'modified_at' => date('Y-m-d H:i:s')
         ];
 
-        $data = $this->MilestoneModel->validate($data);
-        
-        if (!$data)
-        {
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-        
         $try = $this->MilestoneModel->add($data);
         $msg = $try ? 'Create Successfully!' : 'Error: '. $this->MilestoneModel->getError();
         $this->session->set('flashMsg', $msg);
@@ -96,14 +87,6 @@ class milestone extends ControllerMVVM
                 'modified_at' => date('Y-m-d H:i:s')
             ];
 
-            $data = $this->MilestoneModel->validate($data);
-        
-            if (!$data)
-            {
-                return $this->app->redirect(
-                    $this->router->url('milestones')
-                );
-            }
             $try = $this->MilestoneModel->update($data);
             
             $msg = $try ? 'Edit Successfully' : 'Error: '. $this->MilestoneModel->getError();
