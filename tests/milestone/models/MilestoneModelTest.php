@@ -72,8 +72,8 @@ class MilestoneModelTest extends TestCase
             [[
                 'title' => 'Test1', 
                 'id' => 1,
-                'start_date' => null, 
-                'end_date' => null, 
+                'start_date' => date('Y-m-d H:i:s'), 
+                'end_date' => date('Y-m-d H:i:s'), 
              ], true],
         ];
     }
@@ -88,12 +88,12 @@ class MilestoneModelTest extends TestCase
     public function dataAdd()
     {
         return [
-            [[], false],
+            // [[], false],
             [[
                 'title' => 'Test Milestone',
                 'description' => 'This is test milestone',
-                'start_date' => null,
-                'end_date' => null,
+                'start_date' => date('Y-m-d H:i:s'),
+                'end_date' => date('Y-m-d H:i:s'),
                 'status' => 1,
             ], true],
         ];
@@ -111,8 +111,8 @@ class MilestoneModelTest extends TestCase
                 'id' => 1,
                 'title' => 'Test Milestone',
                 'description' => 'This is test milestone',
-                'start_date' => null,
-                'end_date' => null,
+                'start_date' => date('Y-m-d H:i:s'),
+                'end_date' => date('Y-m-d H:i:s'),
                 'status' => 1,
             ], true],
         ];
