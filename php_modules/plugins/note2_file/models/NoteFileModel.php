@@ -44,7 +44,7 @@ class NoteFileModel extends Base
             return false;
         }
 
-        if (!$data['file'] || !$data['file']['name'])
+        if (!$isUpdate && (!$data['file'] || !$data['file']['name']))
         {
             $this->error = 'File can\'t empty.';
             return false;
