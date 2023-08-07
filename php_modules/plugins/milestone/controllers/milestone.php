@@ -58,7 +58,7 @@ class milestone extends ControllerMVVM
         }
         
         $try = $this->MilestoneModel->add($data);
-        $msg = $try ? 'Create Successfully!' : 'Error: Create Failed!';
+        $msg = $try ? 'Create Successfully!' : 'Error: '. $this->MilestoneModel->getError();
         $this->session->set('flashMsg', $msg);
         return $this->app->redirect(
             $this->router->url('milestones')
@@ -106,7 +106,7 @@ class milestone extends ControllerMVVM
             }
             $try = $this->MilestoneModel->update($data);
             
-            $msg = $try ? 'Edit Successfully' : 'Error: Save Failed';
+            $msg = $try ? 'Edit Successfully' : 'Error: '. $this->MilestoneModel->getError();
             
             $this->session->set('flashMsg', $msg);
             return $this->app->redirect(
