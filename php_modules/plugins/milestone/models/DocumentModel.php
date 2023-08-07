@@ -14,55 +14,47 @@ use SPT\Container\Client as Base;
 
 class DocumentModel extends Base 
 { 
+    use \SPT\Traits\ErrorString;
+
     // Write your code here
     public function remove($id)
     {
-        $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $id]);
-
         $try = $this->DocumentEntity->remove($id);
-        if ($try)
-        {
-            foreach ($discussion as $item)
-            {
-                $this->DiscussionEntity->remove($item['id']);
-            }
-        }
 
         return $try;
     }   
 
     public function save($data)
     {
-        if (!$data || !$data['request_id'])
+        $find = $this->DocumentEntity->findOne(['request_id' => $data['request_id']]);
+        if ($find)
         {
+            $data['id'] = $find['id'];
+        }
+
+        $data = $this->DocumentEntity->bind($data);
+        if (!$data)
+        {
+            $this->error = $this->DocumentEntity->getError();
             return false;
         }
 
-        $find = $this->DocumentEntity->findOne(['request_id' => $data['request_id']]);
-
-        if ($find)
+        if ($find && $data['readyUpdate'])
         {
-            $try = $this->DocumentEntity->update([
-                'description' => $data['description'],
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s'),
-                'id' => $find['id'],
-            ]);
+            $try = $this->DocumentEntity->update($data);
             $document_id = $find['id'];
         }
         else
         {
-            $try =  $this->DocumentEntity->add([
-                'request_id' => $data['request_id'],
-                'description' => $data['description'],
-                'created_by' => $this->user->get('id'),
-                'created_at' => date('Y-m-d H:i:s'),
-                'modified_by' => $this->user->get('id'),
-                'modified_at' => date('Y-m-d H:i:s')
-            ]);
+            $try =  $this->DocumentEntity->add($data);
             $document_id = $try;
         }
 
+        if (!$try)
+        {
+            $this->error = $this->DocumentEntity->getError();
+            return false;
+        }
         return $try;
     }
 
@@ -93,31 +85,6 @@ class DocumentModel extends Base
         }
         
         return $list;
-    }
-
-    public function getComment($request_id)
-    {
-        if (!$request_id)
-        {
-            return false;
-        }
-
-        $document = $this->DocumentEntity->findOne(['request_id' => $request_id]);
-        if (!$document)
-        {
-            return false;
-        }
-
-        $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $document['id']], 'sent_at asc');
-        $discussion = $discussion ? $discussion : [];
-        foreach ($discussion as &$item)
-        {
-            $user_tmp = $this->UserEntity->findByPK($item['user_id']);
-            $item['user'] = $user_tmp ? $user_tmp['name'] : '';
-        }
-
-        $result = $discussion ? $discussion : [];
-        return $result;
     }
 
     public function rollback($id)

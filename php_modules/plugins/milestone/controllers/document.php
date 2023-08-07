@@ -32,6 +32,10 @@ class document extends ControllerMVVM
         $data = [
             'description' => $description, 
             'request_id' => $request_id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
         ];
 
         $try  = $this->DocumentModel->save($data);
@@ -44,6 +48,8 @@ class document extends ControllerMVVM
                 'object_id' => $request_id,
                 'object' => 'request',
                 'data' => $data['description'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => $this->user->get('id'),
             ]);
         }
 

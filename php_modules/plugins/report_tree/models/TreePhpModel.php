@@ -109,28 +109,31 @@ class TreePhpModel extends Base
     public function add($data)
     {
         $structure = isset($data['structure']) ? json_decode($data['structure'], true) : [];
-        $data = $this->ReportEntity->bind($data);
-
-        $try = $this->validate($data);
-        if (!$try)
-        {
-            return false;
-        }
-
-        $newId =  $this->ReportEntity->add([
+        $report = [
             'title' => $data['title'],
             'status' => 1,
-            'data' => $data['data'],
+            'data' => '',
             'type' => 'tree',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
+
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        $newId =  $this->ReportEntity->add($report);
 
         if (!$newId)
         {
-            $this->error = "Can't create report";
+            $this->error = $this->ReportEntity->getError();
+            return false;
         }
 
         if ($newId && $structure)
@@ -158,20 +161,34 @@ class TreePhpModel extends Base
     {
         $structure = isset($data['structure']) ? json_decode($data['structure'], true) : [];
         $removes = isset($data['removes']) ? json_decode($data['removes'], true) : [];
-        $data = $this->ReportEntity->bind($data);
 
-        $try = $this->validate($data);
-        if (!$try || !$data['id'])
-        {
-            return false;
-        }
-
-        $try = $this->ReportEntity->update([
+        $report = [
             'title' => $data['title'],
+            'status' => 1,
+            'data' => '',
+            'type' => 'tree',
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
-        ]);
+        ];
+
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        $try = $this->ReportEntity->update($report);
+
+        if (!$try)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
 
         if ($try && $structure)
         {

@@ -27,49 +27,11 @@ class NoteHtmlModel extends Base
         return $content;
     }
 
-    public function validate($data)
-    {
-        if (!is_array($data))
-        {
-            $this->error = 'Error: Invalid data format! ';
-            return false;
-        }
-
-        if (!isset($data['title']) || !$data['title'] || !$data)
-        {
-            $this->error = 'Error: Title is required! ';
-            return false;
-        }
-
-        $where = ['title = "'. $data['title']. '"'];
-        if (isset($data['id']) && $data['id'])
-        {
-            $where[] = 'id <> '. $data['id'];
-        }
-
-        $find = $this->Note2Entity->findOne($where);
-        if ($find)
-        {
-            $this->error = 'Error: Title already used! ';
-            return false;
-        }
-
-        return true;
-    }
-
     public function add($data)
     {
-        $data = $this->Note2Entity->bind($data);
-        $try = $this->validate($data);
-        if (!$try)
-        {
-            return false;
-        }
-
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
-
-        $newId =  $this->Note2Entity->add([
+        $data = [
             'title' => $data['title'],
             'public_id' => '',
             'alias' => '',
@@ -83,34 +45,55 @@ class NoteHtmlModel extends Base
             'created_by' => $this->user->get('id'),
             'locked_at' => date('Y-m-d H:i:s'),
             'locked_by' => $this->user->get('id'),
-        ]);
+        ];
+
+        $note = $this->Note2Entity->bind($data);
+        
+        if (!$note)
+        {
+            $this->error = $this->Note2Entity->getError();
+            return false;
+        }
+
+
+        $newId =  $this->Note2Entity->add($note);
+        if (!$newId)
+        {
+            $this->error = $this->Note2Entity->getError();
+            return false;
+        }
 
         return $newId;
     }
 
     public function update($data)
     {
-        $data = $this->Note2Entity->bind($data);
-        $try = $this->validate($data);
-
-        if (!$try || !$data['id'])
-        {
-            $this->error = 'Invalid note!';
-            return false;
-        }
-
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
-
-        $try =  $this->Note2Entity->update([
+        $data = [
             'title' => $data['title'],
             'data' => $data['data'],
             'tags' => $data['tags'],
+            'type' => 'html',
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'status' => isset($data['status']) ? $data['status'] : 0,
             'id' => $data['id'],
-        ]);
+        ];
 
+        $note = $this->Note2Entity->bind($data);
+        
+        if (!$note)
+        {
+            $this->error = $this->Note2Entity->getError();
+            return false;
+        }
+
+        $try =  $this->Note2Entity->update($note);
+        if (!$try)
+        {
+            $this->error = $this->Note2Entity->getError();
+            return false;
+        }
 
         return $try;
     }
@@ -135,7 +118,7 @@ class NoteHtmlModel extends Base
             if (!$find)
             {
                 $find = [
-                    'title' => '',
+                    'title' => 'html',
                     'public_id' => '',
                     'alias' => '',
                     'data' => '',
@@ -187,10 +170,9 @@ class NoteHtmlModel extends Base
             return false;
         }
 
-        $try = $this->Note2Entity->update([
-            'id' => $find_note['id'],
-            'data' => $history['data'],
-        ]);
+        $find_note['data'] = $history['data'];
+
+        $try = $this->Note2Entity->update($find_note);
 
         if ($try)
         {

@@ -57,4 +57,56 @@ class FileEntity extends Entity
 
         return $list->countTotal(true)->list( $start, $limit);
     }
+
+    public function validate( $data )
+    {
+        if (!is_array($data))
+        {
+            $this->error = 'Invalid data format! ';
+            return false;
+        }
+
+        if (!isset($data['note_id']) || !$data['note_id'] || !$data)
+        {
+            $this->error = 'Invalid note';
+            return false;
+        }
+        
+        if (!isset($data['path']) || !$data['path'] || !$data)
+        {
+            $this->error = 'Path is required! ';
+            return false;
+        }
+
+        unset($data['readyUpdate']);
+        unset($data['readyNew']);
+        
+        return $data;
+    }
+
+    public function bind($data = [], $returnObject = false)
+    {
+        $row = [];
+        $data = (array) $data;
+        $fields = $this->getFields();
+        $skips = isset($data['id']) && $data['id'] ? [] : ['id'];
+        foreach ($fields as $key => $field)
+        {
+            if (!in_array($key, $skips))
+            {
+                $default = isset($field['default']) ? $field['default'] : '';
+                $row[$key] = isset($data[$key]) ? $data[$key] : $default;
+            }
+        }
+
+        if (isset($data['id']) && $data['id'])
+        {
+            $row['readyUpdate'] = true;
+        }
+        else{
+            $row['readyNew'] = true;
+        }
+
+        return $returnObject ? (object)$row : $row;
+    }
 }
