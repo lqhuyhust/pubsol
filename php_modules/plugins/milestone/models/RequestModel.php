@@ -132,6 +132,8 @@ class RequestModel extends Base
 
     public function add($data)
     {
+        $data = $this->RequestEntity->bind($data);
+
         if (!$data || !is_array($data))
         {
             return false;
@@ -156,6 +158,8 @@ class RequestModel extends Base
 
     public function update($data)
     {
+        $data = $this->RequestEntity->bind($data);
+        
         if (!$data || !is_array($data) || !$data['id'])
         {
             return false;

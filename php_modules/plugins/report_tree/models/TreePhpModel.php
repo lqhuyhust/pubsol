@@ -108,6 +108,9 @@ class TreePhpModel extends Base
 
     public function add($data)
     {
+        $structure = isset($data['structure']) ? json_decode($data['structure'], true) : [];
+        $data = $this->ReportEntity->bind($data);
+
         $try = $this->validate($data);
         if (!$try)
         {
@@ -117,6 +120,7 @@ class TreePhpModel extends Base
         $newId =  $this->ReportEntity->add([
             'title' => $data['title'],
             'status' => 1,
+            'data' => $data['data'],
             'type' => 'tree',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -129,9 +133,8 @@ class TreePhpModel extends Base
             $this->error = "Can't create report";
         }
 
-        if ($newId && $data['structure'])
+        if ($newId && $structure)
         {
-            $structure = json_decode($data['structure'], true);
             foreach($structure as $item)
             {
                 $this->TreeStructureEntity->add([
@@ -153,6 +156,10 @@ class TreePhpModel extends Base
 
     public function update($data)
     {
+        $structure = isset($data['structure']) ? json_decode($data['structure'], true) : [];
+        $removes = isset($data['removes']) ? json_decode($data['removes'], true) : [];
+        $data = $this->ReportEntity->bind($data);
+
         $try = $this->validate($data);
         if (!$try || !$data['id'])
         {
@@ -166,10 +173,8 @@ class TreePhpModel extends Base
             'id' => $data['id'],
         ]);
 
-        if ($try && $data['structure'])
+        if ($try && $structure)
         {
-            $structure = json_decode($data['structure'], true);
-            $removes = json_decode($data['removes'], true);
             foreach($removes as $item)
             {
                 $find = $this->TreeStructureEntity->findOne(['note_id = '. $item, 'diagram_id = '. $data['id'] ]);

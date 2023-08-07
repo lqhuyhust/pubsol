@@ -14,6 +14,8 @@ use SPT\Container\Client as Base;
 
 class VersionModel extends Base 
 { 
+    use \SPT\Traits\ErrorString;
+
     public function getVersion()
     {
         $version_level = (int) $this->OptionModel->get('version_level', 1);
@@ -60,7 +62,7 @@ class VersionModel extends Base
 
         if (!$data['name'])
         {
-            $this->session->set('flashMsg', 'Error: Title is required!');
+            $this->error = 'Title is required!';
             return false;
         }
 
@@ -73,19 +75,22 @@ class VersionModel extends Base
         $findOne = $this->VersionEntity->findOne($where);
         if ($findOne)
         {
-            $this->session->set('flashMsg', 'Error: Title already used!');
+            $this->error = 'Title already used!';
             return false;
         }
 
         if($data['release_date'] == '')
-            $data['release_date'] = NULL;
-
-        return $data;
+        {
+            $this->error = "Release date can't empty";
+            return false;
+        }   
+        return true;
     }
 
     public function add($data)
     {
-        if (!$data || !is_array($data))
+        $data = $this->VersionEntity->bind($data);
+        if (!$this->validate($data))
         {
             return false;
         }
@@ -103,12 +108,18 @@ class VersionModel extends Base
             'modified_at' => date('Y-m-d H:i:s')
         ]);
 
+        if (!$newId)
+        {
+            $this->error = "Can't create version";
+        }
+
         return $newId;
     }
 
     public function update($data)
     {
-        if (!$data || !is_array($data) || !$data['id'])
+        $data = $this->VersionEntity->bind($data);
+        if (!$this->validate($data))
         {
             return false;
         }
@@ -122,6 +133,11 @@ class VersionModel extends Base
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
         ]);
+
+        if (!$try)
+        {
+            $this->error = "Can't create version";
+        }
 
         return $try;
     }

@@ -48,6 +48,12 @@ class CalendarModel extends Base
 
     public function add($data)
     {
+        $data['data'] = json_encode([
+            'milestone' => $data['milestone'] ? $data['milestone'] : [],
+            'tags' => $data['tags'] ? $data['tags'] : [],
+        ]);
+
+        $data = $this->ReportEntity->bind($data);
         $try = $this->validate($data);
         if (!$try)
         {
@@ -57,10 +63,7 @@ class CalendarModel extends Base
         $newId =  $this->ReportEntity->add([
             'title' => $data['title'],
             'status' => 1,
-            'data' => json_encode([
-                'milestone' => $data['milestone'] ? $data['milestone'] : [],
-                'tags' => $data['tags'] ? $data['tags'] : [],
-            ]),
+            'data' => $data['data'],
             'type' => 'calendar',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -78,6 +81,12 @@ class CalendarModel extends Base
 
     public function update($data)
     {
+        $data['data'] = json_encode([
+            'milestone' => $data['milestone'] ? $data['milestone'] : [],
+            'tags' => $data['tags'] ? $data['tags'] : [],
+        ]);
+
+        $data = $this->ReportEntity->bind($data);
         $try = $this->validate($data);
         if (!$try || !$data['id'])
         {
@@ -86,10 +95,7 @@ class CalendarModel extends Base
 
         $try = $this->ReportEntity->update([
             'title' => $data['title'],
-            'data' => json_encode([
-                'milestone' => $data['milestone'] ? $data['milestone'] : [],
-                'tags' => $data['tags'] ? $data['tags'] : [],
-            ]),
+            'data' => $data['data'],
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
@@ -110,6 +116,11 @@ class CalendarModel extends Base
         $find = $find ? $find : [];
         $data = $find ? $find['data'] : '';
         $data = $data ? json_decode($data, true) : [];
+        
+        if (!$id)
+        {
+            $data = $this->session->getform('report_calendar', []);
+        }
 
         $find['milestone'] = $data ? $data['milestone'] : [];
         $find['tags'] = $data ? $data['tags'] : [];

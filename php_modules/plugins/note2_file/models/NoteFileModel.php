@@ -40,36 +40,20 @@ class NoteFileModel extends Base
     {
         if (!$data || !is_array($data))
         {
-            $this->error = 'Error: Invalid data format.';
+            $this->error = 'Invalid data format.';
             return false;
         }
 
-        if (!$is_update)
+        if (!$data['file'] || !$data['file']['name'])
         {
-            if (!isset($data['file']) || !$data['file'] || !$data['file']['name'])
-            {
-                $this->error = 'Invalid File Upload';
-                return false;
-            }
-
-            if ($this->config->exists('extensionAllow') && $this->config->extensionAllow &&  is_array($this->config->extensionAllow)) 
-            {
-                $extension = explode('.', $data['file']['name']);
-                $extension = end($extension);
-                if (!in_array($extension, $this->config->extensionAllow)) 
-                {
-                    $this->error = 'File are not allowed to upload';
-                    return false;
-                }
-            }
+            $this->error = 'File can\'t empty.';
+            return false;
         }
-        else
+
+        if (!$data['title'])
         {
-            if (!$data['title'])
-            {
-                $this->error = 'Error: Title can\'t empty.';
-                return false;
-            }
+            $this->error = 'Title can\'t empty.';
+            return false;
         }
 
         return true;
@@ -84,6 +68,10 @@ class NoteFileModel extends Base
 
     public function add($data)
     {
+        $file = isset($data['file']) ? $data['file'] : [];
+        $data = $this->Note2Entity->bind($data);
+        $data['file'] = $file;
+
         if (!$this->validate($data))
         {
             return false;
@@ -120,7 +108,6 @@ class NoteFileModel extends Base
             $file_name = $this->upload($item['file']);
             if (!$file_name)
             {
-                $this->error = 'Upload Failed';
                 return false;
             }
 
@@ -165,6 +152,7 @@ class NoteFileModel extends Base
 
     public function update($data)
     {
+        $data = $this->Note2Entity->bind($data);
         if (!$this->validate($data, true) || empty($data['id']))
         {
             return false;
@@ -194,9 +182,16 @@ class NoteFileModel extends Base
             // get folder save attachment
             $path_attachment = $this->createFolderSave();
 
+            $findMime = null;
+            if ($this->config->exists('extensionAllow') && $this->config->extensionAllow &&  is_array($this->config->extensionAllow)) 
+            {
+                $findMime = $this->config->extensionAllow;
+            }
+
             $uploader = $this->file->setOptions([
                 'overwrite' => true,
-                'targetDir' => $path_attachment
+                'targetDir' => $path_attachment,
+                'findMime' => $findMime,
             ]);
     
             // TODO: create dynamice fieldName for file
@@ -210,7 +205,7 @@ class NoteFileModel extends Base
             
             if( false === $uploader->upload($file) )
             {
-                $this->error = 'Invalid attachment';
+                $this->error = $uploader->getError();
                 return false;
             }
             

@@ -63,6 +63,8 @@ class MilestoneModel extends Base
 
     public function add($data)
     {
+        $data = $this->MilestoneEntity->bind($data);
+
         if (!$data || !is_array($data))
         {
             return false;
@@ -85,6 +87,8 @@ class MilestoneModel extends Base
 
     public function update($data)
     {
+        $data = $this->MilestoneEntity->bind($data);
+
         if (!$data || !is_array($data) || !$data['id'])
         {
             return false;
