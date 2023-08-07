@@ -14,6 +14,7 @@ use SPT\Container\Client as Base;
 
 class RequestModel extends Base 
 { 
+    use \SPT\Traits\ErrorString;
     // Write your code here
     public function remove($id)
     {
@@ -62,41 +63,6 @@ class RequestModel extends Base
         return $string . $ex;
     }   
 
-    public function validate($data)
-    {
-        if (!$data || !is_array($data))
-        {
-            return false;
-        }
-
-        $exist = $this->MilestoneEntity->findByPK($data['milestone_id']);
-        if (!$exist)
-        {
-            $this->session->set('flashMsg', 'Invalid Milestone');
-            return false;
-        }
-
-        if (!$data['title'])
-        {
-            $this->session->set('flashMsg', 'Error: Title can\'t empty! ');
-            return false;
-        }
-
-        $data['tags'] = $data['tags'] ? $this->getTag($data['tags']) : '';
-        
-        if(!$exist) {
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-
-        $data['assignment'] = $data['assignment'] ? json_encode($data['assignment']) : '';
-        $data['start_at'] = $data['start_at'] ? $data['start_at'] : null;
-        $data['finished_at'] = $data['finished_at'] ? $data['finished_at'] : null;
-
-        return $data;
-    }
-
     public function getTag($tags)
     {
         $listTag = explode(',', $tags);
@@ -132,51 +98,45 @@ class RequestModel extends Base
 
     public function add($data)
     {
+        $data['tags'] = $data['tags']  ? $this->getTag($data['tags']) : '';
         $data = $this->RequestEntity->bind($data);
 
-        if (!$data || !is_array($data))
+        if (!$data || !isset($data['readyNew']) || !$data['readyNew'])
         {
+            $this->error = $this->RequestEntity->getError();
             return false;
         }
+        unset($data['readyNew']);
 
-        $newId =  $this->RequestEntity->add([
-            'milestone_id' => $data['milestone_id'],
-            'title' => $data['title'],
-            'tags' => $data['tags'],
-            'assignment' => $data['assignment'],
-            'description' => $data['description'],
-            'start_at' => $data['start_at'] ? $data['start_at'] : null,
-            'finished_at' => $data['finished_at'] ? $data['finished_at'] : null,
-            'created_by' => $this->user->get('id'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        $newId =  $this->RequestEntity->add($data);
+        if (!$newId)
+        {
+            $this->error = $this->RequestEntity->getError();
+            return false;
+        }
 
         return $newId;
     }
 
     public function update($data)
     {
+        $data['tags'] = $data['tags']  ? $this->getTag($data['tags']) : '';
         $data = $this->RequestEntity->bind($data);
         
-        if (!$data || !is_array($data) || !$data['id'])
+        if (!$data || !isset($data['readyUpdate']) || !$data['readyUpdate'])
         {
+            $this->error = $this->RequestEntity->getError();
             return false;
         }
+        unset($data['readyUpdate']);
 
-        $try = $this->RequestEntity->update([
-            'milestone_id' => $data['milestone_id'],
-            'title' => $data['title'],
-            'tags' => $data['tags'],
-            'assignment' => $data['assignment'],
-            'description' => $data['description'],
-            'start_at' => $data['start_at'] ? $data['start_at'] : null,
-            'finished_at' => $data['finished_at'] ? $data['finished_at'] : null,
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s'),
-            'id' => $data['id'],
-        ]);
+
+        $try = $this->RequestEntity->update($data);
+        if (!$try)
+        {
+            $this->error = $this->RequestEntity->getError();
+            return false;
+        }
 
         return $try;
     }
