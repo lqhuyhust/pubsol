@@ -72,13 +72,6 @@ class VersionModel extends Base
             $where[] = 'id <> '. $data['id'];
         }
 
-        $findOne = $this->VersionEntity->findOne($where);
-        if ($findOne)
-        {
-            $this->error = 'Title already used!';
-            return false;
-        }
-
         if($data['release_date'] == '')
         {
             $this->error = "Release date can't empty";
