@@ -17,16 +17,7 @@ class DocumentModel extends Base
     // Write your code here
     public function remove($id)
     {
-        $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $id]);
-
         $try = $this->DocumentEntity->remove($id);
-        if ($try)
-        {
-            foreach ($discussion as $item)
-            {
-                $this->DiscussionEntity->remove($item['id']);
-            }
-        }
 
         return $try;
     }   
@@ -93,31 +84,6 @@ class DocumentModel extends Base
         }
         
         return $list;
-    }
-
-    public function getComment($request_id)
-    {
-        if (!$request_id)
-        {
-            return false;
-        }
-
-        $document = $this->DocumentEntity->findOne(['request_id' => $request_id]);
-        if (!$document)
-        {
-            return false;
-        }
-
-        $discussion = $this->DiscussionEntity->list(0, 0, ['document_id = '. $document['id']], 'sent_at asc');
-        $discussion = $discussion ? $discussion : [];
-        foreach ($discussion as &$item)
-        {
-            $user_tmp = $this->UserEntity->findByPK($item['user_id']);
-            $item['user'] = $user_tmp ? $user_tmp['name'] : '';
-        }
-
-        $result = $discussion ? $discussion : [];
-        return $result;
     }
 
     public function rollback($id)
