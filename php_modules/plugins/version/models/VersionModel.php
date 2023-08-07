@@ -82,14 +82,8 @@ class VersionModel extends Base
 
     public function add($data)
     {
-        $data = $this->VersionEntity->bind($data);
-        if (!$this->validate($data))
-        {
-            return false;
-        }
-
         $version_number = $this->getVersion();
-        $newId =  $this->VersionEntity->add([
+        $data = [
             'name' => $data['name'],
             'release_date' => $data['release_date'],
             'description' => $data['description'],
@@ -99,11 +93,19 @@ class VersionModel extends Base
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ]; 
 
+        $data = $this->VersionEntity->bind($data);
+        if (!$data)
+        {
+            $this->error = $this->VersionEntity->getError();
+            return false;
+        }
+
+        $newId =  $this->VersionEntity->add($data);
         if (!$newId)
         {
-            $this->error = "Can't create version";
+            $this->error = $this->VersionEntity->getError();
         }
 
         return $newId;
@@ -111,13 +113,7 @@ class VersionModel extends Base
 
     public function update($data)
     {
-        $data = $this->VersionEntity->bind($data);
-        if (!$this->validate($data))
-        {
-            return false;
-        }
-
-        $try = $this->VersionEntity->update([
+        $data = [
             'name' => $data['name'],
             'release_date' => $data['release_date'],
             'description' => $data['description'],
@@ -125,11 +121,20 @@ class VersionModel extends Base
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
-        ]);
+        ];
+
+        $data = $this->VersionEntity->bind($data);
+        if (!$data)
+        {
+            $this->error = $this->VersionEntity->getError();
+            return false;
+        }
+
+        $try = $this->VersionEntity->update($data);
 
         if (!$try)
         {
-            $this->error = "Can't create version";
+            $this->error = $this->VersionEntity->getError();
         }
 
         return $try;
