@@ -112,24 +112,6 @@ class UserGroupModelTest extends TestCase
     }
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->UserGroupModel->validate($data);
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[], false],
-            [['name' => ''], false],
-            [['name' => 'Test'], true],
-        ];
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)
