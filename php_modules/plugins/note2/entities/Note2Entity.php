@@ -83,4 +83,49 @@ class Note2Entity extends Entity
                 ]
         ];
     }
+
+    public function validate( $data )
+    {
+        if (!is_array($data))
+        {
+            $this->error = 'Invalid data format! ';
+            return false;
+        }
+
+        if (!isset($data['title']) || !$data['title'] || !$data)
+        {
+            $this->error = 'Title is required! ';
+            return false;
+        }
+
+        unset($data['readyUpdate']);
+        unset($data['readyNew']);
+        return $data;
+    }
+
+    public function bind($data = [], $returnObject = false)
+    {
+        $row = [];
+        $data = (array) $data;
+        $fields = $this->getFields();
+        $skips = isset($data['id']) && $data['id'] ? ['created_at', 'created_by', 'locked_at', 'locked_by'] : ['id'];
+        foreach ($fields as $key => $field)
+        {
+            if (!in_array($key, $skips))
+            {
+                $default = isset($field['default']) ? $field['default'] : '';
+                $row[$key] = isset($data[$key]) ? $data[$key] : $default;
+            }
+        }
+
+        if (isset($data['id']) && $data['id'])
+        {
+            $row['readyUpdate'] = true;
+        }
+        else{
+            $row['readyNew'] = true;
+        }
+
+        return $returnObject ? (object)$row : $row;
+    }
 }
