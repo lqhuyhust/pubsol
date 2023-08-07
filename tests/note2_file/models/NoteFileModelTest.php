@@ -80,10 +80,12 @@ class NoteFileModelTest extends TestCase
         return [
             [[], 0, false],
             [[
-                'title' => ''
+                'title' => '',
+                'file' => [],
             ], 0, false],
             [[
-                'title' => 'Test'
+                'title' => 'Test',
+                'file' => [],
             ], 0, false],
             [[
                 'title' => 'Test',
@@ -165,6 +167,7 @@ class NoteFileModelTest extends TestCase
         return [
             [[], false],
             [[
+                'file' => [],
                 'title' => '',
             ], false],
             [[
@@ -209,13 +212,9 @@ class NoteFileModelTest extends TestCase
     public function dataUpdate()
     {
         return [
-            // [[], false],
-            // [[
-            //     'title' => '',
-            // ], false],
-            // [[
-            //     'title' => 'test',
-            // ], false],
+            [[
+                'title' => 'test',
+            ], false],
             [[
                 'title' => 'test',
                 'id' => 2,
