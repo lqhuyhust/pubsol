@@ -8,13 +8,13 @@
  * 
  */
 
-namespace App\plugins\report\entities;
+namespace App\plugins\report_timeline\entities;
 
 use SPT\Storage\DB\Entity;
 
-class ReportEntity extends Entity
+class ReportTimelineEntity extends Entity
 {
-    protected $table = '#__reports';
+    protected $table = '#__report_timeline';
     protected $pk = 'id';
 
     public function getFields()
@@ -26,40 +26,14 @@ class ReportEntity extends Entity
                 'option' => 'unsigned',
                 'extra' => 'auto_increment',
             ],
-            'title' => [
-                'type' => 'varchar',
-                'limit' => 255,
-            ],
-            'status' => [
-                'type' => 'tinyint',
-            ],
-            'type' => [
-                'type' => 'varchar',
-                'limit' => 255,
-            ],
-            'data' => [
+            'milestones' => [
                 'type' => 'text',
-                'null' => 'YES',
             ],
-            'assignment' => [
+            'tags' => [
                 'type' => 'text',
-                'null' => 'YES',
             ],
-            'created_at' => [
-                'type' => 'datetime',
-                'default' => 'NOW()',
-            ],
-            'created_by' => [
+            'report_id' => [
                 'type' => 'int',
-                'option' => 'unsigned',
-            ],
-            'modified_at' => [
-                'type' => 'datetime',
-                'default' => 'NOW()',
-            ],
-            'modified_by' => [
-                'type' => 'int',
-                'option' => 'unsigned',
             ],
         ];
     }
@@ -72,11 +46,21 @@ class ReportEntity extends Entity
             return false;
         }
 
-        if(empty($data['title'])) 
+        if(empty($data['report_id'])) 
         {
-            $this->error = "Title can't empty";
+            $this->error = "Report invalid";
             return false;
         }
+
+        if(is_array($data['milestones'])) 
+        {
+            $data['milestones'] = json_encode($data['milestones']);
+        } 
+
+        if(is_array($data['tags'])) 
+        {
+            $data['tags'] = json_encode($data['tags']);
+        } 
 
         unset($data['readyUpdate']);
         unset($data['readyNew']);
@@ -88,7 +72,7 @@ class ReportEntity extends Entity
         $row = [];
         $data = (array) $data;
         $fields = $this->getFields();
-        $skips = isset($data['id']) && $data['id'] ? ['created_at', 'created_by'] : ['id'];
+        $skips = isset($data['id']) && $data['id'] ? [] : ['id'];
         foreach ($fields as $key => $field)
         {
             if (!in_array($key, $skips))

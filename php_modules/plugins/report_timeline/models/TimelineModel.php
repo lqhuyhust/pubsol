@@ -29,51 +29,50 @@ class TimelineModel extends Base
         return $try;
     }
 
-    public function validate($data)
-    {
-        if (!$data || !is_array($data))
-        {
-            $this->error = 'Invalid data format';
-            return false;
-        }
-
-        if (!$data['title'])
-        {
-            $this->error = "title can't empry";
-            return false;
-        }
-
-        return $data;
-    }
-
     public function add($data)
     {
-        $data['data'] = json_encode([
-            'milestone' => $data['milestone'] ? $data['milestone'] : [],
-            'tags' => $data['tags'] ? $data['tags'] : [],
-        ]);
-
-        $data = $this->ReportEntity->bind($data);
-        $try = $this->validate($data);
-        if (!$try)
-        {
-            return false;
-        }
-
-        $newId =  $this->ReportEntity->add([
+        $report = [
             'title' => $data['title'],
             'status' => 1,
-            'data' => $data['data'],
+            'data' => '',
             'type' => 'timeline',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        $newId = $this->ReportEntity->add($report);
 
         if (!$newId)
         {
-            $this->error = "Can't create report";
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+        else
+        {
+            $timeline = [
+                'milestones' => $data['milestones'],
+                'tags' => $data['tags'],
+                'report_id' => $newId,
+            ];
+            $timeline = $this->ReportTimelineEntity->bind($timeline);
+
+            if (!$timeline)
+            {
+                $this->error = $this->ReportTimelineEntity->getError();
+                return false;
+            }
+
+            $try = $this->ReportTimelineEntity->add($timeline);
+            
         }
 
         return $newId;
@@ -81,29 +80,56 @@ class TimelineModel extends Base
 
     public function update($data)
     {
-        $data['data'] = json_encode([
-            'milestone' => $data['milestone'] ? $data['milestone'] : [],
-            'tags' => $data['tags'] ? $data['tags'] : [],
-        ]);
+        $report = [
+            'title' => $data['title'],
+            'status' => 1,
+            'data' => '',
+            'id' => $data['id'],
+            'type' => 'timeline',
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
+        ];
+        $report = $this->ReportEntity->bind($report);
 
-        $data = $this->ReportEntity->bind($data);
-        $try = $this->validate($data);
-        if (!$try || !$data['id'])
+        if (!$report)
         {
+            $this->error = $this->ReportEntity->getError();
             return false;
         }
 
-        $try = $this->ReportEntity->update([
-            'title' => $data['title'],
-            'data' => $data['data'],
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s'),
-            'id' => $data['id'],
-        ]);
+        $try = $this->ReportEntity->update($report);
 
         if (!$try)
         {
-            $this->error = "Can't update report";
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+        else
+        {
+            $find = $this->ReportTimelineEntity->findOne(['report_id' => $data['id']]);
+            if (!$find)
+            {
+                $timeline = [
+                    'milestones' => $data['milestone'],
+                    'tags' => $data['tags'],
+                    'report_id' => $data['id'],
+                ];
+
+                $timeline = $this->ReportTimelineEntity->bind($timeline);
+                $try = $this->ReportTimelineEntity->add($timeline);
+            }
+            else
+            {
+                $timeline = [
+                    'milestones' => $data['milestone'],
+                    'tags' => $data['tags'],
+                    'report_id' => $data['id'],
+                    'id' => $find['id'],
+                ];
+
+                $timeline = $this->ReportTimelineEntity->bind($timeline);
+                $try = $this->ReportTimelineEntity->update($timeline);
+            }
         }
 
         return $try;
@@ -114,15 +140,17 @@ class TimelineModel extends Base
         $find = $this->ReportEntity->findByPK($id);
         
         $find = $find ? $find : [];
-        $data = $find ? $find['data'] : '';
-        $data = $data ? json_decode($data, true) : [];
+        $data = [];
+        $timeline = $this->ReportTimelineEntity->findOne(['report_id' => $id]);
+        $data['milestones'] = $timeline && $timeline['milestones'] ? json_decode($timeline['milestones'], true) : [];
+        $data['tags'] = $timeline && $timeline['tags'] ? json_decode($timeline['tags'], true) : [];
 
         if (!$id)
         {
             $data = $this->session->getform('report_timeline', []);
         }
 
-        $find['milestone'] = $data ? $data['milestone'] : [];
+        $find['milestone'] = $data ? $data['milestones'] : [];
         $find['tags'] = $data ? $data['tags'] : [];
 
         // get request
