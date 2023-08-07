@@ -73,8 +73,8 @@ class MilestoneModel extends Base
         $newId =  $this->MilestoneEntity->add([
             'title' => $data['title'],
             'description' => $data['description'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
+            'start_date' => $data['start_date'] ? $data['start_date'] : null,
+            'end_date' => $data['end_date'] ? $data['end_date'] : null,
             'status' => $data['status'],
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
@@ -97,8 +97,8 @@ class MilestoneModel extends Base
         $try = $this->MilestoneEntity->update([
             'title' => $data['title'],
             'description' => $data['description'],
-            'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
+            'start_date' => $data['start_date'] ? $data['start_date'] : null,
+            'end_date' => $data['end_date'] ? $data['end_date'] : null,
             'status' => $data['status'],
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
