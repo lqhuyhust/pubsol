@@ -6,12 +6,41 @@ use Tests\Test as TestCase;
 class UserGroupModelTest extends TestCase
 { 
     private $UserGroupModel;
+    static $data;
 
     protected function setUp(): void
     {
         $app = $this->prepareApp();
         $container = $app->getContainer();
         $this->UserGroupModel = $container->get('UserGroupModel');
+        $GroupEntity = $container->get('GroupEntity'); 
+
+        // Prepare data
+        if (!static::$data)
+        {
+            $find = $GroupEntity->findOne(['name' => 'Test']);
+            if ($find)
+            {
+                $GroupEntity->remove($find['id']);
+            }
+
+            $find = $GroupEntity->findByPK(2);
+            if(!$find)
+            {
+                $GroupEntity->add([
+                    'id' => 2,
+                    'name' => 'Test Update',
+                    'description' => '',
+                    'access' => '',
+                    'status' => 1,
+                    'created_by' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'modified_by' => 0,
+                    'modified_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            static::$data = true;
+        }
     }
 
     /**
@@ -124,16 +153,6 @@ class UserGroupModelTest extends TestCase
                 'modified_by' => 1,
                 'modified_at' => date('Y-m-d H:i:s')
             ], true],
-            [[
-                'name' => 'Test 2',
-                'description' => '',
-                'access' => '',
-                'status' => 0,
-                'created_by' => 1,
-                'created_at' => date('Y-m-d H:i:s'),
-                'modified_by' => 1,
-                'modified_at' => date('Y-m-d H:i:s')
-            ], true],
         ];
     }
 
@@ -153,7 +172,7 @@ class UserGroupModelTest extends TestCase
             [[], false],
             [['name' => ''], false],
             [[
-                'name' => 'Test',
+                'name' => 'Test Update',
                 'description' => '',
                 'id' => 2,
                 'access' => '',
