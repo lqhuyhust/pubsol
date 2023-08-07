@@ -42,6 +42,10 @@ class milestone extends ControllerMVVM
             'start_date' => $this->request->post->get('start_date', '', 'string'),
             'end_date' => $this->request->post->get('end_date', '', 'string'),
             'status' => $this->request->post->get('status', ''),
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
         ];
 
         $data = $this->MilestoneModel->validate($data);
@@ -88,6 +92,8 @@ class milestone extends ControllerMVVM
                 'end_date' => $this->request->post->get('end_date', '', 'string'),
                 'status' => $this->request->post->get('status', ''),
                 'id' => $ids,
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s')
             ];
 
             $data = $this->MilestoneModel->validate($data);
