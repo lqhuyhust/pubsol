@@ -32,7 +32,7 @@ class UserModelTest extends TestCase
                     'name' => 'admin',
                     'username' => 'admin',
                     'email' => 'admin@g.com',
-                    'confirm_password' => 123123,
+                    'confirm_password' => '123123',
                     'status' => 1,
                     'modified_by' => 0,
                     'modified_at' => date('Y-m-d H:i:s')
@@ -53,7 +53,8 @@ class UserModelTest extends TestCase
                     'name' => 'admin 2',
                     'username' => 'admin2',
                     'email' => 'admin@g.com',
-                    'password' => md5('123123'),
+                    'password' => '123123',
+                    'confirm_password' => '123123',
                     'status' => 1,
                     'created_by' => 0,
                     'created_at' => date('Y-m-d H:i:s'),
