@@ -8,14 +8,14 @@
  * 
  */
 
-namespace App\plugins\version\entities;
+namespace App\plugins\report_calendar\entities;
 
 use SPT\Storage\DB\Entity;
 
-class VersionEntity extends Entity
+class ReportCalendarEntity extends Entity
 {
-    protected $table = '#__versions'; //table name
-    protected $pk = 'id'; //primary key
+    protected $table = '#__report_calendar';
+    protected $pk = 'id';
 
     public function getFields()
     {
@@ -26,39 +26,14 @@ class VersionEntity extends Entity
                 'option' => 'unsigned',
                 'extra' => 'auto_increment',
             ],
-            'name' => [
-                'type' => 'varchar',
-                'limit' => 255,
-            ],
-            'version' => [
+            'milestones' => [
                 'type' => 'text',
             ],
-            'release_date' => [
-                'type' => 'datetime',
-                'null' => 'YES',
-            ],
-            'status' => [
-                'type' => 'tinyint',
-            ],
-            'description' => [
+            'tags' => [
                 'type' => 'text',
-                'null' => 'YES',
             ],
-            'created_at' => [
-                'type' => 'datetime',
-                'null' => 'YES',
-            ],
-            'created_by' => [
+            'report_id' => [
                 'type' => 'int',
-                'option' => 'unsigned',
-            ],
-            'modified_at' => [
-                'type' => 'datetime',
-                'null' => 'YES',
-            ],
-            'modified_by' => [
-                'type' => 'int',
-                'option' => 'unsigned',
             ],
         ];
     }
@@ -71,16 +46,21 @@ class VersionEntity extends Entity
             return false;
         }
 
-        if(empty($data['name'])) 
+        if(empty($data['report_id'])) 
         {
-            $this->error = "title can't empty";
+            $this->error = "Report invalid";
             return false;
         }
 
-        if($data['release_date'] == '')
+        if(is_array($data['milestones'])) 
         {
-            $data['release_date'] = null;
-        }  
+            $data['milestones'] = json_encode($data['milestones']);
+        } 
+
+        if(is_array($data['tags'])) 
+        {
+            $data['tags'] = json_encode($data['tags']);
+        } 
 
         unset($data['readyUpdate']);
         unset($data['readyNew']);
@@ -92,7 +72,7 @@ class VersionEntity extends Entity
         $row = [];
         $data = (array) $data;
         $fields = $this->getFields();
-        $skips = isset($data['id']) && $data['id'] ? ['created_at', 'created_by'] : ['id'];
+        $skips = isset($data['id']) && $data['id'] ? [] : ['id'];
         foreach ($fields as $key => $field)
         {
             if (!in_array($key, $skips))

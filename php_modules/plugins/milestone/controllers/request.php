@@ -65,19 +65,15 @@ class request extends ControllerMVVM
             'finished_at' => $this->request->post->get('finished_at', '', 'string'),
             'assignment' => $this->request->post->get('assignment', [], 'array'),
             'milestone_id' => $milestone_id,
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
         ];
 
-        $data = $this->RequestModel->validate($data);
-        if (!$data)
-        {
-            return $this->app->redirect(
-                $this->router->url('requests/'. $milestone_id)
-            );
-        }
-        
         $try = $this->RequestModel->add($data);
 
-        $msg = $try ? 'Create Successfully!' : 'Error: Create Failed!';
+        $msg = $try ? 'Create Successfully!' : 'Error: '. $this->RequestModel->getError();
         $this->session->set('flashMsg', $msg);
         
         return $this->app->redirect(
@@ -104,19 +100,13 @@ class request extends ControllerMVVM
                 'assignment' => $this->request->post->get('assignment', [], 'array'),
                 'milestone_id' => $milestone_id,
                 'id' => $ids,
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s')
             ];
-
-            $data = $this->RequestModel->validate($data);
-            if (!$data)
-            {
-                return $this->app->redirect(
-                    $this->router->url($link)
-                );
-            }
 
             $try = $this->RequestModel->update($data);
             
-            $msg = $try ? 'Edit Successfully!' : 'Error: Edit Failed!';
+            $msg = $try ? 'Edit Successfully!' : 'Error: '. $this->RequestModel->getError();
             $this->session->set('flashMsg', $msg);
             return $this->app->redirect(
                 $this->router->url($link)

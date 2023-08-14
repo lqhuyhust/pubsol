@@ -1,7 +1,5 @@
 <script>
      $(document).ready(function(e) {
-        var editor = '<?php echo $this->data ? $this->data['type'] : $this->type ?>';
-        
         $(".btn_save_close").click(function(e) {
             e.preventDefault();
             $("#save_close").val(1);

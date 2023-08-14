@@ -7,7 +7,7 @@
                 <input id="input_title" type="hidden" name="title" required>
                 <input id="_method" type="hidden" name="_method" value="<?php echo $this->id ? 'PUT' : 'POST' ?>">
                 <div>
-                    <?php if (!$this->data) : ?>
+                    <?php if (!$this->id) : ?>
                     <?php $this->ui->field('file'); ?>
                     <?php else : ?>
                     <a href="<?php echo $this->url($this->data['path']);?>"><?php echo basename($this->data['path'])?></a>

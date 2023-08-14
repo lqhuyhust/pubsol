@@ -36,45 +36,6 @@ class NoteFileModel extends Base
         return $note;
     }
 
-    public function validate($data, $is_update = false)
-    {
-        if (!$data || !is_array($data))
-        {
-            $this->error = 'Error: Invalid data format.';
-            return false;
-        }
-
-        if (!$is_update)
-        {
-            if (!isset($data['file']) || !$data['file'] || !$data['file']['name'])
-            {
-                $this->error = 'Invalid File Upload';
-                return false;
-            }
-
-            if ($this->config->exists('extensionAllow') && $this->config->extensionAllow &&  is_array($this->config->extensionAllow)) 
-            {
-                $extension = explode('.', $data['file']['name']);
-                $extension = end($extension);
-                if (!in_array($extension, $this->config->extensionAllow)) 
-                {
-                    $this->error = 'File are not allowed to upload';
-                    return false;
-                }
-            }
-        }
-        else
-        {
-            if (!$data['title'])
-            {
-                $this->error = 'Error: Title can\'t empty.';
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public function getCurrentId()
     {
         $params = $this->request->get('urlVars');
@@ -84,13 +45,8 @@ class NoteFileModel extends Base
 
     public function add($data)
     {
-        if (!$this->validate($data))
-        {
-            return false;
-        }
-
-        $files = [];
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+        $files = [];
 
         if (is_array($data['file']['name']))
         {
@@ -120,11 +76,10 @@ class NoteFileModel extends Base
             $file_name = $this->upload($item['file']);
             if (!$file_name)
             {
-                $this->error = 'Upload Failed';
                 return false;
             }
 
-            $newId =  $this->Note2Entity->add([
+            $note = [
                 'title' => $item['title'],
                 'public_id' => '',
                 'alias' => '',
@@ -138,24 +93,45 @@ class NoteFileModel extends Base
                 'created_by' => $this->user->get('id'),
                 'locked_at' => date('Y-m-d H:i:s'),
                 'locked_by' => $this->user->get('id'),
-            ]);
+            ];
+
+            $note = $this->Note2Entity->bind($note);
+            if (!$note)
+            {
+                $this->error = $this->Note2Entity->getError();
+                return false;
+            }
+
+            $newId =  $this->Note2Entity->add($note);
 
             if ($newId)
             {
                 $file_type = explode('.', $file_name);
                 $file_type = strtolower(end($file_type));
-
-                $try = $this->FileEntity->add([
+                $file = $this->FileEntity->bind([
                     'note_id' => $newId,
                     'path' => 'media/attachments/' . date('Y/m/d'). '/'. $file_name,
                     'file_type' => $file_type,
                 ]);
+
+                if (!$file)
+                {
+                    $this->error = $this->FileEntity->getError();
+                    return false;
+                }
+
+                $try = $this->FileEntity->add($file);
 
                 if (!$try)
                 {
                     $this->error = 'Error: Can\'t create the record.';
                     return false;
                 }
+            }
+            else
+            {
+                $this->error = $this->Note2Entity->getError();
+                return false;
             }
 
         }
@@ -165,12 +141,14 @@ class NoteFileModel extends Base
 
     public function update($data)
     {
-        if (!$this->validate($data, true) || empty($data['id']))
+        $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+        $data = $this->Note2Entity->bind($data);
+
+        if (!$data)
         {
+            $this->error = $this->Note2Entity->getError();
             return false;
         }
-        
-        $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
 
         $try = $this->Note2Entity->update([
             'title' => $data['title'],
@@ -194,9 +172,16 @@ class NoteFileModel extends Base
             // get folder save attachment
             $path_attachment = $this->createFolderSave();
 
+            $findMime = null;
+            if ($this->config->exists('extensionAllow') && $this->config->extensionAllow &&  is_array($this->config->extensionAllow)) 
+            {
+                $findMime = $this->config->extensionAllow;
+            }
+
             $uploader = $this->file->setOptions([
                 'overwrite' => true,
-                'targetDir' => $path_attachment
+                'targetDir' => $path_attachment,
+                'findMime' => $findMime,
             ]);
     
             // TODO: create dynamice fieldName for file
@@ -210,7 +195,7 @@ class NoteFileModel extends Base
             
             if( false === $uploader->upload($file) )
             {
-                $this->error = 'Invalid attachment';
+                $this->error = $uploader->getError();
                 return false;
             }
             

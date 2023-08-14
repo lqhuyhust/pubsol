@@ -32,6 +32,9 @@ class AdminNote extends ViewModel
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         $data = $id ? $this->NoteFileModel->getDetail($id) : [];
+        $data_form = $this->session->getform('note_file', []);
+        $this->session->setform('note_file', []);
+        $data = $data_form ? $data_form : $data;
 
         return $data;
     }

@@ -42,19 +42,14 @@ class milestone extends ControllerMVVM
             'start_date' => $this->request->post->get('start_date', '', 'string'),
             'end_date' => $this->request->post->get('end_date', '', 'string'),
             'status' => $this->request->post->get('status', ''),
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
         ];
 
-        $data = $this->MilestoneModel->validate($data);
-        
-        if (!$data)
-        {
-            return $this->app->redirect(
-                $this->router->url('milestones')
-            );
-        }
-        
         $try = $this->MilestoneModel->add($data);
-        $msg = $try ? 'Create Successfully!' : 'Error: Create Failed!';
+        $msg = $try ? 'Create Successfully!' : 'Error: '. $this->MilestoneModel->getError();
         $this->session->set('flashMsg', $msg);
         return $this->app->redirect(
             $this->router->url('milestones')
@@ -88,19 +83,13 @@ class milestone extends ControllerMVVM
                 'end_date' => $this->request->post->get('end_date', '', 'string'),
                 'status' => $this->request->post->get('status', ''),
                 'id' => $ids,
+                'modified_by' => $this->user->get('id'),
+                'modified_at' => date('Y-m-d H:i:s')
             ];
 
-            $data = $this->MilestoneModel->validate($data);
-        
-            if (!$data)
-            {
-                return $this->app->redirect(
-                    $this->router->url('milestones')
-                );
-            }
             $try = $this->MilestoneModel->update($data);
             
-            $msg = $try ? 'Edit Successfully' : 'Error: Save Failed';
+            $msg = $try ? 'Edit Successfully' : 'Error: '. $this->MilestoneModel->getError();
             
             $this->session->set('flashMsg', $msg);
             return $this->app->redirect(

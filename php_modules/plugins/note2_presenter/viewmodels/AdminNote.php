@@ -33,7 +33,10 @@ class AdminNote extends ViewModel
         $id = $urlVars && isset($urlVars['id']) ? (int) $urlVars['id'] : 0;
 
         $data = $this->NotePresenterModel->getDetail($id);
-
+        $data_form = $this->session->getform('note_presenter', []);
+        $this->session->setform('note_presenter', []);
+        $data = $data_form ? $data_form : $data;
+        
         return $data;
     }
 
@@ -53,7 +56,7 @@ class AdminNote extends ViewModel
             'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Note',
             'link_history' => $this->router->url('history/note-presenter'),
             'url' => $this->router->url(),
-            'link_list' => $this->router->url('note2'),
+            'link_list' => $this->router->url('notes'),
             'link_form' => $id ? $this->router->url('note2/detail') : $this->router->url('new-note2/presenter'),
         ];
         

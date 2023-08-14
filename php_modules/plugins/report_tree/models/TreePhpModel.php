@@ -108,30 +108,36 @@ class TreePhpModel extends Base
 
     public function add($data)
     {
-        $try = $this->validate($data);
-        if (!$try)
-        {
-            return false;
-        }
-
-        $newId =  $this->ReportEntity->add([
+        $structure = isset($data['structure']) ? json_decode($data['structure'], true) : [];
+        $report = [
             'title' => $data['title'],
             'status' => 1,
+            'data' => '',
             'type' => 'tree',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
+
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        $newId =  $this->ReportEntity->add($report);
 
         if (!$newId)
         {
-            $this->error = "Can't create report";
+            $this->error = $this->ReportEntity->getError();
+            return false;
         }
 
-        if ($newId && $data['structure'])
+        if ($newId && $structure)
         {
-            $structure = json_decode($data['structure'], true);
             foreach($structure as $item)
             {
                 $this->TreeStructureEntity->add([
@@ -153,23 +159,39 @@ class TreePhpModel extends Base
 
     public function update($data)
     {
-        $try = $this->validate($data);
-        if (!$try || !$data['id'])
-        {
-            return false;
-        }
+        $structure = isset($data['structure']) ? json_decode($data['structure'], true) : [];
+        $removes = isset($data['removes']) ? json_decode($data['removes'], true) : [];
 
-        $try = $this->ReportEntity->update([
+        $report = [
             'title' => $data['title'],
+            'status' => 1,
+            'data' => '',
+            'type' => 'tree',
+            'created_by' => $this->user->get('id'),
+            'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
-        ]);
+        ];
 
-        if ($try && $data['structure'])
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
         {
-            $structure = json_decode($data['structure'], true);
-            $removes = json_decode($data['removes'], true);
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        $try = $this->ReportEntity->update($report);
+
+        if (!$try)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        if ($try && $structure)
+        {
             foreach($removes as $item)
             {
                 $find = $this->TreeStructureEntity->findOne(['note_id = '. $item, 'diagram_id = '. $data['id'] ]);

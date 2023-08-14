@@ -52,6 +52,10 @@ class note extends NoteController
             'data' => $this->request->post->get('data', '', 'string'),
             'tags' => $this->request->post->get('tags', [], 'array'),
             'notice' => $this->request->post->get('notice', '', 'string'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user->get('id'),
+            'locked_at' => date('Y-m-d H:i:s'),
+            'locked_by' => $this->user->get('id'),
         ];
         
         $save_close = $this->request->post->get('save_close', '', 'string');
@@ -59,6 +63,7 @@ class note extends NoteController
         $newId = $this->NoteHtmlModel->add($data);
         if (!$newId)
         {
+            $this->session->setform('note_html', $data);
             $this->session->set('flashMsg', 'Create failed.'. $this->NoteHtmlModel->getError()); 
             return $this->app->redirect(
                 $this->router->url('new-note2/html')
@@ -69,6 +74,8 @@ class note extends NoteController
             'object' => 'note',
             'object_id' => $newId,
             'data' => $data['data'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user->get('id'),
         ]);
 
         $this->session->set('flashMsg', 'Create Successfully'); 
@@ -92,6 +99,8 @@ class note extends NoteController
                 'tags' => $this->request->post->get('tags', [], 'array'),
                 'notice' => $this->request->post->get('notice', '', 'string'),
                 'id' => $id,
+                'locked_at' => date('Y-m-d H:i:s'),
+                'locked_by' => $this->user->get('id'),
             ];
 
             $save_close = $this->request->post->get('save_close', '', 'string');
@@ -110,6 +119,8 @@ class note extends NoteController
                 'object' => 'note',
                 'object_id' => $id,
                 'data' => $data['data'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => $this->user->get('id'),    
             ]);
 
             $this->session->set('flashMsg', 'Updated successfully');

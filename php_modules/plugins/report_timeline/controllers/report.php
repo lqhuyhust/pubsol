@@ -41,15 +41,17 @@ class report extends ReportController
         //check title sprint
         $save_close = $this->request->post->get('save_close', '', 'string');
         
-        $try = $this->TimelineModel->add([
+        $data = [
             'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
             'milestone' => $this->request->post->get('milestone', [], 'array'),
             'tags' => $this->request->post->get('tags', [], 'array'),
-        ]);
+        ];
+        $try = $this->TimelineModel->add($data);
         
         if( !$try )
         {
+            $this->session->setform('report_timeline', $data);
             $this->session->set('flashMsg', $this->TimelineModel->getError());
             return $this->app->redirect(
                 $this->router->url('new-report/timeline')
@@ -73,13 +75,15 @@ class report extends ReportController
         // TODO valid the request input
         $save_close = $this->request->post->get('save_close', '', 'string');
 
-        $try = $this->TimelineModel->update([
+        $data = [
             'id' => $id,
             'title' => $this->request->post->get('title', '', 'string'),
             'status' => 1,
             'milestone' => $this->request->post->get('milestone', [], 'array'),
             'tags' => $this->request->post->get('tags', [], 'array'),
-        ]);
+        ];
+
+        $try = $this->TimelineModel->update($data);
         
         if($try)
         {

@@ -48,29 +48,48 @@ class CalendarModel extends Base
 
     public function add($data)
     {
-        $try = $this->validate($data);
-        if (!$try)
-        {
-            return false;
-        }
-
-        $newId =  $this->ReportEntity->add([
+        $report = [
             'title' => $data['title'],
             'status' => 1,
-            'data' => json_encode([
-                'milestone' => $data['milestone'] ? $data['milestone'] : [],
-                'tags' => $data['tags'] ? $data['tags'] : [],
-            ]),
+            'data' => '',
             'type' => 'calendar',
             'created_by' => $this->user->get('id'),
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ];
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
+        {
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+
+        $newId = $this->ReportEntity->add($report);
 
         if (!$newId)
         {
-            $this->error = "Can't create report";
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+        else
+        {
+            $calendar = [
+                'milestones' => $data['milestones'],
+                'tags' => $data['tags'],
+                'report_id' => $newId,
+            ];
+            $calendar = $this->ReportCalendarEntity->bind($calendar);
+
+            if (!$calendar)
+            {
+                $this->error = $this->ReportCalendarEntity->getError();
+                return false;
+            }
+
+            $try = $this->ReportCalendarEntity->add($calendar);
+            
         }
 
         return $newId;
@@ -78,26 +97,56 @@ class CalendarModel extends Base
 
     public function update($data)
     {
-        $try = $this->validate($data);
-        if (!$try || !$data['id'])
+        $report = [
+            'title' => $data['title'],
+            'status' => 1,
+            'data' => '',
+            'id' => $data['id'],
+            'type' => 'calendar',
+            'modified_by' => $this->user->get('id'),
+            'modified_at' => date('Y-m-d H:i:s')
+        ];
+        $report = $this->ReportEntity->bind($report);
+
+        if (!$report)
         {
+            $this->error = $this->ReportEntity->getError();
             return false;
         }
 
-        $try = $this->ReportEntity->update([
-            'title' => $data['title'],
-            'data' => json_encode([
-                'milestone' => $data['milestone'] ? $data['milestone'] : [],
-                'tags' => $data['tags'] ? $data['tags'] : [],
-            ]),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s'),
-            'id' => $data['id'],
-        ]);
+        $try = $this->ReportEntity->update($report);
 
         if (!$try)
         {
-            $this->error = "Can't update report";
+            $this->error = $this->ReportEntity->getError();
+            return false;
+        }
+        else
+        {
+            $find = $this->ReportCalendarEntity->findOne(['report_id' => $data['id']]);
+            if (!$find)
+            {
+                $calendar = [
+                    'milestones' => $data['milestone'],
+                    'tags' => $data['tags'],
+                    'report_id' => $data['id'],
+                ];
+
+                $calendar = $this->ReportCalendarEntity->bind($calendar);
+                $try = $this->ReportCalendarEntity->add($calendar);
+            }
+            else
+            {
+                $calendar = [
+                    'milestones' => $data['milestone'],
+                    'tags' => $data['tags'],
+                    'report_id' => $data['id'],
+                    'id' => $find['id'],
+                ];
+
+                $calendar = $this->ReportCalendarEntity->bind($calendar);
+                $try = $this->ReportCalendarEntity->update($calendar);
+            }
         }
 
         return $try;
@@ -108,10 +157,17 @@ class CalendarModel extends Base
         $find = $this->ReportEntity->findByPK($id);
         
         $find = $find ? $find : [];
-        $data = $find ? $find['data'] : '';
-        $data = $data ? json_decode($data, true) : [];
+        $data = [];
+        $calendar = $this->ReportCalendarEntity->findOne(['report_id' => $id]);
+        $data['milestones'] = $calendar && $calendar['milestones'] ? json_decode($calendar['milestones'], true) : [];
+        $data['tags'] = $calendar && $calendar['tags'] ? json_decode($calendar['tags'], true) : [];
+        
+        if (!$id)
+        {
+            $data = $this->session->getform('report_calendar', []);
+        }
 
-        $find['milestone'] = $data ? $data['milestone'] : [];
+        $find['milestone'] = $data ? $data['milestones'] : [];
         $find['tags'] = $data ? $data['tags'] : [];
 
         // get request

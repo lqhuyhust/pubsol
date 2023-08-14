@@ -14,6 +14,8 @@ use SPT\Container\Client as Base;
 
 class VersionModel extends Base 
 { 
+    use \SPT\Traits\ErrorString;
+
     public function getVersion()
     {
         $version_level = (int) $this->OptionModel->get('version_level', 1);
@@ -60,7 +62,7 @@ class VersionModel extends Base
 
         if (!$data['name'])
         {
-            $this->session->set('flashMsg', 'Error: Title is required!');
+            $this->error = 'Title is required!';
             return false;
         }
 
@@ -70,28 +72,18 @@ class VersionModel extends Base
             $where[] = 'id <> '. $data['id'];
         }
 
-        $findOne = $this->VersionEntity->findOne($where);
-        if ($findOne)
-        {
-            $this->session->set('flashMsg', 'Error: Title already used!');
-            return false;
-        }
-
         if($data['release_date'] == '')
-            $data['release_date'] = NULL;
-
-        return $data;
+        {
+            $this->error = "Release date can't empty";
+            return false;
+        }   
+        return true;
     }
 
     public function add($data)
     {
-        if (!$data || !is_array($data))
-        {
-            return false;
-        }
-
         $version_number = $this->getVersion();
-        $newId =  $this->VersionEntity->add([
+        $data = [
             'name' => $data['name'],
             'release_date' => $data['release_date'],
             'description' => $data['description'],
@@ -101,19 +93,27 @@ class VersionModel extends Base
             'created_at' => date('Y-m-d H:i:s'),
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s')
-        ]);
+        ]; 
+
+        $data = $this->VersionEntity->bind($data);
+        if (!$data)
+        {
+            $this->error = $this->VersionEntity->getError();
+            return false;
+        }
+
+        $newId =  $this->VersionEntity->add($data);
+        if (!$newId)
+        {
+            $this->error = $this->VersionEntity->getError();
+        }
 
         return $newId;
     }
 
     public function update($data)
     {
-        if (!$data || !is_array($data) || !$data['id'])
-        {
-            return false;
-        }
-
-        $try = $this->VersionEntity->update([
+        $data = [
             'name' => $data['name'],
             'release_date' => $data['release_date'],
             'description' => $data['description'],
@@ -121,7 +121,21 @@ class VersionModel extends Base
             'modified_by' => $this->user->get('id'),
             'modified_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
-        ]);
+        ];
+
+        $data = $this->VersionEntity->bind($data);
+        if (!$data)
+        {
+            $this->error = $this->VersionEntity->getError();
+            return false;
+        }
+
+        $try = $this->VersionEntity->update($data);
+
+        if (!$try)
+        {
+            $this->error = $this->VersionEntity->getError();
+        }
 
         return $try;
     }

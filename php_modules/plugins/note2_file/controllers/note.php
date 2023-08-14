@@ -51,7 +51,8 @@ class note extends NoteController
         $newId = $this->NoteFileModel->add($data);
         if (!$newId)
         {
-            $this->session->set('flashMsg', 'Error: Create failed. '. $this->NoteFileModel->getError()); 
+            $this->session->setform('note_file', $data);
+            $this->session->set('flashMsg', 'Error: '. $this->NoteFileModel->getError()); 
             return $this->app->redirect(
                 $this->router->url('new-note2/file')
             );
@@ -86,7 +87,7 @@ class note extends NoteController
             
             if(!$try)
             {
-                $this->session->set('flashMsg', 'Error: Create failed. '. $this->NoteFileModel->getError()); 
+                $this->session->set('flashMsg', 'Error: '. $this->NoteFileModel->getError()); 
                 return $this->app->redirect(
                     $this->router->url('note2/detail/'. $id)
                 );
