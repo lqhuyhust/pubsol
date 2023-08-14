@@ -3,7 +3,7 @@ namespace Tests\report\models;
 
 use Tests\Test as TestCase;
 
-class ReportModel extends TestCase
+class ReportModelTest extends TestCase
 { 
     private $ReportModel;
     static $data;
