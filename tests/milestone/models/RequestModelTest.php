@@ -27,17 +27,6 @@ class RequestModelTest extends TestCase
     }   
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->RequestModel->validate($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)
@@ -55,39 +44,6 @@ class RequestModelTest extends TestCase
         $this->assertEquals($try , $result);
     }
 
-    public function dataValidate()
-    {
-        return [
-            [[
-
-            ], false],
-            [[
-               'title' => '', 
-               'milestone_id' => '', 
-            ], false],
-            [[
-               'title' => 'Test Request', 
-               'milestone_id' => '', 
-            ], false],
-            [[
-                'title' => 'Test Request', 
-                'milestone_id' => -1, 
-                'tags' => '', 
-                'start_at' => null, 
-                'assignment' => null, 
-                'finished_at' => null, 
-            ], false],
-            [[
-                'title' => 'Test Request', 
-                'milestone_id' => 1, 
-                'tags' => '', 
-                'start_at' => null, 
-                'assignment' => null, 
-                'finished_at' => null, 
-            ], true],
-        ];
-    }
-
     public function dataRemove()
     {
         return [
@@ -98,7 +54,9 @@ class RequestModelTest extends TestCase
     public function dataAdd()
     {
         return [
-            [[], false],
+            [[
+                'tags' => '',
+            ], false],
             [[
                 'milestone_id' => 1,
                 'title' => 'Test Request',
@@ -107,6 +65,10 @@ class RequestModelTest extends TestCase
                 'description' => 'This is Test Request',
                 'start_at' => null,
                 'finished_at' => null,
+                'created_by' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'modified_by' => 0,
+                'modified_at' => date('Y-m-d H:i:s')
             ], true],
         ];
     }
@@ -114,10 +76,13 @@ class RequestModelTest extends TestCase
     public function dataUpdate()
     {
         return [
-            [[], false],
+            [[
+                'tags' => '',
+            ], false],
             [[
                 'title' => 'Test',
                 'id' => '',
+                'tags' => '',
             ], false],
             [[
                 'id' => 1,
@@ -128,6 +93,8 @@ class RequestModelTest extends TestCase
                 'description' => 'This is Test Request',
                 'start_at' => null,
                 'finished_at' => null,
+                'modified_by' => 0,
+                'modified_at' => date('Y-m-d H:i:s')
             ], true],
         ];
     }

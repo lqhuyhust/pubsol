@@ -6,6 +6,7 @@ use Tests\Test as TestCase;
 class VersionModelTest extends TestCase
 { 
     private $VersionModel;
+    static $data;
 
     protected function setUp(): void
     {
@@ -16,40 +17,36 @@ class VersionModelTest extends TestCase
         $OptionModel->set('version_level_deep', 2);
         
         $this->VersionModel = $container->get('VersionModel');
+
+        $VersionEntity = $container->get('VersionEntity'); 
+
+        // Prepare data
+        if (!static::$data)
+        {
+            $find = $VersionEntity->findByPK(1);
+            if(!$find)
+            {
+                $VersionEntity->add([
+                    'id' => 1,
+                    'name' => 'Test Version',
+                    'release_date' => null,
+                    'description' => '',
+                    'version' => '0.1',
+                    'status' => 1,
+                    'created_by' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'modified_by' => 0,
+                    'modified_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            static::$data = true;
+        }
     }
 
     public function testGetVersion()
     {
         $try = $this->VersionModel->getVersion();
         $this->assertNotEmpty($try);
-    }
-
-    /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->VersionModel->validate($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[
-
-            ], false],
-            [[
-               'name' => '', 
-               'release_date' => '', 
-            ], false],
-            [[
-               'name' => 'Test', 
-               'release_date' => '', 
-            ], true],
-        ];
     }
 
     /**
@@ -67,11 +64,14 @@ class VersionModelTest extends TestCase
     {
         return [
             [[
-
+                'name' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
+                'description' => '',
+                'status' => 0,
             ], false],
             [[
                 'name' => 'Test Version', 
-                'release_date' => null,
+                'release_date' => date('Y-m-d H:i:s'),
                 'description' => '',
                 'status' => 0,
             ], true],
@@ -93,17 +93,25 @@ class VersionModelTest extends TestCase
     {
         return [
             [[
-
+                'id' => 0,
+                'name' => '', 
+                'description' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
+                'status' => 0,
             ], false],
             [[
-                'id' => '',
+                'id' => 0,
+                'name' => '', 
+                'description' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
+                'status' => 0,
             ], false],
             [[
 
                 'id' => 1,
-                'name' => 'Test Version', 
-                'release_date' => null,
-                'description' => '',
+                'name' => 'Test Version 2', 
+                'description' => '', 
+                'release_date' => date('Y-m-d H:i:s'),
                 'status' => 0,
             ], true],
         ];

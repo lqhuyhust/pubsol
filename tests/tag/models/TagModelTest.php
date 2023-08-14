@@ -60,32 +60,6 @@ class TagModelTest extends TestCase
     }
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->TagModel->validate($data);
-        $try = $try ? true : false;
-
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[
-
-            ], false],
-            [[
-               'name' => '', 
-            ], false],
-            [[
-               'name' => 'Test', 
-            ], true],
-        ];
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)

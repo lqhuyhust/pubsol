@@ -18,5 +18,12 @@ return [
         'database' => '',
         'prefix' => '',
     ],
+    'db_test' => [
+        'host' => '',
+        'username' => '',
+        'password' => '',
+        'database' => '',
+        'prefix' => '',
+    ],
     'redirectAfterLogin' => 'milestones',
 ];

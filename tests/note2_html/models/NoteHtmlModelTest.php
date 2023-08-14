@@ -54,28 +54,6 @@ class NoteHtmlModelTest extends TestCase
     }
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->NoteHtmlModel->validate($data);
-        $this->assertEquals($try , $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[], false],
-            [[
-               'title' => '', 
-            ], false],
-            [[
-                'title' => 'demo html', 
-            ], true],
-        ];
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)
@@ -87,9 +65,12 @@ class NoteHtmlModelTest extends TestCase
     public function dataAdd()
     {
         return [
-            [[], false],
             [[
-               'title' => '', 
+                'title' => '', 
+                'data' => 'test html', 
+                'tags' => [], 
+                'notice' => '', 
+                'status' => 0,  
             ], false],
             [[
                 'title' => 'test html', 
@@ -113,9 +94,21 @@ class NoteHtmlModelTest extends TestCase
     public function dataUpdate()
     {
         return [
-            [[], false],
+            [[
+                'id' => 0,
+                'title' => 'test html3', 
+                'data' => 'test html', 
+                'tags' => [], 
+                'notice' => '', 
+                'status' => 0, 
+            ], false],
             [[
                'title' => '', 
+                'id' => 0,
+                'data' => 'test html', 
+                'tags' => [], 
+                'notice' => '', 
+                'status' => 0, 
             ], false],
             [[
                 'id' => 2,

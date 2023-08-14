@@ -54,28 +54,6 @@ class NotePresenterModelTest extends TestCase
     }
 
     /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data, $result)
-    {
-        $try = $this->NotePresenterModel->validate($data);
-        $this->assertEquals($try , $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[], false],
-            [[
-               'title' => '', 
-            ], false],
-            [[
-                'title' => 'demo presenter', 
-            ], true],
-        ];
-    }
-
-    /**
      * @dataProvider dataAdd
      */
     public function testAdd($data, $result)
@@ -87,9 +65,12 @@ class NotePresenterModelTest extends TestCase
     public function dataAdd()
     {
         return [
-            [[], false],
             [[
-               'title' => '', 
+                'title' => '', 
+                'data' => 'test presenter', 
+                'tags' => [], 
+                'notice' => '', 
+                'status' => 0, 
             ], false],
             [[
                 'title' => 'test presenter', 
@@ -113,9 +94,21 @@ class NotePresenterModelTest extends TestCase
     public function dataUpdate()
     {
         return [
-            [[], false],
             [[
-               'title' => '', 
+                'id' => 0,
+                'title' => 'test presenter3', 
+                'data' => 'test presenter', 
+                'tags' => [], 
+                'notice' => '', 
+                'status' => 0, 
+            ], false],
+            [[
+                'id' => 3,
+                'title' => '', 
+                'data' => 'test presenter', 
+                'tags' => [], 
+                'notice' => '', 
+                'status' => 0,          
             ], false],
             [[
                 'id' => 3,

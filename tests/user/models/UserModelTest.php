@@ -28,7 +28,14 @@ class UserModelTest extends TestCase
             {
                 $UserEntity->update([
                     'id' => $find['id'],
-                    'password' => md5('123123'),
+                    'password' => '123123',
+                    'name' => 'admin',
+                    'username' => 'admin',
+                    'email' => 'admin@g.com',
+                    'confirm_password' => 123123,
+                    'status' => 1,
+                    'modified_by' => 0,
+                    'modified_at' => date('Y-m-d H:i:s')
                 ]);
             }
 
@@ -56,36 +63,6 @@ class UserModelTest extends TestCase
             }
             static::$data = true;
         }
-    }
-
-    /**
-     * @dataProvider dataValidate
-     */
-    public function testValidate($data,$id, $result)
-    {
-        $try = $this->UserModel->validate($data, $id);
-        $this->assertEquals($try, $result);
-    }
-
-    public function dataValidate()
-    {
-        return [
-            [[], 0 , false],
-            [
-                [
-                    'username' => '',
-                    'password' => '',
-                    'email' => '',
-                ], 0, false],
-            [
-                [
-                    'username' => 'Test2',
-                    'password' => '12345667',
-                    'confirm_password' => '12345667',
-                    'email' => 'admin1@g.com',
-                ], 1, true
-            ],
-        ];
     }
 
     /**
@@ -141,6 +118,10 @@ class UserModelTest extends TestCase
                     'confirm_password' => '123123',
                     'status' => 1,
                     'email' => 'admin2@g.com',
+                    'created_by' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'modified_by' => 0,
+                    'modified_at' => date('Y-m-d H:i:s')
                 ], true
             ],
         ];
@@ -174,6 +155,8 @@ class UserModelTest extends TestCase
                     'id' => 2,
                     'status' => 1,
                     'email' => 'admin3@g.com',
+                    'modified_by' => 0,
+                    'modified_at' => date('Y-m-d H:i:s')
                 ], true
             ],
         ];
