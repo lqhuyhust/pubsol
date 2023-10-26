@@ -9,4 +9,11 @@
     <td><?php echo !empty($this->data_tags[$this->item['id']]) ? $this->data_tags[$this->item['id']] : '' ?></td>
     <td><?php echo $this->item['created_by'] ?></td>
     <td><?php echo $this->item['created_at'] ?></td>
+    <td>
+        <?php if(in_array('note_manager', $this->asset) || in_array('note_update', $this->asset)) : ?>
+        <a class="fs-4 me-1" href="<?php echo $this->link_form . '/'. $this->item['id'] ?>">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </a>
+        <?php endif; ?>
+    </td>
 </tr>

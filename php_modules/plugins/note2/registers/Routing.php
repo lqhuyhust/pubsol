@@ -20,10 +20,32 @@ class Routing
             'note2/detail' => [
                 'fnc' => [
                     'get' => 'note2.note.detail',
+                ],
+                'parameters' => ['id'],
+                'loadChildPlugin' => true,
+                'permissionGroup' => true,
+                'permission' => [
+                    'get' => ['note_manager', 'note_read'],
+                ],
+            ],
+            'note2/edit' => [
+                'fnc' => [
+                    'get' => 'note2.note.form',
                     'put' => 'note2.note.update',
                 ],
                 'parameters' => ['id'],
                 'loadChildPlugin' => true,
+                'permission' => [
+                    'get' => ['note_manager', 'note_update'],
+                ],
+            ],
+            'note2/preview' => [
+                'fnc' => [
+                    'get' => 'note2.note.preview',
+                ],
+                'parameters' => ['id'],
+                'loadChildPlugin' => true,
+                'permissionGroup' => true,
                 'permission' => [
                     'get' => ['note_manager', 'note_read'],
                 ],
@@ -37,8 +59,6 @@ class Routing
                 'fnc' => [
                     'get' => 'note2.note.newform',
                     'post' => 'note2.note.add',
-                    //'put' => 'note2.note.update',
-                    //'delete' => 'note2.note.delete'
                 ],
                 'parameters' => ['type'],
                 'loadChildPlugin' => true,
@@ -49,58 +69,6 @@ class Routing
                     'delete' => ['note_manager', 'note_delete']
                 ],
             ],
-            /*'notes' => [
-                'fnc' => [
-                    'get' => 'note.note.list',
-                    'post' => 'note.note.list',
-                    'put' => 'note.note.update',
-                    'delete' => 'note.note.delete'
-                ],
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                    'post' => ['note_manager', 'note_read'],
-                    'put' => ['note_manager', 'note_update'],
-                    'delete' => ['note_manager', 'note_delete']
-                ],
-            ]
-            'note/request' => [
-                'fnc' => [
-                    'get' => 'note.note.request',
-                ],
-                'parameters' => ['id'],
-            ],
-            'attachment' => [
-                'fnc' => [
-                    'delete' => 'note.attachment.delete'
-                ],
-                'parameters' => ['id'],
-            ],
-            'download/attachment' => [
-                'fnc' => [
-                    'delete' => 'note.attachment.download'
-                ],
-                'parameters' => ['id'],
-            ],
-            'note/version' => [
-                'fnc' => [
-                    'get' => 'note.version.detail',
-                    'post' => 'note.version.rollback',
-                    'delete' => 'note.version.delete'
-                ],
-                'parameters' => ['id'],
-            ],
-            'tag' => [
-                'fnc' => [
-                    'get' => 'note.tag.list',
-                    'post' => 'note.tag.add',
-                ]
-            ],
-            'setting-connections'=>[
-                'fnc' => [
-                    'get' => 'note.setting.connections',
-                    'post' => 'note.setting.connectionsSave',
-                ],
-            ],*/
         ];
     }
 }

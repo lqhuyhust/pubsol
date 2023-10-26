@@ -40,7 +40,15 @@ class Note2Entity extends Entity
                 'alias' => [
                     'type' => 'varchar',
                     'limit' => 245,
-                ], 
+                ],
+                'assignee' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
+                'assign_group' => [
+                    'type' => 'text',
+                    'null' => 'YES',
+                ],
                 'data' => [
                     'type' => 'text',
                     'default' => ''

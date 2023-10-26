@@ -8,7 +8,7 @@
 			<div class="modal-body">
 				<div class="d-flex justify-content-around">
 				<?php foreach($this->note_types as $type) : ?>
-					<h4>
+					<h4 class="text-nowrap">
 						<a  target="_blank" class="mx-3" href="<?php echo $type['link']?>"><?php echo $type['title']?></a>
 					</h4>
 				<?php endforeach; ?>

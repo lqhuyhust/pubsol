@@ -66,6 +66,18 @@ class NoteDispatch extends Base
             $row = $this->Note2Entity->findByPK($urlVars['id']);
             // TODO: use Note2Entity
             $notetype = $row['type']; 
+
+            // check permission
+            $asset = $this->PermissionModel->getAccessByUser();
+            $permission = $this->PermissionGroupModel->checkPermission($row['assign_group']);
+            if (!in_array('note_manager', $asset))
+            {
+                $assignees = $this->AssigneeModel->convert($row['assignee'], false);
+                if(!in_array($this->user->get('id'), $assignees) && !$permission)
+                {
+                    $this->app->raiseError('You do not have access!', 403);
+                }
+            }
         }
 
         // to avoid empty notetype, let set default

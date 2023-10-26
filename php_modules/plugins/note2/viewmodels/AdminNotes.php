@@ -34,23 +34,42 @@ class AdminNotes extends ViewModel
         if ($clear_filter)
         {
             $this->session->set('note.tags', []);
+            $this->session->set('note.author', []);
+            $this->session->set('note.note_type', []);
         }
         $filter = $this->filter()['form'];
         $limit  = $filter->getField('limit')->value;
         $sort   = $filter->getField('sort')->value;
         $tags   = $filter->getField('tags')->value;
+        $note_type   = $filter->getField('note_type')->value;
+        $author   = $filter->getField('author')->value;
         $search = trim($filter->getField('search')->value);
         $page = $this->state('page', 1, 'int', 'get', 'note.page');
         if ($page <= 0) $page = 1;
 
         $where = [];
+        $asset = $this->PermissionModel->getAccessByUser();
+        if (!in_array('note_manager', $asset))
+        {
+            $where_permission = [];
+            $where_permission[] = "(`assignee` LIKE '%(" . $this->user->get('id') . ")%')";
+
+            $groups = $this->UserEntity->getGroups($this->user->get('id'));
+            foreach($groups as $group)
+            {
+                $where_permission[] = "(`assign_group` LIKE '%(" . $group['group_id'] . ")%')";
+            }
+
+            $where[] = implode(" OR ", $where_permission);
+        }
         $filter_tags = [];
 
         if (!empty($search) && is_string($search)) {
-            $where[] = "(`data` LIKE '%" . $search . "%')";
-            $where[] = "(`notice` LIKE '%" . $search . "%')";
-            $where[] = "(`title` LIKE '%" . $search . "%')";
-            $where = [implode(" OR ", $where)];
+            $where_search = [];
+            $where_search[] = "(`data` LIKE '%" . $search . "%')";
+            $where_search[] = "(`notice` LIKE '%" . $search . "%')";
+            $where_search[] = "(`title` LIKE '%" . $search . "%')";
+            $where[] = '('. implode(" OR ", $where_search) .')';
         }
         if ($tags)
         {
@@ -59,6 +78,11 @@ class AdminNotes extends ViewModel
 
             foreach ($tags as $tag) 
             {
+                $tag_tmp = $this->TagEntity->findByPK($tag);
+                if ($tag_tmp)
+                {
+                    $filter_tags[] = $tag_tmp;
+                }
                 if ($tag)
                 {
                     $where_tag[] = 'tags LIKE "('. $tag .')"';
@@ -73,10 +97,22 @@ class AdminNotes extends ViewModel
             }
         } 
 
+        if ($author)
+        {
+            $author = implode(',', $author);
+            $where[] = 'created_by IN ('. $author . ')';
+        }
+
+        if ($note_type)
+        {
+            $note_type = implode('","', $note_type);
+            $note_type = '"'. $note_type .'"';
+            $where[] = '`type` IN ('. $note_type . ')';
+        }
+
         $where[] = 'status <> -1';
         $start  = ($page - 1) * $limit;
         $sort = $sort ? $sort : 'title asc';
-
         $result = $this->Note2Entity->list($start, $limit, $where, $sort);
         $total = $this->Note2Entity->getListTotal();
         $data_tags = [];
@@ -123,6 +159,7 @@ class AdminNotes extends ViewModel
         return [
             'list' => $list,
             'types' => $types,
+            'asset' => $asset,
             'data_tags' => $data_tags,
             'page' => $page,
             'start' => $start,
@@ -133,7 +170,7 @@ class AdminNotes extends ViewModel
             'link_list' => $this->router->url('notes'),
             'link_tag' => $this->router->url('tag/search'),
             'title_page' => 'Note Manager',
-            'link_form' => $this->router->url('note'),
+            'link_form' => $this->router->url('note2/edit'),
             'link_preview' => $this->router->url('note2/detail'),
             'token' => $this->token->value(),
         ];
@@ -157,6 +194,8 @@ class AdminNotes extends ViewModel
             $data = [
                 'search' => $this->state('search', '', '', 'post', 'note.search'),
                 'tags' => $this->state('tags', [], 'array', 'post', 'note.tags'),
+                'note_type' => $this->state('note_type', [], 'array', 'post', 'note.note_type'),
+                'author' => $this->state('author', [], 'array', 'post', 'note.author'),
                 'limit' => $this->state('limit', 10, 'int', 'post', 'note.limit'),
                 'sort' => $this->state('sort', '', '', 'post', 'note.sort')
             ];
@@ -170,6 +209,26 @@ class AdminNotes extends ViewModel
 
     public function getFilterFields()
     {
+        $types = $this->Note2Model->getTypes();
+        $options = [];
+        foreach($types as $key => $value)
+        {
+            $options[] = [
+                'text' => $value['title'],
+                'value' => $key
+            ];
+        }
+
+        $users = $this->UserEntity->list(0,0);
+        $option_users = [];
+        foreach($users as $item)
+        {
+            $option_users[] = [
+                'text' => $item['name'],
+                'value' => $item['id'],
+            ];
+        }
+
         return [
             'search' => [
                 'text',
@@ -196,6 +255,24 @@ class AdminNotes extends ViewModel
                 ],
                 'showLabel' => false
             ],
+            'note_type' => [
+                'option',
+                'type' => 'multiselect',
+                'default' => '',
+                'formClass' => 'form-select',
+                'options' => $options,
+                'showLabel' => false,
+                'placeholder' => 'Type'
+            ],
+            'author' => [
+                'option',
+                'type' => 'multiselect',
+                'default' => '',
+                'formClass' => 'form-select',
+                'options' => $option_users,
+                'showLabel' => false,
+                'placeholder' => 'Author'
+            ],
             'limit' => [
                 'option',
                 'formClass' => 'form-select',
@@ -214,6 +291,8 @@ class AdminNotes extends ViewModel
                 'options' => [
                     ['text' => 'Title ascending', 'value' => 'title asc'],
                     ['text' => 'Title descending', 'value' => 'title desc'],
+                    ['text' => 'Created at ascending', 'value' => 'created_at asc'],
+                    ['text' => 'Created at descending', 'value' => 'created_at desc'],
                 ],
                 'showLabel' => false
             ]

@@ -1,6 +1,7 @@
 <form id="filter_form" class="row pe-0 pb-2" action="<?php echo $this->link_list ?>" method="POST">
-    <div class="col-lg-11 col-sm-12">
+    <div class="col-lg-10 col-sm-12">
         <div class="input-group input-group-navbar">
+            <?php if(in_array('note_manager', $this->asset) || in_array('note_create', $this->asset)) : ?>
             <div class="pe-2 pb-2">
                 <div class="row">
                     <div class="col-auto">
@@ -15,6 +16,8 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if(in_array('note_manager', $this->asset) || in_array('note_create', $this->asset)) : ?>
             <div class="pe-2 pb-2">
                 <div class="row">
                     <div class="col-auto">
@@ -24,14 +27,18 @@
                     </div>
                 </div>
             </div>
-            <div class="pe-2 pb-2">
-                <?php $this->ui->field('sort');  ?>
-            </div>
+            <?php endif; ?>
             <div class="pe-2 pb-2">
                 <?php $this->ui->field('search');  ?>
             </div>
-            <div class="pe-2 pb-2 select2-no-index">
+            <div class="pe-2 pb-2 select2-w-100">
                 <?php $this->ui->field('tags');  ?>
+            </div>
+            <div class="pe-2 pb-2">
+                <?php $this->ui->field('note_type');  ?>
+            </div>
+            <div class="pe-2 pb-2">
+                <?php $this->ui->field('author');  ?>
             </div>
             <input type="hidden" name="clear_filter" id="input_clear_filter">
             <div class="pe-2 pb-2">
@@ -46,9 +53,14 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-1 col-sm-12 text-end pe-0 pb-1 ">
+    <div class="col-lg-2 col-sm-12 text-end pe-0 pb-1 ">
         <div class="d-flex justify-content-end">
-            <?php $this->ui->field('limit');  ?>
+            <div class="me-2">
+                <?php $this->ui->field('sort');  ?>
+            </div>
+            <div>
+                <?php $this->ui->field('limit');  ?>
+            </div>
         </div>
     </div>
 </form>

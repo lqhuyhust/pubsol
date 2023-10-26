@@ -6,6 +6,8 @@
         document.getElementById("search").value = "";
         document.getElementById("sort").value = "title asc";
         $('#tags').val(null).trigger('change');
+        $('#note_type').val(null).trigger('change');
+        $('#author').val(null).trigger('change');
         document.getElementById("input_clear_filter").value = 1;
         document.getElementById('filter_form').submit();
     };
@@ -43,6 +45,9 @@
             {
                 return false;
             }
+        });
+        $('#sort').on("change", function (e) {
+            $('#filter_form').submit()
         });
         $('#limit').on("change", function (e) {
             $('#filter_form').submit()
@@ -86,7 +91,7 @@ $js = <<<Javascript
                 },
                 cache: true
             },
-            placeholder: 'Search tags',
+            placeholder: 'Tag',
             minimumInputLength: 1,
         });
 
