@@ -15020,4 +15020,20 @@ div.dataTables_scrollFoot>.dataTables_scrollFootInner>table {
     }
 }
 
+
+body{
+    background-color: #ffffff;
+    overflow: auto;
+    overflow-x: hidden;
+}
+#editor-canvas{
+    background-color: #565656;
+    padding: 0;
+}
+
+.select-full .select2-container .select2-selection--single
+{
+    height: 100%;
+}
+
 /*# sourceMappingURL=app.css.map*/
