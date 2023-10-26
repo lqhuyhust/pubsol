@@ -31,12 +31,17 @@ class NotePresenterModel extends Base
     {
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
+        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         $data = [
             'title' => $data['title'],
             'public_id' => '',
             'alias' => '',
             'data' => $data['data'],
             'tags' => $data['tags'],
+            'assignee' => $data['assignee'],
+            'assign_group' => $data['assign_group'],
             'type' => 'presenter',
             'note_ids' => '',
             'notice' => isset($data['notice']) ? $data['notice'] : '',
@@ -71,10 +76,14 @@ class NotePresenterModel extends Base
     {
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
+        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         $data = [
             'title' => $data['title'],
             'data' => $data['data'],
             'tags' => $data['tags'],
+            'assign_group' => $data['assign_group'],
             'type' => 'presenter',
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'status' => isset($data['status']) ? $data['status'] : 0,
@@ -144,7 +153,7 @@ class NotePresenterModel extends Base
 
                 $find['id'] = $try;
             }
-
+            $find['title'] = '';
             return $find;
         }
 

@@ -20,6 +20,7 @@ class AdminNote extends ViewModel
     {
         return [
             'layout' => [
+                'backend.view',
                 'backend.form',
                 'backend.history',
                 'backend.preview'
@@ -58,7 +59,8 @@ class AdminNote extends ViewModel
             'url' => $this->router->url(),
             'link_list' => $this->router->url('notes'),
             'link_history' => $this->router->url('history/note-html'),
-            'link_form' => $id ? $this->router->url('note2/detail') : $this->router->url('new-note2/html'),
+            'link_preview' => $data['status'] != '-1' ? $this->router->url('note2/preview/'. $id) : '',
+            'link_form' => $id ? $this->router->url('note2/edit') : $this->router->url('new-note2/html'),
         ];
         
     }
@@ -77,7 +79,7 @@ class AdminNote extends ViewModel
 
         $button_header = [
             [
-                'link' => isset($data['id']) ? $this->router->url('note2/detail/'.$data['id']) : $this->router->url('notes') ,
+                'link' => isset($data['id']) ? $this->router->url('note2/edit/'.$data['id']) : $this->router->url('notes') ,
                 'class' => 'btn btn-outline-secondary',
                 'title' => 'Cancel',
             ],
@@ -105,13 +107,13 @@ class AdminNote extends ViewModel
         $fields = [
             'notice' => [
                 'textarea',
-                'label' => 'Notice',
+                'label' => '',
                 'placeholder' => 'Notice',
                 'formClass' => 'form-control',
             ],
             'data' => [
                 'tinymce',
-                'label' => 'Html',
+                'label' => '',
                 'formClass' => 'form-control',
             ],
             'title' => [
@@ -127,5 +129,38 @@ class AdminNote extends ViewModel
         ];
 
         return $fields;
+    }
+
+    public function preview()
+    {
+        $data = $this->getItem();
+        $id = isset($data['id']) ? $data['id'] : 0;
+
+        $button_header = [
+            [
+                'link' => $this->router->url('notes'),
+                'class' => 'btn btn-outline-secondary',
+                'title' => 'Cancel',
+            ],
+        ];
+
+        $asset = $this->PermissionModel->getAccessByUser();
+        if (in_array('note_manager', $asset) || in_array('note_update', $asset))
+        {
+            $button_header[] = [
+                'link' => $this->router->url('note2/edit/'. $id),
+                'class' => 'btn ms-2 btn-outline-success',
+                'title' => 'Edit',
+            ];
+        }
+        
+
+        return [
+            'id' => $id,
+            'data' => $data,
+            'button_header' => $button_header,
+            'title_page' => $data && $data['title'] ? $data['title'] : '',
+            'url' => $this->router->url(),
+        ];
     }
 }

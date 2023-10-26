@@ -16,11 +16,14 @@
                 <div>
                     <?php $this->ui->field('notice'); ?>
                 </div>
-                <div class="mt-3">
+                <div class="mt-3 widget-tag">
                     <?php echo $this->renderWidget('tag::backend.tags'); ?>
                 </div>
+                <div class="mt-3 widget-assignee">
+                    <?php echo $this->renderWidget('user_assignee::backend.assignee'); ?>
+                </div>
                 <?php if ($this->history) : ?>
-                <div class="mt-3">
+                <div class="mt-3 widget-history">
                     <label for="label">History:</label>
                     <ul class="list-group list-group-flush">
                         <?php foreach ($this->history as $item) : ?>

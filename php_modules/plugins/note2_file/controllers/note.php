@@ -24,6 +24,13 @@ class note extends NoteController
 
     public function detail()
     {
+        $this->app->set('layout', 'backend.preview');
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+    }
+
+    public function form()
+    {
         $this->app->set('layout', 'backend.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
@@ -42,6 +49,7 @@ class note extends NoteController
         $data = [
             'title' => $this->request->post->get('title', '', 'string'),
             'tags' => $this->request->post->get('tags', [], 'array'),
+            'assignee' => $this->request->post->get('assignee', [], 'array'),
             'file' => $this->request->file->get('file', [], 'array'),
             'notice' => $this->request->post->get('notice', '', 'string'),
         ];
@@ -59,7 +67,7 @@ class note extends NoteController
         }
 
         $this->session->set('flashMsg', 'Create Successfully'); 
-        $link = $save_close ? $this->router->url('notes') : $this->router->url('note2/detail/'. $newId);
+        $link = $save_close ? $this->router->url('notes') : $this->router->url('note2/edit/'. $newId);
         return $this->app->redirect(
             $link
         );
@@ -76,6 +84,7 @@ class note extends NoteController
             $data = [
                 'title' => $this->request->post->get('title', '', 'string'),
                 'tags' => $this->request->post->get('tags', [], 'array'),
+                'assignee' => $this->request->post->get('assignee', [], 'array'),
                 'file' => $this->request->file->get('file', [], 'array'),
                 'notice' => $this->request->post->get('notice', '', 'string'),
                 'id' => $id,
@@ -89,12 +98,12 @@ class note extends NoteController
             {
                 $this->session->set('flashMsg', 'Error: '. $this->NoteFileModel->getError()); 
                 return $this->app->redirect(
-                    $this->router->url('note2/detail/'. $id)
+                    $this->router->url('note2/edit/'. $id)
                 );
                 
             }
             $this->session->set('flashMsg', 'Updated successfully');
-            $link = $save_close ? 'notes' : 'note2/detail/'. $id;
+            $link = $save_close ? 'notes' : 'note2/edit/'. $id;
 
             return $this->app->redirect(
                 $this->router->url($link)

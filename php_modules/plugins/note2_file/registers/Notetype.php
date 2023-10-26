@@ -11,7 +11,7 @@ class Notetype
         return [
             'file' => [
                 'namespace' => 'App\plugins\note2_file\\',
-                'title' => 'File Upload'
+                'title' => 'Upload'
             ]
         ];
     }

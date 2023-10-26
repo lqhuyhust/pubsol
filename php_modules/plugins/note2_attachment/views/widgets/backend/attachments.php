@@ -21,4 +21,5 @@
         <?php endforeach; ?>
     </div>
 </div>
+<input type="hidden" id="item_id" value="<?php echo $this->id; ?>">
 <?php echo $this->renderWidget('note2_attachment::backend.javascript'); ?>

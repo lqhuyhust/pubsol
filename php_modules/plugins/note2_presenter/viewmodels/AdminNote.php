@@ -57,7 +57,8 @@ class AdminNote extends ViewModel
             'link_history' => $this->router->url('history/note-presenter'),
             'url' => $this->router->url(),
             'link_list' => $this->router->url('notes'),
-            'link_form' => $id ? $this->router->url('note2/detail') : $this->router->url('new-note2/presenter'),
+            'link_form' => $id ? $this->router->url('note2/edit') : $this->router->url('new-note2/presenter'),
+            'link_preview' => $data['status'] != '-1' ? $this->router->url('note2/preview/'. $id) : '',
         ];
         
     }
@@ -76,7 +77,7 @@ class AdminNote extends ViewModel
 
         $button_header = [
             [
-                'link' => isset($data['id']) ? $this->router->url('note2/detail/'.$data['id']) : $this->router->url('notes') ,
+                'link' => isset($data['id']) ? $this->router->url('note2/edit/'.$data['id']) : $this->router->url('notes') ,
                 'class' => 'btn btn-outline-secondary',
                 'title' => 'Cancel',
             ],
@@ -104,7 +105,7 @@ class AdminNote extends ViewModel
         $fields = [
             'notice' => [
                 'textarea',
-                'label' => 'Notice',
+                'label' => '',
                 'placeholder' => 'Notice',
                 'formClass' => 'form-control',
             ],
@@ -126,5 +127,40 @@ class AdminNote extends ViewModel
         ];
 
         return $fields;
+    }
+
+    public function preview()
+    {
+        $data = $this->getItem();
+        $id = isset($data['id']) ? $data['id'] : 0;
+
+        $form = new Form($this->getFormFields(), $data);
+
+        $button_header = [
+            [
+                'link' => $this->router->url('notes'),
+                'class' => 'btn btn-outline-secondary',
+                'title' => 'Cancel',
+            ],
+        ];
+
+        $asset = $this->PermissionModel->getAccessByUser();
+        if (in_array('note_manager', $asset) || in_array('note_update', $asset))
+        {
+            $button_header[] = [
+                'link' => $this->router->url('note2/edit/'. $id),
+                'class' => 'btn ms-2 btn-outline-success',
+                'title' => 'Edit',
+            ];
+        }
+
+        return [
+            'id' => $id,
+            'form' => $form,
+            'data' => $data,
+            'button_header' => $button_header,
+            'title_page' => $data && $data['title'] ? $data['title'] : '',
+            'url' => $this->router->url(),
+        ];
     }
 }

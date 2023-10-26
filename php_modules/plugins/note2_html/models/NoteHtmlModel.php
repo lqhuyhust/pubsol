@@ -31,14 +31,19 @@ class NoteHtmlModel extends Base
     {
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
+        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         $data = [
             'title' => $data['title'],
             'public_id' => '',
             'alias' => '',
             'data' => $data['data'],
             'tags' => $data['tags'],
+            'assignee' => $data['assignee'],
+            'assign_group' => $data['assign_group'],
             'type' => 'html',
-            'note_ids' => '',
+            'note_ids' => isset($data['note_ids']) ? $data['note_ids'] : '',
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'status' => isset($data['status']) ? $data['status'] : 0,
             'created_at' => date('Y-m-d H:i:s'),
@@ -70,10 +75,17 @@ class NoteHtmlModel extends Base
     {
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
+        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
+        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
+        
         $data = [
             'title' => $data['title'],
             'data' => $data['data'],
             'tags' => $data['tags'],
+            'assignee' => $data['assignee'],
+            'assign_group' => $data['assign_group'],
+            'note_ids' => isset($data['note_ids']) ? $data['note_ids'] : '',
             'type' => 'html',
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'status' => isset($data['status']) ? $data['status'] : 0,
@@ -144,6 +156,7 @@ class NoteHtmlModel extends Base
                 $find['id'] = $try;
             }
 
+            $find['title'] = '';
             return $find;
         }
 
@@ -153,6 +166,7 @@ class NoteHtmlModel extends Base
             return [];
         }
 
+        $note['data'] = $this->replaceContent($note['data'], false);
         return $note;
     }
 

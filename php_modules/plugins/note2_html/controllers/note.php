@@ -24,6 +24,13 @@ class note extends NoteController
 
     public function detail()
     {
+        $this->app->set('layout', 'backend.preview');
+        $this->app->set('page', 'backend');
+        $this->app->set('format', 'html');
+    }
+
+    public function form()
+    {
         $this->app->set('layout', 'backend.form');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
@@ -31,7 +38,7 @@ class note extends NoteController
 
     public function preview()
     {
-        $this->app->set('layout', 'backend.note.preview');
+        $this->app->set('layout', 'backend.preview');
         $this->app->set('page', 'backend');
         $this->app->set('format', 'html');
     }
@@ -51,6 +58,7 @@ class note extends NoteController
             'title' => $this->request->post->get('title', '', 'string'),
             'data' => $this->request->post->get('data', '', 'string'),
             'tags' => $this->request->post->get('tags', [], 'array'),
+            'assignee' => $this->request->post->get('assignee', [], 'array'),
             'notice' => $this->request->post->get('notice', '', 'string'),
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
@@ -79,7 +87,7 @@ class note extends NoteController
         ]);
 
         $this->session->set('flashMsg', 'Create Successfully'); 
-        $link = $save_close ? $this->router->url('notes') : $this->router->url('note2/detail/'. $newId);
+        $link = $save_close ? $this->router->url('notes') : $this->router->url('note2/edit/'. $newId);
         return $this->app->redirect(
             $link
         );
@@ -97,6 +105,7 @@ class note extends NoteController
                 'title' => $this->request->post->get('title', '', 'string'),
                 'data' => $this->request->post->get('data', '', 'string'),
                 'tags' => $this->request->post->get('tags', [], 'array'),
+                'assignee' => $this->request->post->get('assignee', [], 'array'),
                 'notice' => $this->request->post->get('notice', '', 'string'),
                 'id' => $id,
                 'locked_at' => date('Y-m-d H:i:s'),
@@ -109,9 +118,9 @@ class note extends NoteController
             
             if(!$try)
             {
-                $this->session->set('flashMsg', 'Create failed.'. $this->NoteHtmlModel->getError()); 
+                $this->session->set('flashMsg', 'Save failed.'. $this->NoteHtmlModel->getError()); 
                 return $this->app->redirect(
-                    $this->router->url('note2/detail/'. $id)
+                    $this->router->url('note2/edit/'. $id)
                 );
             }
 
@@ -123,8 +132,8 @@ class note extends NoteController
                 'created_by' => $this->user->get('id'),    
             ]);
 
-            $this->session->set('flashMsg', 'Updated successfully');
-            $link = $save_close ? 'notes' : 'note2/detail/'. $id;
+            $this->session->set('flashMsg', 'Save successfully');
+            $link = $save_close ? 'notes' : 'note2/edit/'. $id;
 
             return $this->app->redirect(
                 $this->router->url($link)
