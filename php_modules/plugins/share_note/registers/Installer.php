@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\user_assignee\registers;
+namespace App\plugins\share_note\registers;
 
 use SPT\Application\IApp;
 
@@ -7,7 +7,7 @@ class Installer
 {
     public static function info()
     {
-        return ['user_assignee'=>['sdm']];
+        return ['share_note'=>['sdm']];
     }
     
     public static function name()

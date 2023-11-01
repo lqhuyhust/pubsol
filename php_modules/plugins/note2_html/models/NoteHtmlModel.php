@@ -31,17 +31,17 @@ class NoteHtmlModel extends Base
     {
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
-        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
-        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
-        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
+        $convert = isset($data['share_user']) ? $this->ShareUserModel->convert($data['share_user']) : [];
+        $data['share_user'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['share_user_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         $data = [
             'title' => $data['title'],
             'public_id' => '',
             'alias' => '',
             'data' => $data['data'],
             'tags' => $data['tags'],
-            'assignee' => $data['assignee'],
-            'assign_group' => $data['assign_group'],
+            'share_user' => $data['share_user'],
+            'share_user_group' => $data['share_user_group'],
             'type' => 'html',
             'note_ids' => isset($data['note_ids']) ? $data['note_ids'] : '',
             'notice' => isset($data['notice']) ? $data['notice'] : '',
@@ -75,16 +75,16 @@ class NoteHtmlModel extends Base
     {
         $data['data'] = $this->replaceContent($data['data']);
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
-        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
-        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
-        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
+        $convert = isset($data['share_user']) ? $this->ShareUserModel->convert($data['share_user']) : [];
+        $data['share_user'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['share_user_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         
         $data = [
             'title' => $data['title'],
             'data' => $data['data'],
             'tags' => $data['tags'],
-            'assignee' => $data['assignee'],
-            'assign_group' => $data['assign_group'],
+            'share_user' => $data['share_user'],
+            'share_user_group' => $data['share_user_group'],
             'note_ids' => isset($data['note_ids']) ? $data['note_ids'] : '',
             'type' => 'html',
             'notice' => isset($data['notice']) ? $data['notice'] : '',

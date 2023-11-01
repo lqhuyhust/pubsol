@@ -1,6 +1,6 @@
 <?php
 
-namespace App\plugins\user_assignee\registers;
+namespace App\plugins\share_note\registers;
 
 class Routing
 {
@@ -9,7 +9,7 @@ class Routing
         return [
             'user/search' => [
                 'fnc' => [
-                    'get' => 'user_assignee.ajax.search',
+                    'get' => 'share_note.ajax.search',
                 ],
             ],
         ];

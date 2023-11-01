@@ -1,5 +1,5 @@
 <?php
-namespace App\plugins\user_assignee\registers;
+namespace App\plugins\share_note\registers;
 
 use SPT\Application\IApp; 
 use SPT\File;
@@ -14,7 +14,7 @@ class Dispatcher
         $fName = $app->get('function');
         // prepare note
 
-        $controller = 'App\plugins\user_assignee\controllers\\'. $cName;
+        $controller = 'App\plugins\share_note\controllers\\'. $cName;
         if(!class_exists($controller))
         {
             $app->raiseError('Invalid controller '. $cName);

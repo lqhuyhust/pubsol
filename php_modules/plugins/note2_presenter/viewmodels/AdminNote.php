@@ -56,7 +56,7 @@ class AdminNote extends ViewModel
             'title_page_edit' => $data && $data['title'] ? $data['title'] : 'New Note',
             'link_history' => $this->router->url('history/note-presenter'),
             'url' => $this->router->url(),
-            'link_list' => $this->router->url('notes'),
+            'link_list' => $this->router->url('my-notes'),
             'link_form' => $id ? $this->router->url('note2/edit') : $this->router->url('new-note2/presenter'),
             'link_preview' => $data['status'] != '-1' ? $this->router->url('note2/preview/'. $id) : '',
         ];
@@ -77,7 +77,7 @@ class AdminNote extends ViewModel
 
         $button_header = [
             [
-                'link' => isset($data['id']) ? $this->router->url('note2/edit/'.$data['id']) : $this->router->url('notes') ,
+                'link' => isset($data['id']) ? $this->router->url('note2/edit/'.$data['id']) : $this->router->url('my-notes') ,
                 'class' => 'btn btn-outline-secondary',
                 'title' => 'Cancel',
             ],
@@ -138,14 +138,14 @@ class AdminNote extends ViewModel
 
         $button_header = [
             [
-                'link' => $this->router->url('notes'),
+                'link' => $this->router->url('my-notes'),
                 'class' => 'btn btn-outline-secondary',
                 'title' => 'Cancel',
             ],
         ];
 
         $asset = $this->PermissionModel->getAccessByUser();
-        if (in_array('note_manager', $asset) || in_array('note_update', $asset))
+        if (in_array('note_manager', $asset) || $data['created_by'] == $this->user->get('id'))
         {
             $button_header[] = [
                 'link' => $this->router->url('note2/edit/'. $id),

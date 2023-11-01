@@ -15,7 +15,28 @@ class Routing
                     'post' => 'note2.note.list',
                     'put' => 'note2.note.update',
                     'delete' => 'note2.note.delete',
-                ]
+                ],
+                'permission' => [
+                    'get' => ['note_manager'],
+                ],
+            ],
+            'my-notes' => [
+                'fnc' => [
+                    'get' => 'note2.note.list',
+                    'post' => 'note2.note.list',
+                    'put' => 'note2.note.update',
+                    'delete' => 'note2.note.delete',
+                ],
+                'filter' => 'my-note',
+            ],
+            'share-notes' => [
+                'fnc' => [
+                    'get' => 'note2.note.list',
+                    'post' => 'note2.note.list',
+                    'put' => 'note2.note.update',
+                    'delete' => 'note2.note.delete',
+                ],
+                'filter' => 'share-note',
             ],
             'note2/detail' => [
                 'fnc' => [
@@ -24,9 +45,6 @@ class Routing
                 'parameters' => ['id'],
                 'loadChildPlugin' => true,
                 'permissionGroup' => true,
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                ],
             ],
             'note2/edit' => [
                 'fnc' => [
@@ -34,21 +52,17 @@ class Routing
                     'put' => 'note2.note.update',
                 ],
                 'parameters' => ['id'],
+                'allowShare' => false,
                 'loadChildPlugin' => true,
-                'permission' => [
-                    'get' => ['note_manager', 'note_update'],
-                ],
             ],
             'note2/preview' => [
                 'fnc' => [
                     'get' => 'note2.note.preview',
                 ],
                 'parameters' => ['id'],
+                'allowShare' => false,
                 'loadChildPlugin' => true,
                 'permissionGroup' => true,
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                ],
             ],
             'note2/search' => [
                 'fnc' => [
@@ -62,12 +76,6 @@ class Routing
                 ],
                 'parameters' => ['type'],
                 'loadChildPlugin' => true,
-                'permission' => [
-                    'get' => ['note_manager', 'note_read'],
-                    'post' => ['note_manager', 'note_create'],
-                    'put' => ['note_manager', 'note_update'],
-                    'delete' => ['note_manager', 'note_delete']
-                ],
             ],
         ];
     }

@@ -20,7 +20,7 @@
                     <?php echo $this->renderWidget('tag::backend.tags'); ?>
                 </div>
                 <div class="mt-3 widget-assignee">
-                    <?php echo $this->renderWidget('user_assignee::backend.assignee'); ?>
+                    <?php echo $this->renderWidget('share_note::backend.share_note'); ?>
                 </div>
                 <?php if ($this->history) : ?>
                 <div class="mt-3 widget-history">

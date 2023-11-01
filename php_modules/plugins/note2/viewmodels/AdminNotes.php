@@ -44,24 +44,37 @@ class AdminNotes extends ViewModel
         $note_type   = $filter->getField('note_type')->value;
         $author   = $filter->getField('author')->value;
         $search = trim($filter->getField('search')->value);
+        $mode = $this->app->get('filter', '');
+
         $page = $this->state('page', 1, 'int', 'get', 'note.page');
         if ($page <= 0) $page = 1;
 
         $where = [];
+        $title = 'Note Manager';
         $asset = $this->PermissionModel->getAccessByUser();
-        if (!in_array('note_manager', $asset))
+        
+        if ($mode == 'my-note')
         {
+            $where[] = 'created_by = '. $this->user->get('id');
+            $author = '';
+            $title = 'My Notes';
+        }
+        elseif($mode == 'share-note')
+        {
+            $where[] = 'created_by Not LIKE '. $this->user->get('id');
             $where_permission = [];
-            $where_permission[] = "(`assignee` LIKE '%(" . $this->user->get('id') . ")%')";
+            $where_permission[] = "(`share_user` LIKE '%(" . $this->user->get('id') . ")%')";
 
             $groups = $this->UserEntity->getGroups($this->user->get('id'));
             foreach($groups as $group)
             {
-                $where_permission[] = "(`assign_group` LIKE '%(" . $group['group_id'] . ")%')";
+                $where_permission[] = "(`share_user_group` LIKE '%(" . $group['group_id'] . ")%')";
             }
 
-            $where[] = implode(" OR ", $where_permission);
+            $where[] = '('. implode(" OR ", $where_permission) . ')';
+            $title = 'Shared Notes';
         }
+        
         $filter_tags = [];
 
         if (!empty($search) && is_string($search)) {
@@ -156,6 +169,7 @@ class AdminNotes extends ViewModel
         }
         
         $list   = new Listing($result, $total, $limit, $this->getColumns());
+        
         return [
             'list' => $list,
             'types' => $types,
@@ -164,12 +178,13 @@ class AdminNotes extends ViewModel
             'page' => $page,
             'start' => $start,
             'filter_tags' => json_encode($filter_tags),
+            'mode' => $mode,
             'sort' => $sort,
             'user_id' => $this->user->get('id'),
             'url' => $this->router->url(),
-            'link_list' => $this->router->url('notes'),
+            'link_list' =>  $this->router->url( $mode == 'my-note' ? 'my-notes' : ($mode == 'share-note' ? 'share-notes' : 'notes')) ,
             'link_tag' => $this->router->url('tag/search'),
-            'title_page' => 'Note Manager',
+            'title_page' => $title,
             'link_form' => $this->router->url('note2/edit'),
             'link_preview' => $this->router->url('note2/detail'),
             'token' => $this->token->value(),

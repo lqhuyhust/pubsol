@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-        $("#assignee").select2();
+        $("#share_user").select2();
 
         function matchCustom(params, data) {
             // If there are no search terms, return all of the data

@@ -9,19 +9,19 @@
  * 
  */
 
-namespace App\plugins\user_assignee\viewmodels;
+namespace App\plugins\share_note\viewmodels;
 
 use SPT\Web\ViewModel;
 use SPT\Web\Gui\Form;
 
-class UserAssignee extends ViewModel
+class ShareNote extends ViewModel
 {
     public static function register()
     {
         return [
             'widget'=>[
                 'backend.javascript',
-                'backend.assignee',
+                'backend.share_note',
             ],
         ];
     }
@@ -33,15 +33,15 @@ class UserAssignee extends ViewModel
         ];
     }
 
-    public function assignee($layoutData, $viewData)
+    public function share_note($layoutData, $viewData)
     {
         $data = isset($viewData['data']) ? $viewData['data'] : [];
-        $assignee = isset($data['assignee']) ? $data['assignee'] : '';
+        $share_user = isset($data['share_user']) ? $data['share_user'] : '';
 
-        $assignee = $this->AssigneeModel->convert($assignee, false);
-        if (!$assignee)
+        $share_user = $this->ShareUserModel->convert($share_user, false);
+        if (!$share_user)
         {
-            $assignee = [];
+            $share_user = [];
         }
 
         $users = $this->UserEntity->list(0, 0, []);
@@ -49,16 +49,16 @@ class UserAssignee extends ViewModel
         
 
         $data = isset($viewData['data']) ? $viewData['data'] : [];
-        $assign_group = isset($data['assign_group']) ? $data['assign_group'] : '';
-        $assign_group = $this->AssignGroupModel->convert($assign_group, false);
-        if (!$assign_group)
+        $share_user_group = isset($data['share_user_group']) ? $data['share_user_group'] : '';
+        $share_user_group = $this->ShareGroupModel->convert($share_user_group, false);
+        if (!$share_user_group)
         {
-            $assign_group = [];
+            $share_user_group = [];
         }
 
         return [
-            'assignee' => $assignee,
-            'assign_group' => $assign_group,
+            'share_user' => $share_user,
+            'share_user_group' => $share_user_group,
             'users' => $users,
             'user_groups' => $user_groups,
         ];

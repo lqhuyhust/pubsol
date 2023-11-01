@@ -46,9 +46,9 @@ class NoteFileModel extends Base
     public function add($data)
     {
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
-        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
-        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
-        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
+        $convert = isset($data['share_user']) ? $this->ShareUserModel->convert($data['share_user']) : [];
+        $data['share_user'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['share_user_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         $files = [];
 
         if (is_array($data['file']['name']))
@@ -88,8 +88,8 @@ class NoteFileModel extends Base
                 'alias' => '',
                 'data' => '',
                 'tags' => $item['tags'],
-                'assignee' => $item['assignee'],
-                'assign_group' => $item['assign_group'],
+                'share_user' => $item['share_user'],
+                'share_user_group' => $item['share_user_group'],
                 'type' => 'file',
                 'status' => isset($item['status']) ? $item['status'] : 0,
                 'note_ids' => isset($item['note_ids']) ? $item['note_ids'] : '',
@@ -147,9 +147,9 @@ class NoteFileModel extends Base
     public function update($data)
     {
         $data['tags'] = isset($data['tags']) ? $this->TagModel->convert($data['tags']) : '';
-        $convert = isset($data['assignee']) ? $this->AssigneeModel->convert($data['assignee']) : [];
-        $data['assignee'] = isset($convert['users']) ? $convert['users'] : '';
-        $data['assign_group'] = isset($convert['groups']) ? $convert['groups'] : '';
+        $convert = isset($data['share_user']) ? $this->ShareUserModel->convert($data['share_user']) : [];
+        $data['share_user'] = isset($convert['users']) ? $convert['users'] : '';
+        $data['share_user_group'] = isset($convert['groups']) ? $convert['groups'] : '';
         $data = $this->Note2Entity->bind($data);
 
         if (!$data)
@@ -161,8 +161,8 @@ class NoteFileModel extends Base
         $try = $this->Note2Entity->update([
             'title' => $data['title'],
             'tags' => $data['tags'],
-            'assignee' => $data['assignee'],
-            'assign_group' => $data['assign_group'],
+            'share_user' => $data['share_user'],
+            'share_user_group' => $data['share_user_group'],
             'notice' => isset($data['notice']) ? $data['notice'] : '',
             'id' => isset($data['id']) ? $data['id'] : 0,
         ]);

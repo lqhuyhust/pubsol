@@ -41,11 +41,11 @@ class Note2Entity extends Entity
                     'type' => 'varchar',
                     'limit' => 245,
                 ],
-                'assignee' => [
+                'share_user' => [
                     'type' => 'text',
                     'null' => 'YES',
                 ],
-                'assign_group' => [
+                'share_user_group' => [
                     'type' => 'text',
                     'null' => 'YES',
                 ],

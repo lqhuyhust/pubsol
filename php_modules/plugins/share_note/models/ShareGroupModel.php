@@ -1,10 +1,10 @@
 <?php
 
-namespace App\plugins\user_assignee\models;
+namespace App\plugins\share_note\models;
 
 use SPT\Container\Client as Base;
 
-class AssignGroupModel extends Base
+class ShareGroupModel extends Base
 { 
     // Write your code here
     use \SPT\Traits\ErrorString;

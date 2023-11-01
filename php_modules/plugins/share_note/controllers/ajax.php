@@ -8,7 +8,7 @@
  *
  */
 
-namespace App\plugins\user_assignee\controllers;
+namespace App\plugins\share_note\controllers;
 
 use SPT\Web\ControllerMVVM;
 
@@ -18,7 +18,7 @@ class ajax extends ControllerMVVM
     {
         $search = trim($this->request->get->get('search', '', 'string'));
 
-        $data = $this->AssigneeModel->search($search);
+        $data = $this->ShareUserModel->search($search);
 
         $this->app->set('format', 'json');
         $this->set('status' , 'success');

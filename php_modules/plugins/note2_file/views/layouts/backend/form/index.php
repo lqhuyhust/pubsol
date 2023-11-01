@@ -26,7 +26,7 @@
                     <?php echo $this->renderWidget('tag::backend.tags'); ?>
                 </div>
                 <div class="mt-3">
-                    <?php echo $this->renderWidget('user_assignee::backend.assignee'); ?>
+                    <?php echo $this->renderWidget('share_note::backend.share_note'); ?>
                 </div>
                 <div class="mt-3">
                     <?php $this->ui->field('notice'); ?>

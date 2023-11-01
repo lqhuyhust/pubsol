@@ -58,7 +58,7 @@ class note extends NoteController
             'title' => $this->request->post->get('title', '', 'string'),
             'data' => $this->request->post->get('data', '', 'string'),
             'tags' => $this->request->post->get('tags', [], 'array'),
-            'assignee' => $this->request->post->get('assignee', [], 'array'),
+            'share_user' => $this->request->post->get('share_user', [], 'array'),
             'notice' => $this->request->post->get('notice', '', 'string'),
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $this->user->get('id'),
@@ -105,7 +105,7 @@ class note extends NoteController
                 'title' => $this->request->post->get('title', '', 'string'),
                 'data' => $this->request->post->get('data', '', 'string'),
                 'tags' => $this->request->post->get('tags', [], 'array'),
-                'assignee' => $this->request->post->get('assignee', [], 'array'),
+                'share_user' => $this->request->post->get('share_user', [], 'array'),
                 'notice' => $this->request->post->get('notice', '', 'string'),
                 'id' => $id,
                 'locked_at' => date('Y-m-d H:i:s'),
@@ -133,7 +133,7 @@ class note extends NoteController
             ]);
 
             $this->session->set('flashMsg', 'Save successfully');
-            $link = $save_close ? 'notes' : 'note2/edit/'. $id;
+            $link = $save_close ? 'my-notes' : 'note2/edit/'. $id;
 
             return $this->app->redirect(
                 $this->router->url($link)
@@ -143,7 +143,7 @@ class note extends NoteController
         $this->session->set('flashMsg', 'Invalid Note');
 
         return $this->app->redirect(
-            $this->router->url('notes')
+            $this->router->url('my-notes')
         );
     }
 
@@ -174,7 +174,7 @@ class note extends NoteController
 
         $this->session->set('flashMsg', $count.' deleted record(s)');
         return $this->app->redirect(
-            $this->router->url('notes'),
+            $this->router->url('my-notes'),
         );
     }
 
@@ -191,7 +191,7 @@ class note extends NoteController
 
             $this->session->set('flashMsg', 'Invalid note');
             return $this->app->redirect(
-                $this->router->url('notes'),
+                $this->router->url('my-notes'),
             );
         }
 

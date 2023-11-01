@@ -1,27 +1,27 @@
 <?php
-namespace App\plugins\user_assignee\models;
+namespace App\plugins\share_note\models;
 
 use SPT\Container\Client as Base;
 
-class PermissionGroupModel extends Base
+class PermissionShareModel extends Base
 {
     private $groups;
 
-    public function checkPermission($assign_group)
+    public function checkPermission($share_user_group)
     {
         if (!$this->groups)
         {
             $this->groups = $this->UserEntity->getGroups($this->user->get('id'));
         }
 
-        if(!is_array($assign_group))
+        if(!is_array($share_user_group))
         {
-            $assign_group = $this->AssignGroupModel->convert($assign_group, false);
+            $share_user_group = $this->ShareGroupModel->convert($share_user_group, false);
         }
 
         foreach($this->groups as $group)
         {
-            if(in_array($group['group_id'], $assign_group))
+            if(in_array($group['group_id'], $share_user_group))
             {
                 return true;
             }
