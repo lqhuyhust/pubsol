@@ -71,7 +71,7 @@ class RelateNoteModel extends Base
         $result = [];
         foreach ($list as $index => &$item)
         {
-            $note_tmp = $this->Note2Entity->findByPK($item['note_id']);
+            $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
             if ($note_tmp)
             {
                 $item['title'] = $note_tmp['title'];

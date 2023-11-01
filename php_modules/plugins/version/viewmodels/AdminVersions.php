@@ -72,9 +72,9 @@ class AdminVersions extends ViewModel
         }
 
         $tag_exist = $this->container->exists('TagEntity');
-        $note_exist = $this->container->exists('Note2Entity');
+        $note_exist = $this->container->exists('NoteEntity');
         $TagEntity = $this->container->get('TagEntity');
-        $Note2Entity = $this->container->get('Note2Entity');
+        $NoteEntity = $this->container->get('NoteEntity');
         $tag_feedback = $TagEntity->findOne(["`name` = 'feedback'"]);
 
         foreach ($result as &$version) {
@@ -93,8 +93,8 @@ class AdminVersions extends ViewModel
                             " OR `tags` LIKE '%" . $tag_version['id'] . ',' . "%'" .
                             " OR `tags` LIKE '%" . ',' . $tag_version['id'] . ',' . "%' )"
                     ]);
-                    $result_feedback = $Note2Entity->list(0, 0, $where, '');
-                    $total_feedback = $Note2Entity->getListTotal();
+                    $result_feedback = $NoteEntity->list(0, 0, $where, '');
+                    $total_feedback = $NoteEntity->getListTotal();
                 }
             }
             if($total_feedback) {
