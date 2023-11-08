@@ -51,10 +51,10 @@ class AdminTreePhp extends ViewModel
             'url' => $this->router->url(),
             'link_request' => $this->router->url('report/find-request'),
             'link_detail_request' => $this->router->url('detail-request'),
-            'link_note' => $this->router->url('note2/detail'),
+            'link_note' => $this->router->url('note/detail'),
             'link_list' => $this->router->url('reports'),
             'link_form' => $id ? $this->router->url('report/detail') : $this->router->url('new-report/tree'),
-            'link_search' => $this->router->url('note2/search'),
+            'link_search' => $this->router->url('note/search'),
         ];
         
     }

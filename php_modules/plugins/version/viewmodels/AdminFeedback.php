@@ -33,7 +33,7 @@ class AdminFeedback extends ViewModel
         $request  = $this->container->get('request');
         $TagEntity  = $this->container->get('TagEntity');
         $VersionEntity  = $this->container->get('VersionEntity');
-        $Note2Entity  = $this->container->get('Note2Entity');
+        $NoteEntity  = $this->container->get('NoteEntity');
         $session  = $this->container->get('session');
         $router  = $this->container->get('router');
 
@@ -73,7 +73,7 @@ class AdminFeedback extends ViewModel
 
         $version = $VersionEntity->findByPK($version_id);
         $tag_exist = $this->container->exists('TagEntity');
-        $note_exist = $this->container->exists('Note2Entity');
+        $note_exist = $this->container->exists('NoteEntity');
         $result = [];
         if ($tag_exist && $note_exist && $version) {
             
@@ -91,8 +91,8 @@ class AdminFeedback extends ViewModel
                     " OR `tags` LIKE '%" . $tag_version['id'] . ',' . "%'" .
                     " OR `tags` LIKE '%" . ',' . $tag_version['id'] . ',' . "%' )"
                 ]);
-                $result = $Note2Entity->list($start, $limit, $where, $sort);
-                $total = $Note2Entity->getListTotal();
+                $result = $NoteEntity->list($start, $limit, $where, $sort);
+                $total = $NoteEntity->getListTotal();
             }
         }
         $data_tags = [];

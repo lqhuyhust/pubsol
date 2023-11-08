@@ -61,7 +61,7 @@ class AdminRelateNotes extends ViewModel
         $milestone = $request ? $this->MilestoneEntity->findByPK($request['milestone_id']) : ['title' => '', 'id' => 0];
         $title_page_relate_note = 'Related Notes';
 
-        $note_exist = $this->container->exists('Note2Entity');
+        $note_exist = $this->container->exists('NoteEntity');
 
         $notes = [];
         foreach ($result as $index => &$item)
@@ -69,7 +69,7 @@ class AdminRelateNotes extends ViewModel
             $note_tmp = false;
             if ($note_exist)
             {
-                $note_tmp = $this->Note2Entity->findByPK($item['note_id']);
+                $note_tmp = $this->NoteEntity->findByPK($item['note_id']);
                 if ($note_tmp)
                 {
                     $item['title'] = $note_tmp['title'];
@@ -129,7 +129,7 @@ class AdminRelateNotes extends ViewModel
             'url' => $this->router->url(),
             'link_update_relate_note' => $this->router->url('relate-note/update-alias'),
             'link_list' => $this->router->url('relate-notes/' . $request_id),
-            'link_note' => $this->router->url('note2/detail'),
+            'link_note' => $this->router->url('note/detail'),
             'link_list_relate_note' => $this->router->url('relate-notes/' . $request_id),
             'title_page_relate_note' => $title_page_relate_note,
             'token' => $this->token->value(),
@@ -146,7 +146,7 @@ class AdminRelateNotes extends ViewModel
             'request_id' => $request_id,
             'link_list' => $this->router->url('relate-notes/' . $request_id),
             'link_form' => $this->router->url('relate-note/'. $request_id),
-            'link_note' => $this->router->url('note2/detail'),
+            'link_note' => $this->router->url('note/detail'),
             'link_list_relate_note' => $this->router->url('relate-notes/' . $request_id),
             'token' => $this->token->value(),
         ];
