@@ -185,3 +185,8 @@ span.select2-container {
 #filter_form .select2-container--default .select2-selection--multiple{
     padding-bottom: 3px;
 }
+
+#filter_form span.select2-container {
+    z-index: 0;
+    width: auto !important;
+}
