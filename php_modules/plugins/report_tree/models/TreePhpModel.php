@@ -30,7 +30,7 @@ class TreePhpModel extends Base
                 continue;
             }
 
-            $note = $this->Note2Entity->findByPK($item['note_id']);
+            $note = $this->Note->findByPK($item['note_id']);
             if (!$note)
             {
                 $removes[] = $item['id'];

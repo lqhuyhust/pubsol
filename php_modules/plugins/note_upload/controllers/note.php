@@ -62,7 +62,7 @@ class note extends NoteController
             $this->session->setform('note_upload', $data);
             $this->session->set('flashMsg', 'Error: '. $this->NoteFileModel->getError()); 
             return $this->app->redirect(
-                $this->router->url('new-note/file')
+                $this->router->url('new-note/upload')
             );
         }
 
