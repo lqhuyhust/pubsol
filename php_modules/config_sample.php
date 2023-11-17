@@ -8,8 +8,9 @@ return [
     'expireSessionDuration' => 60,
     'homeEndpoint' => [
         'fnc' => [
-            'get' => 'milestone.milestone.list'
+            'get' => 'note.note.list'
         ],
+        'filter' => 'my-note',
     ],
     'db' => [
         'host' => '',
