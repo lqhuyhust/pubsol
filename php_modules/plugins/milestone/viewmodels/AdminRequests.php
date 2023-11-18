@@ -43,6 +43,13 @@ class AdminRequests extends ViewModel
         $search = trim($filter->getField('search')->value);
         $page = $this->state('page', 1, 'int', 'get', 'request.page');
         if ($page <= 0) $page = 1;
+        $method = $this->request->getMethod();
+        if ($method == 'POST')
+        {
+            $page = 1;
+            $this->session->set('request.page', 1);
+        }
+
         $where = [];
         $where[] = ['milestone_id = '. $milestone_id];
 

@@ -46,6 +46,12 @@ class AdminFeedback extends ViewModel
         $search = $filter->getField('search')->value;
         $page = $this->state('page', 1, 'int', 'get', 'feedback.page');
         if ($page <= 0) $page = 1;
+        $method = $this->request->getMethod();
+        if ($method == 'POST')
+        {
+            $page = 1;
+            $this->session->set('feedback.page', 1);
+        }
 
         $where = [];
 

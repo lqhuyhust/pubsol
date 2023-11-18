@@ -44,6 +44,12 @@ class AdminVersions extends ViewModel
         $search = trim($filter->getField('search')->value);
         $page = $this->state('page', 1, 'int', 'get', 'version.page');
         if ($page <= 0) $page = 1;
+        $method = $this->request->getMethod();
+        if ($method == 'POST')
+        {
+            $page = 1;
+            $this->session->set('version.page', 1);
+        }
 
         $where = [];
 
