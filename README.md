@@ -1,6 +1,6 @@
-# SDM
+# PubSol
 
-Core plugins to run SDM webapp using SPT framework
+A Publishment Solution for sharing content 
 
 ## Getting started
 
