@@ -4,7 +4,7 @@ namespace App\plugins\member\registers;
 
 use SPT\Application\IApp;
 
-class Routing 
+class Routing
 {
     public static function registerEndpoints()
     {
@@ -33,6 +33,20 @@ class Routing
                     'post' =>  ['member_manager', 'member_create'],
                     'put' =>  ['member_manager', 'member_update'],
                 ],
+            ],
+            'api/members' => [
+                'fnc' => [
+                    'get' => 'member.member_api.list',
+                    'post' => 'member.member_api.create',
+                ],
+            ],
+            'api/member' => [
+                'fnc' => [
+                    'get' => 'member.member_api.detail',
+                    'post' => 'member.member_api.update',
+                    'delete' => 'member.member_api.delete'
+                ],
+                'parameters' => ['id']
             ],
         ];
     }
