@@ -34,27 +34,28 @@ class MemberEntity extends Entity
                 'type' => 'varchar',
                 'limit' => 255,
             ],
-            'phone_number' => [
+            'email_verified_at' => [
+                'type' => 'datetime',
+                'default' => 'NOW()',
+                'null' => 'YES',
+            ],
+            'password' => [
                 'type' => 'varchar',
                 'limit' => 255,
+            ],
+            'remember_token' => [
+                'type' => 'varchar',
+                'limit' => 100,
                 'null' => 'YES',
             ],
             'created_at' => [
                 'type' => 'datetime',
                 'default' => 'NOW()',
             ],
-            'created_by' => [
-                'type' => 'int',
-                'option' => 'unsigned',
-            ],
-            'modified_at' => [
+            'updated_at' => [
                 'type' => 'datetime',
                 'default' => 'NOW()',
-            ],
-            'modified_by' => [
-                'type' => 'int',
-                'option' => 'unsigned',
-            ],
+            ]
         ];
     }
 
@@ -83,9 +84,26 @@ class MemberEntity extends Entity
             return false;
         }
 
+        if(empty($data['password'])) 
+        {
+            $this->error = "Email can't empty";
+            return false;
+        }
+
         unset($data['readyUpdate']);
         unset($data['readyNew']);
         return $data;
+    }
+
+    public function check_email_exist($email, $id=false)
+    {
+        $where = ['email' => $email];
+        if ($id)
+        {
+            $where[] = '`id`<>'. $id;
+        }
+        $check = $this->findOne($where);
+        return $check ? true : false;
     }
 
     public function bind($data = [], $returnObject = false)
@@ -93,7 +111,7 @@ class MemberEntity extends Entity
         $row = [];
         $data = (array) $data;
         $fields = $this->getFields();
-        $skips = isset($data['id']) && $data['id'] ? ['created_at', 'created_by'] : ['id'];
+        $skips = isset($data['id']) && $data['id'] ? ['created_at', 'email_verified_at', 'remember_token'] : ['id'];
         foreach ($fields as $key => $field)
         {
             if (!in_array($key, $skips))

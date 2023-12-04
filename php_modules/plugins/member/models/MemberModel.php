@@ -23,11 +23,10 @@ class MemberModel extends Base
         $data = [
             'name' => $data['name'],
             'email' => $data['email'],
-            'phone_number' => $data['phone_number'],
-            'created_by' => $this->user->get('id'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
+            'password' => $data['password'],
             'created_at' => date('Y-m-d H:i:s'),
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s')
+            'updated_at' => date('Y-m-d H:i:s')
         ];
 
         $data = $this->MemberEntity->bind($data);
@@ -51,9 +50,8 @@ class MemberModel extends Base
         $data = [
             'name' => $data['name'],
             'email' => $data['email'],
-            'phone_number' => $data['phone_number'],
-            'modified_by' => $this->user->get('id'),
-            'modified_at' => date('Y-m-d H:i:s'),
+            'password' => $data['password'],
+            'updated_at' => date('Y-m-d H:i:s'),
             'id' => $data['id'],
         ];
 

@@ -18,8 +18,19 @@ class member extends ControllerMVVM
         $data = [
             'name' => $this->request->post->get('name', '', 'string'),
             'email' => $this->request->post->get('email', '', 'string'),
-            'phone_number' => $this->request->post->get('phone_number', '', 'string')
+            'password' => $this->request->post->get('password', '', 'string')
         ];
+
+        // check email exist
+        $check_email = $this->MemberEntity->check_email_exist($data['email']);
+        if ($check_email)
+        {
+            $this->session->setform('member', $data);
+            $this->session->set('flashMsg', 'Error: Email is exist! Please enter another email!');
+            return $this->app->redirect(
+                $this->router->url('members')
+            );
+        }
 
         // validate input data
         $validated_data = $this->MemberEntity->validate($data);
@@ -34,6 +45,7 @@ class member extends ControllerMVVM
         
         // create new member
         $newId = $this->MemberModel->add($validated_data);
+        var_dump($newId);
         
         if(!$newId)
         {
@@ -70,9 +82,20 @@ class member extends ControllerMVVM
             $data = [
                 'name' => $this->request->post->get('name', '', 'string'),
                 'email' => $this->request->post->get('email', '', 'string'),
-                'phone_number' => $this->request->post->get('phone_number', '', 'string'),
+                'password' => $this->request->post->get('password', '', 'string'),
                 'id' => $ids,
             ];
+
+            // check email exist
+            $check_email = $this->MemberEntity->check_email_exist($data['email'], $data['id']);
+            if ($check_email)
+            {
+                $this->session->setform('member', $data);
+                $this->session->set('flashMsg', 'Error: Email is exist! Please enter another email!');
+                return $this->app->redirect(
+                    $this->router->url('members')
+                );
+            }
 
             // validate input data
             $validated_data = $this->MemberEntity->validate($data);
@@ -87,6 +110,7 @@ class member extends ControllerMVVM
     
             // update member info
             $try = $this->MemberModel->update($validated_data);
+            var_dump($try);
             
             if($try) 
             {

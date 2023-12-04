@@ -22,7 +22,6 @@ class member_api extends ControllerMVVM
         if (!empty($search)) {
             $where[] = "(`name` LIKE '%" . $search . "%')";
             $where[] = "(`email` LIKE '%" . $search . "%')";
-            $where[] = "(`phone_number` LIKE '%" . $search . "%')";
             $where = [implode(' OR ', $where)];
         }
         // get param sort
@@ -47,10 +46,21 @@ class member_api extends ControllerMVVM
 
         $result = $this->MemberEntity->findByPK($id);
 
-        $this->app->set('format', 'json');
-        $this->set('status', 'success');
-        $this->set('data', $result);
-        $this->set('message', 'Get Member Successfully!');
+        if ($result)
+        {
+            $this->app->set('format', 'json');
+            $this->set('status', 'success');
+            $this->set('data', $result);
+            $this->set('message', 'Get Member Successfully!');
+        }
+        else
+        {
+            $this->app->set('format', 'json');
+            $this->set('status', 'failed');
+            $this->set('data', '');
+            $this->set('message', 'Member Not Found!');
+        }
+
         return;
     }
 
@@ -60,14 +70,25 @@ class member_api extends ControllerMVVM
         $data = [
             'name' => $this->request->get('name', '', 'string'),
             'email' => $this->request->get('email', '', 'string'),
-            'phone_number' => $this->request->get('phone_number', '', 'string')
+            'password' => $this->request->get('password', '', 'string')
         ];
+
+        // check email exist
+        $check_email = $this->MemberEntity->check_email_exist($data['email']);
+        if ($check_email)
+        {
+            $this->app->set('format', 'json');
+            $this->set('status', 'failed');
+            $this->set('data', '');
+            $this->set('message', 'Email is exist!');
+            return;
+        }
 
         // validate input data
         $validated_data = $this->MemberEntity->validate($data);
         if (!$validated_data) {
             $this->app->set('format', 'json');
-            $this->set('status', 'fail');
+            $this->set('status', 'failed');
             $this->set('data', '');
             $this->set('message', $this->MemberEntity->getError());
             return;
@@ -109,9 +130,20 @@ class member_api extends ControllerMVVM
             $data = [
                 'name' => $this->request->get('name', '', 'string'),
                 'email' => $this->request->get('email', '', 'string'),
-                'phone_number' => $this->request->get('phone_number', '', 'string'),
+                'password' => $this->request->get('password', '', 'string'),
                 'id' => $id,
             ];
+
+            // check email exist
+            $check_email = $this->MemberEntity->check_email_exist($data['email']);
+            if ($check_email)
+            {
+                $this->app->set('format', 'json');
+                $this->set('status', 'failed');
+                $this->set('data', '');
+                $this->set('message', 'Email is exist!');
+                return;
+            }
 
             // validate input data
             $validated_data = $this->MemberEntity->validate($data);

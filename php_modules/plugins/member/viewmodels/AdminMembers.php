@@ -55,7 +55,6 @@ class AdminMembers extends ViewModel
         if (!empty($search)) {
             $where[] = "(`name` LIKE '%" . $search . "%')";
             $where[] = "(`email` LIKE '%" . $search . "%')";
-            $where[] = "(`phone_number` LIKE '%" . $search . "%')";
             $where = [implode(' OR ', $where)];
         }
 
@@ -96,7 +95,7 @@ class AdminMembers extends ViewModel
             'num' => '#',
             'name' => 'Name',
             'email' => 'Email',
-            'phone_number' => 'Phone Number',
+            'password' => 'Password',
             'created_at' => 'Created At',
             'col_last' => ' ',
         ];

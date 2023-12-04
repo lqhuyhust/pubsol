@@ -7,7 +7,7 @@
                         <button data-id="" 
                             data-name="" 
                             data-email="" 
-                            data-phone_number="" 
+                            data-password="" 
                             data-created_at=""
                             type="button" 
                             class="align-middle btn border border-1 show_data" 

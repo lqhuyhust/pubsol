@@ -31,10 +31,10 @@
                         <div class="mb-3 col-12 mx-auto">
                             <div class="row">
                                 <div class="col-3 d-flex align-items-center">
-                                    <label class="form-label fw-bold mb-0">Phone Number</label>
+                                    <label class="form-label fw-bold mb-0">Password</label>
                                 </div>
                                 <div class="col-9">
-                                <?php $this->ui->field('phone_number'); ?>
+                                <?php $this->ui->field('password'); ?>
                                 </div>
                             </div>
                         </div>

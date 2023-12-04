@@ -52,11 +52,12 @@ class AdminMember extends ViewModel
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
                 'required' => 'required'
             ],
-            'phone_number' => [
+            'password' => [
                 'text',
-                'placeholder' => 'Enter Tour Phone Number',
+                'placeholder' => 'Enter Tour Password',
                 'showLabel' => false,
                 'formClass' => 'form-control rounded-0 border border-1 py-1 fs-4-5',
+                'required' => 'required'
             ],
             'token' => ['hidden',
                 'default' => $this->token->value(),

@@ -53,12 +53,12 @@
             var id = $(this).data('id');
             var name = $(this).data('name');
             var email = $(this).data('email');
-            var phone_number = $(this).data('phone_number');
+            var password = $(this).data('password');
             var created_at = $(this).data('created_at');
             
             $('#name').val(name);
             $('#email').val(email);
-            $('#phone_number').val(phone_number);
+            $('#password').val(password);
             $('#created_at').val(created_at);
 
             $('#save').click(function() {
